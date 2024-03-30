@@ -1,7 +1,7 @@
 ---
 layout: '../../layouts/MarkdownPost.astro'
 title: '从农场到海洋：保育红树林，维系当地人生计，保护地球 '
-pubDate: 2035-07-01
+pubDate: 2000-01-01
 description: 'Apple 与 Applied Environmental Research Foundation 合作，将促进印度马哈拉施特拉邦红树林的保育工作'
 author: 'Apple Newsroom'
 cover:

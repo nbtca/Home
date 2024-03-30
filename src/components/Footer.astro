@@ -4,6 +4,7 @@ const { theme } = Astro.props;
 import { SITE_NAME } from "../consts";
 const date = new Date();
 const year = date.getFullYear();
+
 ---
 
 <div class:list={["footer-main", { "footer-dark": theme === "dark" }]}>
