@@ -1,0 +1,41 @@
+name: build-deploy
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore: # 忽略的文件
+      - "README.md"
+      - "LICENSE"
+      - ".github/workflows/**"
+      - "CHANGELOG.md"
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Install Dependent Node Packages
+      run: npm install
+
+    - name: build
+      run: npm run build
+    
+    - name: Deploy # 部署
+      uses: JamesIves/github-pages-deploy-action@v4.5.0
+      with:
+        branch: gh-pages # 部署后提交到那个分支
+        token: ${{ secrets.GITHUB_TOKEN }}
+        folder: dist
+        clean: true
+        single-commit: true
+        git-config-email: github-actions[bot]@users.noreply.github.com
+        git-config-name: github-actions[bot]
