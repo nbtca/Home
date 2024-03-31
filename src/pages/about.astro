@@ -1,9 +1,38 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro"
+
+const members = await fetch("https://api.nbtca.space/v2/members").then(res => {
+  return res.json()
+})
 ---
 
 <BaseLayout primaryTitle="关于">
-  <section class="p-8 archive flex items-center justify-center">
-    <img src="https://oss.nbtca.space/CA-logo.svg" alt="" class="w-72 aspect-square pb-16" />
+  <section class="pb-20 bg-[#f5f5f7]">
+    <div class="section-content">
+      <div class="text-[32px] leading-[1.125] font-bold py-6">协会成员</div>
+      <div class="grid grid-cols-2 xl:grid-cols-4 gap-x-6 gap-y-8">
+        {
+          members.map(member => {
+            return (
+              <div class="p-3 flex flex-col gap-2 w-full">
+                <div class="w-full rounded-lg overflow-hidden">
+                  <div class="w-full aspect-square overflow-hidden flex items-center justify-center  bg-gradient-to-b from-gray-300/70">
+                    {member.avatar ? (
+                      <img class="object-cover h-full" src={member.avatar} alt="" />
+                    ) : (
+                      <img class="object-cover h-3/4" src="https://oss.nbtca.space/CA-logo.svg" alt="" />
+                    )}
+                  </div>
+                </div>
+                <div class="h-16">
+                  <div class="text-lg">{member.alias}</div>
+                  <div class="mt-0.5">{member.profile}</div>
+                </div>
+              </div>
+            )
+          })
+        }
+      </div>
+    </div>
   </section>
 </BaseLayout>
