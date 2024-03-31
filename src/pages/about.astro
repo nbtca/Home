@@ -10,7 +10,7 @@ const members = await fetch("https://api.nbtca.space/v2/members").then(res => {
   <section class="pb-20 bg-[#f5f5f7]">
     <div class="section-content">
       <div class="text-[32px] leading-[1.125] font-bold py-6">协会成员</div>
-      <div class="grid grid-cols-2 xl:grid-cols-4 gap-x-6 gap-y-8">
+      <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-6 md:gap-y-8">
         {
           members.map(member => {
             return (
@@ -26,7 +26,7 @@ const members = await fetch("https://api.nbtca.space/v2/members").then(res => {
                 </div>
                 <div class="h-16">
                   <div class="text-lg">{member.alias}</div>
-                  <div class="mt-0.5">{member.profile}</div>
+                  <div class="text-sm mt-0.5">{member.profile}</div>
                 </div>
               </div>
             )
