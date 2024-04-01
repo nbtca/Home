@@ -322,9 +322,7 @@ a:disabled,
   font-weight: 600;
   letter-spacing: 0.011em;
   cursor: default;
-  display: block;
   float: left;
-  margin: 14px 0 -18px;
   padding: 0;
   height: 52px;
   white-space: nowrap;
