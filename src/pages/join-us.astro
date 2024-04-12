@@ -10,8 +10,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         class="t-hero-headline-oversized-span"
         aria-label="加入我们，共同创造我们的社区。"
       >
-        <span class="gradient-warm">加入我们，</span>
-        <span class="gradient-warm">共同创造我们的社区。</span>
+        <span class="gradient-warm">加入我们，共同创造我们的社区。</span>
       </span>
     </p>
     <div class="body-container">
@@ -19,11 +18,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         探索我们的资源和文化：这里有丰富的资源和注重包容、成长和独创性的协作文化，助你缔造精彩人生。
       </p>
     </div>
+    <div class="learn-more-link-container">
+      <a
+        href="/careers/cn/life-at-apple.html"
+        class="learn-more-link"
+        aria-label="进一步了解 NBTCA 的社区和文化">了解在 NBTCA 生活</a
+      >
+      <a class="learn-more-link-after">&gt; </a>
+    </div>
   </div>
 </BaseLayout>
 
 <style>
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 680px) {
     /*PC*/
     .container {
       width: 682px;
@@ -63,7 +70,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       -webkit-background-clip: text;
     }
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 680px) {
     /*Mobile*/
     .gradient-warm {
       -webkit-text-size-adjust: 100%;
@@ -251,5 +258,45 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     background: url(https://www.apple.com/careers/images/fy21/apple_jobs_gradient-final_Apple_Jobs_Gradients_Warm/desktop@2x.png);
     background-size: 200% 100%;
     -webkit-background-clip: text;
+  }
+
+  .learn-more-link-after {
+    content: ">";
+    margin-left: 2.5px;
+    font-size: 20px;
+    transform: scaleX(0.5);
+    text-decoration: none;
+  }
+  .learn-more-link {
+    -webkit-text-size-adjust: 100%;
+    --r-globalmessage-segment-height: 0px;
+    --r-globalnav-segmentbar-height: 0px;
+    --r-globalnav-height: 48px;
+    --r-globalnav-background-opened: #fafafc;
+    --r-globalnav-background-opened-dark: #161617;
+    --sk-focus-color: #0071e3;
+    --sk-focus-color-alt: rgb(0, 0, 0);
+    --sk-focus-offset: 1px;
+    --sk-focus-offset-container: 3px;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    direction: ltr;
+    --body-container-width: 645px;
+    text-align: center;
+    font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
+      "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+    quotes: "“" "”";
+    font-style: normal;
+    color: #0070c9;
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .learn-more-link-container {
+    display: flex;
+    justify-content: center;
+    height: 100px;
   }
 </style>
