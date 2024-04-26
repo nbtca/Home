@@ -1,11 +1,11 @@
-interface Member {
+export interface Member {
   memberId: string
   alias: string
   avatar: string
   profile: string
 }
 
-const otherMembers: Member[] = [
+export const otherMembers: Member[] = [
   {
     memberId: undefined,
     alias: "鲁冠泽",
@@ -37,5 +37,3 @@ const otherMembers: Member[] = [
     avatar: "",
   },
 ]
-
-export default otherMembers

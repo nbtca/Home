@@ -2,39 +2,19 @@
 import BaseLayout from "../layouts/BaseLayout.astro"
 import { computed } from "vue"
 import MemberCard from "../components/MemberCard.astro"
-import otherMembers from "../data/otherMembers.ts"
+import { type Member, otherMembers } from "../store/member.ts"
 
-const members: {
-  memberId: string
-  alias: string
-  avatar: string
-  profile: string
-}[] = await fetch("https://api.nbtca.space/v2/members").then((res) => {
+const members: Member[] = await fetch("https://api.nbtca.space/v2/members").then(res => {
   return res.json()
-})
-
-otherMembers.forEach((member) => {
-  members.push(member)
 })
 
 // memberId is like "3232323233", the second and third number is the year of the member
 const memberGroupByYear = computed(() => {
   const group = members
     // TODO delete the test member
-    .filter(
-      (member) =>
-        member.memberId != "0000000000" && member.memberId != "2333333333"
-    )
+    .filter(member => member.memberId != "0000000000" && member.memberId != "2333333333")
     .reduce(
       (acc, cur) => {
-        if (!cur.memberId) {
-          const year = "往届"
-          if (!acc[year]) {
-            acc[year] = []
-          }
-          acc[year].push(cur)
-          return acc
-        }
         const year = parseInt("20" + cur.memberId.slice(1, 3))
         if (!acc[year]) {
           acc[year] = []
@@ -42,8 +22,9 @@ const memberGroupByYear = computed(() => {
         acc[year].push(cur)
         return acc
       },
-      {} as Record<string, typeof members>
+      {} as Record<string, Member[]>
     )
+  group["往届"] = otherMembers
   return group
 })
 ---
@@ -57,12 +38,12 @@ const memberGroupByYear = computed(() => {
         {
           Object.keys(memberGroupByYear.value)
             .sort((a, b) => parseInt(b) - parseInt(a))
-            .map((year) => {
+            .map(year => {
               return (
                 <div class="py-4 first:pt-2">
                   <div class="text-[24px] font-bold pb-2">{year}</div>
                   <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8">
-                    {memberGroupByYear.value[year].map((member) => (
+                    {memberGroupByYear.value[year].map(member => (
                       <MemberCard member={member} />
                     ))}
                   </div>
