@@ -10,7 +10,7 @@ const { member } = Astro.props
     <div class="w-full aspect-square overflow-hidden flex items-center justify-center bg-gradient-to-b from-gray-300/70">
       {
         member.avatar ? (
-          <img class="object-cover h-full" src={member.avatar} alt="" />
+          <img class="object-cover h-full" src={member.avatar + "?x-oss-process=image/resize,h_512,m_lfit"} alt="" />
         ) : (
           <img class="object-cover h-3/4" src="https://oss.nbtca.space/CA-logo.svg" alt="" />
         )
