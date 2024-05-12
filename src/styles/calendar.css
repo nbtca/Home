@@ -1,0 +1,20 @@
+.calendar .fc .fc-button-primary {
+    background-color: #1b5bb1;
+    border-color: #1b5bb1;
+    color: #ffffff;
+}
+
+.calendar .fc .fc-button {
+    font-size: 0.9em;
+}
+
+.calendar .fc .fc-button-primary:disabled {
+    background-color:#DCDCDC;
+    border-color: #DCDCDC;
+    color: #000000;
+}
+.calendar a,
+.link {
+    color: #5172dc;
+    letter-spacing: inherit;
+}
