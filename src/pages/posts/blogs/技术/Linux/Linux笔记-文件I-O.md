@@ -1,18 +1,19 @@
 ---
+layout: "../../../../../layouts/MarkdownPost.astro"
 title: Linux笔记 - 文件I/O
-date: 2022-03-19 22:38:56
-categories: 
+pubDate: 2022-03-19 22:38:56
+categories:
   - 技术
   - Linux
 cover: ./assets/cbea6761a0164906b8396942cf61c664/20220320105749.png
 tid: linux-note-file-io
 description: 有关linux文件io的一系列笔记。
 permalink: /pages/82d273/
-author: 
+author:
   name: N3ptune
   link: https://www.cnblogs.com/N3ptune
-tags: 
-  - 
+tags:
+  -
 ---
 
 ## Linux 文件系统结构

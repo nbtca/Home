@@ -1,6 +1,7 @@
 ---
+layout: "../../../../../layouts/MarkdownPost.astro"
 title: 写C语言的种种工具
-date: 2022-03-09 22:37:34
+pubDate: 2022-03-09 22:37:34
 tid: tools-to-write-c
 categories:
   - 技术

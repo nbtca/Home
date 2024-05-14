@@ -1,21 +1,22 @@
 ---
+layout: "../../../../../layouts/MarkdownPost.astro"
 title: Python爬虫实战-获取王者荣耀英雄大全
-date: 2022-04-17 14:07:55
-categories: 
+pubDate: 2022-04-17 14:07:55
+categories:
   - 技术
   - Python
 cover: ./assets/7e03f38d60aa4dec9f98cc3f3c137189/data-mining.png
 tid: python-spider-wzry-hero
 description: 使用python爬虫的实践记录,王者荣耀篇。
 permalink: /pages/b8d343/
-author: 
+author:
   name: N3ptune
   link: https://www.cnblogs.com/N3ptune
-tags: 
-  - 
+tags:
+  -
 ---
 
-## Python爬虫实战-获取王者荣耀英雄大全
+## Python 爬虫实战-获取王者荣耀英雄大全
 
 URL: https://pvp.qq.com/web201605/herolist.shtml
 
@@ -25,17 +26,17 @@ URL: https://pvp.qq.com/web201605/herolist.shtml
 
 ![python-wzry-1](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-1.png)
 
-不难发现，这是静态网页，对于众多英雄的信息，并未使用js渲染，这貌似是个软柿子？
+不难发现，这是静态网页，对于众多英雄的信息，并未使用 js 渲染，这貌似是个软柿子？
 
-按下F12使用开发者工具，点击Doc，查看请求的Reponse，可以看到众多英雄的信息在这个静态文档列举了出来，于是似乎只要按照html标签就可以轻松获取信息(*<u>后面会解释，这实际上是个坑，先暂且按照这个思路进行</u>*)。
+按下 F12 使用开发者工具，点击 Doc，查看请求的 Reponse，可以看到众多英雄的信息在这个静态文档列举了出来，于是似乎只要按照 html 标签就可以轻松获取信息(_<u>后面会解释，这实际上是个坑，先暂且按照这个思路进行</u>_)。
 
 ![python-wzry-2](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-2.png)
 
-拼接li标签下对应的链接(https://pvp.qq.com/web201605/ + herodetail/***.html)，就可以访问到指定英雄对应的链接，如下所示：
+拼接 li 标签下对应的链接(https://pvp.qq.com/web201605/ + herodetail/\*\*\*.html)，就可以访问到指定英雄对应的链接，如下所示：
 
 ![python-wzry-3](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-3.png)
 
-拼接的URL和访问的页面如下所示：
+拼接的 URL 和访问的页面如下所示：
 
 ![python-wzry-4](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-4.png)
 
@@ -53,7 +54,7 @@ from bs4 import BeautifulSoup
 import re
 ```
 
-之后编写代码的流程也很清晰明了，先通过主页面获取所以英雄的名称及其对应的链接，因为该网页使用了GBK编码，所以要进行转码。
+之后编写代码的流程也很清晰明了，先通过主页面获取所以英雄的名称及其对应的链接，因为该网页使用了 GBK 编码，所以要进行转码。
 
 代码如下：
 
@@ -84,21 +85,21 @@ get_herolist()
 
 ![python-wzry-6](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-6.png)
 
-下面访问单个英雄的链接，理清HTML结构后就可以获取数据。
+下面访问单个英雄的链接，理清 HTML 结构后就可以获取数据。
 
-英雄的称号在h3标签中：
+英雄的称号在 h3 标签中：
 
 ![python-wzry-7](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-7.png)
 
-英雄的属性在class="cover-list"的标签中，每个属性的信息在li标签中，每个属性的值其实就是横条的长度。
+英雄的属性在 class="cover-list"的标签中，每个属性的信息在 li 标签中，每个属性的值其实就是横条的长度。
 
 ![python-wzry-8](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-8.png)
 
-这个值可以在li标签下的i标签中找到，只要取出style的值即可，这是一个百分数字符串，取这个字符串中":"和"%"之间的字符串，得到一个数字，这个数字就可以代表属性值的大小。
+这个值可以在 li 标签下的 i 标签中找到，只要取出 style 的值即可，这是一个百分数字符串，取这个字符串中":"和"%"之间的字符串，得到一个数字，这个数字就可以代表属性值的大小。
 
 ![python-wzry-9](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-9.png)
 
-英雄的职业虽然没有以文本的形式显示出来，但如下`i`标签中的class值明显是和职业有关的：
+英雄的职业虽然没有以文本的形式显示出来，但如下`i`标签中的 class 值明显是和职业有关的：
 
 ![python-wzry-10](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-10.png)
 
@@ -136,17 +137,17 @@ def get_heroinfo():
 
 首先定义了一个字典来存放英雄职业对应关系，然后遍历上一段代码获取到的列表，取出每个元素中的链接，进行访问。
 
-对每个链接再做一次请求，获取HTML文档后，借助标签进行数据提取，只要按照上文中说明的流程即可。我这里选择将属性值封装进一个列表。
+对每个链接再做一次请求，获取 HTML 文档后，借助标签进行数据提取，只要按照上文中说明的流程即可。我这里选择将属性值封装进一个列表。
 
 我还想获得英雄关系，能便于我在选英雄时具有针对性...
 
 ![python-wzry-13](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-13.png)
 
-观察HTML代码，可以看到3大关系都放在如下3个标签中：
+观察 HTML 代码，可以看到 3 大关系都放在如下 3 个标签中：
 
 ![python-wzry-14](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-14.png)
 
-一个关系中有两个英雄，分别放在li标签下，而a标签下存放的路径，就指向了这个英雄：
+一个关系中有两个英雄，分别放在 li 标签下，而 a 标签下存放的路径，就指向了这个英雄：
 
 ![python-wzry-15](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-15.png)
 
@@ -241,7 +242,7 @@ get_heroinfo()
 
 这是因为字典中没有这个键，这说明了什么？
 
-说明了最开始爬到的诸多英雄，是有缺失的。访问一下这个528.shtml对应的页面：
+说明了最开始爬到的诸多英雄，是有缺失的。访问一下这个 528.shtml 对应的页面：
 
 ![python-wzry-19](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-19.png)
 
@@ -261,17 +262,17 @@ get_heroinfo()
 
 ![python-wzry-22](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-22.png)
 
-再看看这让人匪夷所思的URL，搞不好数据还是停留在2016年的...
+再看看这让人匪夷所思的 URL，搞不好数据还是停留在 2016 年的...
 
-再看看请求头，发现status code是304并非200，可见发生了网页重定向：
+再看看请求头，发现 status code 是 304 并非 200，可见发生了网页重定向：
 
 ![python-wzry-23](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-23.png)
 
-就不详细解释304的意思了，直接百度 [分析HTTP请求返回304状态码 - 百度文库](https://wenku.baidu.com/view/97ccaaa6d7d8d15abe23482fb4daa58da0111ca5.html)。
+就不详细解释 304 的意思了，直接百度 [分析 HTTP 请求返回 304 状态码 - 百度文库](https://wenku.baidu.com/view/97ccaaa6d7d8d15abe23482fb4daa58da0111ca5.html)。
 
 遇到这种问题并非没有解决方法，但我就不继续挖坑了，因为我更乐意另辟蹊径。
 
-在XHR中发现了一条请求，返回的是json数据。
+在 XHR 中发现了一条请求，返回的是 json 数据。
 
 ![python-wzry-24](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-24.png)
 
@@ -293,7 +294,7 @@ for result in results:
 
 ![python-wzry-25](./assets/7e03f38d60aa4dec9f98cc3f3c137189/python-wzry-25.png)
 
-之前以为静态网页就是软柿子了，但现在这个json数据似乎更加简明。所以说，我们不能局限在经验里。
+之前以为静态网页就是软柿子了，但现在这个 json 数据似乎更加简明。所以说，我们不能局限在经验里。
 
 #### 改善代码
 
@@ -375,21 +376,21 @@ get_heroinfo()
 
 #### 数据存储
 
-下面实现将数据保存到excel。
+下面实现将数据保存到 excel。
 
-一个Excel文档也称为一个工作簿（workbook），每个工作簿里可以有多个工作表（worksheet），当前打开的工作表又叫活动表。
+一个 Excel 文档也称为一个工作簿（workbook），每个工作簿里可以有多个工作表（worksheet），当前打开的工作表又叫活动表。
 
 ![](./assets/7e03f38d60aa4dec9f98cc3f3c137189/crawler-l6-8-2019111.png)
 
-每个工作表里有行和列，特定的行与列相交的方格称为单元格（cell）。比如上图第A列和第1行相交的方格可以直接表示为A1单元格。
+每个工作表里有行和列，特定的行与列相交的方格称为单元格（cell）。比如上图第 A 列和第 1 行相交的方格可以直接表示为 A1 单元格。
 
-通过openpyxl.Workbook()函数就可以创建新的工作簿。
+通过 openpyxl.Workbook()函数就可以创建新的工作簿。
 
 创建完新的工作簿后，还得获取工作表。不然程序会无所适从，不知道要把内容写入哪张工作表里。
 
 添加完工作表，就能来操作单元格，往单元格里写入内容。
 
-使用append函数，就可以添加一行。
+使用 append 函数，就可以添加一行。
 
 代码如下：
 
@@ -550,4 +551,3 @@ if __name__ == '__main__':
     get_equiplist()
     save_excel()
 ```
-

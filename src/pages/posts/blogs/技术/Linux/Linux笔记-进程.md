@@ -1,21 +1,22 @@
 ---
+layout: "../../../../../layouts/MarkdownPost.astro"
 title: Linux笔记 - 进程
-date: 2022-04-05 13:13:35
-categories: 
+pubDate: 2022-04-05 13:13:35
+categories:
   - 技术
   - Linux
 cover: ./assets/f835945d5de246bcabdff51dd984aaf2/20220320105749.png
 tid: linux-note-process
 description: 有关linux进程的一系列笔记。
 permalink: /pages/324bec/
-author: 
+author:
   name: N3ptune
   link: https://www.cnblogs.com/N3ptune
-tags: 
-  - 
+tags:
+  -
 ---
 
-## Linux进程
+## Linux 进程
 
 本文会简单讲述进程创建和进程间通信。
 
@@ -39,11 +40,11 @@ tags:
 
 ![process-4](./assets/f835945d5de246bcabdff51dd984aaf2/process-4.png)
 
-在终端输入`top`，输入q可以退出：
+在终端输入`top`，输入 q 可以退出：
 
 ![process-5](./assets/f835945d5de246bcabdff51dd984aaf2/process-5.png)
 
-Linux系统上可以管理多个进程，进程被分时分片处理。
+Linux 系统上可以管理多个进程，进程被分时分片处理。
 
 下面演示在程序中如何创建进程：
 
@@ -95,9 +96,9 @@ int main(void)
 
 ![process-10](./assets/f835945d5de246bcabdff51dd984aaf2/process-10.png)
 
-根据fork函数的返回值来看是在子进程中还是父进程中，调用成功的话，父进程中返回值是子进程的ID，子进程中是0。实际上这里fork返回了两次。
+根据 fork 函数的返回值来看是在子进程中还是父进程中，调用成功的话，父进程中返回值是子进程的 ID，子进程中是 0。实际上这里 fork 返回了两次。
 
-fork做了两件事，第一件是复制结构，将父进程的数据结构都复制了一份。
+fork 做了两件事，第一件是复制结构，将父进程的数据结构都复制了一份。
 
 第二件事就是唤醒新进程，让子进程运行起来。
 
@@ -132,7 +133,7 @@ int main(void)
 }
 ```
 
-在代码中定义了一个变量n，初始值为10，子进程的n同样初始为10：
+在代码中定义了一个变量 n，初始值为 10，子进程的 n 同样初始为 10：
 
 ![process-11](./assets/f835945d5de246bcabdff51dd984aaf2/process-11.png)
 
@@ -140,7 +141,7 @@ int main(void)
 
 有一种情况，父进程创建了子进程，父进程先于子进程结束，子进程资源没有被释放，就会变成僵尸进程，持续占用系统资源(内核中进程树会保存进程的数据，树中节点会保存进程的一些数据)。
 
-子进程结束前，会向父进程发送SIGCHILD信号，父进程收到信号后，回收子进程资源，然后父进程再结束。父进程可以写一个wait函数，等待子进程发送SIGCHILD信号。
+子进程结束前，会向父进程发送 SIGCHILD 信号，父进程收到信号后，回收子进程资源，然后父进程再结束。父进程可以写一个 wait 函数，等待子进程发送 SIGCHILD 信号。
 
 ![process-12](./assets/f835945d5de246bcabdff51dd984aaf2/process-12.png)
 
@@ -166,7 +167,7 @@ int main(void) {
 }
 ```
 
-使用wait函数就是要等待子进程打印完所有数字，父进程才结束。
+使用 wait 函数就是要等待子进程打印完所有数字，父进程才结束。
 
 最后看看守护进程。
 
@@ -176,11 +177,11 @@ int main(void) {
 
 ![process-13](./assets/f835945d5de246bcabdff51dd984aaf2/process-13.png)
 
-TPGID为-1的话，就说明是守护进程。
+TPGID 为-1 的话，就说明是守护进程。
 
 如果要把一个进程变成守护进程，要先`kill`其父进程，同时摆脱终端的控制。
 
-要摆脱终端的控制，就要关闭三个文件描述符号：标准输入设备，标准输出设备，标准错误输出设备，然后重定向当前进程IO操作到/dev/null (黑洞设备)。然后要创建新的会话，摆脱原有会话进程组的控制。
+要摆脱终端的控制，就要关闭三个文件描述符号：标准输入设备，标准输出设备，标准错误输出设备，然后重定向当前进程 IO 操作到/dev/null (黑洞设备)。然后要创建新的会话，摆脱原有会话进程组的控制。
 
 这里要提到进程的组织形式：多个进程组成一个进程组，多个进程组组成一个会话。这里不详细解释会话是什么。
 
@@ -198,11 +199,11 @@ TPGID为-1的话，就说明是守护进程。
 
 第二种：
 
-       1. 重设文件权限 `umask;`
+1. 重设文件权限 `umask;`
        2. 创建子进程 `fork`;
        3. 结束父进程;
        4. 创建新会话 `setsid;`
-       5. 防止子进程成为僵尸进程 忽略SIGCHILD SIGUP信号;
+       5. 防止子进程成为僵尸进程 忽略 SIGCHILD SIGUP 信号;
        6. 改变当前工作目录 `chdir`;
        7. 重定向文件描述符号 `open dup(fd,0) dup(fd,1)` .
 
@@ -275,7 +276,7 @@ int main(void)
 
 上文提到，`fork`子进程会拷贝父进程的数据，因此父子进程间通信还是比较简单的。
 
-第一种通信方式，较为朴素，使用普通文件，进程A将要传递的信息放入这个文件，进程B再去读这个文件即可。父子进程间可通过文件描述符号，非父子进程之间就只能通过具体文件来通信。
+第一种通信方式，较为朴素，使用普通文件，进程 A 将要传递的信息放入这个文件，进程 B 再去读这个文件即可。父子进程间可通过文件描述符号，非父子进程之间就只能通过具体文件来通信。
 
 第二种方式，文件映射虚拟内存 `mmap`。
 
@@ -283,7 +284,7 @@ int main(void)
 
 除此之外，还有信号、共享内存、消息队列、信号量和网络可用于通信。
 
-本文主要讲前3种。
+本文主要讲前 3 种。
 
 下面代码简单演示了第一种：
 
@@ -306,7 +307,7 @@ int main(void)
         exit(-1);
     }
     printf("创建文件成功\n");
-    if (fork()) 
+    if (fork())
     {
         int n = 0;
         while(true) {
@@ -317,14 +318,14 @@ int main(void)
             n++;
         }
     }
-    else 
+    else
     {
         int m;
         while(true) {
             sleep(1);
             int fd = open("test.dat",O_RDONLY);
             read(fd,&m,4);
-            close(fd);            
+            close(fd);
             printf(">> %d\n",m);
         }
     }
@@ -337,7 +338,7 @@ int main(void)
 
 下面讨论管道。
 
-管道也是FIFO结构，分为两种，匿名管道和有名管道。
+管道也是 FIFO 结构，分为两种，匿名管道和有名管道。
 
 父子进程使用匿名管道。
 
@@ -396,7 +397,7 @@ int main(void)
 
 接着演示有名管道，流程如下：
 
-| 进程A               | 进程B              |
+| 进程 A              | 进程 B             |
 | ------------------- | ------------------ |
 | 创建管道文件 mkfifo |                    |
 | 打开管道文件        | 打开管道文件       |
@@ -407,7 +408,7 @@ int main(void)
 
 ![process-19](./assets/f835945d5de246bcabdff51dd984aaf2/process-19.png)
 
-进程A的代码：
+进程 A 的代码：
 
 ```c
 #include <unistd.h>
@@ -450,7 +451,7 @@ int main(void)
 }
 ```
 
-进程B：
+进程 B：
 
 ```c
 #include <unistd.h>

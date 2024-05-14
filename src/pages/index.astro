@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro"
 import Tile from "../layouts/Tile.astro"
 import MoreTile from "../layouts/MoreTile.astro"
 const allPosts = await Astro.glob("../pages/posts/*.md")
+const Blogs = await Astro.glob("../pages/posts/blogs/**/*.md")
 allPosts.sort(
   (a, b) =>
     Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate)
@@ -80,6 +81,18 @@ allPosts.sort(
                 date={post.frontmatter.pubDate}
                 tags={post.frontmatter.tags}
                 cover={post.frontmatter.cover.url}
+              />
+            )
+          })
+        }
+        {
+          Blogs.slice(2, 6).map((post) => {
+            return (
+              <MoreTile
+                title={post.frontmatter.title}
+                href={post.url}
+                date={post.frontmatter.pubDate}
+                tags={post.frontmatter.tags}
               />
             )
           })

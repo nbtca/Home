@@ -1,18 +1,19 @@
 ---
+layout: "../../../../../layouts/MarkdownPost.astro"
 title: Visual Studio Code入门操作指北
 tid: try-vscode
-date: 2022-03-04 10:23:23
+pubDate: 2022-03-04 10:23:23
 cover: ./assets/35fac4da06bf4822880f4412473dee9f/try-code.png
-categories: 
+categories:
   - 更多
   - 学习
 description: vscode入门指北，介绍一些常用操作。
 permalink: /pages/e8dae9/
-author: 
+author:
   name: chundot
   link: https://chundot.github.io
-tags: 
-  - 
+tags:
+  -
 ---
 
 # Visual Studio Code 入门指北
