@@ -13,7 +13,7 @@ author:
   name: chundot
   link: https://chundot.github.io
 tags:
-  -
+  - 学习
 ---
 
 # Visual Studio Code 入门指北

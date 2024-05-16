@@ -13,7 +13,8 @@ author:
   name: N3ptune
   link: https://www.cnblogs.com/N3ptune
 tags:
-  -
+  - 技术
+  - Python
 ---
 
 ## Python 爬虫实战-获取王者荣耀英雄大全

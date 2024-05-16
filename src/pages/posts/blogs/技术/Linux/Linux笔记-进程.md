@@ -13,7 +13,8 @@ author:
   name: N3ptune
   link: https://www.cnblogs.com/N3ptune
 tags:
-  -
+  - 技术
+  - Linux
 ---
 
 ## Linux 进程

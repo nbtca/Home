@@ -13,7 +13,8 @@ author:
   name: N3ptune
   link: https://www.cnblogs.com/N3ptune
 tags:
-  -
+  - 技术
+  - Python
 ---
 
 ## Python 爬虫实战 - 爬取 TIOBE TOP20 语言排行榜

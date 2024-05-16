@@ -13,7 +13,8 @@ author:
   name: chundot
   link: https://chundot.github.io
 tags:
-  -
+  - 技术
+  - C语言
 ---
 
 # 写 C 语言的种种工具

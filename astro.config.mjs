@@ -5,100 +5,101 @@ import { SITE_URL } from "./src/consts"
 import vue from "@astrojs/vue"
 import tailwind from "@astrojs/tailwind"
 import react from "@astrojs/react"
+
 function pipeline() {
   return [
-    () => (tree) => {
-      visit(tree, "element", (node, index) => {
-        if (node.tagName === "p" && node.children[0].tagName === "img") {
-          node.tagName = "figure"
-          let img = node.children[0]
-          let sign = md5(img.properties.src)
-          let data = img.properties.alt.split("|")
-          let alt = data[0]
-          let size = "big"
-          if (data.length > 1) {
-            size = data[1]
-          }
-          let classes = [
-            "image component image-fullbleed body-copy-wide nr-scroll-animation nr-scroll-animation--on",
-          ]
-          classes.push(`image-${size}`)
-          node.properties.className = classes
-          node.children = [
-            {
-              type: "element",
-              tagName: "div",
-              properties: {
-                className: ["component-content"],
-              },
-              children: [
-                {
-                  type: "element",
-                  tagName: "div",
-                  properties: {
-                    className: ["image-sharesheet"],
-                  },
-                  children: [
-                    {
-                      type: "element",
-                      tagName: "div",
-                      properties: {
-                        className: [
-                          `image image-load image-asset image-${sign}`,
-                        ],
-                        id: `lht${sign}`,
-                      },
-                      children: [
-                        {
-                          type: "element",
-                          tagName: "picture",
-                          properties: {
-                            className: ["picture"],
-                          },
-                          children: [
-                            {
-                              type: "element",
-                              tagName: "img",
-                              properties: {
-                                "data-src": img.properties.src,
-                                alt: alt,
-                                className: ["picture-image"],
-                              },
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  type: "element",
-                  tagName: "div",
-                  properties: {
-                    className: ["image-description"],
-                  },
-                  children: [
-                    {
-                      type: "element",
-                      tagName: "div",
-                      properties: {
-                        className: ["image-caption"],
-                      },
-                      children: [
-                        {
-                          type: "text",
-                          value: alt,
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ]
-        }
-      })
-    },
+    // () => (tree) => {
+    //   visit(tree, "element", (node, index) => {
+    //     if (node.tagName === "p" && node.children[0].tagName === "img") {
+    //       node.tagName = "figure"
+    //       let img = node.children[0]
+    //       let sign = md5(img.properties.src)
+    //       let data = img.properties.alt.split("|")
+    //       let alt = data[0]
+    //       let size = "big"
+    //       if (data.length > 1) {
+    //         size = data[1]
+    //       }
+    //       let classes = [
+    //         "image component image-fullbleed body-copy-wide nr-scroll-animation nr-scroll-animation--on",
+    //       ]
+    //       classes.push(`image-${size}`)
+    //       node.properties.className = classes
+    //       node.children = [
+    //         {
+    //           type: "element",
+    //           tagName: "div",
+    //           properties: {
+    //             className: ["component-content"],
+    //           },
+    //           children: [
+    //             {
+    //               type: "element",
+    //               tagName: "div",
+    //               properties: {
+    //                 className: ["image-sharesheet"],
+    //               },
+    //               children: [
+    //                 {
+    //                   type: "element",
+    //                   tagName: "div",
+    //                   properties: {
+    //                     className: [
+    //                       `image image-load image-asset image-${sign}`,
+    //                     ],
+    //                     id: `lht${sign}`,
+    //                   },
+    //                   children: [
+    //                     {
+    //                       type: "element",
+    //                       tagName: "picture",
+    //                       properties: {
+    //                         className: ["picture"],
+    //                       },
+    //                       children: [
+    //                         {
+    //                           type: "element",
+    //                           tagName: "img",
+    //                           properties: {
+    //                             "data-src": img.properties.src,
+    //                             alt: alt,
+    //                             className: ["picture-image"],
+    //                           },
+    //                         },
+    //                       ],
+    //                     },
+    //                   ],
+    //                 },
+    //               ],
+    //             },
+    //             {
+    //               type: "element",
+    //               tagName: "div",
+    //               properties: {
+    //                 className: ["image-description"],
+    //               },
+    //               children: [
+    //                 {
+    //                   type: "element",
+    //                   tagName: "div",
+    //                   properties: {
+    //                     className: ["image-caption"],
+    //                   },
+    //                   children: [
+    //                     {
+    //                       type: "text",
+    //                       value: alt,
+    //                     },
+    //                   ],
+    //                 },
+    //               ],
+    //             },
+    //           ],
+    //         },
+    //       ]
+    //     }
+    //   })
+    // },
     () => (tree) => {
       tree.children.forEach((node) => {
         if (node.type === "raw") {

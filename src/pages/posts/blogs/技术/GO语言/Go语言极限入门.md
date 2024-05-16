@@ -13,7 +13,8 @@ author:
   name: N3ptune
   link: https://www.cnblogs.com/N3ptune
 tags:
-  -
+  - 技术
+  - Go语言
 ---
 
 ## Go 语言极限入门
