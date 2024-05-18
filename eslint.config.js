@@ -1,8 +1,10 @@
+// @ts-check
 import globals from "globals"
 import eslint from "@eslint/js"
 import eslintPluginAstro from "eslint-plugin-astro"
 import stylistic from "@stylistic/eslint-plugin"
 import cspellESLintPluginRecommended from "@cspell/eslint-plugin/recommended"
+import tseslint from "typescript-eslint"
 
 export default [
   eslint.configs.recommended,
@@ -18,6 +20,13 @@ export default [
     files: ["*.{ts,tsx}"],
     parser: "@typescript-eslint/parser",
   },
+  ...[
+    eslint.configs.recommended,
+    ...tseslint.configs.recommended,
+  ].map(conf => ({
+    ...conf,
+    files: ["**/*.{ts,tsx}"],
+  })),
   {
     languageOptions: {
       globals: {

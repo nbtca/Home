@@ -12,6 +12,7 @@
     "NBTCA",
     "m_lfit",
     "N3ptune",
-    "rehypePlugins"
+    "rehypePlugins",
+    "tseslint"
   ]
 }
