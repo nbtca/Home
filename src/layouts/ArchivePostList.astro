@@ -1,11 +1,11 @@
 ---
-import { formatDateV2 } from "../utils";
-const { posts } = Astro.props;
+import { formatDateV2 } from "../utils"
+const { posts } = Astro.props
 posts.sort((a, b) => Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate));
 ---
 
-<ul>
-  {
+  <ul>
+    {
     posts.map((post) => {
       return (
         <li>
@@ -14,7 +14,7 @@ posts.sort((a, b) => Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatte
             {post.frontmatter.title}
           </a>
         </li>
-      );
+      )
     })
   }
-</ul>
+  </ul>

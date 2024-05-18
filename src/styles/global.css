@@ -704,7 +704,7 @@ html.js .tile.large-loaded .image {
   display: none
 }
 
-.everydayfeed {
+.every-day-feed {
   padding-bottom: 80px;
   overflow: hidden;
   background-color: #f5f5f7;
@@ -712,24 +712,24 @@ html.js .tile.large-loaded .image {
 }
 
 @media only screen and (max-width: 1068px) {
-  .everydayfeed {
+  .every-day-feed {
     padding-bottom: 64px
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .everydayfeed {
+  .every-day-feed {
     padding-bottom: 40px
   }
 }
 
-.everydayfeed .desktop-notification {
+.every-day-feed .desktop-notification {
   padding-top: 16px;
   padding-bottom: 24px
 }
 
 @media only screen and (max-width: 734px) {
-  .everydayfeed .desktop-notification {
+  .every-day-feed .desktop-notification {
     padding-top: 12px;
     padding-bottom: 12px
   }
@@ -1035,25 +1035,25 @@ html.js .tile.large-loaded .image {
   margin: 0 8px
 }
 
-.featured-header .pagetitle .component-content {
+.featured-header .page-title .component-content {
   width: 83.33333%
 }
 
 @media only screen and (max-width: 1068px) {
-  .featured-header .pagetitle .component-content {
+  .featured-header .page-title .component-content {
     width: 100%
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .featured-header .pagetitle .component-content {
+  .featured-header .page-title .component-content {
     margin-left: auto;
     margin-right: auto;
     width: 87.5%
   }
 }
 
-.featured-header .pagetitle .hero-headline {
+.featured-header .page-title .hero-headline {
   font-size: 56px;
   line-height: 1.07143;
   font-weight: 700;
@@ -1062,51 +1062,51 @@ html.js .tile.large-loaded .image {
   text-align: center
 }
 
-.featured-header .pagetitle .hero-headline:lang(ar) {
+.featured-header .page-title .hero-headline:lang(ar) {
   line-height: 1.21429;
   letter-spacing: 0em;
   font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.featured-header .pagetitle .hero-headline:lang(ja) {
+.featured-header .page-title .hero-headline:lang(ja) {
   line-height: 1.125;
   letter-spacing: 0em;
   font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.featured-header .pagetitle .hero-headline:lang(ko) {
+.featured-header .page-title .hero-headline:lang(ko) {
   line-height: 1.17865;
   letter-spacing: 0em;
   font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.featured-header .pagetitle .hero-headline:lang(zh) {
+.featured-header .page-title .hero-headline:lang(zh) {
   letter-spacing: 0em
 }
 
-.featured-header .pagetitle .hero-headline:lang(th) {
+.featured-header .page-title .hero-headline:lang(th) {
   line-height: 1.33929;
   font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.featured-header .pagetitle .hero-headline:lang(zh-CN) {
+.featured-header .page-title .hero-headline:lang(zh-CN) {
   font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.featured-header .pagetitle .hero-headline:lang(zh-HK) {
+.featured-header .page-title .hero-headline:lang(zh-HK) {
   font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.featured-header .pagetitle .hero-headline:lang(zh-MO) {
+.featured-header .page-title .hero-headline:lang(zh-MO) {
   font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.featured-header .pagetitle .hero-headline:lang(zh-TW) {
+.featured-header .page-title .hero-headline:lang(zh-TW) {
   font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
 @media only screen and (max-width: 1068px) {
-  .featured-header .pagetitle .hero-headline {
+  .featured-header .page-title .hero-headline {
     font-size: 48px;
     line-height: 1.08349;
     font-weight: 700;
@@ -1114,52 +1114,52 @@ html.js .tile.large-loaded .image {
     font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(ar) {
+  .featured-header .page-title .hero-headline:lang(ar) {
     line-height: 1.25;
     letter-spacing: 0em;
     font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(ja) {
+  .featured-header .page-title .hero-headline:lang(ja) {
     line-height: 1.14599;
     letter-spacing: 0em;
     font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(ko) {
+  .featured-header .page-title .hero-headline:lang(ko) {
     line-height: 1.1875;
     letter-spacing: 0em;
     font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(zh) {
+  .featured-header .page-title .hero-headline:lang(zh) {
     letter-spacing: 0em
   }
 
-  .featured-header .pagetitle .hero-headline:lang(th) {
+  .featured-header .page-title .hero-headline:lang(th) {
     line-height: 1.33349;
     font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(zh-CN) {
+  .featured-header .page-title .hero-headline:lang(zh-CN) {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(zh-HK) {
+  .featured-header .page-title .hero-headline:lang(zh-HK) {
     font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(zh-MO) {
+  .featured-header .page-title .hero-headline:lang(zh-MO) {
     font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(zh-TW) {
+  .featured-header .page-title .hero-headline:lang(zh-TW) {
     font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .featured-header .pagetitle .hero-headline {
+  .featured-header .page-title .hero-headline {
     font-size: 32px;
     line-height: 1.125;
     font-weight: 700;
@@ -1167,39 +1167,39 @@ html.js .tile.large-loaded .image {
     font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(ar) {
+  .featured-header .page-title .hero-headline:lang(ar) {
     line-height: 1.34375;
     font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(ja) {
+  .featured-header .page-title .hero-headline:lang(ja) {
     line-height: 1.21875;
     font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(ko) {
+  .featured-header .page-title .hero-headline:lang(ko) {
     line-height: 1.21875;
     font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(th) {
+  .featured-header .page-title .hero-headline:lang(th) {
     line-height: 1.375;
     font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(zh-CN) {
+  .featured-header .page-title .hero-headline:lang(zh-CN) {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(zh-HK) {
+  .featured-header .page-title .hero-headline:lang(zh-HK) {
     font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(zh-MO) {
+  .featured-header .page-title .hero-headline:lang(zh-MO) {
     font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .featured-header .pagetitle .hero-headline:lang(zh-TW) {
+  .featured-header .page-title .hero-headline:lang(zh-TW) {
     font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 }
@@ -1303,14 +1303,14 @@ html.js .tile.large-loaded .image {
   }
 }
 
-.featured-header .sharesheet {
+.featured-header .share-sheet {
   text-align: center;
   margin-top: 24px;
   margin-bottom: 0
 }
 
 @media only screen and (max-width: 734px) {
-  .featured-header .sharesheet {
+  .featured-header .share-sheet {
     margin-top: 20px
   }
 }
@@ -5183,12 +5183,12 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
 }
 
 
-.pagetitle.component {
+.page-title.component {
   margin-top: 0;
   margin-bottom: 0
 }
 
-.pagetitle .hero-headline {
+.page-title .hero-headline {
   font-size: 48px;
   line-height: 1.08349;
   font-weight: 700;
@@ -5196,51 +5196,51 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagetitle .hero-headline:lang(ar) {
+.page-title .hero-headline:lang(ar) {
   line-height: 1.25;
   letter-spacing: 0em;
   font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagetitle .hero-headline:lang(ja) {
+.page-title .hero-headline:lang(ja) {
   line-height: 1.14599;
   letter-spacing: 0em;
   font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagetitle .hero-headline:lang(ko) {
+.page-title .hero-headline:lang(ko) {
   line-height: 1.1875;
   letter-spacing: 0em;
   font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagetitle .hero-headline:lang(zh) {
+.page-title .hero-headline:lang(zh) {
   letter-spacing: 0em
 }
 
-.pagetitle .hero-headline:lang(th) {
+.page-title .hero-headline:lang(th) {
   line-height: 1.33349;
   font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagetitle .hero-headline:lang(zh-CN) {
+.page-title .hero-headline:lang(zh-CN) {
   font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagetitle .hero-headline:lang(zh-HK) {
+.page-title .hero-headline:lang(zh-HK) {
   font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagetitle .hero-headline:lang(zh-MO) {
+.page-title .hero-headline:lang(zh-MO) {
   font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagetitle .hero-headline:lang(zh-TW) {
+.page-title .hero-headline:lang(zh-TW) {
   font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
 @media only screen and (max-width: 1068px) {
-  .pagetitle .hero-headline {
+  .page-title .hero-headline {
     font-size: 40px;
     line-height: 1.1;
     font-weight: 700;
@@ -5248,45 +5248,45 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
     font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(ar) {
+  .page-title .hero-headline:lang(ar) {
     line-height: 1.3;
     font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(ja) {
+  .page-title .hero-headline:lang(ja) {
     line-height: 1.175;
     font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(ko) {
+  .page-title .hero-headline:lang(ko) {
     line-height: 1.2;
     font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(th) {
+  .page-title .hero-headline:lang(th) {
     line-height: 1.35;
     font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(zh-CN) {
+  .page-title .hero-headline:lang(zh-CN) {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(zh-HK) {
+  .page-title .hero-headline:lang(zh-HK) {
     font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(zh-MO) {
+  .page-title .hero-headline:lang(zh-MO) {
     font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(zh-TW) {
+  .page-title .hero-headline:lang(zh-TW) {
     font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .pagetitle .hero-headline {
+  .page-title .hero-headline {
     font-size: 32px;
     line-height: 1.125;
     font-weight: 700;
@@ -5294,39 +5294,39 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
     font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(ar) {
+  .page-title .hero-headline:lang(ar) {
     line-height: 1.34375;
     font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(ja) {
+  .page-title .hero-headline:lang(ja) {
     line-height: 1.21875;
     font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(ko) {
+  .page-title .hero-headline:lang(ko) {
     line-height: 1.21875;
     font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(th) {
+  .page-title .hero-headline:lang(th) {
     line-height: 1.375;
     font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(zh-CN) {
+  .page-title .hero-headline:lang(zh-CN) {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(zh-HK) {
+  .page-title .hero-headline:lang(zh-HK) {
     font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(zh-MO) {
+  .page-title .hero-headline:lang(zh-MO) {
     font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagetitle .hero-headline:lang(zh-TW) {
+  .page-title .hero-headline:lang(zh-TW) {
     font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 }
@@ -5408,7 +5408,7 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
 
 
 
-.pagebody {
+.page-body {
   font-size: 17px;
   line-height: 1.4211;
   font-weight: 400;
@@ -5416,44 +5416,44 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody:lang(ar) {
+.page-body:lang(ar) {
   line-height: 1.57895;
   font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody:lang(ja) {
+.page-body:lang(ja) {
   line-height: 1.47376;
   font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody:lang(ko) {
+.page-body:lang(ko) {
   line-height: 1.52632;
   font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody:lang(th) {
+.page-body:lang(th) {
   line-height: 1.36844;
   font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody:lang(zh-CN) {
+.page-body:lang(zh-CN) {
   font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody:lang(zh-HK) {
+.page-body:lang(zh-HK) {
   font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody:lang(zh-MO) {
+.page-body:lang(zh-MO) {
   font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody:lang(zh-TW) {
+.page-body:lang(zh-TW) {
   font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
 @media only screen and (max-width: 1068px) {
-  .pagebody {
+  .page-body {
     font-size: 17px;
     line-height: 1.47059;
     font-weight: 400;
@@ -5461,112 +5461,112 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
     font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody:lang(ar) {
+  .page-body:lang(ar) {
     line-height: 1.58824;
     letter-spacing: 0em;
     font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody:lang(ja) {
+  .page-body:lang(ja) {
     letter-spacing: 0em;
     font-family: "SF Pro JP", "SF Pro Text", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody:lang(ko) {
+  .page-body:lang(ko) {
     line-height: 1.58824;
     letter-spacing: 0em;
     font-family: "SF Pro KR", "SF Pro Text", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody:lang(zh) {
+  .page-body:lang(zh) {
     letter-spacing: 0em
   }
 
-  .pagebody:lang(th) {
+  .page-body:lang(th) {
     line-height: 1.35296;
     letter-spacing: 0em;
     font-family: "SF Pro TH", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody:lang(zh-CN) {
+  .page-body:lang(zh-CN) {
     font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody:lang(zh-HK) {
+  .page-body:lang(zh-HK) {
     font-family: "SF Pro HK", "SF Pro Text", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody:lang(zh-MO) {
+  .page-body:lang(zh-MO) {
     font-family: "SF Pro HK", "SF Pro TC", "SF Pro Text", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody:lang(zh-TW) {
+  .page-body:lang(zh-TW) {
     font-family: "SF Pro TC", "SF Pro Text", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 }
 
-.pagebody-media {
+.page-body-media {
   margin-top: 0;
   margin-bottom: 15px;
   width: 291px
 }
 
 @media only screen and (max-width: 1068px) {
-  .pagebody-media {
+  .page-body-media {
     width: 206px
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .pagebody-media {
+  .page-body-media {
     width: 100%
   }
 }
 
-.pagebody-media.left {
+.page-body-media.left {
   float: left;
   margin-left: -12.5%;
   margin-right: 36px
 }
 
 @media only screen and (max-width: 1068px) {
-  .pagebody-media.left {
+  .page-body-media.left {
     margin-left: -10%;
     margin-right: 24px
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .pagebody-media.left {
+  .page-body-media.left {
     margin-right: 0
   }
 }
 
-.pagebody-media.right {
+.page-body-media.right {
   float: right;
   margin-right: -12.5%;
   margin-left: 36px
 }
 
 @media only screen and (max-width: 1068px) {
-  .pagebody-media.right {
+  .page-body-media.right {
     margin-right: -10%;
     margin-left: 24px
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .pagebody-media.right {
+  .page-body-media.right {
     margin-left: 0
   }
 }
 
-.pagebody-media .image-sharesheet {
+.page-body-media .image-share-sheet {
   display: block
 }
 
-.pagebody-media .image-description,
-.pagebody-media .video-description {
+.page-body-media .image-description,
+.page-body-media .video-description {
   margin-left: 0;
   margin-right: 0;
   margin-bottom: 0
@@ -5574,42 +5574,42 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
 
 @media only screen and (max-width: 734px) {
 
-  .pagebody-media.left,
-  .pagebody-media.right {
+  .page-body-media.left,
+  .page-body-media.right {
     float: none;
     margin: 28px auto
   }
 
-  .pagebody-media:first-child {
+  .page-body-media:first-child {
     margin-top: 0
   }
 }
 
-.pagebody-copy {
+.page-body-copy {
   margin-bottom: 1.4211em
 }
 
-.pagebody-copy:lang(ar) {
+.page-body-copy:lang(ar) {
   margin-bottom: 1.57895em
 }
 
-.pagebody-copy:lang(ja) {
+.page-body-copy:lang(ja) {
   margin-bottom: 1.47376em
 }
 
-.pagebody-copy:lang(th) {
+.page-body-copy:lang(th) {
   margin-bottom: 1.36844em
 }
 
-.pagebody-copy:lang(ko) {
+.page-body-copy:lang(ko) {
   margin-bottom: 1.52632em
 }
 
-.pagebody-copy:first-child {
+.page-body-copy:first-child {
   margin-top: 0
 }
 
-.pagebody-copy:last-child {
+.page-body-copy:last-child {
   margin-bottom: 0
 }
 
@@ -5676,14 +5676,14 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   }
 
   .gallery:not(.body-copy-wide) .component-content,
-  .image:not(.image-fullbleed) .component-content {
+  .image:not(.image-full-bleed) .component-content {
     width: 320px
   }
 }
 
 
 
-.image-sharesheet {
+.image-share-sheet {
   display: table;
   border-radius: 10px;
   overflow: hidden;
@@ -5692,30 +5692,30 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
 }
 
 @media only screen and (max-width: 734px) {
-  .image-sharesheet {
+  .image-share-sheet {
     display: block
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .image.image-fullbleed .image-sharesheet {
+  .image.image-full-bleed .image-share-sheet {
     border-radius: 0
   }
 }
 
 @media only screen and (min-width: 416px) and (max-width: 734px) {
-  .image.image-fullbleed .image-sharesheet {
+  .image.image-full-bleed .image-share-sheet {
     border-radius: 10px
   }
 }
 
 @media only screen and (max-width: 415px) {
-  .image .image-sharesheet {
+  .image .image-share-sheet {
     border-radius: 0
   }
 }
 
-.component.not-rounded .image-sharesheet {
+.component.not-rounded .image-share-sheet {
   border-radius: 0 !important
 }
 
@@ -5919,26 +5919,26 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   min-width: 320px
 }
 
-.image.image-fullbleed .image-sharesheet,
-.image.image-inline.body-copy-wide .image-sharesheet,
-.image.image-grid.body-copy-wide .image-sharesheet {
+.image.image-full-bleed .image-share-sheet,
+.image.image-inline.body-copy-wide .image-share-sheet,
+.image.image-grid.body-copy-wide .image-share-sheet {
   display: block
 }
 
-.image.body-copy-wide.image-fullbleed .image-description {
+.image.body-copy-wide.image-full-bleed .image-description {
   width: 653px;
   margin-left: auto;
   margin-right: auto
 }
 
 @media only screen and (max-width: 1068px) {
-  .image.body-copy-wide.image-fullbleed .image-description {
+  .image.body-copy-wide.image-full-bleed .image-description {
     width: 576px
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .image.body-copy-wide.image-fullbleed .image-description {
+  .image.body-copy-wide.image-full-bleed .image-description {
     width: 87.5%
   }
 }
@@ -5976,7 +5976,7 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   height: 100%
 }
 
-.image.image-wide .image-sharesheet,
+.image.image-wide .image-share-sheet,
 .image.image-wide .pullquote-cover {
   width: 100%;
   border-radius: 0
@@ -5984,7 +5984,7 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
 
 @media only screen and (min-width: 1441px) {
 
-  .image.image-wide .image-sharesheet,
+  .image.image-wide .image-share-sheet,
   .image.image-wide .pullquote-cover {
     max-width: 1920px;
     margin: 0 auto
@@ -5993,7 +5993,7 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
 
 @media only screen and (min-width: 1922px) {
 
-  .image.image-wide .image-sharesheet,
+  .image.image-wide .image-share-sheet,
   .image.image-wide .pullquote-cover {
     border-radius: 10px;
     overflow: hidden;
@@ -6411,15 +6411,15 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
 }
 
 
-.tertiarynav {
+.tertiary-nav {
   margin: 36px auto 50px
 }
 
-.tertiarynav .component-content {
+.tertiary-nav .component-content {
   border-top: 1px solid #d2d2d7
 }
 
-.theme-dark .tertiarynav .component-content {
+.theme-dark .tertiary-nav .component-content {
   border-top-color: #424245
 }
 
@@ -6427,7 +6427,7 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   background-color: rgba(29, 29, 31, 0.7);
 }
 
-.pagebody-header {
+.page-body-header {
   font-size: 24px;
   line-height: 1.16667;
   font-weight: 700;
@@ -6437,44 +6437,44 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   margin-top: 52px
 }
 
-.pagebody-header:lang(ar) {
+.page-body-header:lang(ar) {
   line-height: 1.33341;
   font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header:lang(ja) {
+.page-body-header:lang(ja) {
   line-height: 1.25;
   font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header:lang(ko) {
+.page-body-header:lang(ko) {
   line-height: 1.29167;
   font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header:lang(th) {
+.page-body-header:lang(th) {
   line-height: 1.375;
   font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header:lang(zh-CN) {
+.page-body-header:lang(zh-CN) {
   font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header:lang(zh-HK) {
+.page-body-header:lang(zh-HK) {
   font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header:lang(zh-MO) {
+.page-body-header:lang(zh-MO) {
   font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header:lang(zh-TW) {
+.page-body-header:lang(zh-TW) {
   font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
 @media only screen and (max-width: 1068px) {
-  .pagebody-header {
+  .page-body-header {
     font-size: 21px;
     line-height: 1.19048;
     font-weight: 700;
@@ -6482,56 +6482,56 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
     font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header:lang(ja) {
+  .page-body-header:lang(ja) {
     line-height: 1.2381;
     font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header:lang(ko) {
+  .page-body-header:lang(ko) {
     line-height: 1.2858;
     font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header:lang(th) {
+  .page-body-header:lang(th) {
     line-height: 1.381;
     font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header:lang(ar) {
+  .page-body-header:lang(ar) {
     line-height: 1.4286;
     font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header:lang(zh-CN) {
+  .page-body-header:lang(zh-CN) {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header:lang(zh-HK) {
+  .page-body-header:lang(zh-HK) {
     font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header:lang(zh-MO) {
+  .page-body-header:lang(zh-MO) {
     font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header:lang(zh-TW) {
+  .page-body-header:lang(zh-TW) {
     font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 }
 
 @media only screen and (max-width: 1068px) {
-  .pagebody-header {
+  .page-body-header {
     margin-top: 48px
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .pagebody-header {
+  .page-body-header {
     margin-top: 44px
   }
 }
 
-.pagebody-header--secondary {
+.page-body-header--secondary {
   font-size: 40px;
   line-height: 1.1;
   font-weight: 700;
@@ -6541,44 +6541,44 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   margin-bottom: 24px
 }
 
-.pagebody-header--secondary:lang(ar) {
+.page-body-header--secondary:lang(ar) {
   line-height: 1.3;
   font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header--secondary:lang(ja) {
+.page-body-header--secondary:lang(ja) {
   line-height: 1.175;
   font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header--secondary:lang(ko) {
+.page-body-header--secondary:lang(ko) {
   line-height: 1.2;
   font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header--secondary:lang(th) {
+.page-body-header--secondary:lang(th) {
   line-height: 1.35;
   font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header--secondary:lang(zh-CN) {
+.page-body-header--secondary:lang(zh-CN) {
   font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header--secondary:lang(zh-HK) {
+.page-body-header--secondary:lang(zh-HK) {
   font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header--secondary:lang(zh-MO) {
+.page-body-header--secondary:lang(zh-MO) {
   font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
-.pagebody-header--secondary:lang(zh-TW) {
+.page-body-header--secondary:lang(zh-TW) {
   font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 }
 
 @media only screen and (max-width: 1068px) {
-  .pagebody-header--secondary {
+  .page-body-header--secondary {
     font-size: 32px;
     line-height: 1.125;
     font-weight: 700;
@@ -6586,45 +6586,45 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
     font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(ar) {
+  .page-body-header--secondary:lang(ar) {
     line-height: 1.34375;
     font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(ja) {
+  .page-body-header--secondary:lang(ja) {
     line-height: 1.21875;
     font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(ko) {
+  .page-body-header--secondary:lang(ko) {
     line-height: 1.21875;
     font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(th) {
+  .page-body-header--secondary:lang(th) {
     line-height: 1.375;
     font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(zh-CN) {
+  .page-body-header--secondary:lang(zh-CN) {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(zh-HK) {
+  .page-body-header--secondary:lang(zh-HK) {
     font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(zh-MO) {
+  .page-body-header--secondary:lang(zh-MO) {
     font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(zh-TW) {
+  .page-body-header--secondary:lang(zh-TW) {
     font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .pagebody-header--secondary {
+  .page-body-header--secondary {
     font-size: 28px;
     line-height: 1.14286;
     font-weight: 700;
@@ -6632,71 +6632,71 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
     font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(ko) {
+  .page-body-header--secondary:lang(ko) {
     line-height: 1.25;
     font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic", "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(th) {
+  .page-body-header--secondary:lang(th) {
     line-height: 1.39286;
     font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(ar) {
+  .page-body-header--secondary:lang(ar) {
     font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(ja) {
+  .page-body-header--secondary:lang(ja) {
     font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(zh-CN) {
+  .page-body-header--secondary:lang(zh-CN) {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(zh-HK) {
+  .page-body-header--secondary:lang(zh-HK) {
     font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(zh-MO) {
+  .page-body-header--secondary:lang(zh-MO) {
     font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 
-  .pagebody-header--secondary:lang(zh-TW) {
+  .page-body-header--secondary:lang(zh-TW) {
     font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif
   }
 }
 
 @media only screen and (max-width: 1068px) {
-  .pagebody-header--secondary {
+  .page-body-header--secondary {
     margin-top: 48px;
     margin-bottom: 20px
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .pagebody-header--secondary {
+  .page-body-header--secondary {
     margin-top: 44px
   }
 }
 
-.pagebody-header:first-child {
+.page-body-header:first-child {
   margin-top: 8px
 }
 
 @media only screen and (max-width: 1068px) {
-  .pagebody-header:first-child {
+  .page-body-header:first-child {
     margin-top: 12px
   }
 }
 
 @media only screen and (max-width: 734px) {
-  .pagebody-header:first-child {
+  .page-body-header:first-child {
     margin-top: 12px
   }
 }
 
-.pagebody-header:last-child {
+.page-body-header:last-child {
   margin-bottom: 0
 }
 
@@ -7005,23 +7005,23 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   }
 }
 
-.article-subhead+.sharesheet {
+.article-subhead+.share-sheet {
   margin-top: 24px
 }
 
 @media only screen and (max-width: 1068px) {
-  .article-subhead+.sharesheet {
+  .article-subhead+.share-sheet {
     margin-top: 20px
   }
 }
 
-.article-subhead+.tagssheet {
+.article-subhead+.tags-sheet {
   margin-top: 24px;
   margin-bottom: 3px;
 }
 
 @media only screen and (max-width: 1068px) {
-  .article-subhead+.tagssheet {
+  .article-subhead+.tags-sheet {
     margin-top: 20px;
     margin-bottom: 3px;
   }
@@ -7039,7 +7039,7 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   border-top: 1px solid rgb(224 226 217 / 1);
 }
 
-.footer-wraper {
+.footer-wrapper {
   padding: 20px;
   margin: 0 auto;
 }
@@ -7099,7 +7099,7 @@ html.no-touch.no-reduced-motion .tile.tile-list[data-focus-method=key] .media--v
   background-color: var(--footer-background);
 }
 
-.footer-wraper {
+.footer-wrapper {
   padding: 20px;
   margin: 0 auto;
 }
