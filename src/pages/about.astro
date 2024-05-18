@@ -4,7 +4,7 @@ import { computed } from "vue"
 import MemberCard from "../components/MemberCard.astro"
 import { type Member, otherMembers } from "../store/member.ts"
 
-const members: Member[] = await fetch("https://api.nbtca.space/v2/members").then(res => {
+const members: Member[] = await fetch("https://api.nbtca.space/v2/members").then((res) => {
   return res.json()
 })
 
@@ -22,23 +22,23 @@ const memberGroupByYear = computed(() => {
         acc[year].push(cur)
         return acc
       },
-      {} as Record<string, Member[]>
+      {} as Record<string, Member[]>,
     )
   group["往届"] = otherMembers
   return group
 })
 ---
 
-<BaseLayout primaryTitle="关于">
-  <section class="pb-20 bg-[#f5f5f7]">
-    <div class="section-content">
+  <BaseLayout primaryTitle="关于">
+    <section class="pb-20 bg-[#f5f5f7]">
+      <div class="section-content">
       <!-- <div class="text-[32px] leading-[1.125] font-bold py-6">友情链接</div> -->
-      <div class="text-[32px] leading-[1.125] font-bold py-6">协会成员</div>
-      <div>
-        {
+        <div class="text-[32px] leading-[1.125] font-bold py-6">协会成员</div>
+        <div>
+          {
           Object.keys(memberGroupByYear.value)
             .sort((a, b) => parseInt(b) - parseInt(a))
-            .map(year => {
+            .map((year) => {
               return (
                 <div class="py-4 first:pt-2">
                   <div class="text-[24px] font-bold pb-2">{year}</div>
@@ -51,7 +51,7 @@ const memberGroupByYear = computed(() => {
               )
             })
         }
+        </div>
       </div>
-    </div>
-  </section>
-</BaseLayout>
+    </section>
+  </BaseLayout>

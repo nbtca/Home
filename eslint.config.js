@@ -1,0 +1,50 @@
+import globals from "globals"
+import eslint from "@eslint/js"
+import eslintPluginAstro from "eslint-plugin-astro"
+import stylistic from "@stylistic/eslint-plugin"
+import cspellESLintPluginRecommended from "@cspell/eslint-plugin/recommended"
+
+export default [
+  eslint.configs.recommended,
+  cspellESLintPluginRecommended,
+  ...eslintPluginAstro.configs.recommended,
+  stylistic.configs.customize({
+    indent: 2,
+    quotes: "double",
+    semi: false,
+    jsx: true,
+  }),
+  {
+    files: ["*.{ts,tsx}"],
+    parser: "@typescript-eslint/parser",
+  },
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
+    plugins: {
+      "@stylistic": stylistic,
+    },
+    rules: {
+      "@stylistic/jsx-one-expression-per-line": ["off"],
+      "@cspell/spellchecker": [
+        "warn",
+        {
+          configFile: new URL("./cspell.json", import.meta.url).toString(),
+        },
+      ],
+      "prefer-const": [
+        "error",
+        {
+          destructuring: "any",
+          ignoreReadBeforeAssign: false,
+        },
+      ],
+    },
+  },
+  {
+    ignores: ["dist/**/*", "public/**/*", "node_modules/**/*"],
+  },
+]

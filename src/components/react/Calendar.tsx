@@ -20,10 +20,8 @@ class CalendarComponment extends React.Component {
             url: "https://ical.nbtca.space/",
             format: "ics",
             success: function (data) {
-              data.forEach((element) => {
-                element.color = element.title.includes("生日")
-                  ? "#fc7399"
-                  : "#5172dc"
+              data.forEach(element => {
+                element.color = element.title.includes("生日") ? "#fc7399" : "#5172dc"
               })
             },
           }}
