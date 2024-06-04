@@ -1,4 +1,4 @@
-export function formatDate(dateString) {
+export function formatDate(dateString: string) {
   const date = new Date(dateString)
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -6,20 +6,7 @@ export function formatDate(dateString) {
   return year + " 年 " + month + " 月 " + day + " 日"
 }
 
-// debounce function
-export function debounce(fn, delay) {
-  let timer = null
-  return function () {
-    const context = this
-    const args = arguments
-    clearTimeout(timer)
-    timer = setTimeout(function () {
-      fn.apply(context, args)
-    }, delay)
-  }
-}
-
-export function formatDateV2(date) {
+export function formatDateV2(date: string) {
   // 创建一个Date对象
   const d = new Date(date)
   // 使用toLocaleString方法返回本地时间字符串
