@@ -32,8 +32,7 @@ const memberGroupByYear = computed(() => {
   <BaseLayout primaryTitle="关于">
     <section class="pb-20 bg-[#f5f5f7]">
       <div class="section-content">
-      <!-- <div class="text-[32px] leading-[1.125] font-bold py-6">友情链接</div> -->
-        <div class="text-[32px] leading-[1.125] font-bold py-6">协会成员</div>
+        <div class="text-2xl lg:text-3xl leading-[1.125] font-bold pt-6 pb-4 lg:pb-6">协会成员</div>
         <div>
           {
           Object.keys(memberGroupByYear.value)
@@ -41,7 +40,7 @@ const memberGroupByYear = computed(() => {
             .map((year) => {
               return (
                 <div class="py-4 first:pt-2">
-                  <div class="text-[24px] font-bold pb-2">{year}</div>
+                  <div class="text-lg lg:text-2xl font-bold pb-2">{year}</div>
                   <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8">
                     {memberGroupByYear.value[year].map(member => (
                       <MemberCard member={member} />

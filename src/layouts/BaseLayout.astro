@@ -11,9 +11,11 @@ const title = primaryTitle ? `${primaryTitle}  -  ${SITE_TITLE}` : SITE_TITLE;
     <head>
       <BaseHead title={title} description={SITE_DESCRIPTION} />
     </head>
-    <body class="page-landing">
+    <body class="flex flex-col min-h-screen">
       <Header />
-      <slot />
+      <div class="flex-grow h-full">
+        <slot />
+      </div>
       <Footer />
     </body>
   </html>

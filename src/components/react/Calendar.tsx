@@ -8,6 +8,7 @@ class CalendarComponent extends React.Component {
   render() {
     const calendarStyle = {
       width: "80%",
+      maxWidth: "960px",
       margin: "20px auto",
     }
     return (
@@ -28,6 +29,7 @@ class CalendarComponent extends React.Component {
             minute: "2-digit",
             meridiem: false,
           }}
+          height="600px"
         />
       </div>
     )

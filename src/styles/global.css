@@ -381,20 +381,6 @@ a:disabled,
   z-index: 2;
 }
 
-.nav-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-}
-
-.nav-menu {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-
 
 a.nav-title:hover {
   cursor: pointer;
