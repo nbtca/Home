@@ -11,7 +11,9 @@ const setId = () => {
 }
 
 const url = ref<string>()
+const svg = ref()
 watch(id, async () => {
+  svg.value = await QRCode.toString(`https://nbtca.space/graduation/download/${id.value}`, { type: "svg" })
   url.value = await QRCode.toDataURL(`https://nbtca.space/graduation/download/${id.value}`)
 })
 
@@ -24,35 +26,50 @@ onMounted(() => {
   }
 })
 
-let clickCount: number = 0
-let startTime: number | undefined = undefined
-const onClickQRCode = () => {
-  if (startTime === undefined) {
-    startTime = Date.now()
+const useTimedCounter = () => {
+  const count = ref(0)
+  const startTime = ref<number>()
+
+  const add = () => {
+    if (startTime.value === undefined) {
+      startTime.value = Date.now()
+    }
+
+    count.value++
+    if (Date.now() - startTime.value > 1000) {
+      // If more than 1 second has passed, reset the click count and start time
+      count.value = 0
+      startTime.value = undefined
+    }
   }
 
-  clickCount++
+  const reset = () => {
+    count.value = 0
+    startTime.value = undefined
+  }
 
-  if (Date.now() - startTime <= 1000 && clickCount === 3) {
+  return {
+    count,
+    add,
+    reset,
+  }
+}
+const { count, add, reset } = useTimedCounter()
+const onClickQRCode = () => {
+  add()
+  if (count.value === 3) {
     setId()
     alert("ID 已经更新为 " + id.value)
-
-    // Reset the click count and start time
-    clickCount = 0
-    startTime = undefined
-  } else if (Date.now() - startTime > 1000) {
-    // If more than 1 second has passed, reset the click count and start time
-    clickCount = 0
-    startTime = undefined
+    reset()
   }
 }
 </script>
 
 <template>
-  <div class="flex flex-col items-center min-w-[40vw]">
+  <div class="flex flex-col items-center" @click="onClickQRCode">
     <div class="min-h-64 h-[40vh] aspect-square">
-      <img :src="url" class="h-full" alt="" @click="onClickQRCode" />
+      <div class="h-full" v-if="svg" v-html="svg"></div>
     </div>
-    <div class="md:text-xl mt-4 font-bold">{{ id }}</div>
+    <div class="text-base sm:text-lg md:text-2xl mt-4 font-bold">{{ id }}</div>
   </div>
 </template>

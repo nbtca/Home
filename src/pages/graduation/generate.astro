@@ -9,7 +9,7 @@ import GenerateQR from "./GenerateQR.vue"
     <body>
       <div class="bg-[#f5f5f7] flex flex-col sm:flex-row items-center h-screen justify-center gap-8 p-8">
         <div
-          class="w-[40vh] w-auto"
+          class=" sm:w-auto"
         >
           <div class="flex items-center gap-2">
             <img
@@ -24,7 +24,7 @@ import GenerateQR from "./GenerateQR.vue"
           <div class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-blue-500 mt-3">
             2024 毕业典礼拍摄
           </div>
-          <div class="w-4/5 sm:w-[40vw] mt-6 text-gray-600 lg:text-lg">
+          <div class="sm:w-[40vw] mt-6 text-gray-600 lg:text-lg">
             <div>
               扫描右侧二维码来下载你的照片
             </div>
@@ -33,7 +33,7 @@ import GenerateQR from "./GenerateQR.vue"
             </div>
           </div>
         </div>
-        <GenerateQR client:load></GenerateQR>
+        <GenerateQR client:load class="min-w-[50%]"></GenerateQR>
       </div>
     </body>
   </html>
