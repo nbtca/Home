@@ -2,6 +2,7 @@
 import QRCode from "qrcode"
 import { v4 as uuid } from "uuid"
 import { ref, onMounted, watch } from "vue"
+import { useGraduationIdURL } from "./graduation"
 
 const id = ref<string>()
 const idStoreKey = "graduationId"
@@ -10,11 +11,12 @@ const setId = () => {
   localStorage.setItem(idStoreKey, id.value)
 }
 
-const url = ref<string>()
 const svg = ref()
 watch(id, async () => {
-  svg.value = await QRCode.toString(`https://nbtca.space/graduation/download/${id.value}`, { type: "svg" })
-  url.value = await QRCode.toDataURL(`https://nbtca.space/graduation/download/${id.value}`)
+  if (!id.value) {
+    return
+  }
+  svg.value = await QRCode.toString(useGraduationIdURL().constructURL(id.value))
 })
 
 onMounted(() => {
