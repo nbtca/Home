@@ -1,0 +1,39 @@
+---
+import GenerateQR from "./GenerateQR.vue"
+---
+
+  <html class="" lang="zh-CN" dir="ltr">
+    <head>
+      <meta charset="utf-8" />
+    </head>
+    <body>
+      <div class="bg-[#f5f5f7] flex flex-col sm:flex-row items-center h-screen justify-center gap-8 p-8">
+        <div
+          class="w-[40vh] w-auto"
+        >
+          <div class="flex items-center gap-2">
+            <img
+              src="https://oss.nbtca.space/CA-logo.svg"
+              alt=""
+              class="w-12 aspect-square"
+            />
+            <div class="text-brand text-nowrap text-3xl">
+              计算机协会
+            </div>
+          </div>
+          <div class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-blue-500 mt-3">
+            2024 毕业典礼拍摄
+          </div>
+          <div class="w-4/5 sm:w-[40vw] mt-6 text-gray-600 lg:text-lg">
+            <div>
+              扫描右侧二维码来下载你的照片
+            </div>
+            <div>
+              请在拍摄前确保你已经记下来当前页面的二维码，并且将该二维出示给摄影师
+            </div>
+          </div>
+        </div>
+        <GenerateQR client:load></GenerateQR>
+      </div>
+    </body>
+  </html>
