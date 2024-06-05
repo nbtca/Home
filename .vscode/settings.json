@@ -7,4 +7,7 @@
     "typescriptreact" // Enable .tsx
   ],
   "eslint.experimental.useFlatConfig": true,
+  "cSpell.words": [
+    "qrcode"
+  ],
 }
