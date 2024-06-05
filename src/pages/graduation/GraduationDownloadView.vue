@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
+import { useGraduationIdURL } from "./graduation"
 
 const id = ref<string>()
 
@@ -22,7 +23,7 @@ const setStatus = async () => {
 }
 
 onMounted(() => {
-  id.value = new URLSearchParams(window.location.search).get("id")
+  id.value = useGraduationIdURL().getId()
   setStatus()
 })
 </script>
