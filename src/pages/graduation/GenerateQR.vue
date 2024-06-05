@@ -65,6 +65,13 @@ const onClickQRCode = () => {
     reset()
   }
 }
+
+const onClickId = () => {
+  const res = confirm("Reset id?")
+  if (res) {
+    setId()
+  }
+}
 </script>
 
 <template>
@@ -72,6 +79,6 @@ const onClickQRCode = () => {
     <div class="min-h-64 h-[40vh] aspect-square">
       <div class="h-full" v-if="svg" v-html="svg"></div>
     </div>
-    <div class="text-base sm:text-lg md:text-2xl mt-4 font-bold">{{ id }}</div>
+    <div class="text-nowrap text-base sm:text-lg md:text-2xl mt-4 font-bold" @click="onClickId">{{ id }}</div>
   </div>
 </template>
