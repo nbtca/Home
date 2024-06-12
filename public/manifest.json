@@ -1,0 +1,15 @@
+{
+  "name": "Graduation Filming",
+  "short_name": "Graduation",
+  "display": "standalone",
+  "start_url": "/graduation/generate",
+  "theme_color": "#8888ff",
+  "background_color": "#aaaaff",
+  "icons": [
+    {
+      "src": "maskable_icon_x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
