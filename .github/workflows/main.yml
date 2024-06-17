@@ -10,36 +10,34 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: home
+  IMAGE_NAME_FULL: ghcr.io/nbtca/home
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      # 切换分支
+      - name: Checkout
+        uses: actions/checkout@master
 
-    - name: Set up Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
+      - name: Login DockerHub
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}   
 
-    - uses: pnpm/action-setup@v3
-      with:
-        version: 8
-
-    - name: Install Dependent Node Packages
-      run: pnpm install
-
-
-    - name: build
-      run: pnpm run build --base ${{ github.event.repository.name }}
-    
-    - name: Deploy # 部署
-      uses: JamesIves/github-pages-deploy-action@v4.5.0
-      with:
-        branch: gh-pages # 部署后提交到那个分支
-        token: ${{ secrets.GITHUB_TOKEN }}
-        folder: dist
-        clean: true
-        single-commit: true
-        git-config-email: github-actions[bot]@users.noreply.github.com
-        git-config-name: github-actions[bot]
+      - name: Build and Push to DockerHub
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          no-cache: true
+          # target: deploy
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ env.IMAGE_NAME_FULL }}:latest
