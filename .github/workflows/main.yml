@@ -2,13 +2,13 @@ name: build-deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
     paths-ignore: # 忽略的文件
       - "README.md"
       - "LICENSE"
       - "CHANGELOG.md"
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   REGISTRY: ghcr.io
@@ -28,7 +28,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}   
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push to DockerHub
         uses: docker/build-push-action@v3
@@ -41,3 +41,15 @@ jobs:
           platforms: linux/amd64
           tags: |
             ${{ env.IMAGE_NAME_FULL }}:latest
+
+      - name: ssh pipelines
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.ACCESS_TOKEN }}
+          script: |
+            cd ${{ secrets.REMOTE_PATH }}
+            docker compose stop && docker compose rm -f
+            docker compose pull
+            docker compose up -d
