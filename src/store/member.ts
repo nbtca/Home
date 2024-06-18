@@ -6,8 +6,9 @@ export interface Member {
   link?: string
 }
 
-export const otherMembers: Member[] = [
+export const otherMembers: Member & { year: number }[] = [
   {
+    year: 2021,
     alias: "cimoc",
     profile: "Java, Web。",
     avatar: import("../pages/posts/blogs/更多/assets/avatar/cimoccn.png"),
@@ -28,7 +29,7 @@ export const otherMembers: Member[] = [
   {
     alias: "双份浓缩馥芮白",
     profile: "Mac, 人工智能, Web和流水账。",
-    avatar: import("../pages/posts/blogs/更多/assets/avatar/VjBGkQ6c58vH4l9.png"),
+    avatar: import("../pages/posts/blogs/更多/assets/avatar/44250c1b6e2f243ff60949efe9269348.png"),
     link: undefined,
   },
   {
@@ -44,3 +45,6 @@ export const otherMembers: Member[] = [
     link: undefined, // "https://bcscb.xyz/",
   },
 ]
+// export const memberWithLink: Member[] = [
+// https://zzh0u.github.io/
+// ]
