@@ -12,8 +12,7 @@ allPosts.sort(
 
   <BaseLayout>
     <section class="every-day-feed">
-      <div class="section-content">
-        <h2 class="section-head">最新文章</h2>
+      <div class="section-content pt-12">
         <ul role="list" class="section-tiles">
           {
           // tile-hero
@@ -113,7 +112,7 @@ allPosts.sort(
 
     <script is:inline>
     document.addEventListener("DOMContentLoaded", function () {
-      var script = document.createElement("script")
+      const script = document.createElement("script")
       script.src = "/static/js/animation.js"
       document.head.appendChild(script)
 
