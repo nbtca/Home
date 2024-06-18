@@ -26,21 +26,21 @@ export const otherMembers: Member[] = [
     link: "https://www.cnblogs.com/N3ptune",
   },
   {
-    alias: "Flat-White",
+    alias: "双份浓缩馥芮白",
     profile: "Mac, 人工智能, Web和流水账。",
     avatar: import("../pages/posts/blogs/更多/assets/avatar/VjBGkQ6c58vH4l9.png"),
-    link: "https://www.cnblogs.com/Flat-White",
+    link: undefined,
   },
   {
     alias: "Chun.",
     profile: "Web。",
     avatar: import("../pages/posts/blogs/更多/assets/avatar/avatar.png"),
-    link: "https://chundot.org",
+    link: undefined, // "https://chundot.org",
   },
   {
     alias: "bcscb",
     profile: "算法记录。",
     avatar: undefined,
-    link: "https://bcscb.xyz/",
+    link: undefined, // "https://bcscb.xyz/",
   },
 ]
