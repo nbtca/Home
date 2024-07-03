@@ -1,12 +1,14 @@
-export interface Member {
-  memberId?: string
-  alias: string
-  avatar: Promise<typeof import("*.jpg")> | string
-  profile: string
-  link?: string
-}
+import type { components } from "../types/saturday"
 
-export const otherMembers: (Member & { year?: number })[] = [
+export type PublicMember = components["schemas"]["PublicMember"]
+
+export const otherMembers: (
+  Partial<Omit<PublicMember, "avatar">>
+  & {
+    year?: number
+    avatar: Promise<typeof import("*.jpg")>
+    link: string
+  })[] = [
   {
     alias: "cimoc",
     profile: "Java, Web。",

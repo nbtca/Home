@@ -3,15 +3,16 @@
   "version": "0.2",
   "ignorePaths": [
     "node_modules",
-    "dist",
+    "dist"
   ],
   "words": [
     "astro",
     "astrojs",
     "frontmatter",
-    "NBTCA",
     "m_lfit",
     "N3ptune",
+    "NBTCA",
+    "openapi",
     "rehypePlugins",
     "tseslint"
   ]

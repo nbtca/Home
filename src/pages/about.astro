@@ -2,13 +2,10 @@
 import BaseLayout from "../layouts/BaseLayout.astro"
 import { computed } from "vue"
 import MemberCard from "../components/MemberCard.astro"
-import { type Member } from "../store/member.ts"
+import type { PublicMember } from "../store/member.ts"
+import { saturdayClient } from "../utils/client"
 
-const members: Member[] = await fetch(
-  "https://api.nbtca.space/v2/members",
-).then((res) => {
-  return res.json()
-})
+const { data: members } = await saturdayClient.GET("/members", { params: {} })
 
 // memberId is like "3232323233", the second and third number is the year of the member
 const memberGroupByYear = computed(() => {
@@ -27,9 +24,8 @@ const memberGroupByYear = computed(() => {
         acc[year].push(cur)
         return acc
       },
-      {} as Record<string, Member[]>,
+      {} as Record<string, PublicMember[]>,
     )
-  // group["其他成员以及往届成员"] = otherMembers
   return group
 });
 ---
@@ -44,21 +40,21 @@ const memberGroupByYear = computed(() => {
         </div>
         <div>
           {
-          Object.keys(memberGroupByYear.value)
-            .sort((a, b) => parseInt(b) - parseInt(a))
-            .map((year) => {
-              return (
-                <div class="py-4 first:pt-2">
-                  <div class="text-lg lg:text-2xl font-bold pb-2">{year}</div>
-                  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8">
-                    {memberGroupByYear.value[year].map(member => (
-                      <MemberCard member={member} />
-                    ))}
+            Object.keys(memberGroupByYear.value)
+              .sort((a, b) => parseInt(b) - parseInt(a))
+              .map((year) => {
+                return (
+                  <div class="py-4 first:pt-2">
+                    <div class="text-lg lg:text-2xl font-bold pb-2">{year}</div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8">
+                      {memberGroupByYear.value[year].map(member => (
+                        <MemberCard member={member} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )
-            })
-        }
+                )
+              })
+          }
         </div>
       </div>
     </section>
