@@ -24,6 +24,7 @@
     "@stylistic/eslint-plugin": "^2.1.0",
     "astro": "^4.5.12",
     "ical.js": "^1.5.0",
+    "md5": "^2.3.0",
     "npm": "^10.8.1",
     "openapi-fetch": "^0.10.2",
     "qrcode": "^1.5.3",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@cspell/eslint-plugin": "^8.8.1",
     "@types/eslint__js": "^8.42.3",
+    "@types/md5": "^2.3.5",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
