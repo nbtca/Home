@@ -1,29 +1,35 @@
 <script setup lang="ts">
+import { makeLogtoClient } from "../utils/auth"
 import { onMounted, ref } from "vue"
-import { logtoClient } from "../utils/auth"
 import type { IdTokenClaims } from "@logto/browser"
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue"
+import type LogtoClient from "@logto/browser"
 
+const logtoClient = ref<LogtoClient>()
 const onSignIn = async () => {
-  logtoClient.signIn(import.meta.env.PUBLIC_LOGTO_CALLBACK_URL)
+  logtoClient.value?.signIn(import.meta.env.PUBLIC_LOGTO_CALLBACK_URL)
 }
 const onSignOut = async () => {
-  logtoClient.signOut(import.meta.env.PUBLIC_LOGTO_REDIRECT_URL)
+  logtoClient.value?.signOut(import.meta.env.PUBLIC_LOGTO_REDIRECT_URL)
 }
 
 const isAuthenticated = ref<boolean>()
 const userInfo = ref<IdTokenClaims>()
 const initAuth = async () => {
+  if(!logtoClient.value){
+    return
+  }
   try {
     await Promise.all([
-        userInfo.value = await logtoClient.getIdTokenClaims(),
-        isAuthenticated.value = await logtoClient.isAuthenticated()
+      (userInfo.value = await logtoClient.value.getIdTokenClaims()),
+      (isAuthenticated.value = await logtoClient.value.isAuthenticated()),
     ])
   } catch (error) {
     isAuthenticated.value = false
   }
 }
 onMounted(() => {
+  logtoClient.value = makeLogtoClient()
   initAuth()
 })
 </script>
