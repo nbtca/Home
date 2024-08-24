@@ -1,0 +1,23 @@
+<div></div>
+
+<script>
+import { logtoClient } from "../utils/auth"
+import LogtoClient from "@logto/browser"
+
+const callbackHandler = async (logtoClient: LogtoClient) => {
+  try {
+    await logtoClient.handleSignInCallback(window.location.href)
+    if (!logtoClient.isAuthenticated) {
+      window.location.assign("/")
+      return
+    }
+    // Handle successful sign-in
+    window.location.assign("/")
+  }
+  catch (error) {
+    window.location.assign("/")
+  }
+}
+
+callbackHandler(logtoClient)
+</script>

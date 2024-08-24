@@ -101,7 +101,7 @@ progress {
 button {
   background: none;
   border: 0;
-  box-sizing: content-box;
+  box-sizing: border-box;
   color: inherit;
   cursor: pointer;
   font: inherit;

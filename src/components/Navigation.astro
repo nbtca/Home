@@ -1,6 +1,7 @@
 ---
 import { SITE_TITLE } from "../consts"
 import { ref } from "vue"
+import NavigationUser from "./NavigationUser.vue"
 
 const menuList = ref<{
   link: string
@@ -10,10 +11,10 @@ const menuList = ref<{
     link: "/archive",
     name: "目录",
   },
-  {
-    link: "https://repair.nbtca.space",
-    name: "维修",
-  },
+  // {
+  //   link: "https://repair.nbtca.space",
+  //   name: "维修",
+  // },
   {
     link: "/calendar",
     name: "日历",
@@ -50,6 +51,7 @@ const menuList = ref<{
                 ),
               )
             }
+            <NavigationUser client:load />
           </div>
         </div>
       </div>

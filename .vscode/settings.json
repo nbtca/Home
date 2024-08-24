@@ -8,6 +8,7 @@
   ],
   "eslint.experimental.useFlatConfig": true,
   "cSpell.words": [
+    "Logto",
     "qrcode"
   ],
 }
