@@ -16,7 +16,7 @@ const onSignOut = async () => {
 const isAuthenticated = ref<boolean>()
 const userInfo = ref<IdTokenClaims>()
 const initAuth = async () => {
-  if(!logtoClient.value){
+  if (!logtoClient.value) {
     return
   }
   try {
@@ -34,7 +34,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="flex items-center justify-center w-12">
+  <div class="flex items-center justify-center w-10">
     <div @click="onSignIn" v-if="isAuthenticated === false" class="">
       <a class="nav-item-content px-2 hover:text-[#2997ff] text-nowrap cursor-pointer">登入</a>
     </div>
@@ -42,8 +42,8 @@ onMounted(() => {
       <Menu as="div" class="relative inline-block text-left">
         <div>
           <MenuButton class="flex items-center focus:outline-none">
-            <div class="h-7 w-7 rounded-full border border-gray-300 overflow-hidden">
-              <img :src="userInfo.picture" alt="" class="w-full" />
+            <div class="h-8 aspect-square rounded-full border border-gray-300 overflow-hidden">
+              <img :src="userInfo.picture" alt="https://oss.nbtca.space/CA-logo.svg" class="w-full" />
             </div>
           </MenuButton>
         </div>
@@ -57,9 +57,9 @@ onMounted(() => {
           leave-to-class="transform scale-95 opacity-0"
         >
           <MenuItems
-            class="absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+            class="absolute right-0 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
           >
-            <div class="px-1 py-1">
+            <div class="p-1">
               <MenuItem v-slot="{ active }">
                 <button
                   @click="onSignOut"

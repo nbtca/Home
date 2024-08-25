@@ -8,6 +8,11 @@ allPosts.sort(
   (a, b) =>
     Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate),
 )
+
+Blogs.sort(
+  (a, b) =>
+    Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate),
+)
 ---
 
   <BaseLayout>
@@ -16,51 +21,51 @@ allPosts.sort(
         <ul role="list" class="section-tiles">
           {
           // tile-hero
-          allPosts.slice(0, 1).map((post) => {
-            return (
-              <Tile
-                title={post.frontmatter.title}
-                href={post.url}
-                date={post.frontmatter.pubDate}
-                tags={post.frontmatter.tags}
-                cover={post.frontmatter.cover.url}
-                level="1"
-              />
-            )
-          })
-        }
+            allPosts.slice(0, 1).map((post) => {
+              return (
+                <Tile
+                  title={post.frontmatter.title}
+                  href={post.url}
+                  date={post.frontmatter.pubDate}
+                  tags={post.frontmatter.tags}
+                  cover={post.frontmatter.cover.url}
+                  level="1"
+                />
+              )
+            })
+          }
 
           {
           // tile-2up
-          allPosts.slice(1, 5).map((post) => {
-            return (
-              <Tile
-                title={post.frontmatter.title}
-                href={post.url}
-                date={post.frontmatter.pubDate}
-                tags={post.frontmatter.tags}
-                cover={post.frontmatter.cover.url}
-                level="2"
-              />
-            )
-          })
-        }
+            allPosts.slice(1, 5).map((post) => {
+              return (
+                <Tile
+                  title={post.frontmatter.title}
+                  href={post.url}
+                  date={post.frontmatter.pubDate}
+                  tags={post.frontmatter.tags}
+                  cover={post.frontmatter.cover.url}
+                  level="2"
+                />
+              )
+            })
+          }
 
           {
           // tile-3up
-          allPosts.slice(5, 11).map((post) => {
-            return (
-              <Tile
-                title={post.frontmatter.title}
-                href={post.url}
-                date={post.frontmatter.pubDate}
-                tags={post.frontmatter.tags}
-                cover={post.frontmatter.cover.url}
-                level="3"
-              />
-            )
-          })
-        }
+            allPosts.slice(5, 11).map((post) => {
+              return (
+                <Tile
+                  title={post.frontmatter.title}
+                  href={post.url}
+                  date={post.frontmatter.pubDate}
+                  tags={post.frontmatter.tags}
+                  cover={post.frontmatter.cover.url}
+                  level="3"
+                />
+              )
+            })
+          }
         </ul>
       </div>
     </section>
@@ -72,30 +77,30 @@ allPosts.sort(
         <ul role="list" class="section-tiles">
           {
           // tile-2up
-          allPosts.slice(0, 6).map((post) => {
-            return (
-              <MoreTile
-                title={post.frontmatter.title}
-                href={post.url}
-                date={post.frontmatter.pubDate}
-                tags={post.frontmatter.tags}
-                cover={post.frontmatter.cover.url}
-              />
-            )
-          })
-        }
+            allPosts.slice(12, 18).map((post) => {
+              return (
+                <MoreTile
+                  title={post.frontmatter.title}
+                  href={post.url}
+                  date={post.frontmatter.pubDate}
+                  tags={post.frontmatter.tags}
+                  cover={post.frontmatter.cover.url}
+                />
+              )
+            })
+          }
           {
-          Blogs.slice(1, 7).map((post) => {
-            return (
-              <MoreTile
-                title={post.frontmatter.title}
-                href={post.url}
-                date={post.frontmatter.pubDate}
-                tags={post.frontmatter.tags}
-              />
-            )
-          })
-        }
+            Blogs.slice(0, 4).map((post) => {
+              return (
+                <MoreTile
+                  title={post.frontmatter.title}
+                  href={post.url}
+                  date={post.frontmatter.pubDate}
+                  tags={post.frontmatter.tags}
+                />
+              )
+            })
+          }
         </ul>
         <div class="view-archive-wrapper">
           <a
