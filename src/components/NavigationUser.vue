@@ -34,7 +34,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="flex items-center justify-center w-10">
+  <div class="flex items-center justify-center w-12">
     <div @click="onSignIn" v-if="isAuthenticated === false" class="">
       <a class="nav-item-content px-2 hover:text-[#2997ff] text-nowrap cursor-pointer">登入</a>
     </div>
@@ -63,6 +63,7 @@ onMounted(() => {
               <MenuItem v-slot="{ active }">
                 <button
                   @click="onSignOut"
+                  class="text-nowrap"
                   :class="[active ? 'bg-violet-500 text-white' : 'text-gray-900', 'flex w-full items-center rounded-md px-2 py-2 text-sm']"
                 >
                   登出
