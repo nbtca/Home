@@ -5,7 +5,7 @@ pubDate: 2022-04-05 13:13:28
 categories:
   - 技术
   - Linux
-cover: ./assets/dfc39c2948664aa78df4a4b4aa11bb2c/20220320105749.png
+cover: ./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/20220320105749.png
 tid: linux-note-signal
 description: 有关linux信号的一系列笔记。
 permalink: /pages/aff776/
@@ -55,21 +55,21 @@ int main()
 
 如下所示，现在使用 Ctrl+C 是没办法中断这个程序的：
 
-![signal-1](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-1.png)
+![signal-1](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-1.png)
 
 这里可以用 man 命令查看一下 signal 函数的帮助文档：
 
-![signal-2](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-2.png)
+![signal-2](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-2.png)
 
 signal 关联上了一个信号处理函数，来处理信号。
 
 现在修改这个代码，添加一行打印当前进程号，然后打开两个终端，一个终端运行上面的程序，一个终端尝试`kill`命令来发送信号：
 
-![signal-3](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-3.png)
+![signal-3](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-3.png)
 
 kill 要指定参数：
 
-![signal-4](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-4.png)
+![signal-4](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-4.png)
 
 这是可行的，结果如上。
 
@@ -79,7 +79,7 @@ kill 要指定参数：
 
 Linux 有哪些信号类型：
 
-![signal-5](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-5.png)
+![signal-5](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-5.png)
 
 Linux 信号有 64 个，分为不可靠信号(非实时，1-31，Unix 提供)和可靠信号(32-64，后来扩充的)。又有系统自带的标准信号和用户自定义的信号。
 
@@ -109,19 +109,19 @@ int main(int argc,char* argv[])
 }
 ```
 
-![signal-6](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-6.png)
+![signal-6](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-6.png)
 
-![signal-7](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-7.png)
+![signal-7](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-7.png)
 
 成功发送了信号。
 
 `sigaction`函数有所不同，功能更多：
 
-![signal-8](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-8.png)
+![signal-8](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-8.png)
 
 这里用到了一个结构体：
 
-![signal-9](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-9.png)
+![signal-9](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-9.png)
 
 结构体的第一个成员依然是原来的信号处理函数，第二个成员被称作高级信号处理函数，第三个成员用于信号屏蔽，剩下两个暂时还用不到。
 
@@ -171,11 +171,11 @@ int main(void)
 
 同时还要实现高级的信号发送，采用`sigqueue`：
 
-![signal-10](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-10.png)
+![signal-10](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-10.png)
 
 这里有个重要的联合体，用来存储数据和信号一起发送：
 
-![signal-11](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-11.png)
+![signal-11](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-11.png)
 
 ```c
 #include <stdio.h>
@@ -197,9 +197,9 @@ int main(int argc,char* argv[])
 
 运行结果如下：
 
-![](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-12.png)
+![](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-12.png)
 
-![signal-13](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-13.png)
+![signal-13](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-13.png)
 
 可以看到程序接收到了信号和数据。
 
@@ -213,9 +213,9 @@ int main(int argc,char* argv[])
 
 首先看信号的具体作用：
 
-![signal-14](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-14.png)
+![signal-14](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-14.png)
 
-![signal-15](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-15.png)
+![signal-15](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/signal-15.png)
 
 如上文所提，处理信号有 3 种方式：执行默认操作，捕获信号和忽略信号
 
@@ -336,4 +336,4 @@ int do_sigaction(int sig, struct k_sigaction *act, struct k_sigaction *oact)
 
 总结：
 
-![](./assets/dfc39c2948664aa78df4a4b4aa11bb2c/7cb86c73b9e73893e6b0e0433d476928.png)
+![](./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/7cb86c73b9e73893e6b0e0433d476928.png)

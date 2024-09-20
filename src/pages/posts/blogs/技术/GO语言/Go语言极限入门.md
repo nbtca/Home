@@ -5,7 +5,7 @@ pubDate: 2022-04-19 10:11:26
 categories:
   - 技术
   - Go语言
-cover: ./assets/5973f095d19f42f3b0649a0e2f52f006/image-20220419101405456.png
+cover: ./_assets/5973f095d19f42f3b0649a0e2f52f006/image-20220419101405456.png
 tid: go-first-tutorial
 description: Go语言入门教程。
 permalink: /pages/bd144d/

@@ -6,7 +6,7 @@ tid: tools-to-write-c
 categories:
   - 技术
   - C语言
-cover: ./assets/994555a5411c427da8f39428f49b12fb/PYVEjWmMy6tkqdQ.png
+cover: ./_assets/994555a5411c427da8f39428f49b12fb/PYVEjWmMy6tkqdQ.png
 description: 写C语言的千奇百怪的编辑器，推荐一些在机房使用的编辑器。
 permalink: /pages/0066b6/
 author:
@@ -49,31 +49,31 @@ tags:
 
 点击**文件** -> **新建** -> **源代码**即可直接开始打代码。
 
-![image-20220309220255982](./assets/994555a5411c427da8f39428f49b12fb/bYGImLQAe6NnvB9.png)
+![image-20220309220255982](./_assets/994555a5411c427da8f39428f49b12fb/bYGImLQAe6NnvB9.png)
 
 点击**编译并运行**按钮(默认快捷键为`F11`)即可运行你的 C/C++代码。
 
-![image-20220309220436198](./assets/994555a5411c427da8f39428f49b12fb/OyXFgwLKNa3uRWY.png)
+![image-20220309220436198](./_assets/994555a5411c427da8f39428f49b12fb/OyXFgwLKNa3uRWY.png)
 
 #### 中文设置
 
 主界面工具栏 **Tools** -> **Environment Options** (或者键盘依次按下 Alt, t, v)。
 
-![image-20220308155922714](./assets/994555a5411c427da8f39428f49b12fb/iWhrt48meZqUJPF.png)
+![image-20220308155922714](./_assets/994555a5411c427da8f39428f49b12fb/iWhrt48meZqUJPF.png)
 
 直接在新窗口**General**一栏**Language**一栏选择**简体中文**即可。
 
-![image-20220308160536079](./assets/994555a5411c427da8f39428f49b12fb/VbXLmk2Ox9dScW3.png)
+![image-20220308160536079](./_assets/994555a5411c427da8f39428f49b12fb/VbXLmk2Ox9dScW3.png)
 
 如果你是**新安装**的，就很简单了，开启界面就会询问语言：
 
-![image-20220308154537126](./assets/994555a5411c427da8f39428f49b12fb/aZTwu1gLAJKOe6S.png)
+![image-20220308154537126](./_assets/994555a5411c427da8f39428f49b12fb/aZTwu1gLAJKOe6S.png)
 
 #### 格式化代码
 
 默认快捷键`Ctrl + Shift + A`，能让你的代码非常**整洁**。
 
-![dev-cpp-format](./assets/994555a5411c427da8f39428f49b12fb/Md9EaDczrFWtxhU.gif)
+![dev-cpp-format](./_assets/994555a5411c427da8f39428f49b12fb/Md9EaDczrFWtxhU.gif)
 
 #### 代码补全
 
@@ -81,7 +81,7 @@ tags:
 
 不像其他 IDE 的**自动提示**，Dev C++需要**先按下快捷键**才能出现提示。
 
-![dev-cpp-completion](./assets/994555a5411c427da8f39428f49b12fb/HmnCUGIAvLfJKz1.gif)
+![dev-cpp-completion](./_assets/994555a5411c427da8f39428f49b12fb/HmnCUGIAvLfJKz1.gif)
 
 除此之外，**C++**也有补全（包括 STL）。
 
@@ -119,33 +119,33 @@ tags:
 
 点击工具栏的中的**File** -> **New** -> **File...**
 
-![image-20220308225001977](./assets/994555a5411c427da8f39428f49b12fb/7Hj84ignasekXy2.png)
+![image-20220308225001977](./_assets/994555a5411c427da8f39428f49b12fb/7Hj84ignasekXy2.png)
 
 弹出的窗口中选择**C/C++**然后点击**Go**；
 
-![image-20220309203617508](./assets/994555a5411c427da8f39428f49b12fb/hAaxqHEBoZJrYeg.png)
+![image-20220309203617508](./_assets/994555a5411c427da8f39428f49b12fb/hAaxqHEBoZJrYeg.png)
 
-![image-20220309203903355](./assets/994555a5411c427da8f39428f49b12fb/bToElJW8qcFCBVn.png)
+![image-20220309203903355](./_assets/994555a5411c427da8f39428f49b12fb/bToElJW8qcFCBVn.png)
 
-![image-20220309204103773](./assets/994555a5411c427da8f39428f49b12fb/y6IwrJAGpq4uSFj.png)
+![image-20220309204103773](./_assets/994555a5411c427da8f39428f49b12fb/y6IwrJAGpq4uSFj.png)
 
-![image-20220309204314041](./assets/994555a5411c427da8f39428f49b12fb/2ra5ycmElG4OLwo.png)
+![image-20220309204314041](./_assets/994555a5411c427da8f39428f49b12fb/2ra5ycmElG4OLwo.png)
 
 点击**Build and Run**(默认快捷键为`F9`)即可运行程序。
 
-![image-20220309205239545](./assets/994555a5411c427da8f39428f49b12fb/ns3XE8fithJSgc6.png)
+![image-20220309205239545](./_assets/994555a5411c427da8f39428f49b12fb/ns3XE8fithJSgc6.png)
 
 #### 格式化
 
 在编辑器中**右键** -> **Format use AStyle** 即可直接格式化代码。
 
-![cb-format](./assets/994555a5411c427da8f39428f49b12fb/rA2KMziYGCTq367.gif)
+![cb-format](./_assets/994555a5411c427da8f39428f49b12fb/rA2KMziYGCTq367.gif)
 
 #### 代码补全
 
 默认开启代码补全，按`tab`或`Enter`都可以完成代码。
 
-![cb-completion](./assets/994555a5411c427da8f39428f49b12fb/LwG8sKiVemIpqJn.gif)
+![cb-completion](./_assets/994555a5411c427da8f39428f49b12fb/LwG8sKiVemIpqJn.gif)
 
 从测试可以看到代码补全**功能有限**，仅限**头文件**，**类型**，**数据结构**和一些**标识符**；**函数基本无补全**。
 
@@ -187,7 +187,7 @@ tags:
 
 想要入门或了解 vs code 的强大功能可以看另一篇文章。
 
-![vscode-w-clang](./assets/994555a5411c427da8f39428f49b12fb/8cWuBzF4XeAjdE2.gif)
+![vscode-w-clang](./_assets/994555a5411c427da8f39428f49b12fb/8cWuBzF4XeAjdE2.gif)
 
 配置相对比较复杂，可以检索网上各种 vs code 配置 C/C++的文章。
 
@@ -219,7 +219,7 @@ tags:
 
 安装时只需要**选择自己需要的模块**，之后也可以随时安装卸载其他模块，不需要纠结太多。
 
-![image-20220309201453870](./assets/994555a5411c427da8f39428f49b12fb/WoaDQnP7rtGB2vq.png)
+![image-20220309201453870](./_assets/994555a5411c427da8f39428f49b12fb/WoaDQnP7rtGB2vq.png)
 
 ### 优缺点总结
 
@@ -263,11 +263,11 @@ JetBrains 开发的 IDE。
 - 计协有自己的博客啦：https://nbtca.space/
 - 如果你**碰到学习中的种种问题**，想更加**深入学习计算机软硬件知识**；做**网页**，做**游戏**，做**应用**；修**电脑**，玩**硬件**，做**志愿者活动**；不妨来**计算机协会之家**看看，总有热心的程序员~~秃头~~会解决你的问题！
 
-![image-20220309214828491](./assets/994555a5411c427da8f39428f49b12fb/17Yizy52PBMZarL.png)
+![image-20220309214828491](./_assets/994555a5411c427da8f39428f49b12fb/17Yizy52PBMZarL.png)
 
 - 关注我们定期举办的**理工维修日**（不仅仅是维修），成为**志愿者**，或是来这里进行**软件配置**问题和**硬件**咨询，我们非常欢迎！
 
-![image-20220309222044480](./assets/994555a5411c427da8f39428f49b12fb/3TX1Jiphz5MGHKA.png)
+![image-20220309222044480](./_assets/994555a5411c427da8f39428f49b12fb/3TX1Jiphz5MGHKA.png)
 
 <!-- for wechat -->
-<!-- ![image-20220309222044480](./assets/994555a5411c427da8f39428f49b12fb/3989f49d21f44a0fa06e1d39c9cc8e5d.png) -->
+<!-- ![image-20220309222044480](./_assets/994555a5411c427da8f39428f49b12fb/3989f49d21f44a0fa06e1d39c9cc8e5d.png) -->

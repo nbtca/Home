@@ -5,7 +5,7 @@ pubDate: 2022-04-05
 categories:
   - 技术
   - Python
-cover: ./assets/867f99abfc5c46528fb1d3e570087ed9/data-mining.png
+cover: ./_assets/867f99abfc5c46528fb1d3e570087ed9/data-mining.png
 tid: python-spider-tiobe-top
 description: 使用python爬虫的实践记录。
 permalink: /pages/019940/
@@ -25,7 +25,7 @@ IDE: PyCharm Professional
 
 要爬取的是排名前 20 的语言榜单，并将其存成文本文件和生成词云。
 
-![python-spider-1](./assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-1.png)
+![python-spider-1](./_assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-1.png)
 
 这个榜单包括 6 列，分别是 2022 年 3 月的排名(Mar 2022)、2021 年 3 月的排名(Mar 2021)、增减、程序语言(Programming Language)、占比(Ratings)、变化率(Change)。
 
@@ -44,15 +44,15 @@ requests 是用来发起 https 请求，并获取结果的。BeautifulSoup 用�
 
 检查网页源代码，可以发现整个榜单放 id 为 top20 的 table 标签下：
 
-![python-spider-2](./assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-2.png)
+![python-spider-2](./_assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-2.png)
 
 榜单的主体在这个 table 标签的 tbody 标签下：
 
-![python-spider-3](./assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-3.png)
+![python-spider-3](./_assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-3.png)
 
 而每一行都被划分在 tbody 一个 tr 标签下：
 
-![python-spider-4](./assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-4.png)
+![python-spider-4](./_assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-4.png)
 
 知道这些就足够了，下面编写代码。
 
@@ -69,7 +69,7 @@ table = soup.find("table", id="top20").find("tbody").find_all("tr")
 
 接下来将其打印出来看看：
 
-![python-spider-5](./assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-5.png)
+![python-spider-5](./_assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-5.png)
 
 打印出了每一个 tr 标签下的内容，要获取的数据就在其中：
 
@@ -80,7 +80,7 @@ for item in table:
 
 那直接取出文本：
 
-![python-spider-6](./assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-6.png)
+![python-spider-6](./_assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-6.png)
 
 现在拿到的数据就很间接了，程序将单个标签下所有的文本都连接到了一起。
 
@@ -134,7 +134,7 @@ for item in table:
 
 再循环中将结果打印：
 
-![python-spider-7](./assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-7.png)
+![python-spider-7](./_assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-7.png)
 
 因为最后的结果要保存，所以要定义一个列表，将元组放到列表中。
 
@@ -228,8 +228,8 @@ w.to_file("result.png")
 
 最后生成了如下的文本文件：
 
-![python-spider-8](./assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-8.png)
+![python-spider-8](./_assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-8.png)
 
 以及词云图片：
 
-![python-spider-9](./assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-9.png)
+![python-spider-9](./_assets/867f99abfc5c46528fb1d3e570087ed9/python-spider-9.png)

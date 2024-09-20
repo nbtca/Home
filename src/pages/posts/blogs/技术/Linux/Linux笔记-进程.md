@@ -5,7 +5,7 @@ pubDate: 2022-04-05 13:13:35
 categories:
   - 技术
   - Linux
-cover: ./assets/f835945d5de246bcabdff51dd984aaf2/20220320105749.png
+cover: ./_assets/f835945d5de246bcabdff51dd984aaf2/20220320105749.png
 tid: linux-note-process
 description: 有关linux进程的一系列笔记。
 permalink: /pages/324bec/
@@ -29,21 +29,21 @@ tags:
 
 可以输入`ps`命令来查看正在运行的进程：
 
-![process-1](./assets/f835945d5de246bcabdff51dd984aaf2/process-1.png)
+![process-1](./_assets/f835945d5de246bcabdff51dd984aaf2/process-1.png)
 
-![process-2](./assets/f835945d5de246bcabdff51dd984aaf2/process-2.png)
+![process-2](./_assets/f835945d5de246bcabdff51dd984aaf2/process-2.png)
 
 `ps -aue`命令可以查看更为详细的信息：
 
-![process-3](./assets/f835945d5de246bcabdff51dd984aaf2/process-3.png)
+![process-3](./_assets/f835945d5de246bcabdff51dd984aaf2/process-3.png)
 
 `top`命令可以实时查看正在运行的程序：
 
-![process-4](./assets/f835945d5de246bcabdff51dd984aaf2/process-4.png)
+![process-4](./_assets/f835945d5de246bcabdff51dd984aaf2/process-4.png)
 
 在终端输入`top`，输入 q 可以退出：
 
-![process-5](./assets/f835945d5de246bcabdff51dd984aaf2/process-5.png)
+![process-5](./_assets/f835945d5de246bcabdff51dd984aaf2/process-5.png)
 
 Linux 系统上可以管理多个进程，进程被分时分片处理。
 
@@ -51,15 +51,15 @@ Linux 系统上可以管理多个进程，进程被分时分片处理。
 
 1. `system`函数可以在命令行中执行命令，可以借此来创建一个进程，不作赘述
 
-   ![process-6](./assets/f835945d5de246bcabdff51dd984aaf2/process-6.png)
+   ![process-6](./_assets/f835945d5de246bcabdff51dd984aaf2/process-6.png)
 
 2. `fork`函数、`vfork`函数 创建子进程: 当前进程是父进程，被创建进程是子进程，创建完后父子进程通知执行
 
-   ![process-7](./assets/f835945d5de246bcabdff51dd984aaf2/process-7.png)
+   ![process-7](./_assets/f835945d5de246bcabdff51dd984aaf2/process-7.png)
 
 3. `exec`家族
 
-   ![process-8](./assets/f835945d5de246bcabdff51dd984aaf2/process-8.png)
+   ![process-8](./_assets/f835945d5de246bcabdff51dd984aaf2/process-8.png)
 
    这些函数都可以创建一个进程，暂且不展开描述。
 
@@ -91,11 +91,11 @@ int main(void)
 
 运行这个程序，程序已经打印出了进程号：
 
-![process-9](./assets/f835945d5de246bcabdff51dd984aaf2/process-9.png)
+![process-9](./_assets/f835945d5de246bcabdff51dd984aaf2/process-9.png)
 
 这里有必要明确一下`fork`函数的返回值：
 
-![process-10](./assets/f835945d5de246bcabdff51dd984aaf2/process-10.png)
+![process-10](./_assets/f835945d5de246bcabdff51dd984aaf2/process-10.png)
 
 根据 fork 函数的返回值来看是在子进程中还是父进程中，调用成功的话，父进程中返回值是子进程的 ID，子进程中是 0。实际上这里 fork 返回了两次。
 
@@ -136,7 +136,7 @@ int main(void)
 
 在代码中定义了一个变量 n，初始值为 10，子进程的 n 同样初始为 10：
 
-![process-11](./assets/f835945d5de246bcabdff51dd984aaf2/process-11.png)
+![process-11](./_assets/f835945d5de246bcabdff51dd984aaf2/process-11.png)
 
 下面谈谈僵尸进程。
 
@@ -144,7 +144,7 @@ int main(void)
 
 子进程结束前，会向父进程发送 SIGCHILD 信号，父进程收到信号后，回收子进程资源，然后父进程再结束。父进程可以写一个 wait 函数，等待子进程发送 SIGCHILD 信号。
 
-![process-12](./assets/f835945d5de246bcabdff51dd984aaf2/process-12.png)
+![process-12](./_assets/f835945d5de246bcabdff51dd984aaf2/process-12.png)
 
 如下是代码演示：
 
@@ -176,7 +176,7 @@ int main(void) {
 
 终端输入`ps axj`可以查看系统中的守护进程：
 
-![process-13](./assets/f835945d5de246bcabdff51dd984aaf2/process-13.png)
+![process-13](./_assets/f835945d5de246bcabdff51dd984aaf2/process-13.png)
 
 TPGID 为-1 的话，就说明是守护进程。
 
@@ -259,11 +259,11 @@ int main(void)
 
 在终端中编译运行：
 
-![process-14](./assets/f835945d5de246bcabdff51dd984aaf2/process-14.png)
+![process-14](./_assets/f835945d5de246bcabdff51dd984aaf2/process-14.png)
 
 现在关闭终端，在命令行输入`ps -axj`，可以看到运行起来的守护进程还在运行：
 
-![process-15](./assets/f835945d5de246bcabdff51dd984aaf2/process-15.png)
+![process-15](./_assets/f835945d5de246bcabdff51dd984aaf2/process-15.png)
 
 这里要用`kill`杀掉进程。
 
@@ -335,7 +335,7 @@ int main(void)
 
 运行程序，可以看见子进程将父进程写入文件的数据都打印了出来：
 
-![process-16](./assets/f835945d5de246bcabdff51dd984aaf2/process-16.png)
+![process-16](./_assets/f835945d5de246bcabdff51dd984aaf2/process-16.png)
 
 下面讨论管道。
 
@@ -347,7 +347,7 @@ int main(void)
 
 2. 将文件描述符号变成管道。
 
-![process-17](./assets/f835945d5de246bcabdff51dd984aaf2/process-17.png)
+![process-17](./_assets/f835945d5de246bcabdff51dd984aaf2/process-17.png)
 
 ```c
 #include <unistd.h>
@@ -394,7 +394,7 @@ int main(void)
 
 上述代码的功能是父进程接收用户输入后传入管道，子进程从管道读出并显示。
 
-![process-18](./assets/f835945d5de246bcabdff51dd984aaf2/process-18.png)
+![process-18](./_assets/f835945d5de246bcabdff51dd984aaf2/process-18.png)
 
 接着演示有名管道，流程如下：
 
@@ -407,7 +407,7 @@ int main(void)
 | 删除管道文件        |                    |
 |                     |                    |
 
-![process-19](./assets/f835945d5de246bcabdff51dd984aaf2/process-19.png)
+![process-19](./_assets/f835945d5de246bcabdff51dd984aaf2/process-19.png)
 
 进程 A 的代码：
 
@@ -491,10 +491,10 @@ int main(void)
 
 运行结果：
 
-![process-20](./assets/f835945d5de246bcabdff51dd984aaf2/process-20.png)
+![process-20](./_assets/f835945d5de246bcabdff51dd984aaf2/process-20.png)
 
-![process-21](./assets/f835945d5de246bcabdff51dd984aaf2/process-21.png)
+![process-21](./_assets/f835945d5de246bcabdff51dd984aaf2/process-21.png)
 
-![process-22](./assets/f835945d5de246bcabdff51dd984aaf2/process-22.png)
+![process-22](./_assets/f835945d5de246bcabdff51dd984aaf2/process-22.png)
 
 这里要注意的是，这个程序不能在共享的文件夹下运行，因为共享文件夹下不能创建管道。同时必须两个进程都打开，这个程序才能返回，否则会阻塞。先关闭读取端，会导致写入端结束而先关写入端，不会对读取端造成影响。
