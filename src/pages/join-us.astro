@@ -1,37 +1,40 @@
 ﻿---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from "../layouts/BaseLayout.astro"
+import mp4 from "./_assets/nbtca.mp4";
 ---
 
-  <BaseLayout primaryTitle="加入我们">
-    <div class="container">
-      <h2 class="life-at-apple__eyebrow">在 NBTCA 生活</h2>
-      <p class="t-hero-headline-oversized">
-        <span
-          class="t-hero-headline-oversized-span"
-          aria-label="加入我们，共同创造我们的社区。"
-        >
-          <span class="gradient-warm">加入我们，共同创造我们的社区。</span>
-        </span>
-      </p>
-      <div class="body-container">
-        <p class="life-at-apple__body-text">
-          探索我们的资源和文化：这里有丰富的资源和注重包容、成长和独创性的协作文化，助你缔造精彩人生。
-        </p>
-      </div>
-      <div class="learn-more-link-container">
-        <a
-          href="/careers/cn/life-at-apple.html"
-          class="learn-more-link"
-          aria-label="进一步了解 NBTCA 的社区和文化"
-        >了解在 NBTCA 生活
-        </a
+<BaseLayout primaryTitle="加入我们">
+  <div class="container">
+    <h2 class="life-at-apple__eyebrow">在 计算机协会</h2>
+    <p class="t-hero-headline-oversized">
+      <span
+        class="t-hero-headline-oversized-span"
+        aria-label="加入我们，共同创造我们的社区。"
       >
-        <a class="learn-more-link-after">&gt; </a>
-      </div>
+        <span class="gradient-warm">加入我们，共同创造我们的社区。</span>
+      </span>
+    </p>
+    <div class="body-container">
+      <p class="life-at-apple__body-text">九月二十五日，百团等你！</p>
     </div>
-  </BaseLayout>
+    <div class="learn-more-link-container">
+      <a
+        href="/careers/cn/life-at-apple.html"
+        class="learn-more-link"
+        aria-label="进一步了解 NBTCA 的社区和文化"
+      >
+        了解在 NBTCA
+      </a>
+      <a class="learn-more-link-after">&gt; </a>
+    </div>
+    <video width="640" height="360" autoplay muted>
+      <source src={mp4} type="video/mp4" />
+      你的浏览器不支持视频标签。
+    </video>
+  </div>
+</BaseLayout>
 
-    <style>
+<style>
   @media screen and (min-width: 680px) {
     /*PC*/
     .container {
@@ -253,4 +256,4 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     justify-content: center;
     height: 100px;
   }
-    </style>
+</style>
