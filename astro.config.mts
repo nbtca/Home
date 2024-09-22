@@ -44,7 +44,7 @@ function pipeline() {
                       type: "element",
                       tagName: "div",
                       properties: {
-                        className: [`image image-load image-asset image-${sign}`],
+                        className: [`image image-loaded image-asset image-${sign}`],
                         id: `lht${sign}`,
                       },
                       children: [
