@@ -49,7 +49,6 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.ACCESS_TOKEN }}
           script: |
+            printenv
             cd ${{ secrets.REMOTE_PATH }}
-            docker compose stop && docker compose rm -f
-            docker compose pull
-            docker compose up -d
+            docker compose up --force-recreate -d
