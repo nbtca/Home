@@ -1,3 +1,4 @@
+/// <reference path="../.astro/types.d.ts" />
 interface ImportMetaEnv {
   readonly PUBLIC_SITE_URL: string
   readonly PUBLIC_LOGTO_CALLBACK_URL: string
