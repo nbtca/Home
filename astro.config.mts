@@ -182,7 +182,7 @@ export default defineConfig({
   markdown: {
     rehypePlugins: pipeline(),
     syntaxHighlight: "prism",
-  },
+  }, 
   integrations: [
     vue(),
     tailwind(),
