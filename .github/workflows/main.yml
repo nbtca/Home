@@ -2,7 +2,7 @@ name: build-deploy
 
 on:
   push:
-    branches: ["main", "feature-*"]
+    branches: ["main", "dev", "feature-*"]
     paths-ignore: # 忽略的文件
       - "README.md"
       - "LICENSE"
