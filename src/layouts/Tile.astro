@@ -1,15 +1,11 @@
 ---
 import { formatDate } from "../utils"
 const { title, href, cover, tags, date, level } = Astro.props
-import { fixImage } from "../utils/image"
 
 const dateFormatted = formatDate(date)
 const type = tags[0]
 const label = `${title} - ${type} - 发表时间 ${dateFormatted}`
-let image = cover?.url ?? cover ?? "https://oss.nbtca.space/CA-logo.svg"
-if (image.startsWith("./")) {
-  image = await fixImage(image, href)
-}
+const image = cover?.url ?? cover ?? "https://oss.nbtca.space/CA-logo.svg"
 
 // level 1: hero
 // level 2: 2up

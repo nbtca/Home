@@ -7,6 +7,9 @@ import { visit } from "unist-util-visit"
 import tailwind from "@astrojs/tailwind"
 import react from "@astrojs/react"
 import md5 from "md5"
+import { type RehypePlugin } from "@astrojs/markdown-remark"
+import path from "path"
+import { convertImageToBase64URL } from "./src/utils/image"
 
 function pipeline() {
   return [
@@ -176,13 +179,44 @@ function pipeline() {
   ]
 }
 
+const handleLocalCoverPlugin: RehypePlugin = () => {
+  return async (tree, file) => {
+    const filePath = file.history[0]
+    type AstroData = {
+      frontmatter: {
+        cover:
+          | {
+              url: string
+            }
+          | string
+          | undefined
+      }
+    }
+    const astroData = file.data.astro as AstroData
+    if (!astroData.frontmatter.cover) {
+      return
+    }
+    const coverUrl = typeof astroData.frontmatter.cover === "string" ? astroData.frontmatter.cover : astroData.frontmatter.cover.url
+    if (coverUrl.includes("http")) {
+      return
+    }
+    const url = path.resolve(path.dirname(filePath), coverUrl)
+    const dataURL = await convertImageToBase64URL(url)
+    if (typeof astroData.frontmatter.cover === "string") {
+      astroData.frontmatter.cover = dataURL
+    } else {
+      astroData.frontmatter.cover.url = dataURL
+    }
+  }
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: SITE_URL,
   markdown: {
-    rehypePlugins: pipeline(),
+    rehypePlugins: [handleLocalCoverPlugin, ...pipeline()],
     syntaxHighlight: "prism",
-  }, 
+  },
   integrations: [
     vue(),
     tailwind(),
