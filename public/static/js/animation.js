@@ -5,7 +5,7 @@ var animationElementName = ".small-load"
 // Hookable function
 var loadAnimation = function (item) {
   const img = new Image()
-  img.src = item.children[0].children[0].dataset.src
+  img.src = item.children[0].children[0].src
   img.onload = function () {
     item.classList.remove("small-load", "medium-load", "large-load")
     item.classList.add("small-loaded", "medium-loaded", "large-loaded")
@@ -17,7 +17,6 @@ var loadImage = function (index) {
   if (index >= imageElements.length) return
   const item = imageElements[index]
   const image = new Image()
-  item.src = item.dataset.src
   image.src = item.src
   image.onload = function () {
     loadImage(index + 1)
@@ -26,7 +25,8 @@ var loadImage = function (index) {
 
 function initImage() {
   // get all the images with data-src attribute
-  imageElements = document.querySelectorAll("img[data-src]")
+  // imageElements = document.querySelectorAll("img[data-src]")
+  imageElements = document.querySelectorAll(".image-load, .small-load, .medium-load, .large-load")
   // load the images one by one
   loadImage(0)
 
