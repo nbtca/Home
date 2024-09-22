@@ -50,6 +50,7 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.ACCESS_TOKEN }}
+          envs: BRANCH_NAME
           script: |
             cd ${{ github.ref == 'refs/heads/main' && secrets.REMOTE_PATH || secrets.REMOTE_PATH_DEVELOPMENT }}
             docker compose up --force-recreate -d
