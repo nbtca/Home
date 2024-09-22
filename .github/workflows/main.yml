@@ -2,7 +2,7 @@ name: build-deploy
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "feature-*"]
     paths-ignore: # 忽略的文件
       - "README.md"
       - "LICENSE"
@@ -40,16 +40,17 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ env.IMAGE_NAME_FULL }}:latest
+            ${{ env.IMAGE_NAME_FULL }}:${{ github.ref_name }}
 
       - name: ssh pipelines
         uses: appleboy/ssh-action@v1.0.0
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.ACCESS_TOKEN }}
+          envs: BRANCH_NAME
           script: |
-            cd ${{ secrets.REMOTE_PATH }}
-            docker compose stop && docker compose rm -f
-            docker compose pull
-            docker compose up -d
+            cd ${{ github.ref == 'refs/heads/main' && secrets.REMOTE_PATH || secrets.REMOTE_PATH_DEVELOPMENT }}
+            docker compose up --force-recreate -d

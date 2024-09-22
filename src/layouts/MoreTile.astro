@@ -1,36 +1,39 @@
 ---
 import { formatDate } from "../utils"
 const { title, href, cover, tags, date } = Astro.props
-
+import { fixImage } from "../utils/image"
 const dateFormatted = formatDate(date)
 const type = tags?.[0] ?? "默认"
 
-const image = cover ? cover : "https://oss.nbtca.space/CA-logo.svg"
+let image = cover?.url ?? cover ?? "https://oss.nbtca.space/CA-logo.svg"
+if (image.startsWith("./")) {
+  image = await fixImage(image, href)
+}
 
-const label = `${title} - ${type} - 发表时间 ${dateFormatted}`
+const label = `${title} - ${type} - 发表时间 ${dateFormatted}`;
 ---
 
-  <li
-    role="listitem"
-    class="tile-item item-list nr-scroll-animation"
-    style="--nr-animation-transform-y:20%;"
+<li
+  role="listitem"
+  class="tile-item item-list nr-scroll-animation"
+  style="--nr-animation-transform-y:20%;"
+>
+  <a
+    href={href}
+    class="tile tile-list medium-load small-load large-load"
+    aria-label={label}
   >
-    <a
-      href={href}
-      class="tile tile-list medium-load small-load large-load"
-      aria-label={label}
-    >
-      <div class="tile__media" aria-hidden="true">
-        <img class="cover image" data-src={image} alt="lt" />
+    <div class="tile__media" aria-hidden="true">
+      <img class="cover image" src={image} alt="lt" />
+    </div>
+    <div class="tile__description" aria-hidden="true">
+      <div class="tile__head">
+        <div class="tile__category">{type}</div>
+        <div class="tile__headline">{title}</div>
       </div>
-      <div class="tile__description" aria-hidden="true">
-        <div class="tile__head">
-          <div class="tile__category">{type}</div>
-          <div class="tile__headline">{title}</div>
-        </div>
-        <div class="tile__timestamp icon-hide icon icon-before icon-clock">
-          {dateFormatted}
-        </div>
+      <div class="tile__timestamp icon-hide icon icon-before icon-clock">
+        {dateFormatted}
       </div>
-    </a>
-  </li>
+    </div>
+  </a>
+</li>

@@ -44,7 +44,7 @@ function pipeline() {
                       type: "element",
                       tagName: "div",
                       properties: {
-                        className: [`image image-load image-asset image-${sign}`],
+                        className: [`image image-loaded image-asset image-${sign}`],
                         id: `lht${sign}`,
                       },
                       children: [
@@ -59,7 +59,7 @@ function pipeline() {
                               type: "element",
                               tagName: "img",
                               properties: {
-                                "data-src": img.properties.src,
+                                src: img.properties.src,
                                 alt: alt,
                                 className: ["picture-image"],
                               },
@@ -182,7 +182,7 @@ export default defineConfig({
   markdown: {
     rehypePlugins: pipeline(),
     syntaxHighlight: "prism",
-  },
+  }, 
   integrations: [
     vue(),
     tailwind(),
