@@ -247,10 +247,10 @@ ol + * {
   margin-top: 0.8em;
 }
 
-ul,
+/* ul,
 ol {
   margin-left: 1.17647em;
-}
+} */
 
 ul ul,
 ul ol,

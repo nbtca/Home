@@ -1,6 +1,6 @@
 ---
-import BaseHead from "../components/BaseHead.astro"
-import Header from "../components/Header.astro"
+import BaseHead from "../components/header/BaseHead.astro"
+import Header from "../components/header/Header.astro"
 import Footer from "../components/Footer.astro"
 
 import { formatDate } from "../utils"
@@ -43,7 +43,7 @@ const dateFormatted = formatDate(pubDate)
                   <div class="category-eyebrow">
                     <span class="category-eyebrow__category category_original">{type}
                     </span
-                  >
+                    >
                     <span class="category-eyebrow__date">{dateFormatted}</span>
                   </div>
                 </div>
@@ -65,14 +65,14 @@ const dateFormatted = formatDate(pubDate)
               <div class:list={["tags-sheet component"]}>
                 <div class="component-content">
                   {
-                  frontmatter.tags?.map((tag) => {
-                    return (
-                      <a href={`/tags/${tag}`} class="tag">
-                        {tag}
-                      </a>
-                    )
-                  })
-                }
+                    frontmatter.tags?.map((tag) => {
+                      return (
+                        <a href={`/tags/${tag}`} class="tag">
+                          {tag}
+                        </a>
+                      )
+                    })
+                  }
                 </div>
               </div>
             </div>
@@ -86,7 +86,7 @@ const dateFormatted = formatDate(pubDate)
                     target="_blank"
                   >版权声明：自由转载-非商用-非衍生-保持署名（创意共享3.0许可证）
                   </a
-                >
+                  >
                   <p class="content">
                     作者： {frontmatter.author} 发表日期：{dateFormatted}
                   </p>
@@ -98,7 +98,7 @@ const dateFormatted = formatDate(pubDate)
       </main>
       <Footer />
       <script is:inline>
-      var script = document.createElement("script")
+      const script = document.createElement("script")
       script.src = "/static/js/initPost.js"
       document.head.appendChild(script)
       </script>
