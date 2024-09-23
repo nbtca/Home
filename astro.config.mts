@@ -185,11 +185,11 @@ const handleLocalCoverPlugin: RehypePlugin = () => {
     type AstroData = {
       frontmatter: {
         cover:
-          | {
-              url: string
-            }
-          | string
-          | undefined
+        | {
+          url: string
+        }
+        | string
+        | undefined
       }
     }
     const astroData = file.data.astro as AstroData
