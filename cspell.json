@@ -10,12 +10,13 @@
     "astrojs",
     "frontmatter",
     "logto",
-    "logtoClient",
     "Logto",
+    "logtoClient",
     "m_lfit",
     "N3ptune",
     "NBTCA",
     "openapi",
+    "Rehype",
     "rehypePlugins",
     "tseslint"
   ]
