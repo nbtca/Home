@@ -5,6 +5,7 @@ import type { BaseHttpRequest } from "./core/BaseHttpRequest";
 import type {
   PostFreshmanAddData,
   PostFreshmanAddResponse,
+  GetFreshmanListData,
   GetFreshmanListResponse,
 } from "./types.gen";
 
@@ -15,7 +16,7 @@ export class FreshmanService {
    * 添加新人
    * @param data The data for the request.
    * @param data.requestBody
-   * @returns unknown Returns the created task
+   * @returns unknown 返回创建结果
    * @throws ApiError
    */
   public postFreshmanAdd(
@@ -31,13 +32,23 @@ export class FreshmanService {
 
   /**
    * 获取新人列表
-   * @returns unknown Returns a list of tasks
+   * @param data The data for the request.
+   * @param data.page 页码
+   * @returns unknown 返回列表
    * @throws ApiError
    */
-  public getFreshmanList(): CancelablePromise<GetFreshmanListResponse> {
+  public getFreshmanList(
+    data: GetFreshmanListData = {},
+  ): CancelablePromise<GetFreshmanListResponse> {
     return this.httpRequest.request({
       method: "GET",
       url: "/api/freshman",
+      query: {
+        page: data.page,
+      },
+      errors: {
+        500: "服务器错误",
+      },
     });
   }
 }

@@ -26,8 +26,14 @@ export type PostFreshmanAddResponse = {
   error?: string;
 };
 
+export type GetFreshmanListData = {
+  /**
+   * 页码
+   */
+  page?: number;
+};
+
 export type GetFreshmanListResponse = {
-  success: boolean;
   list: Array<{
     name: string;
     number: string;
@@ -37,4 +43,5 @@ export type GetFreshmanListResponse = {
     phone: string;
     qq: string;
   }>;
+  total: number;
 };

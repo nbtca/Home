@@ -11,3 +11,4 @@ export const saturdayClient = createClient<saturdayPaths>({
 export const activeClient = new ApiClient({
   BASE: "/active",
 })
+export * from "./active/types.gen"
