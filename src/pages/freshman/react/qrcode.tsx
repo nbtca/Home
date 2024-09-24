@@ -30,7 +30,7 @@ function QrCodeContent({ qrcode }: { qrcode: string }) {
         style={{
           display: "flex",
           justifyContent: "center",
-          flexDirection: "column",
+          // flexDirection: "column",
           textAlign: "center",
         }}
       >
@@ -43,7 +43,7 @@ function QrCodeContent({ qrcode }: { qrcode: string }) {
           <div
             style={{
               textAlign: "center",
-              width: "90px",
+              width: "120px",
               display: "flex",
               justifyContent: "center",
             }}
@@ -51,19 +51,29 @@ function QrCodeContent({ qrcode }: { qrcode: string }) {
             <Input readOnly={true} value="906370401" />
           </div>
         </div>
-        <Button
-          onClick={() => {
-            const inputElement = document.querySelector(
-              "input[value=\"906370401\"]",
-            ) as HTMLInputElement
-            if (inputElement) {
-              inputElement.select()
-              navigator.clipboard.writeText(inputElement.value)
-            }
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
           }}
         >
-          复制到剪切板
-        </Button>
+          <Button
+            style={{
+              maxWidth: "320px",
+            }}
+            onClick={() => {
+              const inputElement = document.querySelector(
+                "input[value=\"906370401\"]",
+              ) as HTMLInputElement
+              if (inputElement) {
+                inputElement.select()
+                navigator.clipboard.writeText(inputElement.value)
+              }
+            }}
+          >
+            复制到剪切板
+          </Button>
+        </div>
       </div>
     </>
   )
