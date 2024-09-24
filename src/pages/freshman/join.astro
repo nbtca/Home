@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+// import { Button } from "@nextui-org/react";
+import ReactChild from "./react/acontent"
+---
+
+<BaseLayout title="Welcome to Astro.">
+  <main>
+    <ReactChild client:visible />
+  </main>
+</BaseLayout>
