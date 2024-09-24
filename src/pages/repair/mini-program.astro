@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import RepairMiniProgramQRCode from "../_assets/repair_mini_program_qr_code.jpg"
+---
+
+  <BaseLayout primaryTitle="关于">
+    <div class="min-h-screen bg-white flex flex-col items-center">
+      <div class="py-32 flex flex-col items-center">
+        <div class="text-3xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+          NBT 电脑维修小程序
+        </div>
+        <div class="text-center text-xl lg:text-2xl text-[#004f8e] font-bold mt-8 mb-10">
+          <div>
+            微信扫码
+          </div>
+          <div>
+            获取免费维修
+          </div>
+        </div>
+        <img src={RepairMiniProgramQRCode.src} alt="" class="w-64 aspect-square" />
+      </div>
+    </div>
+  </BaseLayout>
