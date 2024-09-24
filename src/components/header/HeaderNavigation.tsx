@@ -61,9 +61,7 @@ export default function App() {
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
-              color={
-                index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
-              }
+              color="foreground"
               className="w-full py-1 font-bold"
               href={item.link}
               size="lg"
