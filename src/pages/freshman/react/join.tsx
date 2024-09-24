@@ -25,6 +25,7 @@ export default function JoinForm() {
         requestBody: formData,
       })
       alert("提交成功！ 后续请加群获取！")
+      window.location.href = "/about"
     }
     catch (error) {
       console.error("Error submitting form:", error)
