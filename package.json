@@ -10,7 +10,8 @@
     "lint": "eslint",
     "astro": "astro",
     "prepare": "husky",
-    "gen-type": "openapi-typescript http://localhost:4000/openapi-3.0.json -o ./src/types/saturday.d.ts"
+    "gen-type": "openapi-typescript http://localhost:4000/openapi-3.0.json -o ./src/types/saturday.d.ts",
+    "active": "openapi-typescript https://active.nbtca.space/openapi.json -o ./src/types/active.d.ts"
   },
   "dependencies": {
     "@astrojs/react": "^3.3.1",
