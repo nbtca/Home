@@ -11,7 +11,7 @@
     "astro": "astro",
     "prepare": "husky",
     "gen-type": "openapi-typescript http://localhost:4000/openapi-3.0.json -o ./src/types/saturday.d.ts",
-    "active": "openapi-typescript https://active.nbtca.space/openapi.json -o ./src/types/active.d.ts"
+    "active": "openapi-ts -f openapi-ts.active.config.ts"
   },
   "dependencies": {
     "@astrojs/react": "^3.3.1",
@@ -46,6 +46,7 @@
     "@astrojs/markdown-remark": "^5.2.0",
     "@cspell/eslint-plugin": "^8.8.1",
     "@eslint/js": "^9.11.0",
+    "@hey-api/openapi-ts": "^0.53.3",
     "@types/eslint__js": "^8.42.3",
     "@types/md5": "^2.3.5",
     "@types/qrcode": "^1.5.5",

@@ -54,6 +54,12 @@ export default [
     },
   },
   {
-    ignores: ["dist/**/*", "public/**/*", "node_modules/**/*"],
+    ignores: [
+      "dist/**/*",
+      "public/**/*",
+      "node_modules/**/*",
+      "src/utils/active/**/*",
+      "openapi-ts.active.config.ts",
+    ],
   },
 ]
