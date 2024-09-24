@@ -1,13 +1,16 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro"
 import ReactChild from "./react/join.tsx"
+import DelayImage from "./react/delayImage"
 import logo from "./_assets/nbtca.gif";
 ---
 
 <BaseLayout title="加入我们">
   <main>
     <div style="margin: -30px;display:flex; justify-content: center;">
-      <img src={logo.src} style="max-width: 450px;" loading="lazy" />
+      <div style="max-width: 450px;">
+        <DelayImage src={logo.src} alt="nbtca" delay={1000} />
+      </div>
     </div>
     <div style="display:flex; justify-content: center;font-size: large;">
       加入计算机协会
