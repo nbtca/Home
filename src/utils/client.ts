@@ -9,5 +9,5 @@ export const saturdayClient = createClient<saturdayPaths>({
 //   baseUrl: "https://active.nbtca.space/",
 // })
 export const activeClient = new ApiClient({
-  BASE: "https://active.nbtca.space/",
+  BASE: "/active",
 })

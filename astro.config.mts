@@ -225,4 +225,15 @@ export default defineConfig({
       experimentalReactChildren: true,
     }),
   ],
+  vite: {
+    server: {
+      proxy: {
+        "/active": {
+          target: "https://active.nbtca.space",
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/active/, ""),
+        },
+      }
+    }
+  }
 })
