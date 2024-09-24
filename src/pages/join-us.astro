@@ -4,43 +4,42 @@ import mp4 from "./_assets/nbtca.mp4";
 ---
 
 <BaseLayout primaryTitle="加入我们">
-  <div class="container">
-    <h2 class="life-at-apple__eyebrow">在 计算机协会</h2>
-    <p class="t-hero-headline-oversized">
-      <span
-        class="t-hero-headline-oversized-span"
-        aria-label="加入我们，共同创造我们的社区。"
-      >
-        <span class="gradient-warm">加入我们，共同创造我们的社区。</span>
-      </span>
-    </p>
-    <div class="body-container">
-      <p class="life-at-apple__body-text">九月二十五日，百团等你！</p>
-    </div>
-    <div class="learn-more-link-container">
-      <div class="learn-more-link">
+  <div class="container pt-16 pb-40">
+    <video width="640" height="360" autoplay="1" muted>
+      <source src={mp4} type="video/mp4" />
+      你的浏览器不支持视频标签。
+    </video>
+    <div class="flex flex-col items-center">
+      <div class="text-3xl md:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#00ccc7] to-[#9583ef]">
+        <div>
+          加入协会
+        </div>
+        <div>
+          共同创造我们的社区
+        </div>
+      </div>
+      <div class="text-lg md:text-xl mt-4 pl-2">
+        九月二十五日，百团等你！
+      </div>
+      <div class="mt-2">
         <a
           href="/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8D%8F%E4%BC%9A%E5%85%A5%E7%A4%BE%E6%8C%87%E5%8D%97"
           aria-label="进一步了解 NBTCA 的社区和文化"
         >
-          了解在 NBTCA
+          进一步了解我们
         </a>
-        <a class="learn-more-link-after">&gt; </a>
-        <br />
-        <br />
+      </div>
+      <div class="mt-14">
         <a
           href="/freshman/join"
           aria-label="申请加入 NBTCA"
+          class="text-xl"
         >
-          填写入社信息
+          立即登记信息 {">"}
         </a>
-        <a class="learn-more-link-after">&gt; </a>
+
       </div>
     </div>
-    <video width="640" height="360" autoplay muted>
-      <source src={mp4} type="video/mp4" />
-      你的浏览器不支持视频标签。
-    </video>
   </div>
 </BaseLayout>
 
