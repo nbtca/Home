@@ -11,6 +11,7 @@ export default function JoinForm() {
     phone: "",
     qq: "",
     email: "",
+    memo: "",
   })
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -33,10 +34,23 @@ export default function JoinForm() {
     }
   }
   return (
-    <div>
+    <div
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        display: "flex",
+      }}
+    >
       <form>
         <Card>
-          <CardBody>
+          <CardBody
+            style={{
+              maxWidth: "700px",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "1rem",
+            }}
+          >
             <Input
               name="name"
               placeholder="姓名"
@@ -86,8 +100,21 @@ export default function JoinForm() {
               onChange={handleChange}
               required
             />
+            <Input
+              name="memo"
+              placeholder="备注"
+              value={formData.memo}
+              onChange={handleChange}
+              required
+            />
           </CardBody>
-          <CardFooter>
+          <CardFooter
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
             <Button onClick={handleSubmit}>提交表单</Button>
           </CardFooter>
         </Card>
