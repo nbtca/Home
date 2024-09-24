@@ -27,17 +27,18 @@ export default function App() {
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen} height="48px">
       <NavbarContent className="flex justify-between items-center">
-        <NavbarBrand className="flex gap-4" onClick={() => window.location.href = "/"}>
+        <NavbarBrand className="flex gap-4">
           <img
             src="https://oss.nbtca.space/CA-logo.svg"
             alt=""
-            className="w-8 aspect-square"
+            className="w-8 aspect-square cursor-pointer"
+            onClick={() => window.location.href = "/"}
           />
-          <span className="text-lg text-[#1d1d1f]">
+          <span className="hidden sm:flex select-none cursor-default text-lg text-[#1d1d1f]">
             {SITE_TITLE}
           </span>
         </NavbarBrand>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarContent className="hidden sm:flex gap-[24px]" justify="center">
           {
             menuItems.map(item => (
               <NavbarItem key={item.name}>

@@ -4,10 +4,12 @@ import Tile from "../layouts/Tile.astro"
 import MoreTile from "../layouts/MoreTile.astro"
 const allPosts = await Astro.glob("../pages/posts/*.md")
 const Blogs = await Astro.glob("../pages/posts/blogs/**/*.md")
-allPosts.sort(
-  (a, b) =>
-    Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate),
-)
+allPosts.sort((a, b) => {
+  if ((a.frontmatter.title as string).startsWith("计算机协会入社指南")) {
+    return -99999999999
+  }
+  return Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate)
+})
 
 Blogs.sort(
   (a, b) =>
