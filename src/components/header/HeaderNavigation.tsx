@@ -37,7 +37,7 @@ export default function App() {
             {SITE_TITLE}
           </span>
         </NavbarBrand>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarContent className="hidden sm:flex gap-[24px]" justify="center">
           {
             menuItems.map(item => (
               <NavbarItem key={item.name}>
