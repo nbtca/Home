@@ -30,7 +30,6 @@ function QrCodeContent({ qrcode }: { qrcode: string }) {
         style={{
           display: "flex",
           justifyContent: "center",
-          // flexDirection: "column",
           textAlign: "center",
         }}
       >
