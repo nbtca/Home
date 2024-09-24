@@ -1,7 +1,7 @@
 ---
 import GenerateQR from "./GenerateQR.vue"
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts"
-import BaseHead from "../../components/BaseHead.astro"
+import BaseHead from "../../components/header/BaseHead.astro"
 
 const { primaryTitle } = Astro.props
 const title = primaryTitle ? `${primaryTitle}  -  ${SITE_TITLE}` : SITE_TITLE;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { makeLogtoClient } from "../utils/auth"
+import { makeLogtoClient } from "../../utils/auth"
 import { onMounted, ref } from "vue"
 import type { IdTokenClaims } from "@logto/browser"
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue"
