@@ -53,4 +53,4 @@ jobs:
           envs: BRANCH_NAME
           script: |
             cd ${{ github.ref == 'refs/heads/main' && secrets.REMOTE_PATH || secrets.REMOTE_PATH_DEVELOPMENT }}
-            docker compose up --force-recreate -d
+            docker compose up --force-recreate -d --pull=always 

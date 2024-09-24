@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"
+import BaseLayout from "../../layouts/BaseLayout.astro"
 import { computed } from "vue"
-import MemberCard from "../components/MemberCard.astro"
-import type { PublicMember } from "../store/member.ts"
-import { saturdayClient } from "../utils/client"
+import MemberCard from "../../components/MemberCard.astro"
+import type { PublicMember } from "../../store/member.ts"
+import { saturdayClient } from "../../utils/client"
 
 const { data: members } = await saturdayClient.GET("/members", { params: {} })
 

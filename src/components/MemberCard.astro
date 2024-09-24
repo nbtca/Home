@@ -1,9 +1,9 @@
 ---
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
-import type { Member } from "../store/member"
+import type { PublicMember } from "../store/member"
 import "../styles/global.css"
-const { member } = Astro.props as { member: Member }
+const { member } = Astro.props as { member: PublicMember }
 const avatar = member.avatar;
 ---
 
@@ -19,32 +19,32 @@ const avatar = member.avatar;
           class="w-full aspect-square overflow-hidden flex items-center justify-center bg-gradient-to-b from-gray-300/70"
         >
           {
-          avatar
-            ? (
-                typeof avatar !== "string"
-                  ? (
-                    <img
-                      class="object-cover h-full navigate"
-                      src={(await avatar)?.default?.src}
-                      alt=""
-                    />
-                    )
-                  : (
-                    <img
-                      class="object-cover h-full navigate"
-                      src={avatar + "?x-oss-process=image/resize,h_512,m_lfit"}
-                      alt=""
-                    />
-                    )
-              )
-            : (
-              <img
-                class="object-cover h-3/4 navigate"
-                src="https://oss.nbtca.space/CA-logo.svg"
-                alt=""
-              />
-              )
-        }
+            avatar
+              ? (
+                  typeof avatar !== "string"
+                    ? (
+                        <img
+                          class="object-cover h-full navigate"
+                          src={(await avatar)?.default?.src}
+                          alt=""
+                        />
+                      )
+                    : (
+                        <img
+                          class="object-cover h-full navigate"
+                          src={avatar + "?x-oss-process=image/resize,h_512,m_lfit"}
+                          alt=""
+                        />
+                      )
+                )
+              : (
+                  <img
+                    class="object-cover h-3/4 navigate"
+                    src="https://oss.nbtca.space/CA-logo.svg"
+                    alt=""
+                  />
+                )
+          }
         </div>
       </div>
       <div class="h-16">
