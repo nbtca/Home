@@ -1,13 +1,12 @@
-// app/page.tsx
 import { Button } from "@nextui-org/react"
 import { activeClient } from "../../../utils/client"
-// import { NextUIProvider } from "@nextui-org/react";
 
 export default function Page() {
   return (
     <div>
       <Button
         onClick={() => {
+          // 提交表单
           activeClient.freshman.postFreshmanAdd({
             requestBody: {
               class: "1",
@@ -21,7 +20,7 @@ export default function Page() {
           })
         }}
       >
-        Click me
+        提交表单
       </Button>
     </div>
   )
