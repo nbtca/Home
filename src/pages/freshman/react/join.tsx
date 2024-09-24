@@ -13,12 +13,34 @@ export default function JoinForm() {
     email: "",
     memo: "",
   })
+  function saveToLocalStorge() {
+    localStorage.setItem("formData", JSON.stringify(formData))
+  }
+  function loadFromLocalStorge() {
+    const data = localStorage.getItem("formData")
+    if (data) {
+      setFormData(JSON.parse(data))
+    }
+  }
+  const [firstRender, setFirstRender] = useState(true)
+  if (firstRender) {
+    setFirstRender(false)
+    loadFromLocalStorge()
+  }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prevData => ({
       ...prevData,
       [name]: value,
     }))
+    setTimeout(() => {
+      try {
+        saveToLocalStorge()
+      }
+      catch (error) {
+        console.error("Failed to save form data to local storage", error)
+      }
+    }, 100)
   }
   const handleSubmit = async () => {
     try {
@@ -26,7 +48,7 @@ export default function JoinForm() {
         requestBody: formData,
       })
       alert("提交成功！ 后续请加群获取！")
-      window.location.href = "/about"
+      window.location.href = "/freshman/qrcode"
     }
     catch (error) {
       console.error("Error submitting form:", error)
