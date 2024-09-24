@@ -18,7 +18,7 @@ const FreshmanList = () => {
     list: [],
     total: 0,
   })
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage] = useState(1) // setCurrentPage
   useEffect(() => {
     const fetchFreshmen = async () => {
       const result = await activeClient.freshman.getFreshmanList({
@@ -28,13 +28,9 @@ const FreshmanList = () => {
     }
     fetchFreshmen()
   }, [])
-  setTimeout(() => {
-    setCurrentPage(1)
-  }, 1000)
   return (
     <div>
       <Card>
-        {JSON.stringify(freshmen)}
         <CardBody>
           {freshmen.list.map(freshman => (
             <div key={freshman.number}>
