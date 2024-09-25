@@ -9,6 +9,7 @@ export const saturdayClient = createClient<saturdayPaths>({
 //   baseUrl: "https://active.nbtca.space/",
 // })
 export const activeClient = new ApiClient({
-  BASE: "/active",
+  BASE: "https://active.nbtca.space",
+  // BASE: "/active",
 })
 export * from "./active/types.gen"
