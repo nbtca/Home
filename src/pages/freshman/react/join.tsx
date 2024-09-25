@@ -1,10 +1,9 @@
 import { useState } from "react"
-import { Button, Input, Card, CardBody, CardFooter } from "@nextui-org/react"
+import { Button, Input, Textarea } from "@nextui-org/react"
 import { activeClient } from "../../../utils/client"
 
 export default function JoinForm() {
-  const [formData, setFormData] = useState({
-    name: "",
+  const [formData, setFormData] = useState({ name: "",
     class: "",
     number: "",
     major: "",
@@ -13,10 +12,10 @@ export default function JoinForm() {
     email: "",
     memo: "",
   })
-  function saveToLocalStorge() {
+  function saveToLocalStorage() {
     localStorage.setItem("formData", JSON.stringify(formData))
   }
-  function loadFromLocalStorge() {
+  function loadFromLocalStorage() {
     const data = localStorage.getItem("formData")
     if (data) {
       setFormData(JSON.parse(data))
@@ -25,7 +24,7 @@ export default function JoinForm() {
   const [firstRender, setFirstRender] = useState(true)
   if (firstRender) {
     setFirstRender(false)
-    loadFromLocalStorge()
+    loadFromLocalStorage()
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -35,7 +34,7 @@ export default function JoinForm() {
     }))
     setTimeout(() => {
       try {
-        saveToLocalStorge()
+        saveToLocalStorage()
       }
       catch (error) {
         console.error("Failed to save form data to local storage", error)
@@ -56,91 +55,80 @@ export default function JoinForm() {
     }
   }
   return (
-    <div
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex",
-      }}
-    >
-      <form>
-        <Card>
-          <CardBody
-            style={{
-              maxWidth: "700px",
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "1rem",
-            }}
-          >
-            <Input
-              name="name"
-              placeholder="姓名"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-            <Input
-              name="class"
-              placeholder="班级"
-              value={formData.class}
-              onChange={handleChange}
-              required
-            />
-            <Input
-              name="number"
-              placeholder="学号"
-              value={formData.number}
-              onChange={handleChange}
-              required
-            />
-            <Input
-              name="major"
-              placeholder="专业"
-              value={formData.major}
-              onChange={handleChange}
-              required
-            />
-            <Input
-              name="phone"
-              placeholder="电话"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
-            <Input
-              name="qq"
-              placeholder="QQ"
-              value={formData.qq}
-              onChange={handleChange}
-              required
-            />
-            <Input
-              name="email"
-              placeholder="邮箱"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            <Input
-              name="memo"
-              placeholder="备注"
-              value={formData.memo}
-              onChange={handleChange}
-              required
-            />
-          </CardBody>
-          <CardFooter
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              display: "flex",
-            }}
-          >
-            <Button onClick={handleSubmit}>提交表单</Button>
-          </CardFooter>
-        </Card>
+    <div>
+      <form className="flex flex-col gap-8">
+        <div className="flex flex-col md:grid grid-cols-2 gap-4">
+          <div className="text-sm text-gray-500 col-span-2">
+            我们需要以下信息用于登记
+          </div>
+          <Input
+            name="name"
+            placeholder="姓名"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            name="class"
+            placeholder="班级"
+            value={formData.class}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            name="number"
+            placeholder="学号"
+            value={formData.number}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            name="major"
+            placeholder="专业"
+            value={formData.major}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="text-sm text-gray-500">
+            我们需要以下信息以便联系你
+          </div>
+          <Input
+            name="phone"
+            placeholder="电话"
+            className=""
+            value={formData.phone}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            name="qq"
+            placeholder="QQ"
+            className=""
+            value={formData.qq}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            name="email"
+            placeholder="邮箱"
+            className=""
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <Textarea
+          label="备注"
+          name="memo"
+          placeholder=""
+          className="col-span-2"
+          value={formData.memo}
+          onChange={handleChange}
+        />
       </form>
+      <Button className="mt-12" type="submit" color="primary" fullWidth onClick={handleSubmit}>提交</Button>
     </div>
   )
 }

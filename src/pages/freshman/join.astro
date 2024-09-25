@@ -1,22 +1,31 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro"
 import ReactChild from "./react/join.tsx"
-import logo from "./_assets/nbtca.gif";
 ---
 
 <BaseLayout title="加入我们">
-  <main>
-    <div style="margin: -30px;display:flex; justify-content: center;">
-      <img src={logo.src} style="max-width: 450px;" />
+  <div class="section-content box-border flex flex-col gap-4 pb-20">
+    <div class="text-xs sm:text-sm bg-[#f5f5f7] p-4 rounded-2xl mt-6">
+      <li>
+        本页面仅作计算机协会新人信息登记使用，原则上登记即可加入。
+      </li>
+      <li>
+        入社后可能仍需要在学校平台登记，后续请留意通知。
+      </li>
+      <li>
+        允许多次提交表单，通常以最后一次提交为准。
+      </li>
     </div>
-    <div style="display:flex; justify-content: center;font-size: large;">
-      加入计算机协会
+    <div
+      class="my-4"
+    >
+      <div class="text-2xl lg:text-3xl leading-[1.125] font-bold ">
+        加入计算机协会
+      </div>
+      <div class="mt-2 text-sm text-gray-500">
+        在加入协会前，我们需要收集一些你的个人信息，用于满足学校相关规定和后续的社团管理。
+      </div>
     </div>
     <ReactChild client:only="react" />
-    <div style="display:flex; justify-content: center;margin-left: 20px;margin-right: 20px;">
-      1.本页面仅作计算机协会新人信息登记使用，原则上登记即可加入。但入社后可能仍需要在学校的平台登记，后续请留意群内通知。
-      <br />
-      2.允许多次提交表单，通常以最后一次提交为准。
-    </div>
-  </main>
+  </div>
 </BaseLayout>
