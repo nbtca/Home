@@ -1,14 +1,11 @@
 ﻿---
 import BaseLayout from "../layouts/BaseLayout.astro"
-import mp4 from "./_assets/nbtca.mp4";
+import logoAnimated from "./_assets/nbtca.gif";
 ---
 
 <BaseLayout primaryTitle="加入我们">
-  <div class="container pt-16 pb-40">
-    <video width="640" height="360" autoplay="1" muted>
-      <source src={mp4} type="video/mp4" />
-      你的浏览器不支持视频标签。
-    </video>
+  <div class="container pt-16 pb-40 box-border">
+    <img src={logoAnimated.src} class="" alt="" />
     <div class="flex flex-col items-center">
       <div class="text-3xl md:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#00ccc7] to-[#9583ef]">
         <div>
