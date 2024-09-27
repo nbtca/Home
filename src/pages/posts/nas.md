@@ -7,7 +7,7 @@ categories:
   - 更多
   - 学习
 cover: 
-  url: 'https://oss.nbtca.space/blog/clas/20220312214337.png'
+  url: 'https://oss.nbtca.space/blog/clas/20220312214337-large-6apW1g.jpeg'
 description: 寝室软路由的记录，unraid的折腾和各种体验，文件存储，离线下载，游戏服务器……
 permalink: /pages/a8d792/
 author: 

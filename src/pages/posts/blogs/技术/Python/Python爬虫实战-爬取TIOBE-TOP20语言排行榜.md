@@ -5,7 +5,7 @@ pubDate: 2022-04-05
 categories:
   - 技术
   - Python
-cover: ./_assets/867f99abfc5c46528fb1d3e570087ed9/data-mining.png
+cover: https://oss.nbtca.space/blog/clas/data-mining-mid-urPA5j.jpeg
 tid: python-spider-tiobe-top
 description: 使用python爬虫的实践记录。
 permalink: /pages/019940/

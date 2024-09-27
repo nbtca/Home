@@ -5,7 +5,7 @@ pubDate: 2022-04-17 14:07:55
 categories:
   - 技术
   - Python
-cover: ./_assets/7e03f38d60aa4dec9f98cc3f3c137189/data-mining.png
+cover: https://oss.nbtca.space/blog/clas/data-mining-mid-urPA5j.jpeg
 tid: python-spider-wzry-hero
 description: 使用python爬虫的实践记录,王者荣耀篇。
 permalink: /pages/b8d343/

@@ -5,7 +5,7 @@ pubDate: 2022-03-19 22:38:56
 categories:
   - 技术
   - Linux
-cover: ./_assets/cbea6761a0164906b8396942cf61c664/20220320105749.png
+cover: https://oss.nbtca.space/blog/clas/20220320105749-Lmcbbo.jpeg
 tid: linux-note-file-io
 description: 有关linux文件io的一系列笔记。
 permalink: /pages/82d273/
