@@ -1,9 +1,9 @@
-import React from "react"
+import { useState } from "react"
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link } from "@nextui-org/react"
 import { SITE_TITLE } from "../../consts"
 
 export default function App() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const menuItems = [
     {

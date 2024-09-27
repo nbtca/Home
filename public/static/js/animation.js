@@ -17,6 +17,10 @@ var loadImage = function (index) {
   if (index >= imageElements.length) return
   const item = imageElements[index]
   const image = new Image()
+  if(!item.src){
+    loadImage(index + 1)
+    return
+  }
   image.src = item.src
   image.onload = function () {
     loadImage(index + 1)
