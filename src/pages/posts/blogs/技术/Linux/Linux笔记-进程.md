@@ -5,7 +5,7 @@ pubDate: 2022-04-05 13:13:35
 categories:
   - 技术
   - Linux
-cover: ./_assets/f835945d5de246bcabdff51dd984aaf2/20220320105749.png
+cover: https://oss.nbtca.space/blog/clas/20220320105749-Lmcbbo.jpeg
 tid: linux-note-process
 description: 有关linux进程的一系列笔记。
 permalink: /pages/324bec/

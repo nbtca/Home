@@ -5,7 +5,7 @@ pubDate: 2022-04-05 13:13:28
 categories:
   - 技术
   - Linux
-cover: ./_assets/dfc39c2948664aa78df4a4b4aa11bb2c/20220320105749.png
+cover: https://oss.nbtca.space/blog/clas/20220320105749-Lmcbbo.jpeg
 tid: linux-note-signal
 description: 有关linux信号的一系列笔记。
 permalink: /pages/aff776/
