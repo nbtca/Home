@@ -60,6 +60,7 @@ export default [
       "node_modules/**/*",
       "src/utils/active/**/*",
       "openapi-ts.active.config.ts",
+      "src/env.d.ts",
     ],
   },
 ]
