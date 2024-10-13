@@ -1,3 +1,14 @@
+---
+layout: '../../layouts/MarkdownPost.astro'
+title: 'Git 基本流程'
+pubDate: 2024-10-13
+description: ' '
+author: 'zzh0u'
+tags: ["开发","Git"]
+theme: 'white'
+featured: true
+---
+
 Git 是一个版本控制系统，帮助用户在项目中追踪文件修改，并在需要时能够还原到之前操作。本文介绍了 Git 的基本流程，包括初始化、添加、提交、推送、拉取等操作。
 
 ## 初始化
