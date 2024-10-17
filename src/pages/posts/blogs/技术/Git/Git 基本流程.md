@@ -1,5 +1,5 @@
 ---
-layout: '../../layouts/MarkdownPost.astro'
+layout: '../../../layouts/MarkdownPost.astro'
 title: 'Git 基本流程'
 pubDate: 2024-10-13
 description: ' '
