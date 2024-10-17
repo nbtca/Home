@@ -28,7 +28,7 @@ jobs:
           no-cache: true
           platforms: linux/amd64
           tags: |
-            ${{ env.IMAGE_NAME_FULL }}:${{ github.ref_name }}
+            ${{ env.IMAGE_NAME_FULL }}
 
   build-and-push:
     runs-on: ubuntu-latest
