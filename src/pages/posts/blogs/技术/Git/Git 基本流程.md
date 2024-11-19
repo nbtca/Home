@@ -4,7 +4,7 @@ title: 'Git 基本流程'
 pubDate: 2024-10-13
 description: ' '
 author: 'zzh0u'
-tags: ["开发","Git"]
+tags: ["技术","开发","Git"]
 theme: 'white'
 featured: true
 ---
