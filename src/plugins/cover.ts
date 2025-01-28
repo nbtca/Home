@@ -18,6 +18,9 @@ export const handleLocalCoverPlugin: RehypePlugin = () => {
     if (coverUrl.includes("http")) {
       return
     }
+    if (coverUrl.includes("base64")) {
+      return
+    }
     const url = path.resolve(path.dirname(filePath), coverUrl)
     const dataURL = await convertImageToBase64URL(url)
     if (typeof astroData.frontmatter.cover === "string") {
