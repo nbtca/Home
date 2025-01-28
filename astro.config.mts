@@ -11,7 +11,13 @@ export default defineConfig({
   site: SITE_URL,
   markdown: {
     rehypePlugins: [handleLocalCoverPlugin, ...themePipeline],
-    syntaxHighlight: "prism",
+    syntaxHighlight: "shiki",
+    shikiConfig: {
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+    }
   },
   integrations: [
     vue(),

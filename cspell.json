@@ -19,6 +19,7 @@
     "openapi",
     "Rehype",
     "rehypePlugins",
+    "shiki",
     "tseslint"
   ]
 }
