@@ -5,14 +5,14 @@ import {
   CardBody,
   CardFooter,
   //   PaginationItem,
-} from "@nextui-org/react"
+} from "@heroui/react"
 import {
   activeClient,
   type GetFreshmanListResponse,
 } from "../../../utils/client"
 // activeClient.freshman.getFreshmanList();
 import { useEffect, useState } from "react"
-// import { Pagination } from "@nextui-org/react";
+// import { Pagination } from "@heroui/react";
 const FreshmanList = () => {
   const [freshmen, setFreshmen] = useState<GetFreshmanListResponse>({
     list: [],
