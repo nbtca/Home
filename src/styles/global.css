@@ -12,6 +12,7 @@
   --footer-pipe-color: #86868b;
   --footer-directory-title-color: #1d1d1f;
   --footer-directory-title-color-hover: #000;
+  --borer-radius: 10px;
 }
 
 *,
@@ -28,6 +29,28 @@ html {
 body {
   margin: 0;
   padding: 0;
+}
+
+body, input, textarea, select, button {
+    font-synthesis: none;
+    -moz-font-feature-settings: "kern";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing:grayscale
+}
+
+body.theme-dark .astro-code,
+body.theme-dark .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    /* Optional, if you also want font styles */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+.astro-code{
+  padding: 12px;
+  border-radius: var(--borer-radius);
+  background-color: var(--gray-primary) !important; 
 }
 
 ul,
@@ -124,7 +147,7 @@ button:disabled {
 }
 
 html {
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
   font-size: 106.25%;
   quotes: "“" "”";
@@ -135,7 +158,7 @@ body {
   line-height: 1.47059;
   font-weight: 400;
   letter-spacing: -0.022em;
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
   background-color: #fff;
   color: #1d1d1f;
@@ -488,7 +511,7 @@ html.no-touch.no-reduced-motion .tile[data-focus-method="key"] .media--video {
   line-height: 1.33337;
   font-weight: 700;
   letter-spacing: -0.01em;
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
 }
 
@@ -527,7 +550,7 @@ html.no-touch.no-reduced-motion .tile[data-focus-method="key"] .media--video {
 }
 
 .tile__category:lang(zh-CN) {
-  font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
+  font-family: system-ui, "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
     "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
@@ -551,7 +574,7 @@ html.no-touch.no-reduced-motion .tile[data-focus-method="key"] .media--video {
   line-height: 1.28577;
   font-weight: 600;
   letter-spacing: -0.016em;
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
   display: flex;
   justify-content: flex-start;
@@ -592,7 +615,7 @@ html.no-touch.no-reduced-motion .tile[data-focus-method="key"] .media--video {
 }
 
 .tile__timestamp:lang(zh-CN) {
-  font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI' , "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
     "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
@@ -5408,7 +5431,7 @@ html.no-touch.no-reduced-motion
   line-height: 1.23536;
   font-weight: 500;
   letter-spacing: -0.022em;
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
   text-align: center;
 }
@@ -5436,7 +5459,7 @@ html.no-touch.no-reduced-motion
   line-height: 1.23536;
   font-weight: 600;
   letter-spacing: -0.022em;
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
   border: 2px solid;
   padding: 10px 24px 9px;
@@ -5470,7 +5493,7 @@ html.no-touch.no-reduced-motion
   line-height: 1.23536;
   font-weight: 700;
   letter-spacing: -0.022em;
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
   -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
@@ -5939,49 +5962,8 @@ html.no-touch.no-reduced-motion
     "Arial", sans-serif;
 }
 
-.page-body:lang(ar) {
-  line-height: 1.57895;
-  font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Display", "SF Pro Icons",
-    "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-}
-
-.page-body:lang(ja) {
-  line-height: 1.47376;
-  font-family: "SF Pro JP", "SF Pro Display", "SF Pro Icons",
-    "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo",
-    "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-}
-
-.page-body:lang(ko) {
-  line-height: 1.52632;
-  font-family: "SF Pro KR", "SF Pro Display", "SF Pro Icons", "Apple Gothic",
-    "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue",
-    "Helvetica", "Arial", sans-serif;
-}
-
-.page-body:lang(th) {
-  line-height: 1.36844;
-  font-family: "SF Pro TH", "SF Pro Display", "SF Pro Icons", "Helvetica Neue",
-    "Helvetica", "Arial", sans-serif;
-}
-
 .page-body:lang(zh-CN) {
-  font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC",
-    "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-}
-
-.page-body:lang(zh-HK) {
-  font-family: "SF Pro HK", "SF Pro Display", "SF Pro Icons", "PingFang HK",
-    "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-}
-
-.page-body:lang(zh-MO) {
-  font-family: "SF Pro HK", "SF Pro TC", "SF Pro Display", "SF Pro Icons",
-    "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-}
-
-.page-body:lang(zh-TW) {
-  font-family: "SF Pro TC", "SF Pro Display", "SF Pro Icons", "PingFang TC",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI' , "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
     "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
@@ -5991,61 +5973,12 @@ html.no-touch.no-reduced-motion
     line-height: 1.47059;
     font-weight: 400;
     letter-spacing: -0.022em;
-    font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
       "Arial", sans-serif;
-  }
-
-  .page-body:lang(ar) {
-    line-height: 1.58824;
-    letter-spacing: 0em;
-    font-family: "SF Pro AR", "SF Pro Gulf", "SF Pro Text", "SF Pro Icons",
-      "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  }
-
-  .page-body:lang(ja) {
-    letter-spacing: 0em;
-    font-family: "SF Pro JP", "SF Pro Text", "SF Pro Icons",
-      "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", "Meiryo",
-      "ＭＳ Ｐゴシック", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  }
-
-  .page-body:lang(ko) {
-    line-height: 1.58824;
-    letter-spacing: 0em;
-    font-family: "SF Pro KR", "SF Pro Text", "SF Pro Icons", "Apple Gothic",
-      "HY Gulim", "MalgunGothic", "HY Dotum", "Lexi Gulim", "Helvetica Neue",
-      "Helvetica", "Arial", sans-serif;
   }
 
   .page-body:lang(zh) {
     letter-spacing: 0em;
-  }
-
-  .page-body:lang(th) {
-    line-height: 1.35296;
-    letter-spacing: 0em;
-    font-family: "SF Pro TH", "SF Pro Text", "SF Pro Icons", "Helvetica Neue",
-      "Helvetica", "Arial", sans-serif;
-  }
-
-  .page-body:lang(zh-CN) {
-    font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
-      "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  }
-
-  .page-body:lang(zh-HK) {
-    font-family: "SF Pro HK", "SF Pro Text", "SF Pro Icons", "PingFang HK",
-      "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  }
-
-  .page-body:lang(zh-MO) {
-    font-family: "SF Pro HK", "SF Pro TC", "SF Pro Text", "SF Pro Icons",
-      "PingFang HK", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  }
-
-  .page-body:lang(zh-TW) {
-    font-family: "SF Pro TC", "SF Pro Text", "SF Pro Icons", "PingFang TC",
-      "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   }
 }
 
@@ -6266,7 +6199,7 @@ html.no-touch.no-reduced-motion
   line-height: 1.33337;
   font-weight: 600;
   letter-spacing: -0.01em;
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
 }
 
@@ -6832,21 +6765,12 @@ html.no-touch.no-reduced-motion
 }
 
 .picture {
-  /* position: absolute; */
-
-  /* left: 50%;  */
-  /* top: 0;
-  height: 100%;
-  width: 100%; */
-  /* transform: translateX(-50%); */
-  /* max-width: min(calc(100% - 32px), 650px); */
   position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: space-between; 
   margin-left: auto;
   margin-right: auto;
-  max-width: min(calc(100% - 32px), 650px);
 }
 
 .picture.no-dl {
@@ -7383,7 +7307,7 @@ html.no-touch.no-reduced-motion
   line-height: 1.33337;
   font-weight: 700;
   letter-spacing: -0.01em;
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
 }
 
@@ -7548,7 +7472,7 @@ html.no-touch.no-reduced-motion
   line-height: 1.28577;
   font-weight: 600;
   letter-spacing: -0.016em;
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
 }
 
