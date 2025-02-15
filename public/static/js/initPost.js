@@ -5,9 +5,7 @@ document.head.appendChild(scriptMd5)
 
 scriptMd5.onload = function () {
   console.log("md5.js loaded")
-  // step1. sythx highlighting
-  syntaxHighlight()
-  // step2. lazyload
+  // step1. lazyload
   initLazyLoad()
 }
 
@@ -80,32 +78,4 @@ function renderStyle(sign, percent) {
     height: auto;
   }
   };`
-}
-
-function syntaxHighlight() {
-  var script = document.createElement("script")
-  script.src = "/static/js/hljs.js"
-  document.head.appendChild(script)
-
-  var styleLight = document.createElement("link")
-  styleLight.rel = "stylesheet"
-  styleLight.href = "/static/css/stackoverflow-light.min.css"
-
-  var styleDark = document.createElement("link")
-  styleDark.rel = "stylesheet"
-  styleDark.href = "/static/css/stackoverflow-dark.min.css"
-
-  if (document.querySelector("body").classList.contains("theme-dark")) {
-    document.head.appendChild(styleDark)
-  }
-  else {
-    document.head.appendChild(styleLight)
-  }
-
-  script.onload = function () {
-    console.log("hljs.js loaded")
-    document.querySelectorAll("pre code").forEach(function (block) {
-      hljs.highlightBlock(block)
-    })
-  }
 }

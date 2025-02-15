@@ -7,10 +7,9 @@ export const convertImageToBase64URL = async (filename: Filename, imageType: Ima
   try {
     const buffer = await readFile(filename)
     const base64String = Buffer.from(buffer).toString("base64")
-    // console.log(`base64String`, base64String.slice(0, 100));
     return `data:image/${imageType};base64,${base64String}`
   }
   catch (error) {
-    throw new Error(`file ${filename} no exist ❌`)
+    throw new Error(`file ${filename} no exist ❌`, error)
   }
 }

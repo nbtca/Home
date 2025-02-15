@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link } from "@heroui/react"
 import { SITE_TITLE } from "../../consts"
+import CALogoWhite from "./assets/CA-logo-white.png"
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -31,10 +32,16 @@ export default function App() {
           <img
             src="https://oss.nbtca.space/CA-logo.svg"
             alt=""
-            className="w-8 aspect-square cursor-pointer"
+            className="w-8 aspect-square cursor-pointer dark:hidden"
             onClick={() => window.location.href = "/"}
           />
-          <span className="hidden sm:flex select-none cursor-default text-lg text-[#1d1d1f]">
+          <img
+            src={CALogoWhite.src}
+            alt=""
+            className="w-8 aspect-square cursor-pointer hidden dark:block"
+            onClick={() => window.location.href = "/"}
+          />
+          <span className="hidden sm:flex select-none cursor-default text-lg text-[#1d1d1f] dark:text-white">
             {SITE_TITLE}
           </span>
         </NavbarBrand>

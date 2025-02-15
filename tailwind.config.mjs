@@ -12,6 +12,6 @@ export default {
       },
     },
   },
-  darkMode: "class",
+  darkMode: ["selector", "body.theme-dark"],
   plugins: [heroui()],
 }
