@@ -1,4 +1,4 @@
-import { Button, Link, Code } from "@nextui-org/react"
+import { Button, Link, Code } from "@heroui/react"
 
 function QrCodeContent({ qrcode }: { qrcode: string }) {
   return (

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link } from "@nextui-org/react"
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link } from "@heroui/react"
 import { SITE_TITLE } from "../../consts"
 import CALogoWhite from "./assets/CA-logo-white.png"
 
