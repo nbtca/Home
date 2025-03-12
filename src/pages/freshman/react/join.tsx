@@ -7,7 +7,7 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@nextui-org/react"
+} from "@heroui/react"
 import { activeClient } from "../../../utils/client"
 
 export default function JoinForm() {
