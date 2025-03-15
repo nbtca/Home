@@ -2,7 +2,7 @@ name: main
 
 on:
   push:
-    branches: ["main", "dev", "feature-*"]
+    branches: ["main"]
     paths-ignore: # 忽略的文件
       - "README.md"
       - "LICENSE"
