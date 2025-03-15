@@ -19,6 +19,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Use Latest Corepack
+        run: |
+          echo "Before: corepack version => $(corepack --version || echo 'not installed')"
+          npm install -g corepack@latest
+          echo "After : corepack version => $(corepack --version)"
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          echo "pnpm version => $(pnpm --version || echo 'pnpm not installed')"
+
       - uses: docker/build-push-action@v6
         with:
           context: .
@@ -33,6 +42,15 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
+
+      - name: Use Latest Corepack
+        run: |
+          echo "Before: corepack version => $(corepack --version || echo 'not installed')"
+          npm install -g corepack@latest
+          echo "After : corepack version => $(corepack --version)"
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          echo "pnpm version => $(pnpm --version || echo 'pnpm not installed')"
 
       - name: Login
         uses: docker/login-action@v2
@@ -62,5 +80,5 @@ jobs:
           key: ${{ secrets.ACCESS_TOKEN }}
           envs: BRANCH_NAME
           script: |
-            cd ${{ github.ref == 'refs/heads/main' && secrets.REMOTE_PATH || secrets.REMOTE_PATH_DEVELOPMENT }}
-            docker compose up --force-recreate -d --pull=always 
+            cd ${{secrets.REMOTE_PATH}}
+            docker compose up --force-recreate -d --pull=always
