@@ -77,7 +77,7 @@ jobs:
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.ACCESS_TOKEN }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: BRANCH_NAME
           script: |
             cd ${{secrets.REMOTE_PATH}}
