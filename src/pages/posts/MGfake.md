@@ -28,7 +28,7 @@ tags: ["随笔"]
 # 计算机协会纲要
 
 > 既欲伸张理想于天地，则必先有方寸
-> [📖](https://github.com/nbtca/documents/blob/main/%E6%A1%A3%E6%A1%88/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8D%8F%E4%BC%9A%E7%BA%B2%E8%A6%81)
+> [📖](https://github.com/nbtca/documents/blob/main/archived/2024/计算机协会纲要.md)
 
 # 路在何方
 
