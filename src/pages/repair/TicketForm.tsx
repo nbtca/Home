@@ -25,7 +25,6 @@ export default function App() {
         window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
         return
       }
-      await checkAuth()
       const res = await logtoClient.getIdTokenClaims()
       setUserInfo(res)
     }
