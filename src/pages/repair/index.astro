@@ -1,0 +1,83 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import hayasaka from "../_assets/hayasaka.jpg"
+import repairDayOnSite from "../_assets/repair_day_on_site.jpeg"
+import { Button } from "@heroui/react"
+import RepairHeader from "./RepairHeader.astro";
+
+---
+
+<script>
+    // @ts-check
+    import { makeLogtoClient } from "../../utils/auth"
+    const button = document.getElementById("create-ticket-button")
+
+    button.addEventListener("click", async () => {
+      const logtoClient = makeLogtoClient()
+      const createRepairPath = "/repair/create-ticket"
+      const authenticated = await logtoClient.isAuthenticated()
+      if (!authenticated) {
+        window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
+        return
+      }
+      window.location.href = createRepairPath
+    })
+</script>
+
+<BaseLayout>
+  <section class="box-border">
+    <RepairHeader></RepairHeader>
+    <div class="container mx-auto pt-16 pb-20">
+      <div class="flex flex-col items-center justify-center">
+        <img src={hayasaka.src} alt="" class="h-48 md:h-auto md:w-1/2 object-cover" />
+        <div class="mt-12 text-lg lg:text-2xl font-bold">我们提供免费的电脑维修服务</div>
+        <div class="mt-4 text-gray-500 text-center lg:text-lg">
+          <div>
+            从<strong>清理磁盘</strong>到<strong>加装硬件</strong>再到<strong>环境配置</strong>，
+          </div>
+          <div>
+            我们都帮你搞定。
+          </div>
+        </div>
+        <div class="mt-6">
+          <Button
+            id="create-ticket-button"
+            className="bg-blue-500 text-white"
+            radius="full"
+          >进行预约
+          </Button>
+        </div>
+      </div>
+    </div>
+    <div class="w-full bg-white pb-24 flex flex-col gap-12">
+      <div class="component">
+        <div class="relative h-[521px] sm:h-[396px] md:h-[561px] mt-4 w-full my-0 xs:rounded-2xl overflow-hidden">
+          <img src={repairDayOnSite.src} alt="" class="w-full h-full object-cover object-bottom-right" />
+          <div class="absolute bottom-0 left-0 text-white font-bold p-4 text-xl flex items-center gap-2">
+            理工维修日
+            <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.9998 6.04438C22.9698 4.81543 22.5749 3.62319 21.8654 2.61935C21.1558 1.6155 20.1637 0.845446 19.0152 0.407155C17.8667 -0.0311353 16.6138 -0.117845 15.4159 0.15806C14.218 0.433964 13.1292 1.06001 12.2881 1.95654L9.80055 4.70897C9.09069 5.49362 8.84036 5.08415 8.42884 4.69594C3.47217 0.0257864 -2.93372 6.51078 1.47633 11.4134L8.22583 18.9197L11.2806 15.5184C10.3522 15.6164 9.41428 15.4701 8.55984 15.0939C7.374 14.574 6.57978 13.6275 6.16826 12.9944C5.67239 12.2317 5.47829 11.3387 5.33084 10.3394C5.21836 9.57872 4.91932 9.05882 4.54004 8.65621C4.06036 8.14157 3.40641 7.82375 2.70538 7.76457C2.79582 7.24026 3.06807 6.76458 3.47431 6.42103C3.88056 6.07748 4.39484 5.88803 4.92687 5.88594C5.23782 5.88279 5.54591 5.94558 5.83082 6.07019C6.11573 6.1948 6.371 6.37839 6.57978 6.60886C7.11406 7.22135 7.67029 7.67677 8.32391 7.95593C9.93087 8.64181 11.1037 6.92711 11.6002 6.3784L14.8875 2.76107C15.5473 2.03541 16.607 2.37904 16.9719 2.53405L13.1071 6.79679C13.0827 6.82374 13.0644 6.85558 13.0534 6.89019C13.0424 6.92479 13.0389 6.96135 13.0432 6.99741C13.0475 7.03347 13.0595 7.06819 13.0783 7.09924C13.0971 7.1303 13.1223 7.15697 13.1523 7.17745C13.203 7.21186 13.2643 7.22692 13.3251 7.21986C13.3859 7.21281 13.4422 7.18413 13.4836 7.13904L16.9328 3.35642C17.4396 2.80017 18.1556 2.80085 18.9986 3.20552L14.4719 8.22205C14.4287 8.26989 14.4063 8.33293 14.4096 8.39731C14.4128 8.46169 14.4416 8.52213 14.4894 8.56533C14.5372 8.60853 14.6003 8.63096 14.6647 8.62768C14.729 8.6244 14.7895 8.59568 14.8327 8.54784L18.4766 4.51007C18.9121 4.02584 19.6391 4.17742 20.4272 4.54985L15.9342 9.53414C15.8942 9.57834 15.8735 9.63659 15.8765 9.69608C15.8795 9.75558 15.9061 9.81143 15.9503 9.85136C15.9945 9.89128 16.0527 9.91202 16.1122 9.90899C16.1717 9.90597 16.2276 9.87944 16.2675 9.83524L18.882 6.94494C19.4197 6.34891 20.1995 6.53341 20.8476 6.87292L9.31222 19.8457L9.18603 19.9876L10.9953 22L21.2831 10.5582C22.3949 9.4045 23.043 7.76662 22.9978 6.04438" fill="white" />
+            </svg>
+          </div>
+        </div>
+        <div class="mt-4 font-semibold px-4 xs:px-2 text-base xs:text-lg text-gray-400">
+          <div>
+            在接受预约之外，我们每月举办 <span class="text-black">理工维修日</span>，定时定点提供维修。
+          </div>
+          <div>
+            在<a href="/calendar" class="mx-0.5">协会公共日历</a>上查看最近的维修日
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+// @ts-check
+import { makeLogtoClient } from "../../utils/auth"
+
+makeLogtoClient().getIdTokenClaims().then((res) => {
+  console.log(res)
+})
+</script>

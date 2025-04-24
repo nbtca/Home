@@ -20,14 +20,14 @@ export default function App() {
       name: "关于我们",
     },
     {
-      link: "/join-us",
-      name: "加入我们",
+      link: "/repair",
+      name: "维修",
     },
   ]
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} height="48px">
-      <NavbarContent className="flex justify-between items-center">
+    <Navbar onMenuOpenChange={setIsMenuOpen} height="48px" className="">
+      <NavbarContent className="flex justify-between items-center px-0 md:px-[22px]">
         <NavbarBrand className="flex gap-4">
           <img
             src="https://oss.nbtca.space/CA-logo.svg"

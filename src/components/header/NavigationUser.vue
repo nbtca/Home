@@ -7,7 +7,11 @@ import type LogtoClient from "@logto/browser"
 
 const logtoClient = ref<LogtoClient>()
 const onSignIn = async () => {
-  logtoClient.value?.signIn(import.meta.env.PUBLIC_LOGTO_CALLBACK_URL)
+  console.log(window.location.pathname)
+  logtoClient.value?.signIn({
+    redirectUri: import.meta.env.PUBLIC_LOGTO_CALLBACK_URL,
+    postRedirectUri: window.location.pathname,
+  })
 }
 const onSignOut = async () => {
   logtoClient.value?.signOut(import.meta.env.PUBLIC_LOGTO_REDIRECT_URL)
@@ -34,9 +38,9 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="flex items-center justify-center w-12">
+  <div class="flex items-center justify-center">
     <div @click="onSignIn" v-if="isAuthenticated === false" class="">
-      <a class="nav-item-content px-2 hover:text-[#2997ff] text-nowrap cursor-pointer">登入</a>
+      <a class="nav-item-content hover:text-[#2997ff] text-nowrap cursor-pointer">登入</a>
     </div>
     <div class="flex items-center" v-if="isAuthenticated">
       <Menu as="div" class="relative inline-block text-left">

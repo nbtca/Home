@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import RepairHeader from "./RepairHeader.astro"
+import { Button } from "@heroui/react"
+---
+
+<script>
+  import { makeLogtoClient } from "../../utils/auth"
+  const button = document.getElementById("login-button")
+
+  button.addEventListener("click", async () => {
+    const logtoClient = makeLogtoClient()
+    const urlParams = new URLSearchParams(window.location.search)
+    const redirectUrl = urlParams.get("redirectUrl") || "/"
+    const isAuthenticated = await logtoClient.isAuthenticated()
+    if (isAuthenticated) {
+      window.location.href = redirectUrl
+    }
+    logtoClient.signIn({
+      redirectUri: import.meta.env.PUBLIC_LOGTO_CALLBACK_URL,
+      postRedirectUri: redirectUrl,
+    })
+  })
+</script>
+
+<BaseLayout primaryTitle="Create Ticket">
+  <RepairHeader></RepairHeader>
+  <section class="min-h-[70vh]">
+    <div class="section-content my-16 flex flex-col gap-8">
+      <div>
+        <div>
+          <div class="text-xl font-bold">登入账号后继续操作</div>
+          <div class="text-sm text-gray-700">
+            前往 auth.app.nbtca.space
+          </div>
+        </div>
+        <div class="mt-4">
+          <div class="text-gray-700">为了验证身份以及记录维修信息，请在登入帐号之后继续操作。</div>
+          <div class="mt-1 text-gray-700">你也可以点击下方登入按钮后注册账户。</div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <Button id="login-button" color="primary">登入</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

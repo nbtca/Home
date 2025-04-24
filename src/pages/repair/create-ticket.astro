@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import RepairHeader from "./RepairHeader.astro"
+import TicketForm from "./TicketForm"
+---
+
+<BaseLayout primaryTitle="Create Ticket">
+  <RepairHeader></RepairHeader>
+  <div>
+    <TicketForm client:only="react"></TicketForm>
+  </div>
+</BaseLayout>

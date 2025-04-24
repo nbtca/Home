@@ -2,22 +2,29 @@
 
 <script>
 import { makeLogtoClient } from "../utils/auth"
-import LogtoClient from "@logto/browser"
 
-const callbackHandler = async (logtoClient: LogtoClient) => {
+const callbackHandler = async (logtoClient) => {
+  console.log("callbackHandler")
   try {
     await logtoClient.handleSignInCallback(window.location.href)
     if (!logtoClient.isAuthenticated) {
+      console.log("User not authenticated")
       window.location.assign("/")
       return
     }
-    // Handle successful sign-in
-    window.location.assign("/")
   }
   catch (error) {
+    console.log(error)
     window.location.assign("/")
   }
 }
-const logtoClient = makeLogtoClient()
-callbackHandler(logtoClient)
+
+console.log("Callback page loaded")
+try {
+  const logtoClient = makeLogtoClient()
+  callbackHandler(logtoClient)
+}
+catch (error) {
+  console.log(error)
+}
 </script>
