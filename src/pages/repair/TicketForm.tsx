@@ -1,7 +1,8 @@
+import { SITE_URL } from "../../consts"
 import { useEffect, useState } from "react"
 import { makeLogtoClient } from "../../utils/auth"
 import type { UserInfoResponse } from "@logto/browser"
-import { Form, Input, Button, Textarea } from "@heroui/react"
+import { Alert, Form, Input, Button, Textarea } from "@heroui/react"
 import { saturdayClient } from "../../utils/client"
 import type { components } from "../../types/saturday"
 import QRCode from "qrcode"
@@ -14,8 +15,29 @@ type TicketFormData = {
   description?: string
 }
 
+function LoginHintAlert(props: {
+  onLogin: () => void
+}) {
+  return (
+    <div className="section-content my-8">
+      <div className="flex items-center justify-center w-full">
+        <Alert
+          className="items-center"
+          endContent={(
+            <Button color="primary" size="sm" variant="flat" onPress={props.onLogin}>
+              登入
+            </Button>
+          )}
+        >
+          登入账号来跟踪你的维修进度
+        </Alert>
+      </div>
+    </div>
+  )
+}
+
 function TicketForm(props: {
-  userInfo: UserInfoResponse
+  userInfo?: UserInfoResponse
   onSubmit: (form: TicketFormData) => Promise<void>
 }) {
   const [loading, setLoading] = useState<boolean>()
@@ -27,8 +49,20 @@ function TicketForm(props: {
     setLoading(false)
   }
 
+  const onLogin = async () => {
+    makeLogtoClient().signIn({
+      redirectUri: import.meta.env.PUBLIC_LOGTO_CALLBACK_URL,
+      postRedirectUri: window.location.pathname,
+    })
+  }
+
   return (
     <section className="box-border mb-24">
+      {
+        props.userInfo?.sub
+          ? <></>
+          : <LoginHintAlert onLogin={onLogin}></LoginHintAlert>
+      }
       <div className="section-content my-8">
         <h2 className="text-2xl font-bold">预约维修</h2>
         <div>
@@ -115,56 +149,47 @@ function TicketFormCreated(props: {
   const [svg, setSvg] = useState<string>()
 
   useEffect(() => {
-    QRCode.toString(props.event.eventId.toString()).then((res) => {
-      // const root = createRoot(
-      //   document.getElementById("svg-root"),
-      // )
-      // root.render(res)
+    const url = new URL(`/repair/ticket-detail`, SITE_URL)
+    url.searchParams.append("eventId", props.event.eventId.toString())
+    QRCode.toString(url.toString()).then((res) => {
       setSvg(res)
     })
   })
-  // const svg = ref()
-  // watch(id, async () => {
-  //   if (!id.value) {
-  //     return
-  //   }
-  //   svg.value = await QRCode.toString(useGraduationIdURL().constructURL(id.value))
-  // })
-
   return (
-    <div className="w-full h-[80vh] flex flex-col justify-between items-center">
-      <div className=" flex flex-col sm:flex-row items-center h-full max-w-[1280px] justify-center gap-8 p-8">
-        <div className="min-h-64 h-[36vh] aspect-square">
-          <div className="h-full" dangerouslySetInnerHTML={{ __html: svg }}></div>
-        </div>
-        <div
-          className=" sm:w-auto"
-        >
-          <div className="flex items-center gap-2">
-            <div className="text-brand text-nowrap text-3xl font-bold">
-              预约成功
-            </div>
-          </div>
-          <div className="sm:w-[30vw] mt-6 text-gray-600 lg:text-lg">
-            <div>
-              扫描二维码来查看预约详情
+    <section className="box-border w-full mt-8">
+      <div className="section-content">
+        <Alert hideIcon color="success" variant="faded">
+          <div className="flex items-center gap-8">
+            <div className="h-28 lg:h-40 aspect-square">
+              <div className="h-full" dangerouslySetInnerHTML={{ __html: svg }}></div>
             </div>
             <div>
-              你也可以保存此二维码
+              <div className="flex items-center gap-2">
+                <div className="text-brand text-nowrap text-lg lg:text-2xl font-bold">
+                  预约成功
+                </div>
+              </div>
+              <div className="mt-1 text-gray-600 lg:text-lg">
+                <div>
+                  保存二维码
+                </div>
+                <div>
+                  跟踪维修进度
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </Alert>
       </div>
-    </div>
-    // <div>{props.event.eventId}</div>
+
+      <EventDetail eventId={props.event?.eventId}></EventDetail>
+    </section>
   )
 }
 
 export default function App() {
   const [userInfo, setUserInfo] = useState<UserInfoResponse>()
-  const [event, setEvent] = useState<PublicEvent | undefined>({
-    eventId: 123,
-  })
+  const [event, setEvent] = useState<PublicEvent | undefined>()
 
   useEffect(() => {
     const check = async () => {
@@ -203,12 +228,11 @@ export default function App() {
 
   return (
     <>
-      <EventDetail />
-      (
-      event?.eventId
-      ? <TicketFormCreated event={event}></TicketFormCreated>
-      : <TicketForm userInfo={userInfo} onSubmit={onSubmit}></TicketForm>
-      )
+      {
+        event?.eventId
+          ? <TicketFormCreated event={event}></TicketFormCreated>
+          : <TicketForm userInfo={userInfo} onSubmit={onSubmit}></TicketForm>
+      }
     </>
   )
 }

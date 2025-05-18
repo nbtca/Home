@@ -94,7 +94,9 @@ const filterEventLog = (event: PublicEvent) => {
   return filteredLogs
 }
 
-export default function EventDetail() {
+export default function EventDetail(props: {
+  eventId?: number
+}) {
   const [event, setEvent] = useState<PublicEvent | undefined>()
   const fetchAndSetEvent = async (eventId: number) => {
     const { data } = await saturdayClient.GET("/events/{EventId}", {
@@ -107,9 +109,8 @@ export default function EventDetail() {
     setEvent(data)
   }
   useEffect(() => {
-    // get the eventId from the url
     const url = new URL(window.location.href)
-    const eventId = url.searchParams.get("eventId")
+    const eventId = props.eventId ?? url.searchParams.get("eventId")
     if (!eventId) {
       return
     }
