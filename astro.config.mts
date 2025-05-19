@@ -35,6 +35,10 @@ export default defineConfig({
           changeOrigin: true,
           rewrite: path => path.replace(/^\/active/, ""),
         },
+        "/saturday": {
+          target: "http://localhost:4000",
+          rewrite: path => path.replace(/^\/saturday/, ""),
+        },
       }
     }
   }
