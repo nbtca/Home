@@ -1,7 +1,7 @@
 ---
 layout: "../../layouts/MarkdownPost.astro"
 title: "如何获取属于你的操作系统"
-pubDate: 2025-03-19
+pubDate: 2025-05-20
 description: "从零构建ArchLinux"
 author: "小明"
 cover:
