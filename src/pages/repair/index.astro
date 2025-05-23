@@ -16,6 +16,9 @@ import RepairHeader from "../../components/header/RepairHeader.astro"
       const logtoClient = makeLogtoClient()
       const createRepairPath = "/repair/create-ticket"
       const authenticated = await logtoClient.isAuthenticated()
+      logtoClient.getIdTokenClaims().then((res) => {
+        console.log(res)
+      })
       if (!authenticated) {
         window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
         return

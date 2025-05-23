@@ -46,20 +46,22 @@ function EventLogItem(props: {
   )
 }
 
-function EventStatusChip(props: {
+export function EventStatusChip(props: {
+  size?: "sm" | "md" | "lg"
   status: string
 }) {
+  const size = props.size || "md"
   switch (props.status) {
     case EventStatus.open:
-      return <Chip>未开始</Chip>
+      return <Chip size={size}>未开始</Chip>
     case EventStatus.accepted:
-      return <Chip>维修中</Chip>
+      return <Chip size={size}>维修中</Chip>
     case EventStatus.committed:
-      return <Chip color="primary">维修中</Chip>
+      return <Chip size={size} color="primary">维修中</Chip>
     case EventStatus.closed:
-      return <Chip color="success">已完成</Chip>
+      return <Chip size={size} color="success">已完成</Chip>
     case EventStatus.cancelled:
-      return <Chip>已取消</Chip>
+      return <Chip size={size}>已取消</Chip>
   }
 }
 
@@ -121,7 +123,7 @@ export default function EventDetail(props: {
     event
       ? (
           <section className="box-border mb-24">
-            <div className="section-content mt-8">
+            <div className="mt-8">
               <h2 className="text-2xl font-bold">维修详情</h2>
               <div className="flex gap-2 items-center">
                 <span>
@@ -130,7 +132,7 @@ export default function EventDetail(props: {
                 <EventStatusChip status={event.status}></EventStatusChip>
               </div>
             </div>
-            <div className="section-content my-8 flex flex-col gap-4">
+            <div className="my-8 flex flex-col gap-4">
               <Textarea
                 label="问题描述"
                 readOnly
