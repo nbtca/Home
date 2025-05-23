@@ -304,21 +304,23 @@ export default function App() {
     },
   })
 
+  const filteredList = useMemo(() => {
+    if (statusFilter.length > 0) {
+      return list.items.filter(item => statusFilter.includes(item.status))
+    }
+    return list.items
+  }, [list, statusFilter])
+
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage
     const end = start + rowsPerPage
 
-    if (statusFilter.length > 0) {
-      return list.items.filter(item => statusFilter.includes(item.status)).slice(start, end)
-    }
-
-    return list.items.slice(start, end)
-  }, [list, page, rowsPerPage, statusFilter])
+    return filteredList.slice(start, end)
+  }, [filteredList, page, rowsPerPage])
 
   const pages = useMemo(() => {
-    return Math.ceil(list.items.length / rowsPerPage)
-  }, [list, rowsPerPage])
-
+    return Math.ceil(filteredList.length / rowsPerPage)
+  }, [filteredList, rowsPerPage])
   // useEffect(() => {
   //   fetchAndSetEvent()
   // }, [])
