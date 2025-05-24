@@ -387,16 +387,16 @@ export default function App() {
     }
   }, [])
   return (
-    <section className="box-border mb-24">
-      <div className="section-content mt-6 flex justify-between items-center">
-        <h2 className="text-2xl font-bold">维修管理</h2>
+    <section className="box-border max-w-[1024px] mx-auto px-[22px] mb-24">
+      <div className="mt-6 flex justify-between items-center">
+        <div className="text-2xl font-bold">维修管理</div>
         {
           userInfo?.roles?.find(v => v.toLowerCase() == "repair admin")
             ? <ExportExcelModal></ExportExcelModal>
             : <></>
         }
       </div>
-      <div className="section-content my-8 flex flex-col gap-4">
+      <div className="my-8 flex flex-col gap-4">
         <Table
           aria-label="Example table with dynamic content"
           sortDescriptor={list.sortDescriptor}
