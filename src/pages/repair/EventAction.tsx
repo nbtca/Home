@@ -95,7 +95,7 @@ export const EventActionCommit = (props: EventActionProps) => {
   })
 
   useEffect(() => {
-    const description = props.event?.logs.findLast(v => v.action == "commit")?.description
+    const description = props.event?.logs.findLast(v => v.action == "commit" || v.action == "alterCommit")?.description
     setFormData({
       size: props.event.size || "",
       description: description || "",
@@ -127,6 +127,7 @@ export const EventActionCommit = (props: EventActionProps) => {
       </EventActionCommitForm>
       <Button
         variant="flat"
+        color="primary"
         isLoading={props.isLoading === "commit"}
         onPress={() => onSubmit()}
       >
@@ -187,6 +188,8 @@ type JsxHandler = (props: EventActionProps) => JSX.Element
 export type EventAction = {
   action: string
   label?: string
+  color?: "default" | "primary" | "secondary" | "success" | "warning" | "danger"
+  variant?: "flat" | "solid" | "bordered" | "light" | "faded" | "shadow" | "ghost"
   handler?: CommonHandler
   jsxHandler: JsxHandler
 }
@@ -210,9 +213,10 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
       return (
         <div className="flex flex-col">
           <Button
-            variant="flat"
             isLoading={props.isLoading === action.action}
             isDisabled={props.isLoading}
+            color={action.color || "default"}
+            variant={action.variant || "flat"}
             onPress={() => onAction(action)}
           >
             {action.label ?? action.action}
@@ -228,6 +232,8 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
       jsxHandler: makeCommonJsxHandler({
         action: "accept",
         label: "接受",
+        variant: "solid",
+        color: "primary",
         handler: async () => {
           return await fetch(`${saturdayApiBaseUrl}/member/events/${event.eventId}/accept`, {
             method: "POST",
@@ -272,7 +278,8 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
         action: "close",
         jsxHandler: makeCommonJsxHandler({
           action: "close",
-          label: "关闭",
+          color: "success",
+          label: "完成",
           handler: async () => {
             return await fetch(`${saturdayApiBaseUrl}/events/${event.eventId}/close`, {
               method: "POST",
@@ -287,6 +294,7 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
         action: "reject",
         jsxHandler: makeCommonJsxHandler({
           action: "rejectCommit",
+          color: "danger",
           label: "退回",
           handler: async () => {
             return await fetch(`${saturdayApiBaseUrl}/events/${event.eventId}/commit`, {

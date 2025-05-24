@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import type { components } from "../../types/saturday"
 import { saturdayClient } from "../../utils/client"
 import { Textarea, Input, Chip, Skeleton } from "@heroui/react"
@@ -35,7 +35,7 @@ function EventLogItem(props: {
             </span>
           </div>
         </div>
-        <div className="flex gap-2 items-center mt-1 text-gray-600">
+        <div className="flex flex-col gap-2 items-center mt-1 text-gray-600">
           {dayjs(props.eventLog.gmtCreate).format("YYYY-MM-DD HH:mm")}
         </div>
       </div>
@@ -126,6 +126,10 @@ const EventDetail = forwardRef<EventDetailRef, {
         }
       }
 
+      const repairDescription = useMemo(() => {
+        return event?.logs.findLast(v => v.action == "commit" || v.action == "alterCommit")?.description
+      }, [event])
+
       // 初次加载
       useEffect(() => {
         refresh()
@@ -148,6 +152,11 @@ const EventDetail = forwardRef<EventDetailRef, {
                       #{event.eventId}
                     </span>
                     <EventStatusChip status={event.status}></EventStatusChip>
+                    {
+                      event.size
+                        ? <Chip>{"size:" + event.size}</Chip>
+                        : <></>
+                    }
                   </div>
                 </div>
                 <div className="my-6  flex flex-col gap-4">
@@ -164,6 +173,18 @@ const EventDetail = forwardRef<EventDetailRef, {
                     readOnly
                   >
                   </Input>
+                  {
+                    repairDescription
+                      ? (
+                          <Textarea
+                            label="维修描述"
+                            readOnly
+                            name="description"
+                            value={repairDescription || ""}
+                          />
+                        )
+                      : <></>
+                  }
                   <div className="bg-gray-100 rounded-xl text-sm px-3 py-2 mt-2 ">
                     <div className="text-xs font-semibold text-gray-600 mb-1">
                       维修记录
