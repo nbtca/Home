@@ -345,6 +345,7 @@ export default function App() {
                 <User
                   avatarProps={{ radius: "full", src: event.member.avatar, size: "sm" }}
                   name={event.member.alias}
+                  description={event.member.memberId}
                 >
                   {event.member.alias}
                 </User>
