@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import type { components } from "../../types/saturday"
 import { saturdayClient } from "../../utils/client"
-import { Textarea, Input, Chip } from "@heroui/react"
+import { Textarea, Input, Chip, Skeleton } from "@heroui/react"
 import type { PublicMember } from "../../store/member"
 import dayjs from "dayjs"
 import { EventStatus, UserEventAction } from "../../types/event"
@@ -182,7 +182,22 @@ const EventDetail = forwardRef<EventDetailRef, {
                 </div>
               </section>
             )
-          : <div></div>
+          : (
+              <div className="flex flex-col gap-4">
+                <Skeleton className="rounded-lg mb-4">
+                  <div className="h-24 rounded-lg bg-default-300" />
+                </Skeleton>
+                <Skeleton className="rounded-lg">
+                  <div className="h-24 rounded-lg bg-default-300" />
+                </Skeleton>
+                <Skeleton className="rounded-lg">
+                  <div className="h-16 rounded-lg bg-default-300" />
+                </Skeleton>
+                <Skeleton className="rounded-lg">
+                  <div className="h-24 rounded-lg bg-default-300" />
+                </Skeleton>
+              </div>
+            )
       )
     })
 
