@@ -20,18 +20,21 @@ import {
   DrawerBody,
   DrawerFooter,
   useDisclosure,
+  Chip,
 } from "@heroui/react"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useAsyncList } from "@react-stately/data"
 import type { components } from "../../types/saturday"
-import { saturdayClient } from "../../utils/client"
-import EventDetail, { EventStatusChip } from "./EventDetail"
+import { saturdayApiBaseUrl, saturdayClient } from "../../utils/client"
+import EventDetail, { EventStatusChip, type EventDetailRef } from "./EventDetail"
 import dayjs from "dayjs"
 import { UserEventStatus } from "../../types/event"
 import { makeLogtoClient } from "../../utils/auth"
+import type { PublicMember } from "../../store/member"
+import type { UserInfoResponse } from "@logto/browser"
+import { getAvailableEventActions, type EventAction, type IdentityContext } from "./EventAction"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
-// type EventLog = components["schemas"]["EventLog"]
 
 export const EyeIcon = (props) => {
   return (
@@ -63,106 +66,10 @@ export const EyeIcon = (props) => {
   )
 }
 
-export const DeleteIcon = (props) => {
-  return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      height="1em"
-      role="presentation"
-      viewBox="0 0 20 20"
-      width="1em"
-      {...props}
-    >
-      <path
-        d="M17.5 4.98332C14.725 4.70832 11.9333 4.56665 9.15 4.56665C7.5 4.56665 5.85 4.64998 4.2 4.81665L2.5 4.98332"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-      <path
-        d="M7.08331 4.14169L7.26665 3.05002C7.39998 2.25835 7.49998 1.66669 8.90831 1.66669H11.0916C12.5 1.66669 12.6083 2.29169 12.7333 3.05835L12.9166 4.14169"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-      <path
-        d="M15.7084 7.61664L15.1667 16.0083C15.075 17.3166 15 18.3333 12.675 18.3333H7.32502C5.00002 18.3333 4.92502 17.3166 4.83335 16.0083L4.29169 7.61664"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-      <path
-        d="M8.60834 13.75H11.3833"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-      <path
-        d="M7.91669 10.4167H12.0834"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-    </svg>
-  )
-}
-
-export const EditIcon = (props) => {
-  return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      height="1em"
-      role="presentation"
-      viewBox="0 0 20 20"
-      width="1em"
-      {...props}
-    >
-      <path
-        d="M11.05 3.00002L4.20835 10.2417C3.95002 10.5167 3.70002 11.0584 3.65002 11.4334L3.34169 14.1334C3.23335 15.1084 3.93335 15.775 4.90002 15.6084L7.58335 15.15C7.95835 15.0834 8.48335 14.8084 8.74168 14.525L15.5834 7.28335C16.7667 6.03335 17.3 4.60835 15.4583 2.86668C13.625 1.14168 12.2334 1.75002 11.05 3.00002Z"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeMiterlimit={10}
-        strokeWidth={1.5}
-      />
-      <path
-        d="M9.90833 4.20831C10.2667 6.50831 12.1333 8.26665 14.45 8.49998"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeMiterlimit={10}
-        strokeWidth={1.5}
-      />
-      <path
-        d="M2.5 18.3333H17.5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeMiterlimit={10}
-        strokeWidth={1.5}
-      />
-    </svg>
-  )
-}
 function CheckboxPopover(props: {
   value: string[]
   onValueChange: (value: string[]) => void
 }) {
-  // const [selectedValues, setSelectedValues] = useState([])
-
-  // const handleSelectionChange = (values) => {
-  //   setSelectedValues(values)
-  // }
-
   return (
     <Popover placement="bottom">
       <PopoverTrigger>
@@ -196,23 +103,67 @@ function CheckboxPopover(props: {
 }
 
 function TicketDetailDrawer(props: {
-  eventId: number
+  event: PublicEvent
+  identity: IdentityContext
   isOpen: boolean
+  onEventUpdated: (event: PublicEvent) => void
   onOpenChange: (isOpen: boolean) => void
   onClose: () => void
   onDelete: () => void
   onEdit: () => void
 }) {
   const { isOpen, onOpenChange, onClose } = props
+  const [isLoading, setIsLoading] = useState("")
+
+  const eventDetailRef = useRef<EventDetailRef>(null)
+
+  const [availableActions, setAvailableActions] = useState<EventAction[]>([])
+
+  useEffect(() => {
+    if (!props.event || !props.identity?.member || !props.identity?.userInfo?.roles) {
+      return
+    }
+    setAvailableActions(getAvailableEventActions(props.event, props.identity))
+  }, [props.event, props.identity])
+
+  const onEventUpdated = async (event: PublicEvent) => {
+    props.onEventUpdated(event)
+    const res = await eventDetailRef.current?.refresh()
+    console.log("onEventUpdated", res)
+    if (!res || !props.identity?.member || !props.identity?.userInfo?.roles) {
+      return
+    }
+    setAvailableActions(getAvailableEventActions(res, props.identity))
+  }
 
   return (
     <Drawer isOpen={isOpen} onOpenChange={onOpenChange}>
       <DrawerContent>
         <DrawerHeader>
           <h2 className="text-2xl font-bold">维修详情</h2>
+          {isLoading}
         </DrawerHeader>
         <DrawerBody>
-          <EventDetail eventId={props.eventId}></EventDetail>
+          <EventDetail ref={eventDetailRef} eventId={props.event?.eventId}></EventDetail>
+          <div className="mb-12 flex flex-col gap-2">
+            {
+              availableActions?.map((action) => {
+                return (
+                  <action.jsxHandler
+                    key={action.action}
+                    event={props.event}
+                    isLoading={isLoading}
+                    identityContext={props.identity}
+                    onUpdated={onEventUpdated}
+                    onLoading={(action) => {
+                      setIsLoading(action)
+                    }}
+                  >
+                  </action.jsxHandler>
+                )
+              })
+            }
+          </div>
         </DrawerBody>
         <DrawerFooter>
           <Button variant="flat" onPress={onClose}>
@@ -232,11 +183,12 @@ export const validateRepairRole = (roles: string[]) => {
 export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [page, setPage] = useState(1)
-  const rowsPerPage = 15
-  // const [events, setEvents] = useState<PublicEvent[]>([])
+  const rowsPerPage = 10
   const [statusFilter, setStatusFilter] = useState<string[]>([])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  // const [userInfo, setUserInfo] = useState<UserInfoResponse>()
+  const [userInfo, setUserInfo] = useState<UserInfoResponse>()
+  const [currentMember, setCurrentMember] = useState<PublicMember>()
+  const [token, setToken] = useState<string>()
 
   useEffect(() => {
     const check = async () => {
@@ -247,27 +199,25 @@ export default function App() {
         return
       }
       const res = await makeLogtoClient().getIdTokenClaims()
+      const token = await makeLogtoClient().getAccessToken()
+      setToken(token)
       const hasRole = validateRepairRole(res.roles)
       if (!hasRole) {
         window.location.href = `/repair/login-hint?redirectUrl=${adminPath}`
         return
       }
-      // setUserInfo(res)
+      setUserInfo(res)
+
+      const currentMember = await fetch(`${saturdayApiBaseUrl}/member`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(res => res.json())
+      setCurrentMember(currentMember)
     }
     check()
   }, [])
-  // const fetchAndSetEvent = async () => {
-  //   const { data } = await saturdayClient.GET("/events", {
-  //     params: {
-  //       query: {
-  //         order: "DESC",
-  //         offset: 1,
-  //         limit: 1000,
-  //       },
-  //     },
-  //   })
-  //   setEvents(data)
-  // }
 
   const list = useAsyncList<PublicEvent>({
     async load() {
@@ -321,11 +271,17 @@ export default function App() {
   const pages = useMemo(() => {
     return Math.ceil(filteredList.length / rowsPerPage)
   }, [filteredList, rowsPerPage])
-  // useEffect(() => {
-  //   fetchAndSetEvent()
-  // }, [])
 
-  const columns = [
+  useEffect(() => {
+    setPage(1)
+  }, [statusFilter])
+
+  const columns: {
+    key: string
+    label: string
+    allowSorting?: boolean
+    content?: JSX.Element
+  }[] = [
     {
       key: "eventId",
       label: "单号",
@@ -337,6 +293,10 @@ export default function App() {
     {
       key: "model",
       label: "型号",
+    },
+    {
+      key: "size",
+      label: "工作量",
     },
     {
       key: "memberId",
@@ -362,13 +322,13 @@ export default function App() {
     },
   ]
 
-  const [activeEventId, setActiveEventId] = useState<number>()
-  const onOpenEventDetail = (eventId: number) => {
-    setActiveEventId(eventId)
+  const [activeEvent, setActiveEvent] = useState<PublicEvent>()
+  const onOpenEventDetail = (event: PublicEvent) => {
+    setActiveEvent(event)
     onOpen()
   }
 
-  const renderCell = useCallback((event: PublicEvent, columnKey: string) => {
+  const renderCell = useCallback((event: PublicEvent, columnKey: string | number) => {
     const cellValue = event[columnKey]
 
     switch (columnKey) {
@@ -391,6 +351,10 @@ export default function App() {
               )
             : <></>
         )
+      case "size":
+        return (
+          cellValue ? <Chip size="sm">{"size:" + cellValue}</Chip> : <></>
+        )
       case "gmtCreate":
         return (
           <span>
@@ -400,10 +364,11 @@ export default function App() {
       case "status":
         return EventStatusChip({
           status: cellValue,
+          size: "sm",
         })
       case "actions":
         return (
-          <Button onPress={() => onOpenEventDetail(event.eventId)} size="sm" isIconOnly variant="light">
+          <Button onPress={() => onOpenEventDetail(event)} size="sm" isIconOnly variant="light">
             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
               <EyeIcon />
             </span>
@@ -417,7 +382,7 @@ export default function App() {
 
   return (
     <section className="box-border mb-24">
-      <div className="section-content mt-8">
+      <div className="section-content mt-6">
         <h2 className="text-2xl font-bold">维修管理</h2>
       </div>
       <div className="section-content my-8 flex flex-col gap-4">
@@ -452,7 +417,15 @@ export default function App() {
         </Table>
       </div>
       <TicketDetailDrawer
-        eventId={activeEventId}
+        event={activeEvent}
+        onEventUpdated={list.reload}
+        identity={
+          {
+            member: currentMember,
+            userInfo: userInfo,
+            token: token,
+          }
+        }
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onClose={() => {
