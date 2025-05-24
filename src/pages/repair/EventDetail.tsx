@@ -95,11 +95,13 @@ const filterEventLog = (event: PublicEvent) => {
 }
 export type EventDetailRef = {
   refresh: () => Promise<PublicEvent | undefined>
+  event: PublicEvent | undefined
 }
 const EventDetail = forwardRef<EventDetailRef, {
   eventId?: number
   onRefresh?: () => void
   action?: React.ReactNode
+  children?: (event: PublicEvent) => React.ReactNode
 }>((props, ref) => {
       const [event, setEvent] = useState<PublicEvent | undefined>()
 
@@ -132,6 +134,7 @@ const EventDetail = forwardRef<EventDetailRef, {
       // 暴露给父组件的方法
       useImperativeHandle(ref, () => ({
         refresh,
+        event,
       }))
 
       return (
@@ -173,6 +176,9 @@ const EventDetail = forwardRef<EventDetailRef, {
                       })
                     }
                   </div>
+                </div>
+                <div>
+                  {props.children(event)}
                 </div>
               </section>
             )

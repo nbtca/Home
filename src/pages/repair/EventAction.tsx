@@ -3,7 +3,7 @@ import type { PublicMember } from "../../store/member"
 import { EventStatus, type PublicEvent } from "../../types/event"
 import { saturdayApiBaseUrl } from "../../utils/client"
 import { Button, Form, Select, SelectItem, Textarea } from "@heroui/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export type IdentityContext = {
   member: PublicMember
@@ -52,7 +52,7 @@ const EventActionCommitForm = (props: {
         items={EventSizeOptions}
         label="维修难度"
         size="sm"
-        value={formData.size}
+        selectedKeys={formData.size ? [formData.size] : []}
         onChange={(value) => {
           setFormData({ ...formData, size: value.target.value.split(",")[0] })
         }}
@@ -94,16 +94,25 @@ export const EventActionCommit = (props: EventActionProps) => {
     description: "",
   })
 
+  useEffect(() => {
+    const description = props.event?.logs.findLast(v => v.action == "commit")?.description
+    setFormData({
+      size: props.event.size || "",
+      description: description || "",
+    })
+  }, [props.event])
+
   const onSubmit = async () => {
     props.onLoading("commit")
     const res = await fetch(`${saturdayApiBaseUrl}/member/events/${props.event.eventId}/commit`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${props.identityContext.token}`,
+        ContentType: "application/json",
       },
       body: JSON.stringify({
         size: formData.size,
-        problem: formData.description,
+        content: formData.description,
       }),
     }).then(res => res.json())
     props.onLoading()
@@ -128,9 +137,16 @@ export const EventActionCommit = (props: EventActionProps) => {
 }
 export const EventActionAlterCommit = (props: EventActionProps) => {
   const [formData, setFormData] = useState({
-    size: props.event.size,
-    description: props.event.problem,
+    size: "",
+    description: "",
   })
+  useEffect(() => {
+    const description = props.event?.logs?.findLast(v => v.action == "commit" || v.action == "alterCommit")?.description
+    setFormData({
+      size: props.event.size || "",
+      description: description || "",
+    })
+  }, [props.event])
 
   const onSubmit = async () => {
     props.onLoading("alterCommit")
@@ -138,10 +154,11 @@ export const EventActionAlterCommit = (props: EventActionProps) => {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${props.identityContext.token}`,
+        ContentType: "application/json",
       },
       body: JSON.stringify({
         size: formData.size,
-        problem: formData.description,
+        content: formData.description,
       }),
     }).then(res => res.json())
     props.onLoading()

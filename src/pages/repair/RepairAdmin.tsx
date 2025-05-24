@@ -144,26 +144,31 @@ function TicketDetailDrawer(props: {
           {isLoading}
         </DrawerHeader>
         <DrawerBody>
-          <EventDetail ref={eventDetailRef} eventId={props.event?.eventId}></EventDetail>
-          <div className="mb-12 flex flex-col gap-2">
+          <EventDetail ref={eventDetailRef} eventId={props.event?.eventId}>
             {
-              availableActions?.map((action) => {
-                return (
-                  <action.jsxHandler
-                    key={action.action}
-                    event={props.event}
-                    isLoading={isLoading}
-                    identityContext={props.identity}
-                    onUpdated={onEventUpdated}
-                    onLoading={(action) => {
-                      setIsLoading(action)
-                    }}
-                  >
-                  </action.jsxHandler>
-                )
-              })
+              event => (
+                <div className="mb-12 flex flex-col gap-2">
+                  {
+                    availableActions?.map((action) => {
+                      return (
+                        <action.jsxHandler
+                          key={action.action}
+                          event={event}
+                          isLoading={isLoading}
+                          identityContext={props.identity}
+                          onUpdated={onEventUpdated}
+                          onLoading={(action) => {
+                            setIsLoading(action)
+                          }}
+                        >
+                        </action.jsxHandler>
+                      )
+                    }) || <></>
+                  }
+                </div>
+              )
             }
-          </div>
+          </EventDetail>
         </DrawerBody>
         <DrawerFooter>
           <Button variant="flat" onPress={onClose}>
