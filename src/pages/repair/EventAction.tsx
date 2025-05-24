@@ -129,7 +129,7 @@ export const EventActionCommit = (props: EventActionProps) => {
         variant="flat"
         color="primary"
         isLoading={props.isLoading === "commit"}
-        onPress={() => onSubmit()}
+        onPress={onSubmit}
       >
         提交
       </Button>
@@ -175,7 +175,7 @@ export const EventActionAlterCommit = (props: EventActionProps) => {
       <Button
         variant="flat"
         isLoading={props.isLoading === "commit"}
-        onPress={() => onSubmit()}
+        onPress={onSubmit}
       >
         修改提交
       </Button>

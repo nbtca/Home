@@ -33,6 +33,7 @@ import { makeLogtoClient } from "../../utils/auth"
 import type { PublicMember } from "../../store/member"
 import type { UserInfoResponse } from "@logto/browser"
 import { getAvailableEventActions, type EventAction, type IdentityContext } from "./EventAction"
+import { ExportExcelModal } from "./ExportEventDialog"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 
@@ -385,11 +386,15 @@ export default function App() {
         return cellValue
     }
   }, [])
-
   return (
     <section className="box-border mb-24">
-      <div className="section-content mt-6">
+      <div className="section-content mt-6 flex justify-between items-center">
         <h2 className="text-2xl font-bold">维修管理</h2>
+        {
+          userInfo?.roles?.find(v => v.toLowerCase() == "repair admin")
+            ? <ExportExcelModal></ExportExcelModal>
+            : <></>
+        }
       </div>
       <div className="section-content my-8 flex flex-col gap-4">
         <Table
