@@ -231,7 +231,7 @@ export default function App() {
         params: {
           query: {
             order: "DESC",
-            offset: 1,
+            offset: 0,
             limit: 1000,
           },
         },
