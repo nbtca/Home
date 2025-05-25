@@ -28,7 +28,7 @@ import type { components } from "../../types/saturday"
 import { saturdayApiBaseUrl, saturdayClient } from "../../utils/client"
 import EventDetail, { EventStatusChip, type EventDetailRef } from "./EventDetail"
 import dayjs from "dayjs"
-import { UserEventStatus } from "../../types/event"
+import { EventStatus, UserEventStatus } from "../../types/event"
 import { makeLogtoClient } from "../../utils/auth"
 import type { PublicMember } from "../../store/member"
 import type { UserInfoResponse } from "@logto/browser"
@@ -190,7 +190,9 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [page, setPage] = useState(1)
   const rowsPerPage = 10
-  const [statusFilter, setStatusFilter] = useState<string[]>([])
+  const [statusFilter, setStatusFilter] = useState<string[]>(
+    UserEventStatus.filter(v => v.status !== EventStatus.cancelled).map(v => v.status),
+  )
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [userInfo, setUserInfo] = useState<UserInfoResponse>()
   const [currentMember, setCurrentMember] = useState<PublicMember>()
