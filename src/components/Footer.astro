@@ -11,9 +11,19 @@ const year = date.getFullYear();
     <div class="content-body footer-wrapper">
       <div class="footer-box">
         <div class="foot-nav">
-          <div class="foot-nav-items flex flex-col sm:grid gap-5 grid-cols-5 text-xs">
-            <div class="item">
-              <div class="logo">{SITE_TITLE}</div>
+          <div class="foot-nav-items flex flex-col sm:grid gap-2 sm:gap-5 grid-cols-5 text-xs">
+            <div class="item col-span-2">
+              <div>
+                <span class="logo">{SITE_TITLE}</span> By NBTCA
+              </div>
+              <div class="italic">
+                To be at the intersection of technology and liberal arts.
+              </div>
+
+              <div class="mt-1 sm:mt-2 !text-xs">
+                联系我们:
+                <span class="ml-1"> <a class="!text-blue-500" href="mailto:contact:@nbtca.space">{SITE_EMAIL}</a></span>
+              </div>
             </div>
 
             <div class="item products">
@@ -33,15 +43,15 @@ const year = date.getFullYear();
               <a href="https://nbtca.space/repair/create-ticket">预约维修</a>
             </div>
 
-            <div class="item">
+            <!-- <div class="item">
               <div class="item-title">维修</div>
               <a href="https://nbtca.space/repair/create-ticket">预约维修</a>
-            </div>
+            </div> -->
           </div>
-          <div class="flex text-xs mt-3">
+          <!-- <div class="flex text-xs mt-3">
             联系我们:
             <div class="ml-1"> <a href="mailto:contact:@nbtca.space">{SITE_EMAIL}</a></div>
-          </div>
+          </div> -->
         </div>
         <div class=" w-full">
           <div class="w-full h-[0.5px] my-4 bg-gray-500"> </div>
