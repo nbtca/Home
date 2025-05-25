@@ -11,12 +11,13 @@ import {
 import { parseDate } from "@internationalized/date"
 import { saturdayApiBaseUrl } from "../../utils/client"
 import { makeLogtoClient } from "../../utils/auth"
+import dayjs from "dayjs"
 
 export function ExportExcelModal() {
   const [isOpen, setIsOpen] = useState(false)
   const [dateRange, setDateRange] = useState({
-    start: parseDate("2025-01-01"),
-    end: parseDate("2025-05-16"),
+    start: parseDate(dayjs().subtract(1, "month").format("YYYY-MM-DD")),
+    end: parseDate(dayjs().format("YYYY-MM-DD")),
   })
   const [loading, setLoading] = useState(false)
 
