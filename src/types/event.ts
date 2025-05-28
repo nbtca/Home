@@ -1,3 +1,5 @@
+import type { components } from "./saturday"
+
 export interface Status {
   status: string
   text: string
@@ -76,3 +78,5 @@ export const UserEventAction: Action[] = [
     icon: "status_cancelled.svg",
   },
 ]
+
+export type PublicEvent = components["schemas"]["PublicEvent"]

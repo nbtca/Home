@@ -3,15 +3,34 @@ import NavigationUser from "./NavigationUser.vue"
 ---
 
 <script>
-  const button = document.getElementById("repair-header")
-  button.addEventListener("click", () => {
-    window.location.href = "/repair"
-  })
+import { validateRepairRole } from "../../pages/repair/RepairAdmin"
+import { makeLogtoClient } from "../../utils/auth"
+
+const button = document.getElementById("repair-header")
+button.addEventListener("click", () => {
+  window.location.href = "/repair"
+})
+
+const adminButton = document.getElementById("repair-admin")
+makeLogtoClient().getIdTokenClaims().then((claims) => {
+  const hasRole = validateRepairRole(claims.roles)
+  if (hasRole) {
+    adminButton.classList.remove("hidden")
+  }
+  else {
+    adminButton.classList.add("hidden")
+  }
+})
 </script>
 
 <div class="box-border border-b sticky top-0 bg-white/80 backdrop-blur z-20 h-12">
   <div class="h-full flex items-center justify-between text-lg max-w-[1024px] mx-auto px-[22px]">
     <span id="repair-header" class="font-semibold select-none cursor-default">维修</span>
-    <NavigationUser client:load />
+    <div class="flex items-center">
+      <div class="flex items-center gap-2 mr-4 text-xs text-gray-400">
+        <a class="hidden text-gray-500 hover:text-gray-700 appearance-none cursor-pointer" id="repair-admin" href="/repair/admin" style="text-decoration:none">维修管理</a>
+      </div>
+      <NavigationUser client:load />
+    </div>
   </div>
 </div>

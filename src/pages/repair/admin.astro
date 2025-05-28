@@ -1,12 +1,12 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro"
 import RepairHeader from "../../components/header/RepairHeader.astro"
-import EventDetail from "./EventDetail"
+import RepairAdmin from "./RepairAdmin"
 ---
 
 <BaseLayout primaryTitle="Create Ticket">
   <RepairHeader></RepairHeader>
-  <div class="section-content">
-    <EventDetail client:only="react"></EventDetail>
+  <div>
+    <RepairAdmin client:only="react"></RepairAdmin>
   </div>
 </BaseLayout>

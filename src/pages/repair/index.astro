@@ -16,6 +16,9 @@ import RepairHeader from "../../components/header/RepairHeader.astro"
       const logtoClient = makeLogtoClient()
       const createRepairPath = "/repair/create-ticket"
       const authenticated = await logtoClient.isAuthenticated()
+      logtoClient.getIdTokenClaims().then((res) => {
+        console.log(res)
+      })
       if (!authenticated) {
         window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
         return
@@ -65,7 +68,7 @@ import RepairHeader from "../../components/header/RepairHeader.astro"
             在接受预约之外，我们每月举办 <span class="text-black">理工维修日</span>，定时定点提供维修。
           </div>
           <div>
-            在<a href="/calendar" class="mx-0.5">协会公共日历</a>上查看最近的维修日
+            你可以在<a href="/calendar" class="mx-0.5">协会公共日历</a>上查看最近的维修日。
           </div>
         </div>
       </div>
