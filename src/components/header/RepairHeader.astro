@@ -1,0 +1,17 @@
+---
+import NavigationUser from "./NavigationUser.vue"
+---
+
+<script>
+  const button = document.getElementById("repair-header")
+  button.addEventListener("click", () => {
+    window.location.href = "/repair"
+  })
+</script>
+
+<div class="box-border border-b sticky top-0 bg-white/80 backdrop-blur z-20 h-12">
+  <div class="h-full flex items-center justify-between text-lg max-w-[1024px] mx-auto px-[22px]">
+    <span id="repair-header" class="font-semibold select-none cursor-default">维修</span>
+    <NavigationUser client:load />
+  </div>
+</div>
