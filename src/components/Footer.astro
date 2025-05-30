@@ -11,36 +11,57 @@ const year = date.getFullYear();
     <div class="content-body footer-wrapper">
       <div class="footer-box">
         <div class="foot-nav">
-          <div class="foot-nav-items">
-            <div class="item">
-              <div class="logo">{SITE_TITLE}</div>
-              <div class="email">Email: {SITE_EMAIL}</div>
+          <div class="foot-nav-items flex flex-col sm:grid gap-2 sm:gap-5 grid-cols-5 text-xs">
+            <div class="item col-span-2">
+              <div>
+                <span class="logo">{SITE_TITLE}</span> By NBTCA
+              </div>
+              <div class="italic">
+                To be at the intersection of technology and liberal arts.
+              </div>
+
+              <div class="mt-1 sm:mt-2 !text-xs">
+                联系我们:
+                <span class="ml-1"> <a class="!text-blue-500" href="mailto:contact@nbtca.space">{SITE_EMAIL}</a></span>
+              </div>
             </div>
 
             <div class="item products">
-              <div class="item-title">作品</div>
-              <a href="/" target="_blank">本站</a>
-              <a href="https://repair.nbtca.space" target="_blank">维修管理</a>
+              <div class="item-title">导航</div>
+              <a href="/" target="_blank">主页</a>
+              <a href="https://docs.nbtca.space" target="_blank">文档</a>
             </div>
 
             <div class="item community">
               <div class="item-title">社媒</div>
               <a href="https://github.com/nbtca" target="_blank">Github</a>
+              <a href="https://qm.qq.com/q/djgZhpnlzW" target="_blank">QQ</a>
             </div>
 
-            <div class="item resources">
-              <div class="item-title">友链</div>
-              <a href="https://www.cnblogs.com/N3ptune">N3ptune</a>
+            <div class="item">
+              <div class="item-title">维修</div>
+              <a href="https://nbtca.space/repair/create-ticket">预约维修</a>
             </div>
+
+            <!-- <div class="item">
+              <div class="item-title">维修</div>
+              <a href="https://nbtca.space/repair/create-ticket">预约维修</a>
+            </div> -->
           </div>
+          <!-- <div class="flex text-xs mt-3">
+            联系我们:
+            <div class="ml-1"> <a href="mailto:contact@nbtca.space">{SITE_EMAIL}</a></div>
+          </div> -->
         </div>
-        <div class="flex flex-col md:flex-row items-center md:items-end text-sm pt-3 pb-1">
-          <div class="">
-            &copy; {`2018-${year}  ${SITE_NAME}`}
-            <a href="//github.com/austin2035/astro-air-blog">astro-air-blog</a>
-          </div>
-          <div>
-            <a href="https://beian.miit.gov.cn/" target="_blank" class="text-xs ml-2">浙ICP备2021030831号</a>
+        <div class=" w-full">
+          <div class="w-full h-[0.5px] my-4 bg-gray-500"> </div>
+          <div class="flex flex-col gap-2 sm:flex-row items-start sm:items-center text-xs text-gray-500">
+            <div class="">
+              Copyright &copy; {`${year}  ${SITE_NAME}`}
+            </div>
+            <div>
+              <a href="https://beian.miit.gov.cn/" target="_blank" class="text-xs">浙ICP备2021030831号</a>
+            </div>
           </div>
         </div>
       </div>

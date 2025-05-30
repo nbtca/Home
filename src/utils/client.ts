@@ -2,8 +2,10 @@ import createClient from "openapi-fetch"
 import type { paths as saturdayPaths } from "../types/saturday"
 import { ApiClient } from "./active"
 
+export const saturdayApiBaseUrl = import.meta.env.PROD ? "https://api.nbtca.space/v2" : "/saturday"
+
 export const saturdayClient = createClient<saturdayPaths>({
-  baseUrl: import.meta.env.PROD ? "https://api.nbtca.space/v2/" : "/saturday",
+  baseUrl: saturdayApiBaseUrl,
 })
 
 export const activeClient = new ApiClient({

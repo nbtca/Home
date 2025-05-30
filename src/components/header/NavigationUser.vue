@@ -13,6 +13,11 @@ const onSignIn = async () => {
     postRedirectUri: window.location.pathname,
   })
 }
+
+const onGoToAccountManage = async () => {
+  window.open("https://myid.app.nbtca.space/account/aboutme", "_blank")
+}
+
 const onSignOut = async () => {
   logtoClient.value?.signOut(import.meta.env.PUBLIC_LOGTO_REDIRECT_URL)
 }
@@ -66,10 +71,47 @@ onMounted(() => {
             <div class="p-1">
               <MenuItem v-slot="{ active }">
                 <button
-                  @click="onSignOut"
-                  class="text-nowrap"
+                  @click="onGoToAccountManage"
+                  class="text-nowrap items-center gap-1 group"
                   :class="[active ? 'bg-violet-500 text-white' : 'text-gray-900', 'flex w-full items-center rounded-md px-2 py-2 text-sm']"
                 >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-4 text-gray-500 group-hover:text-white"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                    />
+                  </svg>
+                  账号管理
+                </button>
+              </MenuItem>
+              <MenuItem v-slot="{ active }">
+                <button
+                  @click="onSignOut"
+                  class="text-nowrap items-center gap-1 group"
+                  :class="[active ? 'bg-violet-500 text-white' : 'text-gray-900', 'flex w-full items-center rounded-md px-2 py-2 text-sm']"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-4 text-gray-500 group-hover:text-white"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                    />
+                  </svg>
                   登出
                 </button>
               </MenuItem>

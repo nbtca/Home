@@ -5,7 +5,7 @@ pubDate: 2025-01-12
 description: ' 人类从历史中学到的唯一教训，就是人类无法从历史中学到任何教训'
 author: 'zzh0u'
 cover:
-  url: ./_assets/workSummary/IMG_0069.jpg
+  url: https://oss.nbtca.space/blog/IMG_0069_8xFcDr.jpeg
 tags: ["闲聊"]
 theme: 'white'
 featured: true

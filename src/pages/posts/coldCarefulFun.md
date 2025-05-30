@@ -5,7 +5,7 @@ pubDate: 2024-10-15
 description: "活动的一些片段"
 author: "kongbai"
 cover:
-  url: ./_assets/post20241016/free_huaji.jpg
+  url: https://oss.nbtca.space/blog/free_huaji_0F7NMW.jpg
   alt: "cover"
 tags: ["活动"]
 ---

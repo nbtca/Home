@@ -181,8 +181,9 @@ function TicketFormCreated(props: {
           </div>
         </Alert>
       </div>
-
-      <EventDetail eventId={props.event?.eventId}></EventDetail>
+      <div className="section-content">
+        <EventDetail eventId={props.event?.eventId}></EventDetail>
+      </div>
     </section>
   )
 }
