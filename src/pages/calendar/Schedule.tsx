@@ -238,7 +238,7 @@ export default function Schedule() {
                   </div>
                   {events.map((event, index) => (
                     <div key={index} className="p-4 mb-2 border rounded-lg ">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
                         <div className="text-lg sm:text-xl font-semibold">{event.summary}</div>
                         {event.recurrenceId && (
                         // <span className="text-sm text-blue-500 border border-blue-500 px-1 rounded">重复</span>
