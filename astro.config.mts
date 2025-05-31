@@ -14,10 +14,10 @@ export default defineConfig({
     syntaxHighlight: "shiki",
     shikiConfig: {
       themes: {
-        light: 'github-light',
-        dark: 'github-dark',
+        light: "github-light",
+        dark: "github-dark",
       },
-    }
+    },
   },
   integrations: [
     vue(),
@@ -39,7 +39,10 @@ export default defineConfig({
           target: "http://localhost:4000",
           rewrite: path => path.replace(/^\/saturday/, ""),
         },
-      }
-    }
-  }
+      },
+    },
+    // optimizeDeps: {
+    //   exclude: ["dayjs"],
+    // },
+  },
 })

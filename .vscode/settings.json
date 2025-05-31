@@ -8,7 +8,10 @@
   ],
   "eslint.experimental.useFlatConfig": true,
   "cSpell.words": [
+    "ical",
     "Logto",
-    "qrcode"
+    "qrcode",
+    "Subcomponents",
+    "vevent"
   ],
 }
