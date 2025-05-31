@@ -188,91 +188,89 @@ export default function Schedule() {
   }, [focusedDate, groupedEvents])
 
   return (
-    <div className="flex justify-center">
-      <section className="box-border max-w-[1024px] px-[22px] mb-24 flex grow">
-        <div className="grow">
-          <div className="my-8 text-2xl font-bold w-full">日程</div>
-          <Alert
-            title="你可以在日历 App 中订阅我们的日程"
-            className="my-4 items-center"
-            endContent={(
-              <Button
-                color="default"
-                showAnchorIcon
-                size="sm"
-                as={Link}
-                variant="flat"
-                onPress={e => console.log(e)}
-                href="webcal://ical.nbtca.space"
-                target="_blank"
-              >
-                订阅
-              </Button>
-            )}
-          />
-          <div className="flex gap-8 w-full pt-4">
-            <div className="flex flex-col grow">
-              <div className="text-2xl font-bold">
-                {
-                  dayjs(focusedDate.toDate()).format("MMMM YYYY")
-                }
-              </div>
-              <div className="h-[0.5px] bg-gray-300 my-4" />
-              {loading && (
-                <div className="text-gray-500 h-[30vh] flex items-center justify-center w-full">
-                  <Spinner label="加载中..."></Spinner>
-                </div>
-              )}
-              {groupedEvents.length === 0 && !loading && (
-                <div className="text-gray-500">本月暂无日程</div>
-              )}
+    <div className="box-border flex justify-center">
+      <section className="max-w-[1024px] px-[22px] mb-24 flex flex-col w-full">
+        <div className="my-8 text-2xl font-bold">日程</div>
+        <Alert
+          title="你可以在日历 App 中订阅我们的日程"
+          className="my-4 items-center"
+          endContent={(
+            <Button
+              color="default"
+              showAnchorIcon
+              size="sm"
+              as={Link}
+              variant="flat"
+              onPress={e => console.log(e)}
+              href="webcal://ical.nbtca.space"
+              target="_blank"
+            >
+              订阅
+            </Button>
+          )}
+        />
+        <div className="flex flex-col sm:flex-row gap-8 pt-4">
+          <div className="flex flex-col grow">
+            <div className="text-2xl font-bold w-full">
               {
-                groupedEvents.map(([date, events]) => (
-                  <div
-                    key={date}
-                    ref={el => dateRefs.current[date] = el}
-                    className="mb-6"
-                  >
-                    <div className="text-lg mb-2">
-                      <span className="text-lg mr-1"> { dayjs(date).format("MM.DD") } </span>
-                      <span className="text-base"> { dayjs(date).format("ddd") } </span>
-                    </div>
-                    {events.map((event, index) => (
-                      <div key={index} className="p-4 mb-2 border rounded-lg ">
-                        <div className="flex items-center gap-2">
-                          <div className="text-lg sm:text-xl font-semibold">{event.summary}</div>
-                          {event.recurrenceId && (
-                            // <span className="text-sm text-blue-500 border border-blue-500 px-1 rounded">重复</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4 text-gray-500">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                            </svg>
-
-                          )}
-                        </div>
-                        <span className="text-sm text-gray-600">{formatTimePair(event.start, event.end)}</span>
-                        {
-                          event.description && (
-                            <p className="mt-2">{event.description}</p>
-                          )
-                        }
-                      </div>
-                    ))}
-                  </div>
-                ))
+                dayjs(focusedDate.toDate()).format("MMMM YYYY")
               }
             </div>
-            <div className="flex-shrink-0 hidden sm:block">
-              <div className="sticky top-6">
-                <Calendar
-                  aria-label="Date (Controlled Focused Value)"
-                  focusedValue={focusedDate}
-                  value={defaultDate}
-                  onFocusChange={(v) => {
-                    isUserChangeRef.current = true
-                    setFocusedDate(v)
-                  }}
-                />
+            <div className="h-[0.5px] bg-gray-300 my-4" />
+            {loading && (
+              <div className="text-gray-500 h-[30vh] flex items-center justify-center w-full">
+                <Spinner label="加载中..."></Spinner>
               </div>
+            )}
+            {groupedEvents.length === 0 && !loading && (
+              <div className="text-gray-500">本月暂无日程</div>
+            )}
+            {
+              groupedEvents.map(([date, events]) => (
+                <div
+                  key={date}
+                  ref={el => dateRefs.current[date] = el}
+                  className="mb-6"
+                >
+                  <div className="text-lg mb-2">
+                    <span className="text-lg mr-1"> { dayjs(date).format("MM.DD") } </span>
+                    <span className="text-base"> { dayjs(date).format("ddd") } </span>
+                  </div>
+                  {events.map((event, index) => (
+                    <div key={index} className="p-4 mb-2 border rounded-lg ">
+                      <div className="flex items-center gap-2">
+                        <div className="text-lg sm:text-xl font-semibold">{event.summary}</div>
+                        {event.recurrenceId && (
+                        // <span className="text-sm text-blue-500 border border-blue-500 px-1 rounded">重复</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4 text-gray-500">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                          </svg>
+
+                        )}
+                      </div>
+                      <span className="text-sm text-gray-600">{formatTimePair(event.start, event.end)}</span>
+                      {
+                        event.description && (
+                          <p className="mt-2">{event.description}</p>
+                        )
+                      }
+                    </div>
+                  ))}
+                </div>
+              ))
+            }
+          </div>
+          <div className="flex-shrink-0 hidden sm:block">
+            <div className="sticky top-6">
+              <Calendar
+                aria-label="Date (Controlled Focused Value)"
+                focusedValue={focusedDate}
+                value={defaultDate}
+                onFocusChange={(v) => {
+                  isUserChangeRef.current = true
+                  setFocusedDate(v)
+                }}
+              />
             </div>
           </div>
         </div>
