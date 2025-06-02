@@ -21,6 +21,10 @@
     "Rehype",
     "rehypePlugins",
     "shiki",
-    "tseslint"
+    "tseslint",
+    "ical",
+    "ICAL",
+    "vevents",
+    "getAllSubcomponents"
   ]
 }
