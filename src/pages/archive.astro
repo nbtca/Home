@@ -63,10 +63,9 @@ const getCover = (post: MarkdownInstance<Post>) => {
               <a class="flex items-start sm:items-center gap-4 sm:gap-6 py-8 no-underline appearance-none text-gray-900 cursor-pointer" style="text-decoration:none" href={v.url}>
                 <div class="">
                   <img
-                    class="rounded-xl sm:rounded-[20px] w-[105px] sm:w-[264px] xl:w-[295px] aspect-video overflow-hidden bg-gray-100 object-cover object-center"
+                    class="rounded-xl sm:rounded-[20px] w-[105px] sm:w-[264px] xl:w-[295px] aspect-video overflow-hidden bg-gray-100 object-cover object-center archive-cover"
                     src={getCover(v).url}
                     alt={getCover(v).url}
-                    class="archive-cover"
                   />
                 </div>
                 <div class="flex flex-col gap-2">
