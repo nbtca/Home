@@ -88,7 +88,13 @@ const dateFormatted = formatDate(pubDate)
                   </a
                   >
                   <p class="content">
-                    作者： {frontmatter.author} 发表日期：{dateFormatted}
+                    作者：
+                    {
+                      typeof frontmatter.author === "object"
+                        ? <a href={frontmatter.author.url} target="_blank" rel="noopener">{frontmatter.author.name}</a>
+                        : frontmatter.author
+                    }
+                    ，发表日期：{dateFormatted}
                   </p>
                 </div>
               </div>

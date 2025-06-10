@@ -5,7 +5,7 @@ pubDate: 2025-06-10
 description: "🤪"
 author:
   name: "小明"
-  link: "https://m1ng.space/"
+  url: "https://m1ng.space/"
 cover:
   url: "https://i.pinimg.com/736x/6f/00/d7/6f00d73e426549d0f5b1bb873bf2015f.jpg"
   alt: "cover"
