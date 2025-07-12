@@ -1,7 +1,7 @@
 import ICAL from "ical.js"
 import dayjs from "dayjs"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Alert, Button, Calendar, Link, Spinner } from "@heroui/react"
+import { Alert, Button, Calendar, Link, Spinner, Select, SelectItem } from "@heroui/react"
 import { today, getLocalTimeZone } from "@internationalized/date"
 
 import "dayjs/locale/zh-cn"
@@ -83,7 +83,8 @@ const extractScheduleEvents = (icalComp: ICAL.Component): ScheduleEvent[] => {
           end: event.endDate.toJSDate(),
           summary: event.summary,
           description: event.description,
-          recurrenceId: "123",
+          recurrenceId: event.uid || event.startDate.toString(),
+
         }]
       }
       return expandEventOccurrences(event, rangeEnd)
@@ -108,6 +109,12 @@ export default function Schedule() {
   const dateRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const calendarRef = useRef<ICAL.Component | null>(null)
   const [loading, setLoading] = useState(true)
+
+  const currentYear = focusedDate.year
+  const currentMonth = focusedDate.month
+
+  const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i)
+  const months = Array.from({ length: 12 }, (_, i) => i + 1)
 
   useEffect(() => {
     const rangeStart = ICAL.Time.fromJSDate(dayjs(focusedDate.toDate(getLocalTimeZone())).startOf("month").toDate())
@@ -191,6 +198,54 @@ export default function Schedule() {
     <div className="box-border flex justify-center">
       <section className="max-w-[1024px] px-[22px] mb-24 flex flex-col w-full">
         <div className="my-8 text-2xl font-bold">日程</div>
+
+        {/* Mobile Date Selector */}
+        <div className="sm:hidden sticky top-0 bg-white z-10 py-4 -mx-[22px] px-[22px] border-b border-gray-200 mb-4">
+          <div className="flex gap-4">
+            <Select
+              placeholder="选择年份"
+              selectedKeys={[currentYear.toString()]}
+              defaultSelectedKeys={[currentYear.toString()]}
+              onSelectionChange={(keys) => {
+                const year = parseInt(Array.from(keys)[0] as string)
+                setFocusedDate(focusedDate.set({ year }))
+              }}
+              className="flex-1"
+              size="sm"
+              aria-label="选择年份"
+              renderValue={(items) => {
+                return items.map(item => `${item.key}年`)
+              }}
+            >
+              {years.map(year => (
+                <SelectItem key={year.toString()} textValue={year.toString()}>
+                  {year}年
+                </SelectItem>
+              ))}
+            </Select>
+            <Select
+              placeholder="选择月份"
+              selectedKeys={[currentMonth.toString()]}
+              defaultSelectedKeys={[currentMonth.toString()]}
+              onSelectionChange={(keys) => {
+                const month = parseInt(Array.from(keys)[0] as string)
+                setFocusedDate(focusedDate.set({ month }))
+              }}
+              className="flex-1"
+              size="sm"
+              aria-label="选择月份"
+              renderValue={(items) => {
+                return items.map(item => `${item.key}月`)
+              }}
+            >
+              {months.map(month => (
+                <SelectItem key={month.toString()} textValue={month.toString()}>
+                  {month}月
+                </SelectItem>
+              ))}
+            </Select>
+          </div>
+        </div>
         <Alert
           title="你可以在日历 App 中订阅我们的日程"
           className="my-4 items-center"
