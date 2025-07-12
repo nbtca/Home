@@ -76,7 +76,9 @@ const dateFormatted = formatDate(pubDate)
                 </div>
               </div>
             </div>
-            <slot />
+            <div class="prose prose-neutral dark:prose-invert max-w-none">
+              <slot />
+            </div>
             <div class="component">
               <div class="component-content">
                 <div class="article-copyright">
@@ -88,7 +90,13 @@ const dateFormatted = formatDate(pubDate)
                   </a
                   >
                   <p class="content">
-                    作者： {frontmatter.author} 发表日期：{dateFormatted}
+                    作者：
+                    {
+                      typeof frontmatter.author === "object"
+                        ? <a href={frontmatter.author.url} target="_blank" rel="noopener">{frontmatter.author.name}</a>
+                        : frontmatter.author
+                    }
+                    ，发表日期：{dateFormatted}
                   </p>
                 </div>
               </div>

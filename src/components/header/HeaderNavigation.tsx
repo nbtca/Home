@@ -13,7 +13,7 @@ export default function App() {
     },
     {
       link: "/calendar",
-      name: "日历",
+      name: "日程",
     },
     {
       link: "/about",
