@@ -4,6 +4,93 @@
  */
 
 export interface paths {
+  "/client/event": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Create client event */
+    post: operations["create-client-event"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/client/events": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get client events by page */
+    get: operations["get-client-events"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/client/events/{EventId}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get client event by id */
+    get: operations["get-client-event-by-id"]
+    put?: never
+    post?: never
+    /** Cancel client event */
+    delete: operations["cancel-client-event"]
+    options?: never
+    head?: never
+    /** Update client event */
+    patch: operations["update-client-event"]
+    trace?: never
+  }
+  "/clients/token/logto": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Create token via logto */
+    post: operations["create-token-via-logto"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/clients/token/wechat": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Create token via wechat */
+    post: operations["create-token-via-wechat"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/events": {
     parameters: {
       query?: never
@@ -13,6 +100,40 @@ export interface paths {
     }
     /** Get a public event by page */
     get: operations["get-public-event-by-page"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/events/anonymous": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Create anonymous event (no authentication required) */
+    post: operations["create-anonymous-event"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/events/xlsx": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Export events to XLSX */
+    get: operations["export-events-xlsx"]
     put?: never
     post?: never
     delete?: never
@@ -36,6 +157,162 @@ export interface paths {
     options?: never
     head?: never
     patch?: never
+    trace?: never
+  }
+  "/events/{EventId}/close": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Close event */
+    post: operations["close-event"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/events/{EventId}/commit": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /** Reject commit event */
+    delete: operations["reject-commit-event"]
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/member": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get current member */
+    get: operations["get-member"]
+    /** Update member */
+    put: operations["update-member"]
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/member/activate": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** Activate member */
+    patch: operations["activate-member"]
+    trace?: never
+  }
+  "/member/avatar": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** Update member avatar */
+    patch: operations["update-member-avatar"]
+    trace?: never
+  }
+  "/member/events": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get member events */
+    get: operations["get-member-events"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/member/events/{EventId}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get member event by id */
+    get: operations["get-member-event-by-id"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/member/events/{EventId}/accept": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Accept event */
+    post: operations["accept-event"]
+    /** Drop event */
+    delete: operations["drop-event"]
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/member/events/{EventId}/commit": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Commit event */
+    post: operations["commit-event"]
+    delete?: never
+    options?: never
+    head?: never
+    /** Alter commit event */
+    patch: operations["alter-commit-event"]
     trace?: never
   }
   "/member/token/logto": {
@@ -65,6 +342,24 @@ export interface paths {
     /** Get a public member by page */
     get: operations["get-public-member-by-page"]
     put?: never
+    /** Create multiple members */
+    post: operations["create-members"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/members/full": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get members with full details */
+    get: operations["get-members-full"]
+    put?: never
     post?: never
     delete?: never
     options?: never
@@ -82,11 +377,13 @@ export interface paths {
     /** Get a public member by id */
     get: operations["get-public-member"]
     put?: never
-    post?: never
+    /** Create member */
+    post: operations["create-member"]
     delete?: never
     options?: never
     head?: never
-    patch?: never
+    /** Update member basic info */
+    patch: operations["update-member-basic"]
     trace?: never
   }
   "/members/{MemberId}/logto_id": {
@@ -140,32 +437,39 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  "clients/token/wechat": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Create token via wechat */
-    post: operations["create-token-via-wechat"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
 }
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
+    "ActivateMemberRequest": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/ActivateMemberRequest.json
+             */
+      readonly $schema?: string
+      MemberId: string
+      alias: string
+      password: string
+      phone: string
+      profile: string
+      qq: string
+    }
+    "AlterCommitEventInputBody": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/AlterCommitEventInputBody.json
+             */
+      readonly $schema?: string
+      content: string
+      size: string
+    }
     "Bind-member-logto-idRequest": {
       /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://example.com/schemas/Bind-member-logto-idRequest.json
+             * @example https://api.nbtca.space/schemas/Bind-member-logto-idRequest.json
              */
       readonly $schema?: string
       password: string
@@ -174,21 +478,32 @@ export interface components {
       /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://example.com/schemas/ClientTokenResponse.json
+             * @example https://api.nbtca.space/schemas/ClientTokenResponse.json
              */
       readonly $schema?: string
       /** Format: int64 */
       clientId: number
       gmtCreate: string
       gmtModified: string
+      logtoId: string
       openid: string
       token: string
+    }
+    "CommitEventInputBody": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/CommitEventInputBody.json
+             */
+      readonly $schema?: string
+      content: string
+      size: string
     }
     "Create-token-via-wechatRequest": {
       /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://example.com/schemas/Create-token-via-wechatRequest.json
+             * @example https://api.nbtca.space/schemas/Create-token-via-wechatRequest.json
              */
       readonly $schema?: string
       code: string
@@ -197,21 +512,71 @@ export interface components {
       /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://example.com/schemas/Create-tokenRequest.json
+             * @example https://api.nbtca.space/schemas/Create-tokenRequest.json
              */
       readonly $schema?: string
       password: string
+    }
+    "CreateAnonymousEventInputBody": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/CreateAnonymousEventInputBody.json
+             */
+      readonly $schema?: string
+      /** @description Preferred contact method */
+      contactPreference: string
+      /** @description Device model */
+      model: string
+      /** @description Phone number (11 digits) */
+      phone: string
+      /** @description Problem description */
+      problem: string
+      /** @description QQ number */
+      qq: string
+    }
+    "CreateClientEventInputBody": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/CreateClientEventInputBody.json
+             */
+      readonly $schema?: string
+      contact_preference: string
+      model: string
+      phone: string
+      problem: string
+      qq: string
+    }
+    "CreateMemberRequest": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/CreateMemberRequest.json
+             */
+      readonly $schema?: string
+      alias: string
+      avatar: string
+      logtoId: string
+      memberId: string
+      name: string
+      phone: string
+      profile: string
+      qq: string
+      role: string
+      section: string
     }
     "CreateMemberTokenResponse": {
       /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://example.com/schemas/CreateMemberTokenResponse.json
+             * @example https://api.nbtca.space/schemas/CreateMemberTokenResponse.json
              */
       readonly $schema?: string
       alias: string
       avatar: string
       createdBy: string
+      githubId: string
       gmtCreate: string
       gmtModified: string
       logtoId: string
@@ -236,7 +601,7 @@ export interface components {
       /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://example.com/schemas/ErrorModel.json
+             * @example https://api.nbtca.space/schemas/ErrorModel.json
              */
       readonly $schema?: string
       /**
@@ -245,7 +610,7 @@ export interface components {
              */
       detail?: string
       /** @description Optional list of individual error details */
-      errors?: components["schemas"]["ErrorDetail"][]
+      errors?: components["schemas"]["ErrorDetail"][] | null
       /**
              * Format: uri
              * @description A URI reference that identifies the specific occurrence of the problem.
@@ -271,6 +636,33 @@ export interface components {
              */
       type: string
     }
+    "Event": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/Event.json
+             */
+      readonly $schema?: string
+      clientId?: components["schemas"]["NullInt64"]
+      closedBy: components["schemas"]["PublicMember"]
+      closedById: string
+      contactPreference: string
+      /** Format: int64 */
+      eventId: number
+      githubIssueId: components["schemas"]["NullInt64"]
+      githubIssueNumber: components["schemas"]["NullInt64"]
+      gmtCreate: string
+      gmtModified: string
+      logs: components["schemas"]["EventLog"][] | null
+      member: components["schemas"]["PublicMember"]
+      memberId: string
+      model: string
+      phone: string
+      problem: string
+      qq: string
+      size: string
+      status: string
+    }
     "EventLog": {
       action: string
       description: string
@@ -283,12 +675,13 @@ export interface components {
       /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://example.com/schemas/Member.json
+             * @example https://api.nbtca.space/schemas/Member.json
              */
       readonly $schema?: string
       alias: string
       avatar: string
       createdBy: string
+      githubId: string
       gmtCreate: string
       gmtModified: string
       logtoId: string
@@ -300,11 +693,16 @@ export interface components {
       role: string
       section: string
     }
+    "NullInt64": {
+      /** Format: int64 */
+      Int64: number
+      Valid: boolean
+    }
     "PingResponse": {
       /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://example.com/schemas/PingResponse.json
+             * @example https://api.nbtca.space/schemas/PingResponse.json
              */
       readonly $schema?: string
       /**
@@ -317,27 +715,31 @@ export interface components {
       /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://example.com/schemas/PublicEvent.json
+             * @example https://api.nbtca.space/schemas/PublicEvent.json
              */
       readonly $schema?: string
-      /** Format: int64 */
-      clientId: number
+      clientId?: components["schemas"]["NullInt64"]
       closedBy: components["schemas"]["PublicMember"]
       /** Format: int64 */
       eventId: number
+      /** Format: int64 */
+      githubIssueId: number
+      /** Format: int64 */
+      githubIssueNumber: number
       gmtCreate: string
       gmtModified: string
-      logs: components["schemas"]["EventLog"][]
+      logs: components["schemas"]["EventLog"][] | null
       member: components["schemas"]["PublicMember"]
       model: string
       problem: string
+      size: string
       status: string
     }
     "PublicMember": {
       /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://example.com/schemas/PublicMember.json
+             * @example https://api.nbtca.space/schemas/PublicMember.json
              */
       readonly $schema?: string
       alias: string
@@ -349,6 +751,57 @@ export interface components {
       profile: string
       role: string
     }
+    "UpdateClientEventInputBody": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/UpdateClientEventInputBody.json
+             */
+      readonly $schema?: string
+      contact_preference: string
+      model: string
+      phone: string
+      problem: string
+      qq: string
+      size: string
+    }
+    "UpdateMemberAvatarInputBody": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/UpdateMemberAvatarInputBody.json
+             */
+      readonly $schema?: string
+      /** @description Avatar URL */
+      avatar: string
+    }
+    "UpdateMemberBasicRequest": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/UpdateMemberBasicRequest.json
+             */
+      readonly $schema?: string
+      memberId: string
+      name: string
+      role: string
+      section: string
+    }
+    "UpdateMemberRequest": {
+      /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/UpdateMemberRequest.json
+             */
+      readonly $schema?: string
+      MemberId: string
+      alias: string
+      avatar: string
+      password: string
+      phone: string
+      profile: string
+      qq: string
+    }
   }
   responses: never
   parameters: never
@@ -358,6 +811,270 @@ export interface components {
 }
 export type $defs = Record<string, never>
 export interface operations {
+  "create-client-event": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateClientEventInputBody"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "get-client-events": {
+    parameters: {
+      query?: {
+        /**
+                 * @description Offset
+                 * @example 0
+                 */
+        offset?: number
+        /**
+                 * @description Limit
+                 * @example 50
+                 */
+        limit?: number
+        status?: string
+        order?: string
+      }
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"][] | null
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "get-client-event-by-id": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "cancel-client-event": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "update-client-event": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateClientEventInputBody"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "create-token-via-logto": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["ClientTokenResponse"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "create-token-via-wechat": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Create-token-via-wechatRequest"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["ClientTokenResponse"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
   "get-public-event-by-page": {
     parameters: {
       query?: {
@@ -386,8 +1103,86 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["PublicEvent"][]
+          "application/json": components["schemas"]["PublicEvent"][] | null
         }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "create-anonymous-event": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateAnonymousEventInputBody"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "export-events-xlsx": {
+    parameters: {
+      query: {
+        /**
+                 * @description Offset
+                 * @example 0
+                 */
+        offset?: number
+        /**
+                 * @description Limit
+                 * @example 50
+                 */
+        limit?: number
+        status?: string
+        order?: string
+        start_time: string
+        end_time: string
+      }
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Error */
       default: {
@@ -431,19 +1226,472 @@ export interface operations {
       }
     }
   }
+  "close-event": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "reject-commit-event": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "get-member": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Member"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "update-member": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateMemberRequest"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Member"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "activate-member": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ActivateMemberRequest"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Member"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "update-member-avatar": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateMemberAvatarInputBody"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Member"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "get-member-events": {
+    parameters: {
+      query?: {
+        /**
+                 * @description Offset
+                 * @example 0
+                 */
+        offset?: number
+        /**
+                 * @description Limit
+                 * @example 50
+                 */
+        limit?: number
+        status?: string
+        order?: string
+      }
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"][] | null
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "get-member-event-by-id": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "accept-event": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "drop-event": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "commit-event": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CommitEventInputBody"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "alter-commit-event": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AlterCommitEventInputBody"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
   "create-token-via-logto-token": {
     parameters: {
       query?: never
       header?: {
         Authorization?: string
       }
-      path: {
-        /**
-                 * @description Member Id
-                 * @example 2333333333
-                 */
-        MemberId: string
-      }
+      path?: never
       cookie?: never
     }
     requestBody?: never
@@ -494,7 +1742,86 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["PublicMember"][]
+          "application/json": components["schemas"]["PublicMember"][] | null
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "create-members": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateMemberRequest"][] | null
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Member"][] | null
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "get-members-full": {
+    parameters: {
+      query?: {
+        /**
+                 * @description Offset
+                 * @example 0
+                 */
+        offset?: number
+        /**
+                 * @description Limit
+                 * @example 50
+                 */
+        limit?: number
+      }
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Member"][] | null
         }
       }
       /** @description Error */
@@ -530,6 +1857,90 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["PublicMember"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "create-member": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Member ID
+                 * @example 2333333333
+                 */
+        MemberId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateMemberRequest"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Member"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "update-member-basic": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Member ID
+                 * @example 2333333333
+                 */
+        MemberId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateMemberBasicRequest"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Member"]
         }
       }
       /** @description Error */
@@ -639,39 +2050,6 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["PingResponse"]
-        }
-      }
-      /** @description Error */
-      default: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/problem+json": components["schemas"]["ErrorModel"]
-        }
-      }
-    }
-  }
-  "create-token-via-wechat": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Create-token-via-wechatRequest"]
-      }
-    }
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["ClientTokenResponse"]
         }
       }
       /** @description Error */
