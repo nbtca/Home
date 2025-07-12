@@ -28,7 +28,7 @@ importers:
         version: 6.1.17(@fullcalendar/core@6.1.17)
       '@fullcalendar/icalendar':
         specifier: ^6.1.17
-        version: 6.1.17(@fullcalendar/core@6.1.17)(ical.js@1.5.0)
+        version: 6.1.17(@fullcalendar/core@6.1.17)(ical.js@2.1.0)
       '@fullcalendar/react':
         specifier: ^6.1.17
         version: 6.1.17(@fullcalendar/core@6.1.17)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -60,8 +60,8 @@ importers:
         specifier: ^11.18.2
         version: 11.18.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ical.js:
-        specifier: ^1.5.0
-        version: 1.5.0
+        specifier: ^2.1.0
+        version: 2.1.0
       md5:
         specifier: ^2.3.0
         version: 2.3.0
@@ -3828,8 +3828,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  ical.js@1.5.0:
-    resolution: {integrity: sha512-7ZxMkogUkkaCx810yp0ZGKvq1ZpRgJeornPttpoxe6nYZ3NLesZe1wWMXDdwTkj/b5NtXT+Y16Aakph/ao98ZQ==}
+  ical.js@2.1.0:
+    resolution: {integrity: sha512-BOVfrH55xQ6kpS3muGvIXIg2l7p+eoe12/oS7R5yrO3TL/j/bLsR0PR+tYQESFbyTbvGgPHn9zQ6tI4FWyuSaQ==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -6302,10 +6302,10 @@ snapshots:
     dependencies:
       '@fullcalendar/core': 6.1.17
 
-  '@fullcalendar/icalendar@6.1.17(@fullcalendar/core@6.1.17)(ical.js@1.5.0)':
+  '@fullcalendar/icalendar@6.1.17(@fullcalendar/core@6.1.17)(ical.js@2.1.0)':
     dependencies:
       '@fullcalendar/core': 6.1.17
-      ical.js: 1.5.0
+      ical.js: 2.1.0
 
   '@fullcalendar/react@6.1.17(@fullcalendar/core@6.1.17)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -10623,7 +10623,7 @@ snapshots:
 
   husky@9.1.7: {}
 
-  ical.js@1.5.0: {}
+  ical.js@2.1.0: {}
 
   ignore@5.3.2: {}
 
