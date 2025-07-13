@@ -1,7 +1,7 @@
 import type { UserInfoResponse } from "@logto/browser"
 import type { PublicMember } from "../../store/member"
 import { EventStatus, type PublicEvent } from "../../types/event"
-import { saturdayApiBaseUrl } from "../../utils/client"
+import { saturdayClient } from "../../utils/client"
 import { Button, Form, Select, SelectItem, Textarea } from "@heroui/react"
 import { useEffect, useState } from "react"
 
@@ -104,17 +104,17 @@ export const EventActionCommit = (props: EventActionProps) => {
 
   const onSubmit = async () => {
     props.onLoading("commit")
-    const res = await fetch(`${saturdayApiBaseUrl}/member/events/${props.event.eventId}/commit`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${props.identityContext.token}`,
-        ContentType: "application/json",
-      },
-      body: JSON.stringify({
+    const { data: res } = await saturdayClient.POST("/member/events/{EventId}/commit", {
+      body: {
         size: formData.size,
         content: formData.description,
-      }),
-    }).then(res => res.json())
+      },
+      params: {
+        path: {
+          EventId: props.event.eventId,
+        },
+      },
+    })
     props.onLoading()
     return props.onUpdated(res)
   }
@@ -151,17 +151,13 @@ export const EventActionAlterCommit = (props: EventActionProps) => {
 
   const onSubmit = async () => {
     props.onLoading("alterCommit")
-    const res = await fetch(`${saturdayApiBaseUrl}/member/events/${props.event.eventId}/commit`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${props.identityContext.token}`,
-        ContentType: "application/json",
-      },
-      body: JSON.stringify({
+    const { data: res } = await saturdayClient.POST("/member/events/{EventId}/commit", {
+      params: { path: { EventId: props.event.eventId } },
+      body: {
         size: formData.size,
         content: formData.description,
-      }),
-    }).then(res => res.json())
+      },
+    })
     props.onLoading()
     return props.onUpdated(res)
   }
@@ -235,12 +231,9 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
         variant: "solid",
         color: "primary",
         handler: async () => {
-          return await fetch(`${saturdayApiBaseUrl}/member/events/${event.eventId}/accept`, {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${identityContext.token}`,
-            },
-          }).then(res => res.json())
+          return await saturdayClient.POST("/member/events/{EventId}/accept", {
+            params: { path: { EventId: event.eventId } },
+          })
         },
       }),
     })
@@ -256,12 +249,9 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
         action: "drop",
         label: "放弃",
         handler: async () => {
-          return await fetch(`${saturdayApiBaseUrl}/member/events/${event.eventId}/accept`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${identityContext.token}`,
-            },
-          }).then(res => res.json())
+          return saturdayClient.DELETE("/member/events/{EventId}/accept", {
+            params: { path: { EventId: event.eventId } },
+          })
         },
       }),
     })
@@ -281,12 +271,9 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
           color: "success",
           label: "完成",
           handler: async () => {
-            return await fetch(`${saturdayApiBaseUrl}/events/${event.eventId}/close`, {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${identityContext.token}`,
-              },
-            }).then(res => res.json())
+            return await saturdayClient.POST("/events/{EventId}/close", {
+              params: { path: { EventId: event.eventId } },
+            })
           },
         }),
       })
@@ -297,12 +284,9 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
           color: "danger",
           label: "退回",
           handler: async () => {
-            return await fetch(`${saturdayApiBaseUrl}/events/${event.eventId}/commit`, {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${identityContext.token}`,
-              },
-            }).then(res => res.json())
+            return await saturdayClient.DELETE("/events/{EventId}/commit", {
+              params: { path: { EventId: event.eventId } },
+            })
           },
         }),
       })
