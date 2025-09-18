@@ -25,7 +25,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useAsyncList } from "@react-stately/data"
 import type { components } from "../../types/saturday"
-import { saturdayApiBaseUrl, saturdayClient } from "../../utils/client"
+import { saturdayClient } from "../../utils/client"
 import EventDetail, { EventStatusChip, type EventDetailRef } from "./EventDetail"
 import dayjs from "dayjs"
 import { EventStatus, UserEventStatus } from "../../types/event"
@@ -215,13 +215,7 @@ export default function App() {
         return
       }
       setUserInfo(res)
-
-      const currentMember = await fetch(`${saturdayApiBaseUrl}/member`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then(res => res.json())
+      const { data: currentMember } = await saturdayClient.GET("/member")
       setCurrentMember(currentMember)
     }
     check()

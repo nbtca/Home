@@ -9,8 +9,7 @@ import {
   DateRangePicker,
 } from "@heroui/react"
 import { parseDate } from "@internationalized/date"
-import { saturdayApiBaseUrl } from "../../utils/client"
-import { makeLogtoClient } from "../../utils/auth"
+import { saturdayClient } from "../../utils/client"
 import dayjs from "dayjs"
 
 export function ExportExcelModal() {
@@ -31,16 +30,17 @@ export function ExportExcelModal() {
     try {
       const start = dateRange.start.toString() // Format: 'YYYY-MM-DD'
       const end = dateRange.end.toString()
-      const url = `${saturdayApiBaseUrl}/events/xlsx?start_time=${start}&end_time=${end}`
+      // const url = `${saturdayApiBaseUrl}/events/xlsx?start_time=${start}&end_time=${end}`
 
-      const token = await makeLogtoClient().getAccessToken()
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const { response } = await saturdayClient.GET("/events/xlsx", {
+        params: {
+          query: {
+            start_time: start,
+            end_time: end,
+          },
         },
       })
       if (!response.ok) throw new Error("Download failed")
-
       // Extract filename from Content-Disposition header
       const disposition = response.headers.get("Content-Disposition")
       let filename = "export.xlsx" // Default filename
