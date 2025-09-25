@@ -9,7 +9,7 @@ import {
   DateRangePicker,
 } from "@heroui/react"
 import { parseDate } from "@internationalized/date"
-import { saturdayApiBaseUrl } from "../../utils/client"
+import { saturdayClient } from "../../utils/client"
 import { makeLogtoClient } from "../../utils/auth"
 import dayjs from "dayjs"
 
@@ -29,15 +29,18 @@ export function ExportExcelModal() {
 
     setLoading(true)
     try {
-      const start = dateRange.start.toString() // Format: 'YYYY-MM-DD'
-      const end = dateRange.end.toString()
-      const url = `${saturdayApiBaseUrl}/events/xlsx?start_time=${start}&end_time=${end}`
-
       const token = await makeLogtoClient().getAccessToken()
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const { response } = await saturdayClient.GET("/events/xlsx", {
+        params: {
+          header: {
+            Authorization: `Bearer ${token}`,
+          },
+          query: {
+            start_time: dateRange.start.toString(),
+            end_time: dateRange.end.toString(),
+          },
         },
+        parseAs: "stream",
       })
       if (!response.ok) throw new Error("Download failed")
 

@@ -80,3 +80,4 @@ export const UserEventAction: Action[] = [
 ]
 
 export type PublicEvent = components["schemas"]["PublicEvent"]
+export type RepairEvent = components["schemas"]["Event"]

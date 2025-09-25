@@ -157,7 +157,7 @@ function TicketFormCreated(props: {
   })
   return (
     <section className="box-border w-full mt-8">
-      <div className="section-content">
+      <div className="section-content mb-4">
         <Alert hideIcon color="success" variant="faded">
           <div className="flex items-center gap-8">
             <div className="h-28 lg:h-40 aspect-square">
@@ -181,8 +181,10 @@ function TicketFormCreated(props: {
           </div>
         </Alert>
       </div>
-      <div className="section-content">
-        <EventDetail eventId={props.event?.eventId}></EventDetail>
+      <div className="section-content mb-4">
+        <EventDetail eventId={props.event?.eventId}>
+          {() => <></>}
+        </EventDetail>
       </div>
     </section>
   )
@@ -204,23 +206,55 @@ export default function App() {
       setUserInfo(res)
     }
     check()
+
+    // Check for eventId in URL query parameters
+    const urlParams = new URLSearchParams(window.location.search)
+    const eventId = urlParams.get("eventId")
+    if (eventId) {
+      // Fetch event data from the eventId
+      const fetchEvent = async () => {
+        try {
+          const { data } = await saturdayClient.GET("/events/{EventId}", {
+            params: {
+              path: {
+                EventId: parseInt(eventId, 10),
+              },
+            },
+          })
+          if (data) {
+            setEvent(data as PublicEvent)
+          }
+        }
+        catch (error) {
+          console.log("Error fetching event:", error)
+        }
+      }
+      fetchEvent()
+    }
   }, [])
 
   const onSubmit = async (formData: TicketFormData) => {
     const logtoToken = await makeLogtoClient().getAccessToken()
     try {
-      const res = await saturdayClient.POST("/client/event", {
+      const { data } = await saturdayClient.POST("/client/event", {
         headers: {
           Authorization: `Bearer ${logtoToken}`,
         },
         body: {
-          Problem: formData.description,
+          problem: formData.description,
           model: formData.model,
           phone: formData.phone,
           qq: formData.qq,
         },
       })
-      setEvent(res.data as unknown as PublicEvent)
+      setEvent(data as unknown as PublicEvent)
+
+      // Update URL with eventId to persist the ticket status
+      if (data?.eventId) {
+        const currentUrl = new URL(window.location.href)
+        currentUrl.searchParams.set("eventId", data.eventId.toString())
+        window.history.pushState({}, "", currentUrl.toString())
+      }
     }
     catch (error) {
       console.log(error)
