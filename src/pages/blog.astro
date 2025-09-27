@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro"
 import type { MarkdownInstance } from "astro"
 import dayjs from "dayjs"
+import { CA_LOGO_URL } from "../consts"
 
 type Cover = {
   url: string
@@ -61,21 +62,19 @@ const getCover = (post: MarkdownInstance<Post>) => {
           allPosts.map((v) => {
             return (
               <a class="flex items-start sm:items-center gap-4 sm:gap-6 py-8 no-underline appearance-none text-gray-900 cursor-pointer" style="text-decoration:none" href={v.url}>
-                <div class="">
-                  <img
-                    class="rounded-xl sm:rounded-[20px] w-[105px] sm:w-[264px] xl:w-[295px] aspect-video overflow-hidden bg-gray-100 object-cover object-center archive-cover"
-                    src={getCover(v).url}
-                    alt={getCover(v).alt}
-                  />
-                </div>
-                <div class="flex flex-col gap-2">
+                <img
+                  class="rounded-xl sm:rounded-[20px] w-[105px] sm:w-[264px] xl:w-[295px] shrink-0 aspect-video overflow-hidden bg-gray-100 object-cover object-center archive-cover"
+                  src={getCover(v).url || CA_LOGO_URL}
+                  alt={getCover(v).alt || "fallback cover"}
+                />
+                <div class="flex flex-col gap-1 sm:gap-2">
                   <div class="flex items-center gap-2">
-                    {v.frontmatter.tags.map((tag) => {
+                    {v.frontmatter.tags.slice(0, 3).map((tag) => {
                       return <span class="text-xs text-gray-700">{tag}</span>
                     })}
                   </div>
                   <div class="sm:text-xl font-bold">{v.frontmatter.title}</div>
-                  <div class="text-sm font-semibold text-gray-600 sm:mt-1">{dayjs(v.frontmatter.pubDate).format("YYYY-MM-DD")}</div>
+                  <div class="text-sm sm:font-semibold text-gray-600 sm:mt-1">{dayjs(v.frontmatter.pubDate).format("YYYY-MM-DD")}</div>
                 </div>
               </a>
               <div class="w-full h-[0.5px] bg-gray-600 my-1 flex-shrink-0 last:hidden"></div>

@@ -8,7 +8,7 @@ export default function App() {
 
   const menuItems = [
     {
-      link: "/archive",
+      link: "/blog",
       name: "博客",
     },
     {

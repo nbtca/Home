@@ -5,6 +5,7 @@ import { Alert, Button, Calendar, Link, Spinner, Select, SelectItem } from "@her
 import { today, getLocalTimeZone } from "@internationalized/date"
 
 import "dayjs/locale/zh-cn"
+import { CA_PUBLIC_ICAL_URL } from "../../consts"
 
 dayjs.locale("zh-cn")
 
@@ -17,7 +18,7 @@ type ScheduleEvent = {
 }
 
 const parseCal = async (): Promise<ICAL.Component> => {
-  const res = await fetch("https://ical.nbtca.space/").then(res => res.text())
+  const res = await fetch(CA_PUBLIC_ICAL_URL).then(res => res.text())
   const jcalData = ICAL.parse(res)
   return new ICAL.Component(jcalData)
 }
