@@ -140,15 +140,15 @@ function TicketDetailDrawer(props: {
   return (
     <Drawer isOpen={isOpen} onOpenChange={onOpenChange}>
       <DrawerContent>
-        <DrawerHeader>
-          <h2 className="text-2xl font-bold">维修详情</h2>
-          {isLoading}
+        <DrawerHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold">维修详情</h2>
+          {isLoading && <span className="text-sm text-gray-500">{isLoading}</span>}
         </DrawerHeader>
-        <DrawerBody>
+        <DrawerBody className="px-4 sm:px-6">
           <EventDetail ref={eventDetailRef} eventId={props.event?.eventId}>
             {
               event => (
-                <div className="mb-12 flex flex-col gap-2">
+                <div className="mb-8 sm:mb-12 flex flex-col gap-3 sm:gap-2">
                   {
                     availableActions?.map((action) => {
                       return (
@@ -171,8 +171,8 @@ function TicketDetailDrawer(props: {
             }
           </EventDetail>
         </DrawerBody>
-        <DrawerFooter>
-          <Button variant="flat" onPress={onClose}>
+        <DrawerFooter className="px-4 sm:px-6">
+          <Button variant="flat" onPress={onClose} className="w-full sm:w-auto">
             关闭
           </Button>
         </DrawerFooter>
@@ -336,6 +336,52 @@ export default function App() {
     onOpen()
   }
 
+  const MobileEventCard = ({ event }: { event: PublicEvent }) => (
+    <button className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm" onClick={() => onOpenEventDetail(event)}>
+
+      <div className="mb-3 flex gap-2 items-center justify-between">
+        <div className="text font-medium text-gray-900 line-clamp-2">
+          {event.problem}
+          <span className="text font-medium text-gray-400 ml-1">#{event.eventId}</span>
+        </div>
+        <div className="">
+          <EventStatusChip status={event.status} size="sm" />
+        </div>
+      </div>
+
+      <div className="h-18">
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="">
+            { dayjs(event.gmtCreate).format("YYYY-MM-DD HH:mm") }
+          </div>
+
+          {event.model && (
+            <div>
+              {event.model}
+            </div>
+          )}
+
+          <div>
+            { event.size && <Chip size="sm">size:{event.size}</Chip>}
+          </div>
+          {event.member && (
+            <div className="flex items-center gap-2 ">
+              <User
+                avatarProps={{ radius: "full", src: event.member.avatar, size: "sm" }}
+                name=""
+                classNames={{
+                  base: "justify-start",
+                  name: "text-sm",
+                  description: "text-xs",
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </button>
+  )
+
   const renderCell = useCallback((event: PublicEvent, columnKey: string | number) => {
     const cellValue = event[columnKey]
 
@@ -389,45 +435,89 @@ export default function App() {
     }
   }, [])
   return (
-    <section className="box-border max-w-[1024px] mx-auto px-[22px] mb-24">
-      <div className="mt-6 flex justify-between items-center">
-        <div className="text-2xl font-bold">维修管理</div>
+    <section className="box-border max-w-full px-4 sm:px-6 lg:max-w-[1024px] lg:px-[22px] mx-auto mb-16 sm:mb-24">
+      <div className="mt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="text-xl sm:text-2xl font-bold">维修管理</div>
         {
           userInfo?.roles?.find(v => v.toLowerCase() == "repair admin")
-            ? <ExportExcelModal></ExportExcelModal>
+            ? <div className="w-full sm:w-auto"><ExportExcelModal></ExportExcelModal></div>
             : <></>
         }
       </div>
       <div className="my-8 flex flex-col gap-4">
-        <Table
-          aria-label="Example table with dynamic content"
-          sortDescriptor={list.sortDescriptor}
-          onSortChange={list.sort}
-          bottomContent={(
-            <div className="flex w-full justify-center">
-              <Pagination
-                isCompact
-                showControls
-                showShadow
-                color="secondary"
-                page={page}
-                total={pages}
-                onChange={page => setPage(page)}
-              />
-            </div>
-          )}
-        >
-          <TableHeader columns={columns}>
-            {column => <TableColumn key={column.key} allowsSorting={column.allowSorting} children={column.content ?? <div>{column.label}</div>}></TableColumn>}
-          </TableHeader>
-          <TableBody isLoading={isLoading} items={items} loadingContent={<Spinner label="Loading..." />}>
-            {item => (
-              <TableRow key={item.eventId}>
-                {columnKey => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-              </TableRow>
+        {/* Mobile Cards Layout */}
+        <div className="block sm:hidden">
+          {/* Filter Section for Mobile */}
+          <div className="mb-4 flex items-center gap-2">
+            <span className="text-sm font-medium">筛选状态:</span>
+            <CheckboxPopover value={statusFilter} onValueChange={setStatusFilter} />
+          </div>
+
+          {isLoading
+            ? (
+                <div className="flex justify-center py-8">
+                  <Spinner label="Loading..." />
+                </div>
+              )
+            : (
+                <div className="flex flex-col gap-4">
+                  {items.map(event => (
+                    <MobileEventCard key={event.eventId} event={event} />
+                  ))}
+                  {items.length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                      暂无维修记录
+                    </div>
+                  )}
+                </div>
+              )}
+
+          {/* Mobile Pagination */}
+          <div className="mt-6 flex justify-center">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="secondary"
+              page={page}
+              total={pages}
+              onChange={page => setPage(page)}
+            />
+          </div>
+        </div>
+
+        {/* Desktop Table Layout */}
+        <div className="hidden sm:block">
+          <Table
+            aria-label="Example table with dynamic content"
+            sortDescriptor={list.sortDescriptor}
+            onSortChange={list.sort}
+            bottomContent={(
+              <div className="flex w-full justify-center">
+                <Pagination
+                  isCompact
+                  showControls
+                  showShadow
+                  color="secondary"
+                  page={page}
+                  total={pages}
+                  onChange={page => setPage(page)}
+                />
+              </div>
             )}
-          </TableBody>
-        </Table>
+          >
+            <TableHeader columns={columns}>
+              {column => <TableColumn key={column.key} allowsSorting={column.allowSorting} children={column.content ?? <div>{column.label}</div>}></TableColumn>}
+            </TableHeader>
+            <TableBody isLoading={isLoading} items={items} loadingContent={<Spinner label="Loading..." />}>
+              {item => (
+                <TableRow key={item.eventId}>
+                  {columnKey => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
       <TicketDetailDrawer
         event={activeEvent}
