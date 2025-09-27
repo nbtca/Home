@@ -122,7 +122,6 @@ progress {
 
 button {
   background: none;
-  border: 0;
   box-sizing: border-box;
   color: inherit;
   cursor: pointer;
@@ -149,12 +148,12 @@ button:disabled {
 html {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
     "Arial", sans-serif;
-  font-size: 106.25%;
+  /* font-size: 106.25%; */
   quotes: "“" "”";
 }
 
 body {
-  font-size: 17px;
+  /* font-size: 17px; */
   line-height: 1.47059;
   font-weight: 400;
   letter-spacing: -0.022em;
