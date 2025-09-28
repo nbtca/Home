@@ -3,7 +3,7 @@ import BaseHead from "../components/header/BaseHead.astro"
 import Header from "../components/header/Header.astro"
 import Footer from "../components/Footer.astro"
 
-import { formatDate } from "../utils"
+import { formatDate, getCoverImage } from "../utils"
 import { SITE_TITLE } from "../consts"
 const { frontmatter } = Astro.props
 const type = frontmatter.tags?.[0] ?? "默认"
@@ -20,7 +20,7 @@ const dateFormatted = formatDate(pubDate)
       <BaseHead
         title={`${title} - ${SITE_TITLE}`}
         description={description}
-        image={frontmatter.cover?.square}
+        image={getCoverImage(frontmatter.cover)}
       />
     </head>
     <body

@@ -1,3 +1,5 @@
+import { CA_LOGO_URL } from "./consts"
+
 export function formatDate(dateString: string) {
   const date = new Date(dateString)
   const year = date.getFullYear()
@@ -15,4 +17,18 @@ export function formatDateV2(date: string) {
   const formattedDate = localTime.replace(/\//g, "-").replace(/\s/g, "")
   // 返回格式化后的日期
   return formattedDate
+}
+
+export const getCoverImage = (cover: unknown) => {
+  switch (typeof cover) {
+    case "string":
+      return cover
+    case "object":
+      if (cover && "url" in cover) {
+        return (cover as { url: string }).url
+      }
+      return CA_LOGO_URL
+    default:
+      return CA_LOGO_URL
+  }
 }
