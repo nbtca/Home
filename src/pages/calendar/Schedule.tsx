@@ -5,6 +5,7 @@ import { Alert, Button, Calendar, Link, Spinner, Select, SelectItem } from "@her
 import { today, getLocalTimeZone } from "@internationalized/date"
 
 import "dayjs/locale/zh-cn"
+import { CA_PUBLIC_ICAL_URL } from "../../consts"
 
 dayjs.locale("zh-cn")
 
@@ -17,7 +18,7 @@ type ScheduleEvent = {
 }
 
 const parseCal = async (): Promise<ICAL.Component> => {
-  const res = await fetch("https://ical.nbtca.space/").then(res => res.text())
+  const res = await fetch(CA_PUBLIC_ICAL_URL).then(res => res.text())
   const jcalData = ICAL.parse(res)
   return new ICAL.Component(jcalData)
 }
@@ -110,62 +111,6 @@ const expandEventOccurrences = (
   return occurrences
 }
 
-const extractScheduleEvents = (icalComp: ICAL.Component): ScheduleEvent[] => {
-  const vevents = icalComp.getAllSubcomponents("vevent")
-  const rangeEnd = ICAL.Time.fromDateString("2026-01-01")
-  const rangeStart = ICAL.Time.fromDateString("2020-01-01")
-
-  // First, collect all exception events (events with RECURRENCE-ID)
-  const exceptions = new Map<string, Set<string>>() // uid -> set of recurrence-id strings
-  const exceptionEvents: ScheduleEvent[] = []
-
-  vevents.forEach((vevent) => {
-    const recurrenceId = vevent.getFirstPropertyValue("recurrence-id")
-    if (recurrenceId) {
-      const uid = vevent.getFirstPropertyValue("uid")
-      const event = new ICAL.Event(vevent)
-
-      // Check if exception is in range
-      if (event.startDate.compare(rangeEnd) <= 0 && event.endDate.compare(rangeStart) >= 0) {
-        exceptionEvents.push({
-          start: event.startDate.toJSDate(),
-          end: event.endDate.toJSDate(),
-          summary: event.summary,
-          description: event.description,
-          recurrenceId: recurrenceId.toString(),
-        })
-      }
-
-      // Track exception for filtering recurring events
-      if (!exceptions.has(uid)) {
-        exceptions.set(uid, new Set())
-      }
-      exceptions.get(uid)!.add(recurrenceId.toString())
-    }
-  })
-
-  // Process regular and recurring events
-  const regularEvents = vevents
-    .filter(vevent => !vevent.getFirstPropertyValue("recurrence-id"))
-    .flatMap<ScheduleEvent>((vevent) => {
-      const event = new ICAL.Event(vevent)
-      if (event.iterator().complete) {
-        return [{
-          start: event.startDate.toJSDate(),
-          end: event.endDate.toJSDate(),
-          summary: event.summary,
-          description: event.description,
-          recurrenceId: event.uid || event.startDate.toString(),
-        }]
-      }
-      const eventExceptions = exceptions.get(event.uid) || new Set()
-      return expandEventOccurrences(event, rangeStart, rangeEnd, eventExceptions)
-    })
-
-  return [...regularEvents, ...exceptionEvents]
-    .sort((a, b) => b.start.getTime() - a.start.getTime())
-}
-
 const formatTimePair = (s: Date, e: Date): string => {
   const start = dayjs(s)
   const end = dayjs(e)
@@ -215,14 +160,6 @@ export default function Schedule() {
       setScheduledEvents(events)
     }
   }, [focusedDate])
-
-  useEffect(() => {
-    setLoading(true)
-    parseCal().then((icalComp) => {
-      setScheduledEvents(extractScheduleEvents(icalComp))
-      setLoading(false)
-    })
-  }, [])
 
   const groupedEvents = useMemo(() => {
     const grouped = new Map<string, ScheduleEvent[]>()
