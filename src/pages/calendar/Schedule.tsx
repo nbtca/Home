@@ -317,7 +317,7 @@ export default function Schedule() {
                       <span className="text-sm text-gray-600">{formatTimePair(event.start, event.end)}</span>
                       {
                         event.description && (
-                          <p className="mt-2">{event.description}</p>
+                          <p className="mt-2 whitespace-pre-wrap">{event.description}</p>
                         )
                       }
                     </div>
