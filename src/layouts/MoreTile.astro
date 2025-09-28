@@ -1,11 +1,10 @@
 ---
-import { CA_LOGO_URL } from "../consts"
-import { formatDate } from "../utils"
+import { formatDate, getCoverImage } from "../utils"
 const { title, href, cover, tags, date } = Astro.props
 const dateFormatted = formatDate(date)
 const type = tags?.[0] ?? "默认"
 
-const image = cover?.url ?? cover ?? CA_LOGO_URL
+const image = getCoverImage(cover)
 
 const label = `${title} - ${type} - 发表时间 ${dateFormatted}`;
 ---
