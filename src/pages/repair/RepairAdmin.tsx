@@ -25,10 +25,10 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useAsyncList } from "@react-stately/data"
 import type { components } from "../../types/saturday"
-import { saturdayApiBaseUrl, saturdayClient } from "../../utils/client"
+import { saturdayClient } from "../../utils/client"
 import EventDetail, { EventStatusChip, type EventDetailRef } from "./EventDetail"
 import dayjs from "dayjs"
-import { EventStatus, UserEventStatus } from "../../types/event"
+import { EventStatus, UserEventStatus, type RepairEvent } from "../../types/event"
 import { makeLogtoClient } from "../../utils/auth"
 import type { PublicMember } from "../../store/member"
 import type { UserInfoResponse } from "@logto/browser"
@@ -107,7 +107,7 @@ function TicketDetailDrawer(props: {
   event: PublicEvent
   identity: IdentityContext
   isOpen: boolean
-  onEventUpdated: (event: PublicEvent) => void
+  onEventUpdated: (event: RepairEvent) => void
   onOpenChange: (isOpen: boolean) => void
   onClose: () => void
   onDelete: () => void
@@ -127,7 +127,7 @@ function TicketDetailDrawer(props: {
     setAvailableActions(getAvailableEventActions(props.event, props.identity))
   }, [props.event, props.identity])
 
-  const onEventUpdated = async (event: PublicEvent) => {
+  const onEventUpdated = async (event: RepairEvent) => {
     props.onEventUpdated(event)
     const res = await eventDetailRef.current?.refresh()
     console.log("onEventUpdated", res)
@@ -216,13 +216,14 @@ export default function App() {
       }
       setUserInfo(res)
 
-      const currentMember = await fetch(`${saturdayApiBaseUrl}/member`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const { data } = await saturdayClient.GET("/member", {
+        params: {
+          header: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      }).then(res => res.json())
-      setCurrentMember(currentMember)
+      })
+      setCurrentMember(data)
     }
     check()
   }, [])

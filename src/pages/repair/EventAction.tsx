@@ -1,7 +1,7 @@
 import type { UserInfoResponse } from "@logto/browser"
 import type { PublicMember } from "../../store/member"
-import { EventStatus, type PublicEvent } from "../../types/event"
-import { saturdayApiBaseUrl } from "../../utils/client"
+import { EventStatus, type PublicEvent, type RepairEvent } from "../../types/event"
+import { saturdayClient } from "../../utils/client"
 import { Button, Form, Select, SelectItem, Textarea } from "@heroui/react"
 import { useEffect, useState } from "react"
 
@@ -20,7 +20,7 @@ export type EventActionProps = {
   event: PublicEvent
   identityContext: IdentityContext
   isLoading?: string
-  onUpdated: (event: PublicEvent) => void
+  onUpdated: (event: RepairEvent) => void
   onLoading: (loadingAction?: string) => void
 }
 
@@ -104,19 +104,22 @@ export const EventActionCommit = (props: EventActionProps) => {
 
   const onSubmit = async () => {
     props.onLoading("commit")
-    const res = await fetch(`${saturdayApiBaseUrl}/member/events/${props.event.eventId}/commit`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${props.identityContext.token}`,
-        ContentType: "application/json",
+    const { data } = await saturdayClient.POST("/member/events/{EventId}/commit", {
+      params: {
+        header: {
+          Authorization: `Bearer ${props.identityContext.token}`,
+        },
+        path: {
+          EventId: props.event.eventId,
+        },
       },
-      body: JSON.stringify({
+      body: {
         size: formData.size,
         content: formData.description,
-      }),
-    }).then(res => res.json())
+      },
+    })
     props.onLoading()
-    return props.onUpdated(res)
+    return props.onUpdated(data)
   }
   return (
     <div className="flex flex-col gap-4">
@@ -151,19 +154,22 @@ export const EventActionAlterCommit = (props: EventActionProps) => {
 
   const onSubmit = async () => {
     props.onLoading("alterCommit")
-    const res = await fetch(`${saturdayApiBaseUrl}/member/events/${props.event.eventId}/commit`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${props.identityContext.token}`,
-        ContentType: "application/json",
+    const { data } = await saturdayClient.PATCH("/member/events/{EventId}/commit", {
+      params: {
+        header: {
+          Authorization: `Bearer ${props.identityContext.token}`,
+        },
+        path: {
+          EventId: props.event.eventId,
+        },
       },
-      body: JSON.stringify({
+      body: {
         size: formData.size,
         content: formData.description,
-      }),
-    }).then(res => res.json())
+      },
+    })
     props.onLoading()
-    return props.onUpdated(res)
+    return props.onUpdated(data)
   }
   return (
     <div className="flex flex-col gap-4">
@@ -206,7 +212,7 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
         props.onLoading(action.action)
         if (action.handler) {
           const res = await action.handler()
-          props.onUpdated(res as PublicEvent)
+          props.onUpdated(res as RepairEvent)
         }
         props.onLoading()
       }
@@ -235,12 +241,17 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
         variant: "solid",
         color: "primary",
         handler: async () => {
-          return await fetch(`${saturdayApiBaseUrl}/member/events/${event.eventId}/accept`, {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${identityContext.token}`,
+          const { data } = await saturdayClient.POST("/member/events/{EventId}/accept", {
+            params: {
+              header: {
+                Authorization: `Bearer ${identityContext.token}`,
+              },
+              path: {
+                EventId: event.eventId,
+              },
             },
-          }).then(res => res.json())
+          })
+          return data
         },
       }),
     })
@@ -256,12 +267,17 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
         action: "drop",
         label: "放弃",
         handler: async () => {
-          return await fetch(`${saturdayApiBaseUrl}/member/events/${event.eventId}/accept`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${identityContext.token}`,
+          const { data } = await saturdayClient.POST("/member/events/{EventId}/accept", {
+            params: {
+              header: {
+                Authorization: `Bearer ${identityContext.token}`,
+              },
+              path: {
+                EventId: event.eventId,
+              },
             },
-          }).then(res => res.json())
+          })
+          return data
         },
       }),
     })
@@ -281,12 +297,17 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
           color: "success",
           label: "完成",
           handler: async () => {
-            return await fetch(`${saturdayApiBaseUrl}/events/${event.eventId}/close`, {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${identityContext.token}`,
+            const { data } = await saturdayClient.POST("/events/{EventId}/close", {
+              params: {
+                header: {
+                  Authorization: `Bearer ${identityContext.token}`,
+                },
+                path: {
+                  EventId: event.eventId,
+                },
               },
-            }).then(res => res.json())
+            })
+            return data
           },
         }),
       })
@@ -297,12 +318,17 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
           color: "danger",
           label: "退回",
           handler: async () => {
-            return await fetch(`${saturdayApiBaseUrl}/events/${event.eventId}/commit`, {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${identityContext.token}`,
+            const { data } = await saturdayClient.DELETE("/events/{EventId}/commit", {
+              params: {
+                header: {
+                  Authorization: `Bearer ${identityContext.token}`,
+                },
+                path: {
+                  EventId: event.eventId,
+                },
               },
-            }).then(res => res.json())
+            })
+            return data
           },
         }),
       })
