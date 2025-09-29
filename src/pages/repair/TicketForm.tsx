@@ -1,12 +1,8 @@
-import { SITE_URL } from "../../consts"
 import { useEffect, useState } from "react"
 import { makeLogtoClient } from "../../utils/auth"
 import type { UserInfoResponse } from "@logto/browser"
 import { Alert, Form, Input, Button, Textarea } from "@heroui/react"
 import { saturdayClient } from "../../utils/client"
-import type { components } from "../../types/saturday"
-import QRCode from "qrcode"
-import EventDetail from "./EventDetail"
 
 type TicketFormData = {
   model?: string
@@ -142,57 +138,9 @@ function TicketForm(props: {
     </section>
   )
 }
-type PublicEvent = components["schemas"]["PublicEvent"]
-function TicketFormCreated(props: {
-  event: PublicEvent
-}) {
-  const [svg, setSvg] = useState<string>()
-
-  useEffect(() => {
-    const url = new URL(`/repair/ticket-detail`, SITE_URL)
-    url.searchParams.append("eventId", props.event.eventId.toString())
-    QRCode.toString(url.toString()).then((res) => {
-      setSvg(res)
-    })
-  })
-  return (
-    <section className="box-border w-full mt-8">
-      <div className="section-content mb-4">
-        <Alert hideIcon color="success" variant="faded">
-          <div className="flex items-center gap-8">
-            <div className="h-28 lg:h-40 aspect-square">
-              <div className="h-full" dangerouslySetInnerHTML={{ __html: svg }}></div>
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <div className="text-brand text-nowrap text-lg lg:text-2xl font-bold">
-                  预约成功
-                </div>
-              </div>
-              <div className="mt-1 text-gray-600 lg:text-lg">
-                <div>
-                  保存二维码
-                </div>
-                <div>
-                  跟踪维修进度
-                </div>
-              </div>
-            </div>
-          </div>
-        </Alert>
-      </div>
-      <div className="section-content mb-4">
-        <EventDetail eventId={props.event?.eventId}>
-          {() => <></>}
-        </EventDetail>
-      </div>
-    </section>
-  )
-}
 
 export default function App() {
   const [userInfo, setUserInfo] = useState<UserInfoResponse>()
-  const [event, setEvent] = useState<PublicEvent | undefined>()
 
   useEffect(() => {
     const check = async () => {
@@ -206,31 +154,6 @@ export default function App() {
       setUserInfo(res)
     }
     check()
-
-    // Check for eventId in URL query parameters
-    const urlParams = new URLSearchParams(window.location.search)
-    const eventId = urlParams.get("eventId")
-    if (eventId) {
-      // Fetch event data from the eventId
-      const fetchEvent = async () => {
-        try {
-          const { data } = await saturdayClient.GET("/events/{EventId}", {
-            params: {
-              path: {
-                EventId: parseInt(eventId, 10),
-              },
-            },
-          })
-          if (data) {
-            setEvent(data as PublicEvent)
-          }
-        }
-        catch (error) {
-          console.log("Error fetching event:", error)
-        }
-      }
-      fetchEvent()
-    }
   }, [])
 
   const onSubmit = async (formData: TicketFormData) => {
@@ -247,13 +170,9 @@ export default function App() {
           qq: formData.qq,
         },
       })
-      setEvent(data as unknown as PublicEvent)
-
       // Update URL with eventId to persist the ticket status
       if (data?.eventId) {
-        const currentUrl = new URL(window.location.href)
-        currentUrl.searchParams.set("eventId", data.eventId.toString())
-        window.history.pushState({}, "", currentUrl.toString())
+        window.location.href = `/repair/ticket-detail?eventId=${data.eventId}`
       }
     }
     catch (error) {
@@ -262,12 +181,6 @@ export default function App() {
   }
 
   return (
-    <>
-      {
-        event?.eventId
-          ? <TicketFormCreated event={event}></TicketFormCreated>
-          : <TicketForm userInfo={userInfo} onSubmit={onSubmit}></TicketForm>
-      }
-    </>
+    <TicketForm userInfo={userInfo} onSubmit={onSubmit}></TicketForm>
   )
 }

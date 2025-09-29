@@ -82,6 +82,18 @@ export default function App() {
             </Link>
           </NavbarMenuItem>
         ))}
+        <NavbarItem>
+          <Link
+            color="foreground"
+            href="https://github.com/nbtca"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center"
+          >
+            Github
+            <img src="/src/pages/_assets/github-mark.svg" alt="GitHub" className="w-6 h-6" />
+          </Link>
+        </NavbarItem>
       </NavbarMenu>
     </Navbar>
   )

@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import RepairHeader from "../../components/header/RepairHeader.astro"
+import RepairHistoryPage from "./RepairHistoryPage.tsx"
+
+---
+
+<BaseLayout primaryTitle="维修历史">
+  <section class="box-border">
+    <RepairHeader></RepairHeader>
+
+    <!-- Repair history page content -->
+    <RepairHistoryPage client:only="react"></RepairHistoryPage>
+  </section>
+</BaseLayout>
