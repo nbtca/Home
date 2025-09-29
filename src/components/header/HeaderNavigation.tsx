@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link } from "@heroui/react"
 import { SITE_TITLE } from "../../consts"
 import CALogoWhite from "./assets/CA-logo-white.png"
+import GithubMark from "./assets/github-mark.svg"
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -57,7 +58,7 @@ export default function App() {
           }
           <NavbarItem>
             <Link href="https://github.com/nbtca" target="_blank" rel="noopener noreferrer" className="flex items-center">
-              <img src="/src/pages/_assets/github-mark.svg" alt="GitHub" className="w-6 h-6" />
+              <img src={GithubMark.src} alt="GitHub" className="w-6 h-6" />
             </Link>
           </NavbarItem>
         </NavbarContent>
@@ -91,7 +92,7 @@ export default function App() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="/src/pages/_assets/github-mark.svg" alt="GitHub" className="w-6 h-6" />
+            <img src={GithubMark.src} alt="GitHub" className="w-6 h-6" />
             <span>Github</span>
           </Link>
         </NavbarItem>

@@ -199,7 +199,7 @@ const EventDetail = forwardRef<EventDetailRef, {
                   </div>
                 </div>
                 <div>
-                  {props.children(event)}
+                  {props.children && props.children(event)}
                 </div>
               </section>
             )
