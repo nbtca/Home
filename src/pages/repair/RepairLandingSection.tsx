@@ -150,7 +150,7 @@ export default function RepairLandingSection() {
             radius="full"
             onPress={handleCreateTicketClick}
           >
-            进行预约
+            预约维修
           </Button>
         </div>
       </div>
