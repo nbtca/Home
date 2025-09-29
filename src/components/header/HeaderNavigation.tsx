@@ -8,8 +8,8 @@ export default function App() {
 
   const menuItems = [
     {
-      link: "/archive",
-      name: "目录",
+      link: "/blog",
+      name: "博客",
     },
     {
       link: "/calendar",
