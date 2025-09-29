@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Button, Spinner, Card, CardBody, CardFooter } from "@heroui/react"
+import { Button, Card, CardBody, CardFooter } from "@heroui/react"
 import { makeLogtoClient } from "../../utils/auth"
 import { saturdayClient } from "../../utils/client"
 import RepairHistoryCard from "./RepairHistoryCard"
@@ -13,7 +13,6 @@ type PublicEvent = components["schemas"]["PublicEvent"]
 
 export default function RepairLandingSection() {
   const [userInfo, setUserInfo] = useState<UserInfoResponse | null>(null)
-  const [loading, setLoading] = useState(true)
   const [recentEvents, setRecentEvents] = useState<PublicEvent[]>([])
   const [selectedEvent, setSelectedEvent] = useState<PublicEvent | null>(null)
   const [isEditOpen, setIsEditOpen] = useState(false)
@@ -35,9 +34,6 @@ export default function RepairLandingSection() {
     }
     catch (error) {
       console.error("Error checking auth status:", error)
-    }
-    finally {
-      setLoading(false)
     }
   }
 
@@ -118,16 +114,6 @@ export default function RepairLandingSection() {
     window.location.href = "/repair/history"
   }
 
-  if (loading) {
-    return (
-      <div className="container mx-auto pt-16 pb-20">
-        <div className="flex flex-col items-center justify-center">
-          <Spinner size="lg" />
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="container mx-auto pt-16 pb-20">
       {/* Main service section - always shown */}
@@ -198,22 +184,6 @@ export default function RepairLandingSection() {
               )}
         </div>
       )}
-
-      {/* Login suggestion for unauthenticated users */}
-      {/* {!userInfo && (
-        <div className="mt-16 flex justify-center">
-          <Alert
-            className="items-center max-w-md"
-            endContent={(
-              <Button color="primary" size="sm" variant="flat" onPress={handleLogin}>
-                登入
-              </Button>
-            )}
-          >
-            登入账号来查看和管理你的维修记录
-          </Alert>
-        </div>
-      )} */}
 
       {/* Edit Modal */}
       {selectedEvent && (
