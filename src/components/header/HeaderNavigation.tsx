@@ -13,15 +13,15 @@ export default function App() {
     },
     {
       link: "/calendar",
-      name: "日程",
-    },
-    {
-      link: "/about",
-      name: "关于我们",
+      name: "活动",
     },
     {
       link: "/repair",
       name: "维修",
+    },
+    {
+      link: "/about",
+      name: "关于我们",
     },
   ]
 
@@ -55,6 +55,11 @@ export default function App() {
               </NavbarItem>
             ))
           }
+          <NavbarItem>
+            <Link href="https://github.com/nbtca" target="_blank" rel="noopener noreferrer" className="flex items-center">
+              <img src="/src/pages/_assets/github-mark.svg" alt="GitHub" className="w-6 h-6" />
+            </Link>
+          </NavbarItem>
         </NavbarContent>
 
         <NavbarMenuToggle
