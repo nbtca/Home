@@ -1,57 +1,18 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro"
-import hayasaka from "../_assets/hayasaka.jpg"
 import repairDayOnSite from "../_assets/repair_day_on_site.jpeg"
-import { Button } from "@heroui/react"
 import RepairHeader from "../../components/header/RepairHeader.astro"
+import RepairLandingSection from "./RepairLandingSection.tsx"
 
 ---
-
-<script>
-    // @ts-check
-    import { makeLogtoClient } from "../../utils/auth"
-    const button = document.getElementById("create-ticket-button")
-
-    button.addEventListener("click", async () => {
-      const logtoClient = makeLogtoClient()
-      const createRepairPath = "/repair/create-ticket"
-      const authenticated = await logtoClient.isAuthenticated()
-      logtoClient.getIdTokenClaims().then((res) => {
-        console.log(res)
-      })
-      if (!authenticated) {
-        window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
-        return
-      }
-      window.location.href = createRepairPath
-    })
-</script>
 
 <BaseLayout>
   <section class="box-border">
     <RepairHeader></RepairHeader>
-    <div class="container mx-auto pt-16 pb-20">
-      <div class="flex flex-col items-center justify-center">
-        <img src={hayasaka.src} alt="" class="h-48 md:h-auto md:w-1/2 object-cover" />
-        <div class="mt-12 text-lg lg:text-2xl font-bold">我们提供免费的电脑维修服务</div>
-        <div class="mt-4 text-gray-500 text-center lg:text-lg">
-          <div>
-            从<strong>清理磁盘</strong>到<strong>加装硬件</strong>再到<strong>环境配置</strong>，
-          </div>
-          <div>
-            我们都帮你搞定。
-          </div>
-        </div>
-        <div class="mt-6">
-          <Button
-            id="create-ticket-button"
-            className="bg-blue-500 text-white"
-            radius="full"
-          >进行预约
-          </Button>
-        </div>
-      </div>
-    </div>
+
+    <!-- Dynamic content based on authentication status -->
+    <RepairLandingSection client:only="react"></RepairLandingSection>
+
     <div class="w-full bg-white pb-24 flex flex-col gap-12">
       <div class="component">
         <div class="relative h-[521px] sm:h-[396px] md:h-[561px] mt-4 w-full my-0 xs:rounded-2xl overflow-hidden">
@@ -75,12 +36,3 @@ import RepairHeader from "../../components/header/RepairHeader.astro"
     </div>
   </section>
 </BaseLayout>
-
-<script>
-// @ts-check
-import { makeLogtoClient } from "../../utils/auth"
-
-makeLogtoClient().getIdTokenClaims().then((res) => {
-  console.log(res)
-})
-</script>
