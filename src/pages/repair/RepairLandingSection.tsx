@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Button, Card, CardBody, CardFooter } from "@heroui/react"
+import { Button } from "@heroui/react"
 import { makeLogtoClient } from "../../utils/auth"
 import { saturdayClient } from "../../utils/client"
 import RepairHistoryCard from "./RepairHistoryCard"
@@ -75,31 +75,6 @@ export default function RepairLandingSection() {
     window.location.href = createRepairPath
   }
 
-  const handleEdit = (event: PublicEvent) => {
-    setSelectedEvent(event)
-    setIsEditOpen(true)
-  }
-
-  const handleCancel = async (event: PublicEvent) => {
-    try {
-      const logtoToken = await makeLogtoClient().getAccessToken()
-      await saturdayClient.DELETE("/client/events/{EventId}", {
-        params: {
-          path: {
-            EventId: event.eventId,
-          },
-        },
-        headers: {
-          Authorization: `Bearer ${logtoToken}`,
-        },
-      })
-      await fetchRecentEvents()
-    }
-    catch (error) {
-      console.error("Error cancelling event:", error)
-    }
-  }
-
   const handleViewDetail = (event: PublicEvent) => {
     window.location.href = `/repair/ticket-detail?eventId=${event.eventId}`
   }
@@ -142,7 +117,7 @@ export default function RepairLandingSection() {
       </div>
 
       {/* Recent events section - only for authenticated users */}
-      {userInfo && (
+      {userInfo && recentEvents.length > 0 && (
         <div className="mt-16 section-content">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">最近的维修</h2>
@@ -156,32 +131,15 @@ export default function RepairLandingSection() {
             </Button>
           </div>
 
-          {recentEvents.length > 0
-            ? (
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {recentEvents.map(event => (
-                    <RepairHistoryCard
-                      key={event.eventId}
-                      event={event}
-                      onEdit={handleEdit}
-                      onCancel={handleCancel}
-                      onViewDetail={handleViewDetail}
-                    />
-                  ))}
-                </div>
-              )
-            : (
-                <Card className="w-full">
-                  <CardBody className="text-center py-8">
-                    <p className="text-gray-500">暂无进行中的维修预约</p>
-                  </CardBody>
-                  <CardFooter className="justify-center">
-                    <Button color="primary" onPress={handleCreateTicketClick}>
-                      创建新预约
-                    </Button>
-                  </CardFooter>
-                </Card>
-              )}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {recentEvents.map(event => (
+              <RepairHistoryCard
+                key={event.eventId}
+                event={event}
+                onViewDetail={handleViewDetail}
+              />
+            ))}
+          </div>
         </div>
       )}
 

@@ -5,13 +5,12 @@ import RepairHeader from "../../components/header/RepairHeader.astro"
 import RepairLandingSection from "./RepairLandingSection.tsx"
 
 ---
-
 <BaseLayout>
   <section class="box-border">
     <RepairHeader></RepairHeader>
 
     <!-- Dynamic content based on authentication status -->
-    <RepairLandingSection client:only="react"></RepairLandingSection>
+    <RepairLandingSection client:load></RepairLandingSection>
 
     <div class="w-full bg-white pb-24 flex flex-col gap-12">
       <div class="component">
