@@ -11,6 +11,14 @@ type TicketFormData = {
   description?: string
 }
 
+type FormError = {
+  field?: string
+  message: string
+  type: "validation" | "network" | "server" | "auth"
+}
+
+type SubmissionState = "idle" | "submitting" | "success" | "error" | "retrying"
+
 function LoginHintAlert(props: {
   onLogin: () => void
 }) {
@@ -36,13 +44,86 @@ function TicketForm(props: {
   userInfo?: UserInfoResponse
   onSubmit: (form: TicketFormData) => Promise<void>
 }) {
-  const [loading, setLoading] = useState<boolean>()
+  const [submissionState, setSubmissionState] = useState<SubmissionState>("idle")
   const [formData, setFormData] = useState<TicketFormData>({})
+  const [errors, setErrors] = useState<FormError[]>([])
+
+  // Form persistence
+  useEffect(() => {
+    const savedData = localStorage.getItem("ticket-form-draft")
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData)
+        setFormData(parsed)
+      }
+      catch (error) {
+        console.warn("Failed to parse saved form data:", error)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (Object.keys(formData).length > 0) {
+      localStorage.setItem("ticket-form-draft", JSON.stringify(formData))
+    }
+  }, [formData])
+
+  const clearFormData = () => {
+    localStorage.removeItem("ticket-form-draft")
+    setFormData({})
+  }
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setLoading(true)
-    await props.onSubmit(formData)
-    setLoading(false)
+    setErrors([])
+
+    setSubmissionState("submitting")
+
+    try {
+      await props.onSubmit(formData)
+      setSubmissionState("success")
+      clearFormData()
+
+      // Show success message briefly before redirect
+      setTimeout(() => {
+        // The redirect will be handled by the parent component
+      }, 1500)
+    }
+    catch (error) {
+      setSubmissionState("error")
+
+      // Handle different types of errors
+      if (error instanceof Error) {
+        if (error.message.includes("auth") || error.message.includes("token")) {
+          setErrors([{ message: "登录状态已过期，请重新登录", type: "auth" }])
+        }
+        else if (error.message.includes("network") || error.message.includes("fetch")) {
+          setErrors([{ message: "网络连接失败，请检查网络后重试", type: "network" }])
+        }
+        else {
+          setErrors([{ message: "提交失败，请稍后重试", type: "server" }])
+        }
+      }
+      else {
+        setErrors([{ message: "提交失败，请稍后重试", type: "server" }])
+      }
+    }
+  }
+
+  const handleRetry = async () => {
+    setSubmissionState("retrying")
+    setErrors([])
+
+    try {
+      await props.onSubmit(formData)
+      setSubmissionState("success")
+      clearFormData()
+    }
+    catch (error) {
+      setSubmissionState("error")
+      setErrors([{ message: "重试失败，请稍后再试", type: "server" }])
+      console.error("Retry submission error:", error)
+    }
   }
 
   const onLogin = async () => {
@@ -66,6 +147,54 @@ function TicketForm(props: {
         </div>
       </div>
       <div className="section-content w-full">
+        {/* Error Messages */}
+        {errors.length > 0 && (
+          <div className="mb-4 space-y-2">
+            {errors.map((error, index) => (
+              <Alert
+                key={index}
+                color={error.type === "validation" ? "warning" : "danger"}
+                className="flex items-center justify-between"
+                endContent={
+                  error.type === "network" || error.type === "server"
+                    ? (
+                        <Button
+                          size="sm"
+                          color="danger"
+                          variant="flat"
+                          onPress={handleRetry}
+                          isLoading={submissionState === "retrying"}
+                        >
+                          重试
+                        </Button>
+                      )
+                    : error.type === "auth"
+                      ? (
+                          <Button
+                            size="sm"
+                            color="warning"
+                            variant="flat"
+                            onPress={onLogin}
+                          >
+                            重新登录
+                          </Button>
+                        )
+                      : null
+                }
+              >
+                {error.message}
+              </Alert>
+            ))}
+          </div>
+        )}
+
+        {/* Success Message */}
+        {submissionState === "success" && (
+          <Alert color="success" className="mb-4">
+            提交成功！正在跳转到详情页面...
+          </Alert>
+        )}
+
         <Form
           className="w-full flex flex-col gap-4"
           onSubmit={onSubmit}
@@ -130,7 +259,7 @@ function TicketForm(props: {
               setFormData({ ...formData, qq: e.target.value })
             }}
           />
-          <Button type="submit" color="primary" className="my-4 w-full" isLoading={loading}>
+          <Button type="submit" color="primary" className="my-4 w-full" isLoading={submissionState == "submitting"}>
             提交
           </Button>
         </Form>

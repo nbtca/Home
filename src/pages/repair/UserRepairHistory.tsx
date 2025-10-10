@@ -4,7 +4,7 @@ import { saturdayClient } from "../../utils/client"
 import { makeLogtoClient } from "../../utils/auth"
 import RepairHistoryCard from "./RepairHistoryCard"
 import type { components } from "../../types/saturday"
-import { LogtoError } from "@logto/browser"
+import { LogtoRequestError } from "@logto/browser"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 
@@ -53,7 +53,7 @@ export default function UserRepairHistory({ onCreateNew, onLogin }: UserRepairHi
       setTotalPages(Math.ceil(totalItems / itemsPerPage))
     }
     catch (err) {
-      if (err instanceof LogtoError) {
+      if (err instanceof LogtoRequestError) {
         onLogin()
       }
       console.error("Error fetching user events:", err)
