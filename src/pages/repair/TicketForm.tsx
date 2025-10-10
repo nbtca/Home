@@ -145,13 +145,19 @@ export default function App() {
   useEffect(() => {
     const check = async () => {
       const createRepairPath = "/repair/create-ticket"
-      const authenticated = await makeLogtoClient().isAuthenticated()
-      if (!authenticated) {
-        window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
-        return
+      try {
+        const authenticated = await makeLogtoClient().isAuthenticated()
+        if (!authenticated) {
+          window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
+          return
+        }
+        const res = await makeLogtoClient().getIdTokenClaims()
+        setUserInfo(res)
       }
-      const res = await makeLogtoClient().getIdTokenClaims()
-      setUserInfo(res)
+      catch (error) {
+        console.error("Error checking authentication:", error)
+        window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
+      }
     }
     check()
   }, [])
