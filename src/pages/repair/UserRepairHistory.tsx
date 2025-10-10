@@ -1,25 +1,31 @@
 import { useState, useEffect } from "react"
-import { Alert, Button, Spinner } from "@heroui/react"
+import { Alert, Button, Spinner, Pagination } from "@heroui/react"
 import { saturdayClient } from "../../utils/client"
 import { makeLogtoClient } from "../../utils/auth"
 import RepairHistoryCard from "./RepairHistoryCard"
 import type { components } from "../../types/saturday"
+import { LogtoError } from "@logto/browser"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 
 interface UserRepairHistoryProps {
   onCreateNew: () => void
+  onLogin: () => void
 }
 
-export default function UserRepairHistory({ onCreateNew }: UserRepairHistoryProps) {
+export default function UserRepairHistory({ onCreateNew, onLogin }: UserRepairHistoryProps) {
   const [events, setEvents] = useState<PublicEvent[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string>("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const itemsPerPage = 12
 
-  const fetchUserEvents = async () => {
+  const fetchUserEvents = async (page: number = currentPage) => {
     try {
       setLoading(true)
       const logtoToken = await makeLogtoClient().getAccessToken()
+      const offset = (page - 1) * itemsPerPage
 
       const { data, error: apiError } = await saturdayClient.GET("/client/events", {
         headers: {
@@ -27,8 +33,9 @@ export default function UserRepairHistory({ onCreateNew }: UserRepairHistoryProp
         },
         params: {
           query: {
-            limit: 50,
-            offset: 0,
+            limit: itemsPerPage,
+            offset: offset,
+            order: "desc",
           },
         },
       })
@@ -38,8 +45,17 @@ export default function UserRepairHistory({ onCreateNew }: UserRepairHistoryProp
       }
 
       setEvents(data || [])
+
+      // Calculate total pages based on total count
+      // Note: You may need to adjust this based on your API response structure
+      // If your API returns total count in headers or response metadata
+      const totalItems = data.length < itemsPerPage ? offset + data.length : offset + data.length + 1
+      setTotalPages(Math.ceil(totalItems / itemsPerPage))
     }
     catch (err) {
+      if (err instanceof LogtoError) {
+        onLogin()
+      }
       console.error("Error fetching user events:", err)
       setError("获取维修记录失败")
     }
@@ -49,8 +65,13 @@ export default function UserRepairHistory({ onCreateNew }: UserRepairHistoryProp
   }
 
   useEffect(() => {
-    fetchUserEvents()
+    fetchUserEvents(1)
   }, [])
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    fetchUserEvents(page)
+  }
 
   const handleViewDetail = (event: PublicEvent) => {
     window.location.href = `/repair/ticket-detail?eventId=${event.eventId}`
@@ -68,7 +89,7 @@ export default function UserRepairHistory({ onCreateNew }: UserRepairHistoryProp
     return (
       <Alert color="danger" className="mb-4">
         {error}
-        <Button size="sm" color="danger" variant="flat" onPress={fetchUserEvents}>
+        <Button size="sm" color="danger" variant="flat" onPress={() => fetchUserEvents(currentPage)}>
           重试
         </Button>
       </Alert>
@@ -104,6 +125,19 @@ export default function UserRepairHistory({ onCreateNew }: UserRepairHistoryProp
           />
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-8">
+          <Pagination
+            total={totalPages}
+            page={currentPage}
+            onChange={handlePageChange}
+            showControls
+            showShadow
+            color="primary"
+          />
+        </div>
+      )}
     </div>
   )
 }
