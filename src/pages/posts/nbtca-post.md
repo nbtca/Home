@@ -10,9 +10,9 @@ cover:
 tags: ["指南", "git", "markdown"]
 ---
 
+<!-- markdownlint-disable-next-line MD022 -->
+##
 > 学会使用 Git + Markdown 撰写与提交技术博客
-
----
 
 ## 一、前言
 
