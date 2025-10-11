@@ -7,7 +7,11 @@ import GithubMark from "./assets/github-mark.svg"
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const menuItems = [
+  const menuItems: {
+    link: string
+    name: string
+    target?: string
+  }[] = [
     {
       link: "/blog",
       name: "博客",
@@ -19,6 +23,11 @@ export default function App() {
     {
       link: "/repair",
       name: "维修",
+    },
+    {
+      link: "https://docs.nbtca.space",
+      name: "文档",
+      target: "_blank",
     },
     {
       link: "/about",
@@ -50,8 +59,17 @@ export default function App() {
           {
             menuItems.map(item => (
               <NavbarItem key={item.name}>
-                <Link color="foreground" className="nav-item-content hover:text-[#2997ff] text-nowrap" href={item.link}>
-                  {item.name}
+                <Link color="foreground" className="nav-item-content hover:text-[#2997ff] text-nowrap flex items-center" href={item.link} target={item.target || "_self"}>
+                  <span>
+                    {item.name}
+                  </span>
+                  {
+                    item.target == "_blank" && (
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-4 ml-0.5 inline-block">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                      </svg>
+                    )
+                  }
                 </Link>
               </NavbarItem>
             ))
@@ -78,8 +96,18 @@ export default function App() {
               className="w-full py-1 font-bold"
               href={item.link}
               size="lg"
+              target={item.target || "_self"}
             >
-              {item.name}
+              <span>
+                {item.name}
+              </span>
+              {
+                item.target == "_blank" && (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-5 ml-1 inline-block">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                  </svg>
+                )
+              }
             </Link>
           </NavbarMenuItem>
         ))}
