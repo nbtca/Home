@@ -112,7 +112,7 @@ my-first-blog.md
 
 ### 2. 文件模板
 
-````markdown
+```markdown
 ---
 layout: "../../layouts/MarkdownPost.astro"
 title: "题目"
@@ -146,6 +146,7 @@ Markdown 是一种轻量级标记语言，用简单的符号来排版文字。
 ## 三、总结
 
 学会使用 Git + Markdown，你就能参与到开源协作中了！
+```
 
 > 以上为行文推荐格式，关于[markdown](https://www.markdownguide.org/)的写法可自行查阅手册。
 
@@ -201,4 +202,3 @@ git push origin add-my-first-blog
 当你第一次成功合并 PR 时：
 
 > 恭喜你，🎉 你正式成为了开源协作的一员！
-````
