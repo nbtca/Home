@@ -3,15 +3,17 @@ layout: "../../layouts/MarkdownPost.astro"
 title: "NBTCA主页投稿指南1.0"
 pubDate: 2025-10-10
 description: "在开源项目中发布你的第一篇博客"
-author: "小明"
+author:
+  name: "小明"
+  url: "https://blog.m1ng.space/"
 cover:
-  url: "https://lzm0x219.gallerycdn.vsassets.io/extensions/lzm0x219/vscode-markdown-github/3.1.0/1685961546588/Microsoft.VisualStudio.Services.Icons.Default"
+  url: ./_assets/github_markdown.png
   alt: "cover"
-tags: ["指南", "git", "markdown"]
+tags: ["指南", "Git", "Markdown"]
 ---
 
-<!-- markdownlint-disable-next-line MD022 -->
 ##
+
 > 学会使用 Git + Markdown 撰写与提交技术博客
 
 ## 一、前言
