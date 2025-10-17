@@ -5,7 +5,7 @@ pubDate: 2025-10-10
 description: "在开源项目中发布你的第一篇博客"
 author: "小明"
 cover:
-  url: "https://oss.nbtca.space/CA-logo.svg"
+  url: "https://lzm0x219.gallerycdn.vsassets.io/extensions/lzm0x219/vscode-markdown-github/3.1.0/1685961546588/Microsoft.VisualStudio.Services.Icons.Default"
   alt: "cover"
 tags: ["指南", "git", "markdown"]
 ---
@@ -16,8 +16,7 @@ tags: ["指南", "git", "markdown"]
 
 ## 一、前言
 
-欢迎加入计算机协会 🎉！  
-本指南将教你如何用最主流的开源协作方式——**Git + Markdown + Pull Request**，来撰写并发布你的第一篇博客。
+本指南将指导你如何使用最主流的开源协作方式——**Git + Markdown + Pull Request**，来撰写并发布你的第一篇NBTCA博客。
 
 目标是：
 
@@ -35,11 +34,16 @@ tags: ["指南", "git", "markdown"]
 
 #### macOS
 
+安装命令行工具集，使用brew安装git
+
 ```bash
 xcode-select --install
+brew install git
 ```
 
 #### Linux（例如 Ubuntu / Arch）
+
+使用对应发行版的包管理器安装git
 
 ```bash
 sudo apt install git
@@ -51,7 +55,7 @@ sudo pacman -S git
 
 ### 2. 注册 GitHub 账号
 
-访问 [https://github.com](https://github.com)，注册并登录，设置一个好记的用户名（建议用英文名或学号）。
+访问 [https://github.com](https://github.com)，注册并登录，设置一个好记的用户名。
 
 ---
 
@@ -62,21 +66,24 @@ git config --global user.name "你的名字"
 git config --global user.email "你的邮箱"
 ```
 
+> 当然，你也可以使用[github-cli](https://github.com/cli/cli)来完成github的认证过程，但是[git的工作流程](https://nbtca.space/posts/blogs/Tech/Git/git-book-1)还是必要掌握的
+
 ---
 
-## 三、Fork 与 Clone 协会博客仓库
+## 三、Fork 与 Clone 以及目前协会博客仓库的贡献方法
 
-### 1. Fork
+一般的工作流程是将源代码仓库[Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)一份到自己名下创建一个新的下游仓库，在自己的下游仓库编写代码并通过[创建pr](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)的方式提交更新到上游仓库。
 
-1. 打开协会博客仓库（例如）：  
-   👉 [https://github.com/nbtca/home](https://github.com/nbtca/home)
-2. 点击右上角的 **Fork** 按钮。
+目前NBTCA的[Home项目](https://github.com/nbtca/home)集成了[CI/CD](https://github.com/resources/articles/ci-cd)
+
+为了保证交付安全，默认只有项目源代码仓库的分支提交的pr会触发[github action](https://github.com/features/actions)，从下游仓库提交的pr在合并后并不会触发构建，这一点需要注意，所以推荐在源代码的基础上创建分支并pr
 
 ### 2. Clone
 
 ```bash
-git clone https://github.com/你的用户名/blog.git
+git clone https://github.com/nbtca/home.git
 cd blog
+# 如果是gh-cli则是gh repo clone nbtca/home
 ```
 
 ---
@@ -85,6 +92,9 @@ cd blog
 
 ```bash
 git checkout -b add-my-first-blog
+# -b 参数代表创建一个新的分支
+# 此处add-my-first-blog作为分支名可以自行替换，
+# 我个人的习惯是提交类型+具体事务类型，例如post/blog-post、feature/homepage等。
 ```
 
 ---
@@ -96,7 +106,8 @@ git checkout -b add-my-first-blog
 在 `src/pages/posts/` 文件夹中新建：
 
 ```
-posts/my-first-blog.md
+my-first-blog.md
+# 换成你喜欢的名字，最好是英文的方便管理
 ```
 
 ### 2. 文件模板
@@ -107,9 +118,9 @@ layout: "../../layouts/MarkdownPost.astro"
 title: "题目"
 pubDate: 2025-10-10
 description: "描述"
-author: "张三"
+author: "张三
 cover:
-  url: "封面地址"
+  url: "封面地址url，也可以引用本地图片"
   alt: "cover"
 tags: ["标签", "可多个"]
 ---
@@ -130,21 +141,28 @@ Markdown 是一种轻量级标记语言，用简单的符号来排版文字。
 
 - **加粗**：`**加粗**`
 - _斜体_：`*斜体*`
-- 链接：[协会官网](https://example.com)
+- 链接：`[协会官网](https://example.com)`
 
 ## 三、总结
 
 学会使用 Git + Markdown，你就能参与到开源协作中了！
 ```
 
+> 以上为行文推荐格式，关于[markdown](https://www.markdownguide.org/)的写法可自行查阅手册。
+
 ---
 
 ## 六、提交与推送
 
 ```bash
-git add posts/2025-10-09-my-first-blog.md
+git add my-first-blog.md
+# 将更新的文件添加到暂存区
+
 git commit -m "Add my first blog: Git 与 Markdown 入门"
+# 将暂存区的文件集合为一次提交，并对本次提交做出说明
+
 git push origin add-my-first-blog
+# 将提交从本地同步到远程Github仓库，提交到远程仓库的对应新分支
 ```
 
 ---
@@ -179,6 +197,8 @@ git push origin add-my-first-blog
 
 ## 十、结语
 
+当仓库管理员[Review](https://github.com/features/code-review)代码后，代码就可以[Merge](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request)了
+
 当你第一次成功合并 PR 时：
 
-> 🎉 你正式成为开源协作的一员！
+> 恭喜你，🎉 你正式成为了开源协作的一员！
