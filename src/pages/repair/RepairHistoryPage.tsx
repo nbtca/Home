@@ -3,6 +3,7 @@ import { Button, Spinner } from "@heroui/react"
 import { makeLogtoClient } from "../../utils/auth"
 import UserRepairHistory from "./UserRepairHistory"
 import type { UserInfoResponse } from "@logto/browser"
+import { checkAuthAndRedirect } from "../../utils/repair"
 
 export default function RepairHistoryPage() {
   const [userInfo, setUserInfo] = useState<UserInfoResponse | null>(null)
@@ -14,22 +15,10 @@ export default function RepairHistoryPage() {
 
   const checkAuthStatus = async () => {
     try {
-      const logtoClient = makeLogtoClient()
-      const authenticated = await logtoClient.isAuthenticated()
-
-      if (authenticated) {
-        const claims = await logtoClient.getIdTokenClaims()
+      const claims = await checkAuthAndRedirect("/repair/history")
+      if (claims) {
         setUserInfo(claims)
       }
-      else {
-        // Redirect to login if not authenticated
-        window.location.href = "/repair/login-hint?redirectUrl=/repair/history"
-      }
-    }
-    catch (error) {
-      console.error("Error checking auth status:", error)
-      // Redirect to login on error
-      window.location.href = "/repair/login-hint?redirectUrl=/repair/history"
     }
     finally {
       setLoading(false)

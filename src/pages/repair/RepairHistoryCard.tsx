@@ -1,7 +1,7 @@
 import { Card, CardBody, Chip } from "@heroui/react"
 import { EventStatusChip } from "./EventDetail"
-import dayjs from "dayjs"
 import type { components } from "../../types/saturday"
+import { formatDate, formatDateTime, formatShortDateTime } from "../../utils/date"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 
@@ -29,7 +29,7 @@ export default function RepairHistoryCard({ event, onViewDetail }: RepairHistory
             {event.size && <Chip size="sm">{event.size}</Chip>}
           </div>
           <span className="text-xs text-gray-400">
-            {dayjs(event.gmtCreate).format("YYYY-MM-DD")}
+            {formatDate(event.gmtCreate)}
           </span>
         </div>
 
@@ -41,10 +41,10 @@ export default function RepairHistoryCard({ event, onViewDetail }: RepairHistory
         </div>
 
         <div className="text-xs text-gray-400">
-          创建于 {dayjs(event.gmtCreate).format("YYYY-MM-DD HH:mm")}
+          创建于 {formatDateTime(event.gmtCreate)}
           {event.gmtModified !== event.gmtCreate && (
             <span className="ml-2">
-              更新于 {dayjs(event.gmtModified).format("MM-DD HH:mm")}
+              更新于 {formatShortDateTime(event.gmtModified)}
             </span>
           )}
         </div>

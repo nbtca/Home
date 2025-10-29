@@ -27,13 +27,14 @@ import { useAsyncList } from "@react-stately/data"
 import type { components } from "../../types/saturday"
 import { saturdayClient } from "../../utils/client"
 import EventDetail, { EventStatusChip, type EventDetailRef } from "./EventDetail"
-import dayjs from "dayjs"
 import { EventStatus, UserEventStatus, type RepairEvent } from "../../types/event"
 import { makeLogtoClient } from "../../utils/auth"
 import type { PublicMember } from "../../store/member"
 import type { UserInfoResponse } from "@logto/browser"
 import { getAvailableEventActions, type EventAction, type IdentityContext } from "./EventAction"
 import { ExportExcelModal } from "./ExportEventDialog"
+import { requireRepairRole } from "../../utils/repair"
+import { formatDateTime } from "../../utils/date"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 
@@ -181,11 +182,6 @@ function TicketDetailDrawer(props: {
   )
 }
 
-export const validateRepairRole = (roles: string[]) => {
-  const acceptableRoles = ["repair admin", "repair member"]
-  return roles.some(role => acceptableRoles.includes(role.toLowerCase()))
-}
-
 export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [page, setPage] = useState(1)
@@ -201,20 +197,15 @@ export default function App() {
   useEffect(() => {
     const check = async () => {
       const adminPath = "/repair/admin"
-      const authenticated = await makeLogtoClient().isAuthenticated()
-      if (!authenticated) {
-        window.location.href = `/repair/login-hint?redirectUrl=${adminPath}`
+      const userInfo = await requireRepairRole(adminPath)
+
+      if (!userInfo) {
         return
       }
-      const res = await makeLogtoClient().getIdTokenClaims()
+
+      setUserInfo(userInfo)
       const token = await makeLogtoClient().getAccessToken()
       setToken(token)
-      const hasRole = validateRepairRole(res.roles)
-      if (!hasRole) {
-        window.location.href = `/repair/login-hint?redirectUrl=${adminPath}`
-        return
-      }
-      setUserInfo(res)
 
       const { data } = await saturdayClient.GET("/member", {
         params: {
@@ -353,7 +344,7 @@ export default function App() {
       <div className="h-18">
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <div className="">
-            { dayjs(event.gmtCreate).format("YYYY-MM-DD HH:mm") }
+            { formatDateTime(event.gmtCreate) }
           </div>
 
           {event.model && (
@@ -414,7 +405,7 @@ export default function App() {
       case "gmtCreate":
         return (
           <span>
-            {dayjs(cellValue).format("YYYY-MM-DD HH:mm")}
+            {formatDateTime(cellValue)}
           </span>
         )
       case "status":
