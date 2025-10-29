@@ -13,6 +13,7 @@ export const validateRepairRole = (roles: string[]): boolean => {
  * Checks if user is authenticated and redirects to login-hint if not
  * @param redirectUrl - The URL to redirect back to after login
  * @returns UserInfoResponse if authenticated, undefined if redirected
+ * @throws Never throws - all errors are handled internally with redirect
  */
 export const checkAuthAndRedirect = async (
   redirectUrl: string,
@@ -40,6 +41,7 @@ export const checkAuthAndRedirect = async (
  * Checks if user is authenticated and has required repair role, redirects if not
  * @param redirectUrl - The URL to redirect back to after login
  * @returns UserInfoResponse if authenticated and has role, undefined if redirected
+ * @throws Never throws - all errors are handled internally with redirect
  */
 export const requireRepairRole = async (
   redirectUrl: string,
