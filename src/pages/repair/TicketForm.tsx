@@ -3,7 +3,7 @@ import { makeLogtoClient } from "../../utils/auth"
 import type { UserInfoResponse } from "@logto/browser"
 import { Alert, Form, Input, Button, Textarea } from "@heroui/react"
 import { saturdayClient } from "../../utils/client"
-import { safe } from "../../utils/safe"
+import { checkAuthAndRedirect } from "../../utils/repair"
 
 type TicketFormData = {
   model?: string
@@ -275,17 +275,9 @@ export default function App() {
   useEffect(() => {
     const check = async () => {
       const createRepairPath = "/repair/create-ticket"
-      try {
-        const [res, err] = await safe(makeLogtoClient().getIdTokenClaims())
-        if (err) {
-          window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
-          return
-        }
-        setUserInfo(res)
-      }
-      catch (error) {
-        console.error("Error checking authentication:", error)
-        window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
+      const claims = await checkAuthAndRedirect(createRepairPath)
+      if (claims) {
+        setUserInfo(claims)
       }
     }
     check()
