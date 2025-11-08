@@ -53,6 +53,41 @@ body.theme-dark .astro-code span {
   background-color: var(--gray-primary) !important; 
 }
 
+/* Improve markdown hyperlink visibility */
+.prose a {
+  color: #0071e3 !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 113, 227, 0.4);
+  text-underline-offset: 2px;
+  transition: all 0.2s ease;
+}
+
+.prose a:hover {
+  color: #0077ed !important;
+  text-decoration-color: #0077ed;
+}
+
+.prose a:visited {
+  color: #551A8B !important;
+  text-decoration-color: rgba(85, 26, 139, 0.4);
+}
+
+/* Dark mode link styles */
+body.theme-dark .prose a {
+  color: #2997ff !important;
+  text-decoration-color: rgba(41, 151, 255, 0.4);
+}
+
+body.theme-dark .prose a:hover {
+  color: #409cff !important;
+  text-decoration-color: #409cff;
+}
+
+body.theme-dark .prose a:visited {
+  color: #bf5af2 !important;
+  text-decoration-color: rgba(191, 90, 242, 0.4);
+}
+
 ul,
 ol,
 li,
