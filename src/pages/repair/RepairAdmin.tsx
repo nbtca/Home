@@ -190,6 +190,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [page, setPage] = useState(1)
   const rowsPerPage = 10
+  const [totalCount, setTotalCount] = useState(0)
   const [statusFilter, setStatusFilter] = useState<string[]>(
     UserEventStatus.filter(v => v.status !== EventStatus.cancelled).map(v => v.status),
   )
@@ -230,15 +231,24 @@ export default function App() {
 
   const list = useAsyncList<PublicEvent>({
     async load() {
-      const { data } = await saturdayClient.GET("/events", {
+      setIsLoading(true)
+      const offset = (page - 1) * rowsPerPage
+      const { data, response } = await saturdayClient.GET("/events", {
         params: {
           query: {
             order: "DESC",
-            offset: 0,
-            limit: 1000,
+            offset: offset,
+            limit: rowsPerPage,
+            status: statusFilter.length > 0 ? statusFilter : null,
           },
         },
       })
+
+      // Extract total count from response headers
+      const totalCountHeader = response.headers.get("X-Total-Count")
+      if (totalCountHeader) {
+        setTotalCount(parseInt(totalCountHeader, 10))
+      }
 
       setIsLoading(false)
 
@@ -263,27 +273,23 @@ export default function App() {
     },
   })
 
-  const filteredList = useMemo(() => {
-    if (statusFilter.length > 0) {
-      return list.items.filter(item => statusFilter.includes(item.status))
-    }
-    return list.items
-  }, [list, statusFilter])
-
+  // Items are now paginated and filtered by the server
   const items = useMemo(() => {
-    const start = (page - 1) * rowsPerPage
-    const end = start + rowsPerPage
-
-    return filteredList.slice(start, end)
-  }, [filteredList, page, rowsPerPage])
+    return list.items
+  }, [list.items])
 
   const pages = useMemo(() => {
-    return Math.ceil(filteredList.length / rowsPerPage)
-  }, [filteredList, rowsPerPage])
+    return Math.ceil(totalCount / rowsPerPage)
+  }, [totalCount, rowsPerPage])
 
   useEffect(() => {
     setPage(1)
+    list.reload()
   }, [statusFilter])
+
+  useEffect(() => {
+    list.reload()
+  }, [page])
 
   const columns: {
     key: string
@@ -454,24 +460,26 @@ export default function App() {
             <CheckboxPopover value={statusFilter} onValueChange={setStatusFilter} />
           </div>
 
-          {isLoading
-            ? (
-                <div className="flex justify-center py-8">
-                  <Spinner label="Loading..." />
-                </div>
-              )
-            : (
-                <div className="flex flex-col gap-4">
-                  {items.map(event => (
-                    <MobileEventCard key={event.eventId} event={event} />
-                  ))}
-                  {items.length === 0 && (
-                    <div className="text-center py-8 text-gray-500">
-                      暂无维修记录
-                    </div>
-                  )}
-                </div>
-              )}
+          <div className="min-h-[600px]">
+            {isLoading
+              ? (
+                  <div className="flex justify-center py-8">
+                    <Spinner label="Loading..." />
+                  </div>
+                )
+              : (
+                  <div className="flex flex-col gap-4">
+                    {items.map(event => (
+                      <MobileEventCard key={event.eventId} event={event} />
+                    ))}
+                    {items.length === 0 && (
+                      <div className="text-center py-8 text-gray-500">
+                        暂无维修记录
+                      </div>
+                    )}
+                  </div>
+                )}
+          </div>
 
           {/* Mobile Pagination */}
           <div className="mt-6 flex justify-center">
