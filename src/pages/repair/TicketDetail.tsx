@@ -6,6 +6,7 @@ import EventDetail from "./EventDetail"
 import EditRepairModal from "./EditRepairModal"
 import type { UserInfoResponse } from "@logto/browser"
 import type { components } from "../../types/saturday"
+import { checkAuthAndRedirect } from "../../utils/repair"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 
@@ -32,24 +33,11 @@ export default function TicketDetail() {
 
   const checkAuthStatus = async () => {
     try {
-      const logtoClient = makeLogtoClient()
-      const authenticated = await logtoClient.isAuthenticated()
-
-      if (authenticated) {
-        const claims = await logtoClient.getIdTokenClaims()
+      const redirectUrl = `/repair/ticket-detail${window.location.search}`
+      const claims = await checkAuthAndRedirect(redirectUrl)
+      if (claims) {
         setUserInfo(claims)
       }
-      else {
-        // Redirect to login if not authenticated
-        const redirectUrl = `/repair/ticket-detail${window.location.search}`
-        window.location.href = `/repair/login-hint?redirectUrl=${encodeURIComponent(redirectUrl)}`
-      }
-    }
-    catch (error) {
-      console.error("Error checking auth status:", error)
-      // Redirect to login on error
-      const redirectUrl = `/repair/ticket-detail${window.location.search}`
-      window.location.href = `/repair/login-hint?redirectUrl=${encodeURIComponent(redirectUrl)}`
     }
     finally {
       setLoading(false)
