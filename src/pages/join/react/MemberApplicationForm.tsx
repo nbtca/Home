@@ -12,6 +12,7 @@ import {
 } from "@heroui/react"
 import { activeClient } from "../../../utils/client"
 import { SECTIONS } from "../../../types/member-application"
+import { makeLogtoClient } from "../../../utils/auth"
 
 export default function MemberApplicationForm() {
   const [formData, setFormData] = useState({
@@ -27,71 +28,49 @@ export default function MemberApplicationForm() {
   })
 
   const [loading, setLoading] = useState(false)
+  const [authLoading, setAuthLoading] = useState(true)
   const [popoverOpen, setPopoverOpen] = useState(false)
   const [popoverMessage, setPopoverMessage] = useState("")
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [applicationId, setApplicationId] = useState<string>("")
 
-  // Load saved data from localStorage on mount
+  // Check authentication and get email from Logto
   useEffect(() => {
-    const loadFromLocalStorage = () => {
-      const data = localStorage.getItem("memberApplicationFormData")
-      if (data) {
-        setFormData(JSON.parse(data))
+    const checkAuth = async () => {
+      try {
+        const authenticated = await makeLogtoClient().isAuthenticated()
+        if (!authenticated) {
+          window.location.href = `/repair/login-hint?redirectUrl=/join`
+          return
+        }
+
+        // Get user info from Logto
+        const userInfo = await makeLogtoClient().getIdTokenClaims()
+        const email = userInfo.email || ""
+
+        // Set email from Logto
+        setFormData((prev) => ({
+          ...prev,
+          email: email,
+        }))
+
+        setAuthLoading(false)
+      } catch (error) {
+        console.error("Authentication error:", error)
+        window.location.href = `/repair/login-hint?redirectUrl=/join`
       }
     }
-    loadFromLocalStorage()
+    checkAuth()
   }, [])
-
-  // Save form data to localStorage
-  const saveToLocalStorage = () => {
-    localStorage.setItem("memberApplicationFormData", JSON.stringify(formData))
-  }
 
   // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
-    // Auto-fill QQ from QQ email
-    if (name === "email") {
-      const qqEmailMatch = value.match(/^(\d+)@qq\.com$/i)
-      if (qqEmailMatch) {
-        const qqNumber = qqEmailMatch[1]
-        setFormData(prevData => ({
-          ...prevData,
-          [name]: value,
-          qq: qqNumber,
-        }))
-      } else {
-        setFormData(prevData => ({
-          ...prevData,
-          [name]: value,
-        }))
-      }
-    }
-    // Auto-fill email from QQ number
-    else if (name === "qq") {
-      setFormData((prevData) => {
-        const newData = {
-          ...prevData,
-          [name]: value,
-        }
-
-        const isEmailEmpty = !prevData.email || prevData.email.trim() === ""
-        const isEmailQQFormat = /^\d+@qq\.com$/i.test(prevData.email)
-
-        if (value && /^\d+$/.test(value) && (isEmailEmpty || isEmailQQFormat)) {
-          newData.email = `${value}@qq.com`
-        }
-
-        return newData
-      })
-    } else {
-      setFormData(prevData => ({
-        ...prevData,
-        [name]: value,
-      }))
-    }
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }))
 
     // Clear error for this field
     if (errors[name]) {
@@ -101,14 +80,6 @@ export default function MemberApplicationForm() {
         return newErrors
       })
     }
-
-    setTimeout(() => {
-      try {
-        saveToLocalStorage()
-      } catch (error) {
-        console.error("Failed to save form data to local storage", error)
-      }
-    }, 100)
   }
 
   // Handle section selection
@@ -125,8 +96,6 @@ export default function MemberApplicationForm() {
         return newErrors
       })
     }
-
-    saveToLocalStorage()
   }
 
   // Validate form
@@ -150,13 +119,6 @@ export default function MemberApplicationForm() {
 
     if (!formData.section || formData.section.trim().length === 0) {
       newErrors.section = "请选择部门"
-    }
-
-    // Optional email validation
-    if (formData.email && formData.email.trim().length > 0) {
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        newErrors.email = "邮箱格式不正确"
-      }
     }
 
     setErrors(newErrors)
@@ -189,27 +151,23 @@ export default function MemberApplicationForm() {
         },
       })
 
-      // Clear localStorage on success
-      localStorage.removeItem("memberApplicationFormData")
-
+      const currentEmail = formData.email
       setApplicationId(response.result?.applicationId || "")
       setPopoverMessage(`申请提交成功！您的申请ID是：${response.result?.applicationId || ""}。请保存此ID以便查询申请状态。`)
       setPopoverOpen(true)
 
-      // Reset form
-      setTimeout(() => {
-        setFormData({
-          memberId: "",
-          name: "",
-          phone: "",
-          section: "",
-          qq: "",
-          email: "",
-          major: "",
-          class: "",
-          memo: "",
-        })
-      }, 3000)
+      // Reset form but keep email from Logto
+      setFormData({
+        memberId: "",
+        name: "",
+        phone: "",
+        section: "",
+        qq: "",
+        email: currentEmail,
+        major: "",
+        class: "",
+        memo: "",
+      })
     } catch (error) {
       console.error("Error submitting application:", error)
       setPopoverMessage("提交失败，请稍后重试。")
@@ -217,6 +175,15 @@ export default function MemberApplicationForm() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // Show loading state while checking authentication
+  if (authLoading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <Spinner size="lg" label="正在验证登录状态..." />
+      </div>
+    )
   }
 
   return (
@@ -266,10 +233,10 @@ export default function MemberApplicationForm() {
         {/* Department Selection */}
         <div className="flex flex-col gap-4">
           <div className="text-sm text-gray-500">
-            部门选择 *
+            部门选择（带*为必填项）
           </div>
           <Select
-            label="选择部门"
+            label="选择部门 *"
             placeholder="请选择您想加入的部门"
             selectedKeys={formData.section ? [formData.section] : []}
             onSelectionChange={(keys) => {
@@ -313,11 +280,13 @@ export default function MemberApplicationForm() {
           <Input
             name="email"
             label="邮箱"
-            placeholder="请输入邮箱"
+            placeholder="从Logto账号获取"
             value={formData.email}
-            onChange={handleChange}
-            isInvalid={!!errors.email}
-            errorMessage={errors.email}
+            isReadOnly
+            description="邮箱地址来自您的Logto账号"
+            classNames={{
+              input: "bg-gray-50",
+            }}
           />
         </div>
 
