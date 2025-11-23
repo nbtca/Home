@@ -411,14 +411,16 @@ export default function App() {
     window.history.replaceState({}, '', newUrl)
   }
 
-  const onCloseEventDetail = () => {
+  const handleDrawerOpenChange = (isOpen: boolean) => {
     onOpenChange()
 
-    // Remove eventid from URL
-    const params = new URLSearchParams(window.location.search)
-    params.delete('eventid')
-    const newUrl = `${window.location.pathname}?${params.toString()}`
-    window.history.replaceState({}, '', newUrl)
+    // Remove eventid from URL when drawer is closed
+    if (!isOpen) {
+      const params = new URLSearchParams(window.location.search)
+      params.delete('eventid')
+      const newUrl = `${window.location.pathname}?${params.toString()}`
+      window.history.replaceState({}, '', newUrl)
+    }
   }
 
   const MobileEventCard = ({ event }: { event: PublicEvent }) => (
@@ -617,8 +619,8 @@ export default function App() {
           }
         }
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        onClose={onCloseEventDetail}
+        onOpenChange={handleDrawerOpenChange}
+        onClose={() => handleDrawerOpenChange(false)}
         onDelete={() => {}}
         onEdit={() => {}}
       >
