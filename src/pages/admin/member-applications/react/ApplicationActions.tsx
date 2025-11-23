@@ -1,7 +1,7 @@
 import type { UserInfoResponse } from "@logto/browser"
 import type { PublicMember } from "../../../../store/member"
 import type { MemberApplication } from "../../../../types/member-application"
-import { saturdayClient, activeClient } from "../../../../utils/client"
+import { saturdayClient } from "../../../../utils/client"
 import {
   Button,
   Modal,
@@ -63,15 +63,22 @@ export const ApplicationActionApprove = (props: ApplicationActionProps) => {
       })
 
       // Step 2: Update application status to approved
-      const updatedApplication = await activeClient.memberApplication.patchMemberApplicationApprove({
-        applicationId: props.application.applicationId,
-        requestBody: {
+      const { data: updatedApplication } = await saturdayClient.PATCH("/member-applications/{ApplicationId}/approve", {
+        params: {
+          header: {
+            Authorization: `Bearer ${props.identityContext.token}`,
+          },
+          path: {
+            ApplicationId: props.application.applicationId,
+          },
+        },
+        body: {
           reviewedBy: props.identityContext.member.memberId,
         },
       })
 
       props.onLoading()
-      props.onUpdated(updatedApplication.result)
+      props.onUpdated(updatedApplication)
       onClose()
     } catch (error) {
       console.error("Error approving application:", error)
@@ -131,17 +138,23 @@ export const ApplicationActionReject = (props: ApplicationActionProps) => {
   const handleReject = async () => {
     props.onLoading("reject")
     try {
-      // TODO: Replace with actual API endpoint when backend is ready
-      const updatedApplication = await activeClient.memberApplication.patchMemberApplicationReject({
-        applicationId: props.application.applicationId,
-        requestBody: {
+      const { data: updatedApplication } = await saturdayClient.PATCH("/member-applications/{ApplicationId}/reject", {
+        params: {
+          header: {
+            Authorization: `Bearer ${props.identityContext.token}`,
+          },
+          path: {
+            ApplicationId: props.application.applicationId,
+          },
+        },
+        body: {
           reason: rejectReason,
           reviewedBy: props.identityContext.member.memberId,
         },
       })
 
       props.onLoading()
-      props.onUpdated(updatedApplication.result)
+      props.onUpdated(updatedApplication)
       onClose()
       setRejectReason("")
     } catch (error) {

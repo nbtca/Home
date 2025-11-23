@@ -420,6 +420,75 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/member-applications": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get member applications */
+    get: operations["get-member-applications"]
+    put?: never
+    /** Create member application */
+    post: operations["create-member-application"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/member-applications/{ApplicationId}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get member application by id */
+    get: operations["get-member-application"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/member-applications/{ApplicationId}/approve": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** Approve member application */
+    patch: operations["approve-member-application"]
+    trace?: never
+  }
+  "/member-applications/{ApplicationId}/reject": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** Reject member application */
+    patch: operations["reject-member-application"]
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
@@ -768,6 +837,66 @@ export interface components {
       phone: string
       profile: string
       qq: string
+    }
+    "MemberApplication": {
+      /**
+       * Format: uri
+       * @description A URL to the JSON Schema for this object.
+       * @example https://api.nbtca.space/schemas/MemberApplication.json
+       */
+      readonly $schema?: string
+      applicationId: string
+      memberId: string
+      name: string
+      phone: string
+      section?: string
+      qq?: string
+      email?: string
+      major?: string
+      class?: string
+      memo?: string
+      status: string
+      reviewedBy?: string
+      reviewedAt?: string
+      rejectReason?: string
+      gmtCreate: string
+      gmtModified: string
+    }
+    "CreateMemberApplicationRequest": {
+      /**
+       * Format: uri
+       * @description A URL to the JSON Schema for this object.
+       * @example https://api.nbtca.space/schemas/CreateMemberApplicationRequest.json
+       */
+      readonly $schema?: string
+      memberId: string
+      name: string
+      phone: string
+      section?: string
+      qq?: string
+      email?: string
+      major?: string
+      class?: string
+      memo?: string
+    }
+    "ApproveMemberApplicationRequest": {
+      /**
+       * Format: uri
+       * @description A URL to the JSON Schema for this object.
+       * @example https://api.nbtca.space/schemas/ApproveMemberApplicationRequest.json
+       */
+      readonly $schema?: string
+      reviewedBy: string
+    }
+    "RejectMemberApplicationRequest": {
+      /**
+       * Format: uri
+       * @description A URL to the JSON Schema for this object.
+       * @example https://api.nbtca.space/schemas/RejectMemberApplicationRequest.json
+       */
+      readonly $schema?: string
+      reviewedBy: string
+      reason?: string
     }
   }
   responses: never
@@ -2129,6 +2258,214 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["PingResponse"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "get-member-applications": {
+    parameters: {
+      query?: {
+        offset?: number
+        limit?: number
+        status?: string
+        search?: string
+      }
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["MemberApplication"][] | null
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "create-member-application": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateMemberApplicationRequest"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["MemberApplication"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "get-member-application": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        ApplicationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["MemberApplication"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "approve-member-application": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        ApplicationId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ApproveMemberApplicationRequest"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["MemberApplication"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "reject-member-application": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        ApplicationId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RejectMemberApplicationRequest"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["MemberApplication"]
         }
       }
       /** @description Error */

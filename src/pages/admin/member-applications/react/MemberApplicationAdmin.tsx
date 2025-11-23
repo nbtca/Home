@@ -20,7 +20,7 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { useAsyncList } from "@react-stately/data"
 import type { MemberApplication, ApplicationStatus } from "../../../../types/member-application"
 import { APPLICATION_STATUS_MAP } from "../../../../types/member-application"
-import { saturdayClient, activeClient } from "../../../../utils/client"
+import { saturdayClient } from "../../../../utils/client"
 import ApplicationDetailDrawer, { ApplicationStatusChip } from "./ApplicationDetail"
 import dayjs from "dayjs"
 import { makeLogtoClient } from "../../../../utils/auth"
@@ -158,19 +158,25 @@ export default function MemberApplicationAdmin() {
       setIsLoading(true)
       const offset = (page - 1) * rowsPerPage
 
-      // TODO: Replace with actual API endpoint when backend is ready
-      const response = await activeClient.memberApplication.getMemberApplications({
-        offset,
-        limit: rowsPerPage,
-        status: statusFilter.length > 0 ? statusFilter.join(",") : undefined,
-        search: searchQuery || undefined,
+      const { data } = await saturdayClient.GET("/member-applications", {
+        params: {
+          header: {
+            Authorization: `Bearer ${token}`,
+          },
+          query: {
+            offset,
+            limit: rowsPerPage,
+            status: statusFilter.length > 0 ? statusFilter.join(",") : undefined,
+            search: searchQuery || undefined,
+          },
+        },
       })
 
-      setTotalCount(response.totalCount || 0)
+      setTotalCount(data?.totalCount || 0)
       setIsLoading(false)
 
       return {
-        items: response.result || [],
+        items: data?.result || [],
       }
     },
     async sort({ items, sortDescriptor }) {

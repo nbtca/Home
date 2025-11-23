@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@heroui/react"
-import { activeClient } from "../../../utils/client"
+import { saturdayClient } from "../../../utils/client"
 import { makeLogtoClient } from "../../../utils/auth"
 
 export default function MemberApplicationForm() {
@@ -111,10 +111,8 @@ export default function MemberApplicationForm() {
 
     setLoading(true)
     try {
-      // TODO: Replace with actual API endpoint when backend is ready
-      // For now, using activeClient as a placeholder
-      const response = await activeClient.memberApplication.postMemberApplicationAdd({
-        requestBody: {
+      const { data } = await saturdayClient.POST("/member-applications", {
+        body: {
           memberId: formData.memberId,
           name: formData.name,
           phone: formData.phone,
@@ -127,8 +125,8 @@ export default function MemberApplicationForm() {
       })
 
       const currentEmail = formData.email
-      setApplicationId(response.result?.applicationId || "")
-      setPopoverMessage(`申请提交成功！您的申请ID是：${response.result?.applicationId || ""}。请保存此ID以便查询申请状态。`)
+      setApplicationId(data?.applicationId || "")
+      setPopoverMessage(`申请提交成功！您的申请ID是：${data?.applicationId || ""}。请保存此ID以便查询申请状态。`)
       setPopoverOpen(true)
 
       // Reset form but keep email from Logto
