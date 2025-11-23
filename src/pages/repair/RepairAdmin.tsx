@@ -188,16 +188,32 @@ export const validateRepairRole = (roles: string[]) => {
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true)
-  const [page, setPage] = useState(1)
+
+  // Initialize state from URL query params
+  const getInitialPage = () => {
+    const params = new URLSearchParams(window.location.search)
+    const pageParam = params.get('page')
+    return pageParam ? parseInt(pageParam, 10) : 1
+  }
+
+  const getInitialStatusFilter = () => {
+    const params = new URLSearchParams(window.location.search)
+    const statusParam = params.get('status')
+    if (statusParam) {
+      return statusParam.split(',').filter(Boolean)
+    }
+    return UserEventStatus.filter(v => v.status !== EventStatus.cancelled).map(v => v.status)
+  }
+
+  const [page, setPage] = useState(getInitialPage())
   const rowsPerPage = 10
   const [totalCount, setTotalCount] = useState(0)
-  const [statusFilter, setStatusFilter] = useState<string[]>(
-    UserEventStatus.filter(v => v.status !== EventStatus.cancelled).map(v => v.status),
-  )
+  const [statusFilter, setStatusFilter] = useState<string[]>(getInitialStatusFilter())
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [userInfo, setUserInfo] = useState<UserInfoResponse>()
   const [currentMember, setCurrentMember] = useState<PublicMember>()
   const [token, setToken] = useState<string>()
+  const [errorMessage, setErrorMessage] = useState<string>("")
 
   useEffect(() => {
     const check = async () => {
@@ -228,6 +244,39 @@ export default function App() {
     }
     check()
   }, [])
+
+  // Handle eventid query parameter to auto-open event detail
+  useEffect(() => {
+    const loadEventFromUrl = async () => {
+      if (!token) return // Wait for authentication
+
+      const params = new URLSearchParams(window.location.search)
+      const eventId = params.get('eventid')
+
+      if (eventId) {
+        try {
+          const { data, error } = await saturdayClient.GET("/events/{eventId}", {
+            params: {
+              path: {
+                eventId: eventId,
+              },
+            },
+          })
+
+          if (error || !data) {
+            setErrorMessage(`无法找到工单 #${eventId}，该工单可能不存在或已被删除`)
+          } else {
+            setActiveEvent(data as PublicEvent)
+            onOpen()
+          }
+        } catch (err) {
+          setErrorMessage(`加载工单 #${eventId} 时出错`)
+        }
+      }
+    }
+
+    loadEventFromUrl()
+  }, [token])
 
   const list = useAsyncList<PublicEvent>({
     async load() {
@@ -281,6 +330,19 @@ export default function App() {
   const pages = useMemo(() => {
     return Math.ceil(totalCount / rowsPerPage)
   }, [totalCount, rowsPerPage])
+
+  // Update URL query params when page or statusFilter changes
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    params.set('page', page.toString())
+    if (statusFilter.length > 0) {
+      params.set('status', statusFilter.join(','))
+    } else {
+      params.delete('status')
+    }
+    const newUrl = `${window.location.pathname}?${params.toString()}`
+    window.history.replaceState({}, '', newUrl)
+  }, [page, statusFilter])
 
   useEffect(() => {
     setPage(1)
@@ -341,6 +403,24 @@ export default function App() {
   const onOpenEventDetail = (event: PublicEvent) => {
     setActiveEvent(event)
     onOpen()
+
+    // Update URL with eventid
+    const params = new URLSearchParams(window.location.search)
+    params.set('eventid', event.eventId)
+    const newUrl = `${window.location.pathname}?${params.toString()}`
+    window.history.replaceState({}, '', newUrl)
+  }
+
+  const handleDrawerOpenChange = (isOpen: boolean) => {
+    onOpenChange()
+
+    // Remove eventid from URL when drawer is closed
+    if (!isOpen) {
+      const params = new URLSearchParams(window.location.search)
+      params.delete('eventid')
+      const newUrl = `${window.location.pathname}?${params.toString()}`
+      window.history.replaceState({}, '', newUrl)
+    }
   }
 
   const MobileEventCard = ({ event }: { event: PublicEvent }) => (
@@ -539,14 +619,36 @@ export default function App() {
           }
         }
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        onClose={() => {
-          onOpenChange()
-        }}
+        onOpenChange={handleDrawerOpenChange}
+        onClose={() => handleDrawerOpenChange(false)}
         onDelete={() => {}}
         onEdit={() => {}}
       >
       </TicketDetailDrawer>
+
+      {/* Error Message Display */}
+      {errorMessage && (
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 max-w-md w-full mx-4">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-lg">
+            <div className="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-red-800">{errorMessage}</p>
+              </div>
+              <button
+                onClick={() => setErrorMessage("")}
+                className="text-red-400 hover:text-red-600 flex-shrink-0"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
