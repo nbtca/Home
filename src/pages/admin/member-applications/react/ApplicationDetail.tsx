@@ -107,10 +107,12 @@ export default function ApplicationDetailDrawer(props: ApplicationDetailDrawerPr
                     <p className="font-medium">{application.class}</p>
                   </div>
                 )}
-                <div>
-                  <p className="text-sm text-gray-500">部门</p>
-                  <p className="font-medium">{getSectionLabel(application.section)}</p>
-                </div>
+                {application.section && (
+                  <div>
+                    <p className="text-sm text-gray-500">部门</p>
+                    <p className="font-medium">{getSectionLabel(application.section)}</p>
+                  </div>
+                )}
               </div>
             </div>
 

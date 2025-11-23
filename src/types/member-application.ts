@@ -10,7 +10,7 @@ export interface MemberApplication {
   memberId: string
   name: string
   phone: string
-  section: string
+  section?: string
   qq?: string
   email?: string
   major?: string
@@ -33,7 +33,7 @@ export interface CreateMemberApplicationRequest {
   memberId: string
   name: string
   phone: string
-  section: string
+  section?: string
   qq?: string
   email?: string
   major?: string

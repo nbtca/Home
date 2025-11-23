@@ -50,7 +50,7 @@ export const ApplicationActionApprove = (props: ApplicationActionProps) => {
           memberId: props.application.memberId,
           name: props.application.name,
           phone: props.application.phone,
-          section: props.application.section,
+          section: props.application.section || "",
           qq: props.application.qq || "",
           email: props.application.email || "",
           alias: "", // Will be set later by member

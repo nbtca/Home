@@ -19,7 +19,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useAsyncList } from "@react-stately/data"
 import type { MemberApplication, ApplicationStatus } from "../../../../types/member-application"
-import { APPLICATION_STATUS_MAP, SECTIONS } from "../../../../types/member-application"
+import { APPLICATION_STATUS_MAP } from "../../../../types/member-application"
 import { saturdayClient, activeClient } from "../../../../utils/client"
 import ApplicationDetailDrawer, { ApplicationStatusChip } from "./ApplicationDetail"
 import dayjs from "dayjs"
@@ -226,10 +226,6 @@ export default function MemberApplicationAdmin() {
       label: "姓名",
     },
     {
-      key: "section",
-      label: "部门",
-    },
-    {
       key: "phone",
       label: "手机号",
     },
@@ -263,10 +259,6 @@ export default function MemberApplicationAdmin() {
     onOpen()
   }
 
-  const getSectionLabel = (value: string) => {
-    return SECTIONS.find(s => s.value === value)?.label || value
-  }
-
   const MobileApplicationCard = ({ application }: { application: MemberApplication }) => (
     <button
       className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
@@ -283,8 +275,6 @@ export default function MemberApplicationAdmin() {
       </div>
 
       <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
-        <div>{getSectionLabel(application.section)}</div>
-        <div>·</div>
         <div>{dayjs(application.gmtCreate).format("MM-DD HH:mm")}</div>
         {application.phone && (
           <>
@@ -304,8 +294,6 @@ export default function MemberApplicationAdmin() {
         return (
           <span className="font-mono text-sm">{cellValue?.substring(0, 8)}...</span>
         )
-      case "section":
-        return getSectionLabel(cellValue)
       case "gmtCreate":
         return (
           <span className="text-sm">

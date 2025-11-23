@@ -7,11 +7,8 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Select,
-  SelectItem,
 } from "@heroui/react"
 import { activeClient } from "../../../utils/client"
-import { SECTIONS } from "../../../types/member-application"
 import { makeLogtoClient } from "../../../utils/auth"
 
 export default function MemberApplicationForm() {
@@ -19,7 +16,6 @@ export default function MemberApplicationForm() {
     memberId: "",
     name: "",
     phone: "",
-    section: "",
     qq: "",
     email: "",
     major: "",
@@ -82,22 +78,6 @@ export default function MemberApplicationForm() {
     }
   }
 
-  // Handle section selection
-  const handleSectionChange = (value: string) => {
-    setFormData(prevData => ({
-      ...prevData,
-      section: value,
-    }))
-
-    if (errors.section) {
-      setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors.section
-        return newErrors
-      })
-    }
-  }
-
   // Validate form
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {}
@@ -115,10 +95,6 @@ export default function MemberApplicationForm() {
       newErrors.phone = "电话不能为空"
     } else if (!/^1[3-9]\d{9}$/.test(formData.phone)) {
       newErrors.phone = "电话格式不正确"
-    }
-
-    if (!formData.section || formData.section.trim().length === 0) {
-      newErrors.section = "请选择部门"
     }
 
     setErrors(newErrors)
@@ -142,7 +118,6 @@ export default function MemberApplicationForm() {
           memberId: formData.memberId,
           name: formData.name,
           phone: formData.phone,
-          section: formData.section,
           qq: formData.qq || undefined,
           email: formData.email || undefined,
           major: formData.major || undefined,
@@ -161,7 +136,6 @@ export default function MemberApplicationForm() {
         memberId: "",
         name: "",
         phone: "",
-        section: "",
         qq: "",
         email: currentEmail,
         major: "",
@@ -228,31 +202,6 @@ export default function MemberApplicationForm() {
             value={formData.class}
             onChange={handleChange}
           />
-        </div>
-
-        {/* Department Selection */}
-        <div className="flex flex-col gap-4">
-          <div className="text-sm text-gray-500">
-            部门选择（带*为必填项）
-          </div>
-          <Select
-            label="选择部门 *"
-            placeholder="请选择您想加入的部门"
-            selectedKeys={formData.section ? [formData.section] : []}
-            onSelectionChange={(keys) => {
-              const value = Array.from(keys)[0] as string
-              handleSectionChange(value)
-            }}
-            isInvalid={!!errors.section}
-            errorMessage={errors.section}
-            required
-          >
-            {SECTIONS.map((section) => (
-              <SelectItem key={section.value} value={section.value}>
-                {section.label}
-              </SelectItem>
-            ))}
-          </Select>
         </div>
 
         {/* Contact Info Section */}

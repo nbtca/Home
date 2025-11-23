@@ -52,7 +52,7 @@ export type PostMemberApplicationAddData = {
     memberId: string;
     name: string;
     phone: string;
-    section: string;
+    section?: string;
     qq?: string;
     email?: string;
     major?: string;
@@ -68,7 +68,7 @@ export type PostMemberApplicationAddResponse = {
     memberId: string;
     name: string;
     phone: string;
-    section: string;
+    section?: string;
     qq?: string;
     email?: string;
     major?: string;
@@ -95,7 +95,7 @@ export type GetMemberApplicationsResponse = {
     memberId: string;
     name: string;
     phone: string;
-    section: string;
+    section?: string;
     qq?: string;
     email?: string;
     major?: string;
@@ -126,7 +126,7 @@ export type PatchMemberApplicationApproveResponse = {
     memberId: string;
     name: string;
     phone: string;
-    section: string;
+    section?: string;
     qq?: string;
     email?: string;
     major?: string;
@@ -156,7 +156,7 @@ export type PatchMemberApplicationRejectResponse = {
     memberId: string;
     name: string;
     phone: string;
-    section: string;
+    section?: string;
     qq?: string;
     email?: string;
     major?: string;
