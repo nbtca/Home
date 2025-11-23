@@ -4,7 +4,7 @@ import { saturdayClient } from "../../utils/client"
 import type { components } from "../../types/saturday"
 
 type NotificationPreferenceItem = components["schemas"]["NotificationPreferenceItem"]
-type UpdateNotificationPreferencesInputBody = components["schemas"]["UpdateNotificationPreferencesInputBody"]
+type Item = components["schemas"]["Item"]
 
 interface NotificationPreferencesProps {
   token: string
@@ -28,7 +28,7 @@ export default function NotificationPreferences({ token }: NotificationPreferenc
     setErrorMessage("")
 
     try {
-      const { data, error } = await saturdayClient.GET("/notification-preferences", {
+      const { data, error } = await saturdayClient.GET("/member/notification-preferences", {
         params: {
           header: {
             Authorization: `Bearer ${token}`,
@@ -63,20 +63,21 @@ export default function NotificationPreferences({ token }: NotificationPreferenc
     ))
 
     try {
-      // Create the request body with all preferences
-      const requestBody: UpdateNotificationPreferencesInputBody = preferences.reduce((acc, pref) => {
-        const enabled = pref.notificationType === notificationType ? newValue : pref.enabled
-        acc[pref.notificationType] = enabled
-        return acc
-      }, {} as UpdateNotificationPreferencesInputBody)
+      // Create the request body with all preferences as an array of Item objects
+      const preferencesArray: Item[] = preferences.map(pref => ({
+        notificationType: pref.notificationType,
+        enabled: pref.notificationType === notificationType ? newValue : pref.enabled,
+      }))
 
-      const { error } = await saturdayClient.PUT("/notification-preferences", {
+      const { error } = await saturdayClient.PUT("/member/notification-preferences", {
         params: {
           header: {
             Authorization: `Bearer ${token}`,
           },
         },
-        body: requestBody,
+        body: {
+          preferences: preferencesArray,
+        },
       })
 
       if (error) {
