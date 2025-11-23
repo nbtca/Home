@@ -72,16 +72,4 @@ jobs:
           platforms: linux/amd64
           tags: |
             ${{ env.IMAGE_NAME_FULL }}:${{ github.ref_name }}
-
-      - name: Deploy
-        uses: appleboy/ssh-action@v1.0.0
-        env:
-          BRANCH_NAME: ${{ github.ref_name }}
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.ACCESS_TOKEN }}
-          envs: BRANCH_NAME
-          script: |
-            cd ${{secrets.REMOTE_PATH}}
-            docker compose up --force-recreate -d --pull=always
+            ${{ env.IMAGE_NAME_FULL }}:latest

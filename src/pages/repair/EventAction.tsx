@@ -267,7 +267,7 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
         action: "drop",
         label: "放弃",
         handler: async () => {
-          const { data } = await saturdayClient.POST("/member/events/{EventId}/accept", {
+          const { data } = await saturdayClient.DELETE("/member/events/{EventId}/accept", {
             params: {
               header: {
                 Authorization: `Bearer ${identityContext.token}`,

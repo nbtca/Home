@@ -3,6 +3,7 @@ import { makeLogtoClient } from "../../utils/auth"
 import type { UserInfoResponse } from "@logto/browser"
 import { Alert, Form, Input, Button, Textarea } from "@heroui/react"
 import { saturdayClient } from "../../utils/client"
+import { safe } from "../../utils/safe"
 
 type TicketFormData = {
   model?: string
@@ -275,12 +276,11 @@ export default function App() {
     const check = async () => {
       const createRepairPath = "/repair/create-ticket"
       try {
-        const authenticated = await makeLogtoClient().isAuthenticated()
-        if (!authenticated) {
+        const [res, err] = await safe(makeLogtoClient().getIdTokenClaims())
+        if (err) {
           window.location.href = `/repair/login-hint?redirectUrl=${createRepairPath}`
           return
         }
-        const res = await makeLogtoClient().getIdTokenClaims()
         setUserInfo(res)
       }
       catch (error) {

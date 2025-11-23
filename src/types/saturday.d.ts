@@ -797,6 +797,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -842,6 +847,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -880,6 +890,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -918,6 +933,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -960,6 +980,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -992,6 +1017,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1025,6 +1055,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1055,7 +1090,7 @@ export interface operations {
          * @example 50
          */
         limit?: number
-        status?: string
+        status?: string[] | null
         order?: string
       }
       header?: never
@@ -1067,6 +1102,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1087,16 +1127,6 @@ export interface operations {
   "export-events-xlsx": {
     parameters: {
       query: {
-        /**
-         * @description Offset
-         * @example 0
-         */
-        offset?: number
-        /**
-         * @description Limit
-         * @example 50
-         */
-        limit?: number
         status?: string
         order?: string
         start_time: string
@@ -1143,6 +1173,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1181,6 +1216,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1219,6 +1259,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1251,6 +1296,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1287,6 +1337,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1323,6 +1378,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1359,6 +1419,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1404,6 +1469,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1442,6 +1512,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1480,6 +1555,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1518,6 +1598,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1560,6 +1645,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1602,6 +1692,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1633,6 +1728,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1673,6 +1773,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1709,6 +1814,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1752,6 +1862,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1787,6 +1902,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1829,6 +1949,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1871,6 +1996,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1912,6 +2042,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1951,6 +2086,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
@@ -1980,6 +2120,11 @@ export interface operations {
       /** @description OK */
       200: {
         headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
           [name: string]: unknown
         }
         content: {
