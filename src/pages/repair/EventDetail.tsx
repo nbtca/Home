@@ -3,8 +3,8 @@ import type { components } from "../../types/saturday"
 import { saturdayClient } from "../../utils/client"
 import { Textarea, Input, Chip, Skeleton } from "@heroui/react"
 import type { PublicMember } from "../../store/member"
-import dayjs from "dayjs"
 import { EventStatus, UserEventAction } from "../../types/event"
+import { formatDateTime } from "../../utils/date"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 type EventLog = components["schemas"]["EventLog"]
@@ -36,7 +36,7 @@ function EventLogItem(props: {
           </div>
         </div>
         <div className="flex flex-col gap-2 items-center mt-1 text-gray-600">
-          {dayjs(props.eventLog.gmtCreate).format("YYYY-MM-DD HH:mm")}
+          {formatDateTime(props.eventLog.gmtCreate)}
         </div>
       </div>
 
