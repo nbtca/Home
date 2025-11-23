@@ -34,6 +34,7 @@ import type { PublicMember } from "../../store/member"
 import type { UserInfoResponse } from "@logto/browser"
 import { getAvailableEventActions, type EventAction, type IdentityContext } from "./EventAction"
 import { ExportExcelModal } from "./ExportEventDialog"
+import NotificationPreferences from "./NotificationPreferences"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 
@@ -525,11 +526,12 @@ export default function App() {
     <section className="box-border max-w-full px-4 sm:px-6 lg:max-w-[1024px] lg:px-[22px] mx-auto mb-16 sm:mb-24">
       <div className="mt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="text-xl sm:text-2xl font-bold">维修管理</div>
-        {
-          userInfo?.roles?.find(v => v.toLowerCase() == "repair admin")
-            ? <div className="w-full sm:w-auto"><ExportExcelModal></ExportExcelModal></div>
-            : <></>
-        }
+        <div className="flex gap-2 w-full sm:w-auto">
+          {token && <NotificationPreferences token={token} />}
+          {userInfo?.roles?.find(v => v.toLowerCase() == "repair admin") && (
+            <ExportExcelModal />
+          )}
+        </div>
       </div>
       <div className="my-8 flex flex-col gap-4">
         {/* Mobile Cards Layout */}
