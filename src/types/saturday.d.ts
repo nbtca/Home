@@ -403,6 +403,24 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/notification-preferences": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get notification preferences */
+    get: operations["get-notification-preferences"]
+    /** Update notification preferences */
+    put: operations["update-notification-preferences"]
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/ping": {
     parameters: {
       query?: never
@@ -664,6 +682,23 @@ export interface components {
       Int64: number
       Valid: boolean
     }
+    "NotificationPreferenceItem": {
+      /**
+       * @description Description of the notification type
+       * @example 通知所有新创建的维修工单
+       */
+      description: string
+      /**
+       * @description Whether this notification type is enabled
+       * @example true
+       */
+      enabled: boolean
+      /**
+       * @description Notification type identifier
+       * @example new_event_created
+       */
+      notificationType: string
+    }
     "PingResponse": {
       /**
        * Format: uri
@@ -731,6 +766,29 @@ export interface components {
       problem: string
       qq?: string
       size?: string
+    }
+    "UpdateNotificationPreferencesInputBody": {
+      /**
+       * Format: uri
+       * @description A URL to the JSON Schema for this object.
+       * @example https://api.nbtca.space/schemas/UpdateNotificationPreferencesInputBody.json
+       */
+      readonly $schema?: string
+      /**
+       * @description Enable/disable notifications for events assigned to me
+       * @example true
+       */
+      event_assigned_to_me: boolean
+      /**
+       * @description Enable/disable notifications for event status changes
+       * @example true
+       */
+      event_status_changed: boolean
+      /**
+       * @description Enable/disable notifications for new events created
+       * @example true
+       */
+      new_event_created: boolean
     }
     "UpdateMemberAvatarInputBody": {
       /**
@@ -2095,6 +2153,84 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["CreateMemberTokenResponse"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "get-notification-preferences": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["NotificationPreferenceItem"][] | null
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "update-notification-preferences": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateNotificationPreferencesInputBody"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": string
         }
       }
       /** @description Error */

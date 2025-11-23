@@ -34,6 +34,7 @@ import type { PublicMember } from "../../store/member"
 import type { UserInfoResponse } from "@logto/browser"
 import { getAvailableEventActions, type EventAction, type IdentityContext } from "./EventAction"
 import { ExportExcelModal } from "./ExportEventDialog"
+import NotificationPreferences from "./NotificationPreferences"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 
@@ -531,6 +532,14 @@ export default function App() {
             : <></>
         }
       </div>
+
+      {/* Notification Preferences Section */}
+      {token && (
+        <div className="mt-6">
+          <NotificationPreferences token={token} />
+        </div>
+      )}
+
       <div className="my-8 flex flex-col gap-4">
         {/* Mobile Cards Layout */}
         <div className="block sm:hidden">
