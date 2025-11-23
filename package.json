@@ -28,7 +28,7 @@
     "@logto/browser": "^2.2.18",
     "@react-stately/data": "^3.13.0",
     "@stylistic/eslint-plugin": "^2.13.0",
-    "astro": "^4.16.19",
+    "astro": "^5.14.3",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.18.2",
     "ical.js": "^2.1.0",
