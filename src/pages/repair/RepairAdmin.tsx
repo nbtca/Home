@@ -188,12 +188,27 @@ export const validateRepairRole = (roles: string[]) => {
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true)
-  const [page, setPage] = useState(1)
+
+  // Initialize state from URL query params
+  const getInitialPage = () => {
+    const params = new URLSearchParams(window.location.search)
+    const pageParam = params.get('page')
+    return pageParam ? parseInt(pageParam, 10) : 1
+  }
+
+  const getInitialStatusFilter = () => {
+    const params = new URLSearchParams(window.location.search)
+    const statusParam = params.get('status')
+    if (statusParam) {
+      return statusParam.split(',').filter(Boolean)
+    }
+    return UserEventStatus.filter(v => v.status !== EventStatus.cancelled).map(v => v.status)
+  }
+
+  const [page, setPage] = useState(getInitialPage())
   const rowsPerPage = 10
   const [totalCount, setTotalCount] = useState(0)
-  const [statusFilter, setStatusFilter] = useState<string[]>(
-    UserEventStatus.filter(v => v.status !== EventStatus.cancelled).map(v => v.status),
-  )
+  const [statusFilter, setStatusFilter] = useState<string[]>(getInitialStatusFilter())
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [userInfo, setUserInfo] = useState<UserInfoResponse>()
   const [currentMember, setCurrentMember] = useState<PublicMember>()
@@ -281,6 +296,17 @@ export default function App() {
   const pages = useMemo(() => {
     return Math.ceil(totalCount / rowsPerPage)
   }, [totalCount, rowsPerPage])
+
+  // Update URL query params when page or statusFilter changes
+  useEffect(() => {
+    const params = new URLSearchParams()
+    params.set('page', page.toString())
+    if (statusFilter.length > 0) {
+      params.set('status', statusFilter.join(','))
+    }
+    const newUrl = `${window.location.pathname}?${params.toString()}`
+    window.history.replaceState({}, '', newUrl)
+  }, [page, statusFilter])
 
   useEffect(() => {
     setPage(1)
