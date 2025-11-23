@@ -45,3 +45,129 @@ export type GetFreshmanListResponse = {
   }>;
   total: number;
 };
+
+// Member Application Types
+export type PostMemberApplicationAddData = {
+  requestBody?: {
+    memberId: string;
+    name: string;
+    phone: string;
+    section: string;
+    qq?: string;
+    email?: string;
+    major?: string;
+    class?: string;
+    memo?: string;
+  };
+};
+
+export type PostMemberApplicationAddResponse = {
+  success: boolean;
+  result?: {
+    applicationId: string;
+    memberId: string;
+    name: string;
+    phone: string;
+    section: string;
+    qq?: string;
+    email?: string;
+    major?: string;
+    class?: string;
+    memo?: string;
+    status: string;
+    gmtCreate: string;
+    gmtModified: string;
+  };
+  error?: string;
+};
+
+export type GetMemberApplicationsData = {
+  offset?: number;
+  limit?: number;
+  status?: string;
+  search?: string;
+};
+
+export type GetMemberApplicationsResponse = {
+  success: boolean;
+  result?: Array<{
+    applicationId: string;
+    memberId: string;
+    name: string;
+    phone: string;
+    section: string;
+    qq?: string;
+    email?: string;
+    major?: string;
+    class?: string;
+    memo?: string;
+    status: string;
+    reviewedBy?: string;
+    reviewedAt?: string;
+    rejectReason?: string;
+    gmtCreate: string;
+    gmtModified: string;
+  }>;
+  totalCount?: number;
+  error?: string;
+};
+
+export type PatchMemberApplicationApproveData = {
+  applicationId: string;
+  requestBody?: {
+    reviewedBy: string;
+  };
+};
+
+export type PatchMemberApplicationApproveResponse = {
+  success: boolean;
+  result?: {
+    applicationId: string;
+    memberId: string;
+    name: string;
+    phone: string;
+    section: string;
+    qq?: string;
+    email?: string;
+    major?: string;
+    class?: string;
+    memo?: string;
+    status: string;
+    reviewedBy?: string;
+    reviewedAt?: string;
+    gmtCreate: string;
+    gmtModified: string;
+  };
+  error?: string;
+};
+
+export type PatchMemberApplicationRejectData = {
+  applicationId: string;
+  requestBody?: {
+    reason?: string;
+    reviewedBy: string;
+  };
+};
+
+export type PatchMemberApplicationRejectResponse = {
+  success: boolean;
+  result?: {
+    applicationId: string;
+    memberId: string;
+    name: string;
+    phone: string;
+    section: string;
+    qq?: string;
+    email?: string;
+    major?: string;
+    class?: string;
+    memo?: string;
+    status: string;
+    reviewedBy?: string;
+    reviewedAt?: string;
+    rejectReason?: string;
+    gmtCreate: string;
+    gmtModified: string;
+  };
+  error?: string;
+};

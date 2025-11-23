@@ -3,12 +3,13 @@ import type { OpenAPIConfig } from "./core/OpenAPI";
 import { Interceptors } from "./core/OpenAPI";
 import { FetchHttpRequest } from "./core/FetchHttpRequest";
 
-import { FreshmanService } from "./services.gen";
+import { FreshmanService, MemberApplicationService } from "./services.gen";
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 
 export class ApiClient {
   public readonly freshman: FreshmanService;
+  public readonly memberApplication: MemberApplicationService;
 
   public readonly request: BaseHttpRequest;
 
@@ -33,5 +34,6 @@ export class ApiClient {
     });
 
     this.freshman = new FreshmanService(this.request);
+    this.memberApplication = new MemberApplicationService(this.request);
   }
 }

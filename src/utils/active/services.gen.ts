@@ -7,6 +7,14 @@ import type {
   PostFreshmanAddResponse,
   GetFreshmanListData,
   GetFreshmanListResponse,
+  PostMemberApplicationAddData,
+  PostMemberApplicationAddResponse,
+  GetMemberApplicationsData,
+  GetMemberApplicationsResponse,
+  PatchMemberApplicationApproveData,
+  PatchMemberApplicationApproveResponse,
+  PatchMemberApplicationRejectData,
+  PatchMemberApplicationRejectResponse,
 } from "./types.gen";
 
 export class FreshmanService {
@@ -49,6 +57,94 @@ export class FreshmanService {
       errors: {
         500: "服务器错误",
       },
+    });
+  }
+}
+
+export class MemberApplicationService {
+  constructor(public readonly httpRequest: BaseHttpRequest) {}
+
+  /**
+   * 提交成员申请
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns unknown 返回创建结果
+   * @throws ApiError
+   */
+  public postMemberApplicationAdd(
+    data: PostMemberApplicationAddData = {},
+  ): CancelablePromise<PostMemberApplicationAddResponse> {
+    return this.httpRequest.request({
+      method: "POST",
+      url: "/api/member-application",
+      body: data.requestBody,
+      mediaType: "application/json",
+    });
+  }
+
+  /**
+   * 获取成员申请列表
+   * @param data The data for the request.
+   * @param data.offset 偏移量
+   * @param data.limit 限制数量
+   * @param data.status 状态筛选
+   * @param data.search 搜索关键词
+   * @returns unknown 返回列表
+   * @throws ApiError
+   */
+  public getMemberApplications(
+    data: GetMemberApplicationsData = {},
+  ): CancelablePromise<GetMemberApplicationsResponse> {
+    return this.httpRequest.request({
+      method: "GET",
+      url: "/api/member-application",
+      query: {
+        offset: data.offset,
+        limit: data.limit,
+        status: data.status,
+        search: data.search,
+      },
+      errors: {
+        500: "服务器错误",
+      },
+    });
+  }
+
+  /**
+   * 批准成员申请
+   * @param data The data for the request.
+   * @param data.applicationId 申请ID
+   * @param data.requestBody
+   * @returns unknown 返回批准结果
+   * @throws ApiError
+   */
+  public patchMemberApplicationApprove(
+    data: PatchMemberApplicationApproveData,
+  ): CancelablePromise<PatchMemberApplicationApproveResponse> {
+    return this.httpRequest.request({
+      method: "PATCH",
+      url: `/api/member-application/${data.applicationId}/approve`,
+      body: data.requestBody,
+      mediaType: "application/json",
+    });
+  }
+
+  /**
+   * 拒绝成员申请
+   * @param data The data for the request.
+   * @param data.applicationId 申请ID
+   * @param data.requestBody
+   * @returns unknown 返回拒绝结果
+   * @throws ApiError
+   */
+  public patchMemberApplicationReject(
+    data: PatchMemberApplicationRejectData,
+  ): CancelablePromise<PatchMemberApplicationRejectResponse> {
+    return this.httpRequest.request({
+      method: "PATCH",
+      url: `/api/member-application/${data.applicationId}/reject`,
+      body: data.requestBody,
+      mediaType: "application/json",
     });
   }
 }

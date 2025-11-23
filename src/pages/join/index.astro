@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import MemberApplicationForm from "./react/MemberApplicationForm.tsx"
+---
+
+<BaseLayout title="加入我们">
+  <div class="section-content box-border flex flex-col gap-4 pb-20">
+    <div class="text-xs sm:text-sm bg-[#f5f5f7] p-4 rounded-2xl mt-6">
+      <li>
+        本页面为计算机协会成员申请入口，提交后需等待管理员审核。
+      </li>
+      <li>
+        审核通过后，您将成为正式成员，可以参与协会的各项活动。
+      </li>
+      <li>
+        请确保填写真实有效的信息，以便我们与您联系。
+      </li>
+      <li>
+        提交后会获得申请ID，请妥善保存以便查询申请状态。
+      </li>
+    </div>
+    <div class="my-4">
+      <div class="text-2xl lg:text-3xl leading-[1.125] font-bold">
+        申请加入计算机协会
+      </div>
+      <div class="mt-2 text-sm text-gray-500">
+        欢迎加入计算机协会！在提交申请前，请仔细填写以下信息。我们会尽快审核您的申请。
+      </div>
+    </div>
+    <MemberApplicationForm client:only="react" />
+  </div>
+</BaseLayout>

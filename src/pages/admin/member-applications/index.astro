@@ -1,0 +1,8 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro"
+import MemberApplicationAdmin from "./react/MemberApplicationAdmin.tsx"
+---
+
+<BaseLayout title="成员申请管理">
+  <MemberApplicationAdmin client:only="react" />
+</BaseLayout>
