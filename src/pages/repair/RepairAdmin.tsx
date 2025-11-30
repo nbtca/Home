@@ -433,22 +433,8 @@ export default function App() {
       <div className="flex justify-between">
         <div className="flex">
           <span className="text font-medium text-gray-400 ml-1">#{event.eventId} </span>
-          {/* <div>
-            { event.size && <Chip size="sm">size:{event.size}</Chip>}
-          </div> */}
         </div>
         <div className="flex items-center">
-          {/* { event.member && (
-            <User
-              avatarProps={{ radius: "full", src: event.member.avatar, size: "sm" }}
-              name=""
-              classNames={{
-                base: "justify-start",
-                name: "text-sm",
-                description: "text-xs",
-              }}
-            />
-          ) } */}
           <EventStatusChip status={event.status} size="sm" />
         </div>
       </div>
@@ -456,18 +442,21 @@ export default function App() {
         {event.problem}
       </div>
 
-      <div className="flex items-center justify-between text-sm text-gray-600">
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between gap-4 text-sm text-gray-600">
+        <div className="grow flex items-center gap-2 min-w-0">
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 text-nowrap">
             <svg className="fill-gray-600" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" /></svg>
             { dayjs(event.gmtCreate).format("YYYY-MM-DD HH:mm") }
           </div>
 
           {event.model && (
-            <div className="flex items-center gap-1">
-              <svg className="fill-gray-600" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M40-120v-80h880v80H40Zm120-120q-33 0-56.5-23.5T80-320v-440q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v440q0 33-23.5 56.5T800-240H160Zm0-80h640v-440H160v440Zm0 0v-440 440Z" /></svg>
-              {event.model}
+            <div className="flex items-center gap-1 grow min-w-0">
+              <svg className="fill-gray-600 shrink-0" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M40-120v-80h880v80H40Zm120-120q-33 0-56.5-23.5T80-320v-440q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v440q0 33-23.5 56.5T800-240H160Zm0-80h640v-440H160v440Zm0 0v-440 440Z" /></svg>
+
+              <span className="truncate block min-w-0">
+                {event.model}
+              </span>
             </div>
           )}
 
