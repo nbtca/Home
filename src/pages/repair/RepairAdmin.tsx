@@ -193,15 +193,15 @@ export default function App() {
   // Initialize state from URL query params
   const getInitialPage = () => {
     const params = new URLSearchParams(window.location.search)
-    const pageParam = params.get('page')
+    const pageParam = params.get("page")
     return pageParam ? parseInt(pageParam, 10) : 1
   }
 
   const getInitialStatusFilter = () => {
     const params = new URLSearchParams(window.location.search)
-    const statusParam = params.get('status')
+    const statusParam = params.get("status")
     if (statusParam) {
-      return statusParam.split(',').filter(Boolean)
+      return statusParam.split(",").filter(Boolean)
     }
     return UserEventStatus.filter(v => v.status !== EventStatus.cancelled).map(v => v.status)
   }
@@ -252,7 +252,7 @@ export default function App() {
       if (!token) return // Wait for authentication
 
       const params = new URLSearchParams(window.location.search)
-      const eventId = params.get('eventid')
+      const eventId = params.get("eventid")
 
       if (eventId) {
         try {
@@ -266,11 +266,14 @@ export default function App() {
 
           if (error || !data) {
             setErrorMessage(`无法找到工单 #${eventId}，该工单可能不存在或已被删除`)
-          } else {
+          }
+          else {
             setActiveEvent(data as PublicEvent)
             onOpen()
           }
-        } catch (err) {
+        }
+        catch (err) {
+          console.log("Error loading event from URL:", err)
           setErrorMessage(`加载工单 #${eventId} 时出错`)
         }
       }
@@ -335,14 +338,15 @@ export default function App() {
   // Update URL query params when page or statusFilter changes
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    params.set('page', page.toString())
+    params.set("page", page.toString())
     if (statusFilter.length > 0) {
-      params.set('status', statusFilter.join(','))
-    } else {
-      params.delete('status')
+      params.set("status", statusFilter.join(","))
+    }
+    else {
+      params.delete("status")
     }
     const newUrl = `${window.location.pathname}?${params.toString()}`
-    window.history.replaceState({}, '', newUrl)
+    window.history.replaceState({}, "", newUrl)
   }, [page, statusFilter])
 
   useEffect(() => {
@@ -407,9 +411,9 @@ export default function App() {
 
     // Update URL with eventid
     const params = new URLSearchParams(window.location.search)
-    params.set('eventid', event.eventId)
+    params.set("eventid", event.eventId)
     const newUrl = `${window.location.pathname}?${params.toString()}`
-    window.history.replaceState({}, '', newUrl)
+    window.history.replaceState({}, "", newUrl)
   }
 
   const handleDrawerOpenChange = (isOpen: boolean) => {
@@ -418,54 +422,69 @@ export default function App() {
     // Remove eventid from URL when drawer is closed
     if (!isOpen) {
       const params = new URLSearchParams(window.location.search)
-      params.delete('eventid')
+      params.delete("eventid")
       const newUrl = `${window.location.pathname}?${params.toString()}`
-      window.history.replaceState({}, '', newUrl)
+      window.history.replaceState({}, "", newUrl)
     }
   }
 
   const MobileEventCard = ({ event }: { event: PublicEvent }) => (
-    <button className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm" onClick={() => onOpenEventDetail(event)}>
-
-      <div className="mb-3 flex gap-2 items-center justify-between">
-        <div className="text font-medium text-gray-900 line-clamp-2">
-          {event.problem}
-          <span className="text font-medium text-gray-400 ml-1">#{event.eventId}</span>
+    <button className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col gap-1 text-start" onClick={() => onOpenEventDetail(event)}>
+      <div className="flex justify-between">
+        <div className="flex">
+          <span className="text font-medium text-gray-400 ml-1">#{event.eventId} </span>
+          {/* <div>
+            { event.size && <Chip size="sm">size:{event.size}</Chip>}
+          </div> */}
         </div>
-        <div className="">
+        <div className="flex items-center">
+          {/* { event.member && (
+            <User
+              avatarProps={{ radius: "full", src: event.member.avatar, size: "sm" }}
+              name=""
+              classNames={{
+                base: "justify-start",
+                name: "text-sm",
+                description: "text-xs",
+              }}
+            />
+          ) } */}
           <EventStatusChip status={event.status} size="sm" />
         </div>
       </div>
+      <div className="text font-medium text-gray-900 line-clamp-2 h-12">
+        {event.problem}
+      </div>
 
-      <div className="h-18">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <div className="">
+      <div className="flex items-center justify-between text-sm text-gray-600">
+        <div className="flex items-center gap-4">
+
+          <div className="flex items-center gap-1">
+            <svg className="fill-gray-600" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" /></svg>
             { dayjs(event.gmtCreate).format("YYYY-MM-DD HH:mm") }
           </div>
 
           {event.model && (
-            <div>
+            <div className="flex items-center gap-1">
+              <svg className="fill-gray-600" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M40-120v-80h880v80H40Zm120-120q-33 0-56.5-23.5T80-320v-440q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v440q0 33-23.5 56.5T800-240H160Zm0-80h640v-440H160v440Zm0 0v-440 440Z" /></svg>
               {event.model}
             </div>
           )}
 
-          <div>
-            { event.size && <Chip size="sm">size:{event.size}</Chip>}
-          </div>
-          {event.member && (
-            <div className="flex items-center gap-2 ">
-              <User
-                avatarProps={{ radius: "full", src: event.member.avatar, size: "sm" }}
-                name=""
-                classNames={{
-                  base: "justify-start",
-                  name: "text-sm",
-                  description: "text-xs",
-                }}
-              />
-            </div>
-          )}
         </div>
+        {event.member && (
+          <div className="flex items-center gap-2 ">
+            <User
+              avatarProps={{ radius: "full", src: event.member.avatar, size: "sm" }}
+              name=""
+              classNames={{
+                base: "justify-start",
+                name: "text-sm",
+                description: "text-xs",
+              }}
+            />
+          </div>
+        )}
       </div>
     </button>
   )
