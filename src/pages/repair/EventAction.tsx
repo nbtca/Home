@@ -2,8 +2,8 @@ import type { UserInfoResponse } from "@logto/browser"
 import type { PublicMember } from "../../store/member"
 import { EventStatus, type PublicEvent, type RepairEvent } from "../../types/event"
 import { saturdayClient } from "../../utils/client"
-import { Button, Form, Select, SelectItem, Textarea } from "@heroui/react"
-import { useEffect, useState } from "react"
+import { Button, Form, Select, SelectItem, Textarea, Card, CardBody } from "@heroui/react"
+import { useEffect, useState, useRef } from "react"
 
 export type IdentityContext = {
   member: PublicMember
@@ -39,13 +39,68 @@ const EventActionCommitForm = (props: {
   formData: {
     size: string
     description: string
+    images?: string[]
   }
   setFormData: (data: {
     size: string
     description: string
+    images?: string[]
   }) => void
 }) => {
   const { formData, setFormData } = props
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+
+    const newImages: string[] = []
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        continue
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert(`图片 ${file.name} 超过5MB大小限制`)
+        continue
+      }
+
+      // Convert to base64
+      try {
+        const base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result as string)
+          reader.onerror = reject
+          reader.readAsDataURL(file)
+        })
+        newImages.push(base64)
+      } catch (error) {
+        console.error("Failed to read image:", error)
+      }
+    }
+
+    setFormData({
+      ...formData,
+      images: [...(formData.images || []), ...newImages]
+    })
+
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
+  const handleRemoveImage = (index: number) => {
+    const newImages = [...(formData.images || [])]
+    newImages.splice(index, 1)
+    setFormData({ ...formData, images: newImages })
+  }
+
   return (
     <Form>
       <Select
@@ -84,6 +139,61 @@ const EventActionCommitForm = (props: {
         isRequired
         rows={3}
       />
+
+      {/* Image Upload Section */}
+      <div className="w-full flex flex-col gap-2">
+        <div className="text-sm font-bold">
+          维修图片
+          <span className="text-xs font-normal text-default-400 ml-2">
+            (可选，最多5张，每张最大5MB)
+          </span>
+        </div>
+        <div className="flex flex-col gap-2">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageSelect}
+            style={{ display: 'none' }}
+          />
+          <Button
+            onPress={() => fileInputRef.current?.click()}
+            variant="bordered"
+            size="sm"
+            className="w-full"
+            isDisabled={(formData.images?.length || 0) >= 5}
+          >
+            {(formData.images?.length || 0) >= 5 ? '已达到最大数量' : '选择图片'}
+          </Button>
+
+          {formData.images && formData.images.length > 0 && (
+            <div className="grid grid-cols-2 gap-2">
+              {formData.images.map((image, index) => (
+                <Card key={index} className="relative">
+                  <CardBody className="p-0">
+                    <img
+                      src={image}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-24 object-cover rounded-lg"
+                    />
+                    <Button
+                      isIconOnly
+                      color="danger"
+                      variant="flat"
+                      size="sm"
+                      className="absolute top-1 right-1"
+                      onPress={() => handleRemoveImage(index)}
+                    >
+                      ✕
+                    </Button>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </Form>
   )
 }
@@ -92,6 +202,7 @@ export const EventActionCommit = (props: EventActionProps) => {
   const [formData, setFormData] = useState({
     size: "",
     description: "",
+    images: [] as string[],
   })
 
   useEffect(() => {
@@ -99,6 +210,7 @@ export const EventActionCommit = (props: EventActionProps) => {
     setFormData({
       size: props.event.size || "",
       description: description || "",
+      images: [],
     })
   }, [props.event])
 
@@ -143,12 +255,14 @@ export const EventActionAlterCommit = (props: EventActionProps) => {
   const [formData, setFormData] = useState({
     size: "",
     description: "",
+    images: [] as string[],
   })
   useEffect(() => {
     const description = props.event?.logs?.findLast(v => v.action == "commit" || v.action == "alterCommit")?.description
     setFormData({
       size: props.event.size || "",
       description: description || "",
+      images: [],
     })
   }, [props.event])
 

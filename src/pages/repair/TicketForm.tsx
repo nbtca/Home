@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { makeLogtoClient } from "../../utils/auth"
 import type { UserInfoResponse } from "@logto/browser"
-import { Alert, Form, Input, Button, Textarea } from "@heroui/react"
+import { Alert, Form, Input, Button, Textarea, Card, CardBody } from "@heroui/react"
 import { saturdayClient } from "../../utils/client"
 import { safe } from "../../utils/safe"
 
@@ -10,6 +10,7 @@ type TicketFormData = {
   phone?: string
   qq?: string
   description?: string
+  images?: string[] // base64 encoded images
 }
 
 type FormError = {
@@ -48,6 +49,7 @@ function TicketForm(props: {
   const [submissionState, setSubmissionState] = useState<SubmissionState>("idle")
   const [formData, setFormData] = useState<TicketFormData>({})
   const [errors, setErrors] = useState<FormError[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Form persistence
   useEffect(() => {
@@ -132,6 +134,57 @@ function TicketForm(props: {
       redirectUri: import.meta.env.PUBLIC_LOGTO_CALLBACK_URL,
       postRedirectUri: window.location.pathname,
     })
+  }
+
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+
+    const newImages: string[] = []
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        continue
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors([{ message: `图片 ${file.name} 超过5MB大小限制`, type: "validation" }])
+        continue
+      }
+
+      // Convert to base64
+      try {
+        const base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result as string)
+          reader.onerror = reject
+          reader.readAsDataURL(file)
+        })
+        newImages.push(base64)
+      } catch (error) {
+        console.error("Failed to read image:", error)
+      }
+    }
+
+    setFormData({
+      ...formData,
+      images: [...(formData.images || []), ...newImages]
+    })
+
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
+  const handleRemoveImage = (index: number) => {
+    const newImages = [...(formData.images || [])]
+    newImages.splice(index, 1)
+    setFormData({ ...formData, images: newImages })
   }
 
   return (
@@ -227,6 +280,61 @@ function TicketForm(props: {
               description="填写设备型号，帮助我们更快的定位问题"
             />
           </div>
+
+          {/* Image Upload Section */}
+          <div className="w-full flex flex-col gap-2">
+            <div className="text-sm font-bold mx-1">
+              问题图片
+              <span className="text-xs font-normal text-default-400 ml-2">
+                (可选，最多5张，每张最大5MB)
+              </span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageSelect}
+                style={{ display: 'none' }}
+              />
+              <Button
+                onPress={() => fileInputRef.current?.click()}
+                variant="bordered"
+                className="w-full"
+                isDisabled={(formData.images?.length || 0) >= 5}
+              >
+                {(formData.images?.length || 0) >= 5 ? '已达到最大数量' : '选择图片'}
+              </Button>
+
+              {formData.images && formData.images.length > 0 && (
+                <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+                  {formData.images.map((image, index) => (
+                    <Card key={index} className="relative">
+                      <CardBody className="p-0">
+                        <img
+                          src={image}
+                          alt={`Preview ${index + 1}`}
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                        <Button
+                          isIconOnly
+                          color="danger"
+                          variant="flat"
+                          size="sm"
+                          className="absolute top-1 right-1"
+                          onPress={() => handleRemoveImage(index)}
+                        >
+                          ✕
+                        </Button>
+                      </CardBody>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="text-sm font-bold mx-1 mt-2">
             联系方式
           </div>
