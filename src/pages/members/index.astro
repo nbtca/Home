@@ -1,33 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro"
-import { computed } from "vue"
-import MemberCard from "../../components/MemberCard.astro"
-import type { PublicMember } from "../../store/member.ts"
-import { saturdayClient } from "../../utils/client"
-
-const { data: members } = await saturdayClient.GET("/members", { params: {} })
-
-// memberId is like "3232323233", the second and third number is the year of the member
-const memberGroupByYear = computed(() => {
-  const group = members
-    // TODO delete the test member
-    .filter(
-      member =>
-        member.memberId != "0000000000" && member.memberId != "2333333333",
-    )
-    .reduce(
-      (acc, cur) => {
-        const year = parseInt("20" + cur.memberId.slice(1, 3))
-        if (!acc[year]) {
-          acc[year] = []
-        }
-        acc[year].push(cur)
-        return acc
-      },
-      {} as Record<string, PublicMember[]>,
-    )
-  return group
-});
+import MembersList from "./MembersList.tsx"
 ---
 
   <BaseLayout primaryTitle="关于">
@@ -38,24 +11,41 @@ const memberGroupByYear = computed(() => {
         >
           协会成员
         </div>
-        <div>
-          {
-            Object.keys(memberGroupByYear.value)
-              .sort((a, b) => parseInt(b) - parseInt(a))
-              .map((year) => {
-                return (
-                  <div class="py-4 first:pt-2">
-                    <div class="text-lg lg:text-2xl font-bold pb-2">{year}</div>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8">
-                      {memberGroupByYear.value[year].map(member => (
-                        <MemberCard member={member} />
-                      ))}
-                    </div>
-                  </div>
-                )
-              })
-          }
-        </div>
+        <MembersList client:load />
       </div>
     </section>
   </BaseLayout>
+
+  <style is:global>
+  /* Initial state */
+  .navigate {
+    transition: transform 0.2s;
+  }
+
+  /* Hover state */
+  .navigate:hover {
+    text-decoration: underline;
+    transform: scale(1.1);
+  }
+
+  /* Active state */
+  .navigate:active {
+    animation: ease-in-out 1s exit forwards;
+  }
+
+  /* Define exit animation */
+  @keyframes exit {
+    0% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* No link color style */
+  .no-link-color {
+    color: inherit;
+    text-decoration: none;
+  }
+  </style>
