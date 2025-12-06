@@ -146,7 +146,12 @@ function TicketDetailDrawer(props: {
           {isLoading && <span className="text-sm text-gray-500">{isLoading}</span>}
         </DrawerHeader>
         <DrawerBody className="px-4 sm:px-6">
-          <EventDetail ref={eventDetailRef} eventId={props.event?.eventId}>
+          <EventDetail
+            ref={eventDetailRef}
+            eventId={props.event?.eventId}
+            token={props.identity?.token}
+            currentMemberId={props.identity?.member?.memberId}
+          >
             {
               event => (
                 <div className="mb-8 sm:mb-12 flex flex-col gap-3 sm:gap-2">
