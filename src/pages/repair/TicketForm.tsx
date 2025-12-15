@@ -10,7 +10,7 @@ type TicketFormData = {
   phone?: string
   qq?: string
   description?: string
-  images?: string[] // base64 encoded images
+  images?: string[] // image URLs from upload endpoint
 }
 
 type FormError = {
@@ -141,43 +141,57 @@ function TicketForm(props: {
     if (!files || files.length === 0) return
 
     const newImages: string[] = []
+    const logtoToken = await makeLogtoClient().getAccessToken()
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
 
       // Validate file type
-      if (!file.type.startsWith('image/')) {
+      if (!file.type.startsWith("image/")) {
         continue
       }
 
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setErrors([{ message: `图片 ${file.name} 超过5MB大小限制`, type: "validation" }])
+      // Validate file size (max 10MB as per API spec)
+      if (file.size > 10 * 1024 * 1024) {
+        setErrors([{ message: `图片 ${file.name} 超过10MB大小限制`, type: "validation" }])
         continue
       }
 
-      // Convert to base64
+      // Upload to server
       try {
-        const base64 = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader()
-          reader.onload = () => resolve(reader.result as string)
-          reader.onerror = reject
-          reader.readAsDataURL(file)
+        const formDataUpload = new FormData()
+        formDataUpload.append("file", file)
+
+        const { data, error } = await saturdayClient.POST("/upload", {
+          params: {
+            header: {
+              Authorization: `Bearer ${logtoToken}`,
+            },
+          },
+          body: formDataUpload as unknown as { file: string },
+          bodySerializer: () => formDataUpload as unknown as string,
         })
-        newImages.push(base64)
-      } catch (error) {
-        console.error("Failed to read image:", error)
+
+        if (error || !data) {
+          throw new Error("Upload failed")
+        }
+
+        newImages.push(data.url)
+      }
+      catch (error) {
+        console.error("Failed to upload image:", error)
+        setErrors([{ message: `图片 ${file.name} 上传失败`, type: "network" }])
       }
     }
 
     setFormData({
       ...formData,
-      images: [...(formData.images || []), ...newImages]
+      images: [...(formData.images || []), ...newImages],
     })
 
     // Reset file input
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      fileInputRef.current.value = ""
     }
   }
 
@@ -286,7 +300,7 @@ function TicketForm(props: {
             <div className="text-sm font-bold mx-1">
               问题图片
               <span className="text-xs font-normal text-default-400 ml-2">
-                (可选，最多5张，每张最大5MB)
+                (可选，最多5张，每张最大10MB)
               </span>
             </div>
             <div className="flex flex-col gap-2">
@@ -296,7 +310,7 @@ function TicketForm(props: {
                 accept="image/*"
                 multiple
                 onChange={handleImageSelect}
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
               />
               <Button
                 onPress={() => fileInputRef.current?.click()}
@@ -304,7 +318,7 @@ function TicketForm(props: {
                 className="w-full"
                 isDisabled={(formData.images?.length || 0) >= 5}
               >
-                {(formData.images?.length || 0) >= 5 ? '已达到最大数量' : '选择图片'}
+                {(formData.images?.length || 0) >= 5 ? "已达到最大数量" : "选择图片"}
               </Button>
 
               {formData.images && formData.images.length > 0 && (
@@ -411,6 +425,7 @@ export default function App() {
           model: formData.model,
           phone: formData.phone,
           qq: formData.qq,
+          images: formData.images,
         },
       })
       // Update URL with eventId to persist the ticket status

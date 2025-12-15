@@ -438,6 +438,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/upload": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Upload image file
+     * @description Upload an image file (JPEG, PNG, WebP). Max size: 10MB. Use 'file' as the field name in multipart form.
+     */
+    post: operations["upload-file"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
@@ -464,6 +484,7 @@ export interface components {
        */
       readonly $schema?: string
       content: string
+      images?: string[] | null
       size?: string
     }
     "Bind-member-logto-idRequest": {
@@ -498,6 +519,7 @@ export interface components {
        */
       readonly $schema?: string
       content: string
+      images?: string[] | null
       size?: string
     }
     "Create-token-via-wechatRequest": {
@@ -526,6 +548,7 @@ export interface components {
        */
       readonly $schema?: string
       contactPreference?: string
+      images?: string[] | null
       model?: string
       phone: string
       problem: string
@@ -638,6 +661,7 @@ export interface components {
       githubIssueNumber: components["schemas"]["NullInt64"]
       gmtCreate: string
       gmtModified: string
+      images?: string[] | null
       logs: components["schemas"]["EventLog"][] | null
       member: components["schemas"]["PublicMember"]
       memberId: string
@@ -652,9 +676,19 @@ export interface components {
       action: string
       description: string
       gmtCreate: string
+      images?: string[] | null
       /** Format: int64 */
       logId: number
       memberId: string
+    }
+    "FileUploadResponse": {
+      /**
+       * Format: uri
+       * @description A URL to the JSON Schema for this object.
+       * @example https://api.nbtca.space/schemas/FileUploadResponse.json
+       */
+      readonly $schema?: string
+      url: string
     }
     "Item": {
       enabled: boolean
@@ -729,6 +763,7 @@ export interface components {
       githubIssueNumber: number
       gmtCreate: string
       gmtModified: string
+      images?: string[] | null
       logs: components["schemas"]["EventLog"][] | null
       member: components["schemas"]["PublicMember"]
       model: string
@@ -760,6 +795,7 @@ export interface components {
        */
       readonly $schema?: string
       contactPreference?: string
+      images?: string[] | null
       model?: string
       phone: string
       problem: string
@@ -2250,6 +2286,53 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["PingResponse"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "upload-file": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /**
+           * Format: binary
+           * @description Image file to upload (max 10MB)
+           */
+          file: string
+        }
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["FileUploadResponse"]
         }
       }
       /** @description Error */

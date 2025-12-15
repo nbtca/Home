@@ -46,6 +46,7 @@ const EventActionCommitForm = (props: {
     description: string
     images?: string[]
   }) => void
+  identityContext: IdentityContext
 }) => {
   const { formData, setFormData } = props
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -60,38 +61,51 @@ const EventActionCommitForm = (props: {
       const file = files[i]
 
       // Validate file type
-      if (!file.type.startsWith('image/')) {
+      if (!file.type.startsWith("image/")) {
         continue
       }
 
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert(`图片 ${file.name} 超过5MB大小限制`)
+      // Validate file size (max 10MB as per API spec)
+      if (file.size > 10 * 1024 * 1024) {
+        alert(`图片 ${file.name} 超过10MB大小限制`)
         continue
       }
 
-      // Convert to base64
+      // Upload to server
       try {
-        const base64 = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader()
-          reader.onload = () => resolve(reader.result as string)
-          reader.onerror = reject
-          reader.readAsDataURL(file)
+        const formDataUpload = new FormData()
+        formDataUpload.append("file", file)
+
+        const { data, error } = await saturdayClient.POST("/upload", {
+          params: {
+            header: {
+              Authorization: `Bearer ${props.identityContext.token}`,
+            },
+          },
+          body: formDataUpload as unknown as { file: string },
+          bodySerializer: () => formDataUpload as unknown as string,
         })
-        newImages.push(base64)
-      } catch (error) {
-        console.error("Failed to read image:", error)
+
+        if (error || !data) {
+          throw new Error("Upload failed")
+        }
+
+        newImages.push(data.url)
+      }
+      catch (error) {
+        console.error("Failed to upload image:", error)
+        alert(`图片 ${file.name} 上传失败`)
       }
     }
 
     setFormData({
       ...formData,
-      images: [...(formData.images || []), ...newImages]
+      images: [...(formData.images || []), ...newImages],
     })
 
     // Reset file input
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      fileInputRef.current.value = ""
     }
   }
 
@@ -145,7 +159,7 @@ const EventActionCommitForm = (props: {
         <div className="text-sm font-bold">
           维修图片
           <span className="text-xs font-normal text-default-400 ml-2">
-            (可选，最多5张，每张最大5MB)
+            (可选，最多5张，每张最大10MB)
           </span>
         </div>
         <div className="flex flex-col gap-2">
@@ -155,7 +169,7 @@ const EventActionCommitForm = (props: {
             accept="image/*"
             multiple
             onChange={handleImageSelect}
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
           />
           <Button
             onPress={() => fileInputRef.current?.click()}
@@ -164,7 +178,7 @@ const EventActionCommitForm = (props: {
             className="w-full"
             isDisabled={(formData.images?.length || 0) >= 5}
           >
-            {(formData.images?.length || 0) >= 5 ? '已达到最大数量' : '选择图片'}
+            {(formData.images?.length || 0) >= 5 ? "已达到最大数量" : "选择图片"}
           </Button>
 
           {formData.images && formData.images.length > 0 && (
@@ -199,10 +213,14 @@ const EventActionCommitForm = (props: {
 }
 
 export const EventActionCommit = (props: EventActionProps) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    size: string
+    description: string
+    images?: string[]
+  }>({
     size: "",
     description: "",
-    images: [] as string[],
+    images: [],
   })
 
   useEffect(() => {
@@ -228,6 +246,7 @@ export const EventActionCommit = (props: EventActionProps) => {
       body: {
         size: formData.size,
         content: formData.description,
+        images: formData.images,
       },
     })
     props.onLoading()
@@ -238,6 +257,7 @@ export const EventActionCommit = (props: EventActionProps) => {
       <EventActionCommitForm
         formData={formData}
         setFormData={setFormData}
+        identityContext={props.identityContext}
       >
       </EventActionCommitForm>
       <Button
@@ -252,10 +272,14 @@ export const EventActionCommit = (props: EventActionProps) => {
   )
 }
 export const EventActionAlterCommit = (props: EventActionProps) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    size: string
+    description: string
+    images?: string[]
+  }>({
     size: "",
     description: "",
-    images: [] as string[],
+    images: [],
   })
   useEffect(() => {
     const description = props.event?.logs?.findLast(v => v.action == "commit" || v.action == "alterCommit")?.description
@@ -280,6 +304,7 @@ export const EventActionAlterCommit = (props: EventActionProps) => {
       body: {
         size: formData.size,
         content: formData.description,
+        images: formData.images,
       },
     })
     props.onLoading()
@@ -290,6 +315,7 @@ export const EventActionAlterCommit = (props: EventActionProps) => {
       <EventActionCommitForm
         formData={formData}
         setFormData={setFormData}
+        identityContext={props.identityContext}
       >
       </EventActionCommitForm>
       <Button
@@ -334,7 +360,7 @@ export const getAvailableEventActions = (event: PublicEvent, identityContext: Id
         <div className="flex flex-col">
           <Button
             isLoading={props.isLoading === action.action}
-            isDisabled={props.isLoading}
+            isDisabled={!!props.isLoading}
             color={action.color || "default"}
             variant={action.variant || "flat"}
             onPress={() => onAction(action)}
