@@ -7,6 +7,7 @@ import dayjs from "dayjs"
 import { EventStatus, UserEventAction } from "../../types/event"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
+type Event = components["schemas"]["Event"]
 type EventLog = components["schemas"]["EventLog"]
 
 function EventLogItem(props: {
@@ -102,8 +103,11 @@ const EventDetail = forwardRef<EventDetailRef, {
   onRefresh?: () => void
   action?: React.ReactNode
   children?: (event: PublicEvent) => React.ReactNode
+  token?: string
+  currentMemberId?: string
 }>((props, ref) => {
       const [event, setEvent] = useState<PublicEvent | undefined>()
+      const [eventWithContact, setEventWithContact] = useState<Event | undefined>()
 
       const fetchAndSetEvent = async (eventId: number) => {
         const { data } = await saturdayClient.GET("/events/{EventId}", {
@@ -117,12 +121,46 @@ const EventDetail = forwardRef<EventDetailRef, {
         return data
       }
 
+      const fetchContactInfo = async (eventId: number) => {
+        if (!props.token) return
+
+        try {
+          const { data } = await saturdayClient.GET("/member/events/{EventId}", {
+            params: {
+              header: {
+                Authorization: `Bearer ${props.token}`,
+              },
+              path: {
+                EventId: eventId,
+              },
+            },
+          })
+          setEventWithContact(data)
+        }
+        catch (error) {
+          console.error("Failed to fetch contact info:", error)
+        }
+      }
+
       const refresh = async () => {
         const url = new URL(window.location.href)
         const eventId = props.eventId ?? url.searchParams.get("eventId")
         console.log("refresh eventId", eventId)
         if (eventId) {
-          return await fetchAndSetEvent(eventId as unknown as number)
+          const event = await fetchAndSetEvent(eventId as unknown as number)
+
+          // Fetch contact info if user has accepted the event
+          // Show contact info if the event is in any state after acceptance (accepted, committed, closed)
+          if (event && props.token && props.currentMemberId && event.member?.memberId === props.currentMemberId) {
+            const hasAccepted = event.status === EventStatus.accepted
+              || event.status === EventStatus.committed
+              || event.status === EventStatus.closed
+            if (hasAccepted) {
+              await fetchContactInfo(eventId as unknown as number)
+            }
+          }
+
+          return event
         }
       }
 
@@ -173,6 +211,28 @@ const EventDetail = forwardRef<EventDetailRef, {
                     readOnly
                   >
                   </Input>
+                  {
+                    eventWithContact?.phone && (
+                      <Input
+                        label="联系电话"
+                        type="text"
+                        value={eventWithContact.phone || ""}
+                        readOnly
+                      >
+                      </Input>
+                    )
+                  }
+                  {
+                    eventWithContact?.qq && (
+                      <Input
+                        label="QQ"
+                        type="text"
+                        value={eventWithContact.qq || ""}
+                        readOnly
+                      >
+                      </Input>
+                    )
+                  }
                   {
                     repairDescription
                       ? (
