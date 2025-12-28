@@ -14,6 +14,7 @@ export default function TicketDetail() {
   const [loading, setLoading] = useState(true)
   const [eventId, setEventId] = useState<number | null>(null)
   const [event, setEvent] = useState<PublicEvent | null>(null)
+  const [token, setToken] = useState<string>("")
 
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
   const { isOpen: isCancelOpen, onOpen: onCancelOpen, onClose: onCancelClose } = useDisclosure()
@@ -29,6 +30,21 @@ export default function TicketDetail() {
 
     checkAuthStatus()
   }, [])
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const logtoToken = await makeLogtoClient().getAccessToken()
+        setToken(logtoToken)
+      }
+      catch (error) {
+        console.error("Error fetching token:", error)
+      }
+    }
+    if (userInfo) {
+      fetchToken()
+    }
+  }, [userInfo])
 
   const checkAuthStatus = async () => {
     try {
@@ -58,18 +74,6 @@ export default function TicketDetail() {
 
   const handleBackToHome = () => {
     window.location.href = "/repair"
-  }
-
-  const handleEdit = () => {
-    if (event) {
-      onEditOpen()
-    }
-  }
-
-  const handleCancel = () => {
-    if (event) {
-      onCancelOpen()
-    }
   }
 
   const confirmCancel = async () => {
@@ -134,74 +138,81 @@ export default function TicketDetail() {
 
       {/* Event detail content */}
       <div className="section-content">
-        <EventDetail eventId={eventId}>
+        <EventDetail
+          eventId={eventId}
+          isClientView={true}
+          token={token}
+        >
           {(eventData: PublicEvent) => {
-            // Store the event data for actions
-            if (eventData && !event) {
-              setEvent(eventData)
-            }
-
             const canModify = eventData.status !== "closed" && eventData.status !== "cancelled"
 
             return (
-              <div className="mt-6 flex flex-col gap-4">
-                {/* Client Action Buttons */}
-                {canModify && (
-                  <div className="flex gap-2">
-                    <Button
-                      color="primary"
-                      variant="flat"
-                      onPress={handleEdit}
-                    >
-                      编辑
-                    </Button>
-                    <Button
-                      color="danger"
-                      variant="flat"
-                      onPress={handleCancel}
-                    >
-                      取消预约
-                    </Button>
-                  </div>
+              <>
+                <div className="mt-6 flex flex-col gap-4">
+                  {/* Client Action Buttons */}
+                  {canModify && (
+                    <div className="flex gap-2">
+                      <Button
+                        color="primary"
+                        variant="flat"
+                        onPress={() => {
+                          setEvent(eventData)
+                          onEditOpen()
+                        }}
+                      >
+                        编辑
+                      </Button>
+                      <Button
+                        color="danger"
+                        variant="flat"
+                        onPress={() => {
+                          setEvent(eventData)
+                          onCancelOpen()
+                        }}
+                      >
+                        取消预约
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Edit Modal */}
+                {event && (
+                  <EditRepairModal
+                    isOpen={isEditOpen}
+                    onClose={onEditClose}
+                    event={event}
+                    onSaved={handleEditSaved}
+                  />
                 )}
-              </div>
+
+                {/* Cancel Confirmation Modal */}
+                <Modal isOpen={isCancelOpen} onClose={onCancelClose} size="sm">
+                  <ModalContent>
+                    <ModalHeader>确认取消维修预约</ModalHeader>
+                    <ModalBody>
+                      <p>你确定要取消这个维修预约吗？此操作无法撤销。</p>
+                      {event && (
+                        <div className="mt-2 p-2 bg-gray-50 rounded">
+                          <p className="text-sm font-medium">#{event.eventId}</p>
+                          <p className="text-sm text-gray-600 line-clamp-2">{event.problem}</p>
+                        </div>
+                      )}
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button variant="light" onPress={onCancelClose}>
+                        保留
+                      </Button>
+                      <Button color="danger" onPress={confirmCancel}>
+                        确认取消
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
+              </>
             )
           }}
         </EventDetail>
-
-        {/* Edit Modal */}
-        {event && (
-          <EditRepairModal
-            isOpen={isEditOpen}
-            onClose={onEditClose}
-            event={event}
-            onSaved={handleEditSaved}
-          />
-        )}
-
-        {/* Cancel Confirmation Modal */}
-        <Modal isOpen={isCancelOpen} onClose={onCancelClose} size="sm">
-          <ModalContent>
-            <ModalHeader>确认取消维修预约</ModalHeader>
-            <ModalBody>
-              <p>你确定要取消这个维修预约吗？此操作无法撤销。</p>
-              {event && (
-                <div className="mt-2 p-2 bg-gray-50 rounded">
-                  <p className="text-sm font-medium">#{event.eventId}</p>
-                  <p className="text-sm text-gray-600 line-clamp-2">{event.problem}</p>
-                </div>
-              )}
-            </ModalBody>
-            <ModalFooter>
-              <Button variant="light" onPress={onCancelClose}>
-                保留
-              </Button>
-              <Button color="danger" onPress={confirmCancel}>
-                确认取消
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
       </div>
     </div>
   )

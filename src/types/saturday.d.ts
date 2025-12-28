@@ -448,9 +448,9 @@ export interface paths {
     get?: never
     put?: never
     /**
-     * Upload image file
-     * @description Upload an image file (JPEG, PNG, WebP). Max size: 10MB. Use 'file' as the field name in multipart form.
-     */
+         * Upload image file
+         * @description Upload an image file (JPEG, PNG, WebP). Max size: 10MB. Use 'file' as the field name in multipart form.
+         */
     post: operations["upload-file"]
     delete?: never
     options?: never
@@ -464,10 +464,10 @@ export interface components {
   schemas: {
     "ActivateMemberRequest": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/ActivateMemberRequest.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/ActivateMemberRequest.json
+             */
       readonly $schema?: string
       MemberId: string
       alias: string
@@ -478,10 +478,10 @@ export interface components {
     }
     "AlterCommitEventInputBody": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/AlterCommitEventInputBody.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/AlterCommitEventInputBody.json
+             */
       readonly $schema?: string
       content: string
       images?: string[] | null
@@ -489,19 +489,19 @@ export interface components {
     }
     "Bind-member-logto-idRequest": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/Bind-member-logto-idRequest.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/Bind-member-logto-idRequest.json
+             */
       readonly $schema?: string
       password: string
     }
     "ClientTokenResponse": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/ClientTokenResponse.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/ClientTokenResponse.json
+             */
       readonly $schema?: string
       /** Format: int64 */
       clientId: number
@@ -513,10 +513,10 @@ export interface components {
     }
     "CommitEventInputBody": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/CommitEventInputBody.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/CommitEventInputBody.json
+             */
       readonly $schema?: string
       content: string
       images?: string[] | null
@@ -524,28 +524,28 @@ export interface components {
     }
     "Create-token-via-wechatRequest": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/Create-token-via-wechatRequest.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/Create-token-via-wechatRequest.json
+             */
       readonly $schema?: string
       code: string
     }
     "Create-tokenRequest": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/Create-tokenRequest.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/Create-tokenRequest.json
+             */
       readonly $schema?: string
       password: string
     }
     "CreateClientEventInputBody": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/CreateClientEventInputBody.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/CreateClientEventInputBody.json
+             */
       readonly $schema?: string
       contactPreference?: string
       images?: string[] | null
@@ -556,10 +556,10 @@ export interface components {
     }
     "CreateMemberRequest": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/CreateMemberRequest.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/CreateMemberRequest.json
+             */
       readonly $schema?: string
       alias: string
       avatar: string
@@ -574,10 +574,10 @@ export interface components {
     }
     "CreateMemberTokenResponse": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/CreateMemberTokenResponse.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/CreateMemberTokenResponse.json
+             */
       readonly $schema?: string
       alias: string
       avatar: string
@@ -606,49 +606,49 @@ export interface components {
     }
     "ErrorModel": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/ErrorModel.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/ErrorModel.json
+             */
       readonly $schema?: string
       /**
-       * @description A human-readable explanation specific to this occurrence of the problem.
-       * @example Property foo is required but is missing.
-       */
+             * @description A human-readable explanation specific to this occurrence of the problem.
+             * @example Property foo is required but is missing.
+             */
       detail?: string
       /** @description Optional list of individual error details */
       errors?: components["schemas"]["ErrorDetail"][] | null
       /**
-       * Format: uri
-       * @description A URI reference that identifies the specific occurrence of the problem.
-       * @example https://example.com/error-log/abc123
-       */
+             * Format: uri
+             * @description A URI reference that identifies the specific occurrence of the problem.
+             * @example https://example.com/error-log/abc123
+             */
       instance?: string
       /**
-       * Format: int64
-       * @description HTTP status code
-       * @example 400
-       */
+             * Format: int64
+             * @description HTTP status code
+             * @example 400
+             */
       status?: number
       /**
-       * @description A short, human-readable summary of the problem type. This value should not change between occurrences of the error.
-       * @example Bad Request
-       */
+             * @description A short, human-readable summary of the problem type. This value should not change between occurrences of the error.
+             * @example Bad Request
+             */
       title?: string
       /**
-       * Format: uri
-       * @description A URI reference to human-readable documentation for the error.
-       * @default about:blank
-       * @example https://example.com/errors/example
-       */
+             * Format: uri
+             * @description A URI reference to human-readable documentation for the error.
+             * @default about:blank
+             * @example https://example.com/errors/example
+             */
       type: string
     }
     "Event": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/Event.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/Event.json
+             */
       readonly $schema?: string
       /** Format: int64 */
       clientId: number
@@ -683,10 +683,10 @@ export interface components {
     }
     "FileUploadResponse": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/FileUploadResponse.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/FileUploadResponse.json
+             */
       readonly $schema?: string
       url: string
     }
@@ -696,10 +696,10 @@ export interface components {
     }
     "Member": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/Member.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/Member.json
+             */
       readonly $schema?: string
       alias: string
       avatar: string
@@ -734,23 +734,23 @@ export interface components {
     }
     "PingResponse": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/PingResponse.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/PingResponse.json
+             */
       readonly $schema?: string
       /**
-       * @description Ping message
-       * @example ping
-       */
+             * @description Ping message
+             * @example ping
+             */
       message: string
     }
     "PublicEvent": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/PublicEvent.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/PublicEvent.json
+             */
       readonly $schema?: string
       /** Format: int64 */
       clientId: number
@@ -773,10 +773,10 @@ export interface components {
     }
     "PublicMember": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/PublicMember.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/PublicMember.json
+             */
       readonly $schema?: string
       alias: string
       avatar: string
@@ -789,10 +789,10 @@ export interface components {
     }
     "UpdateClientEventInputBody": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/UpdateClientEventInputBody.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/UpdateClientEventInputBody.json
+             */
       readonly $schema?: string
       contactPreference?: string
       images?: string[] | null
@@ -804,20 +804,20 @@ export interface components {
     }
     "UpdateMemberAvatarInputBody": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/UpdateMemberAvatarInputBody.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/UpdateMemberAvatarInputBody.json
+             */
       readonly $schema?: string
       /** @description Avatar URL */
       avatar: string
     }
     "UpdateMemberBasicRequest": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/UpdateMemberBasicRequest.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/UpdateMemberBasicRequest.json
+             */
       readonly $schema?: string
       memberId: string
       name: string
@@ -826,10 +826,10 @@ export interface components {
     }
     "UpdateMemberRequest": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/UpdateMemberRequest.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/UpdateMemberRequest.json
+             */
       readonly $schema?: string
       MemberId: string
       alias: string
@@ -841,10 +841,10 @@ export interface components {
     }
     "UpdateNotificationPreferencesInputBody": {
       /**
-       * Format: uri
-       * @description A URL to the JSON Schema for this object.
-       * @example https://api.nbtca.space/schemas/UpdateNotificationPreferencesInputBody.json
-       */
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example https://api.nbtca.space/schemas/UpdateNotificationPreferencesInputBody.json
+             */
       readonly $schema?: string
       preferences: components["schemas"]["Item"][] | null
     }
@@ -902,14 +902,14 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Offset
-         * @example 0
-         */
+                 * @description Offset
+                 * @example 0
+                 */
         offset?: number
         /**
-         * @description Limit
-         * @example 50
-         */
+                 * @description Limit
+                 * @example 50
+                 */
         limit?: number
         status?: string
         order?: string
@@ -957,9 +957,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Event ID
-         * @example 123
-         */
+                 * @description Event ID
+                 * @example 123
+                 */
         EventId: number
       }
       cookie?: never
@@ -1000,9 +1000,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Event ID
-         * @example 123
-         */
+                 * @description Event ID
+                 * @example 123
+                 */
         EventId: number
       }
       cookie?: never
@@ -1043,9 +1043,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Event ID
-         * @example 123
-         */
+                 * @description Event ID
+                 * @example 123
+                 */
         EventId: number
       }
       cookie?: never
@@ -1160,14 +1160,14 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Offset
-         * @example 0
-         */
+                 * @description Offset
+                 * @example 0
+                 */
         offset?: number
         /**
-         * @description Limit
-         * @example 50
-         */
+                 * @description Limit
+                 * @example 50
+                 */
         limit?: number
         status?: string[] | null
         order?: string
@@ -1283,9 +1283,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Event ID
-         * @example 123
-         */
+                 * @description Event ID
+                 * @example 123
+                 */
         EventId: number
       }
       cookie?: never
@@ -1326,9 +1326,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Event ID
-         * @example 123
-         */
+                 * @description Event ID
+                 * @example 123
+                 */
         EventId: number
       }
       cookie?: never
@@ -1524,14 +1524,14 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Offset
-         * @example 0
-         */
+                 * @description Offset
+                 * @example 0
+                 */
         offset?: number
         /**
-         * @description Limit
-         * @example 50
-         */
+                 * @description Limit
+                 * @example 50
+                 */
         limit?: number
         status?: string
         order?: string
@@ -1579,9 +1579,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Event ID
-         * @example 123
-         */
+                 * @description Event ID
+                 * @example 123
+                 */
         EventId: number
       }
       cookie?: never
@@ -1622,9 +1622,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Event ID
-         * @example 123
-         */
+                 * @description Event ID
+                 * @example 123
+                 */
         EventId: number
       }
       cookie?: never
@@ -1665,9 +1665,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Event ID
-         * @example 123
-         */
+                 * @description Event ID
+                 * @example 123
+                 */
         EventId: number
       }
       cookie?: never
@@ -1708,9 +1708,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Event ID
-         * @example 123
-         */
+                 * @description Event ID
+                 * @example 123
+                 */
         EventId: number
       }
       cookie?: never
@@ -1755,9 +1755,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Event ID
-         * @example 123
-         */
+                 * @description Event ID
+                 * @example 123
+                 */
         EventId: number
       }
       cookie?: never
@@ -1911,14 +1911,14 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Offset
-         * @example 0
-         */
+                 * @description Offset
+                 * @example 0
+                 */
         offset?: number
         /**
-         * @description Limit
-         * @example 50
-         */
+                 * @description Limit
+                 * @example 50
+                 */
         limit?: number
       }
       header?: never
@@ -1997,14 +1997,14 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Offset
-         * @example 0
-         */
+                 * @description Offset
+                 * @example 0
+                 */
         offset?: number
         /**
-         * @description Limit
-         * @example 50
-         */
+                 * @description Limit
+                 * @example 50
+                 */
         limit?: number
       }
       header?: {
@@ -2047,9 +2047,9 @@ export interface operations {
       header?: never
       path: {
         /**
-         * @description Name to greet
-         * @example 2333333333
-         */
+                 * @description Name to greet
+                 * @example 2333333333
+                 */
         MemberId: string
       }
       cookie?: never
@@ -2090,9 +2090,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Member ID
-         * @example 2333333333
-         */
+                 * @description Member ID
+                 * @example 2333333333
+                 */
         MemberId: string
       }
       cookie?: never
@@ -2137,9 +2137,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Member ID
-         * @example 2333333333
-         */
+                 * @description Member ID
+                 * @example 2333333333
+                 */
         MemberId: string
       }
       cookie?: never
@@ -2183,9 +2183,9 @@ export interface operations {
       }
       path: {
         /**
-         * @description Member Id
-         * @example 2333333333
-         */
+                 * @description Member Id
+                 * @example 2333333333
+                 */
         MemberId: string
       }
       cookie?: never
@@ -2227,9 +2227,9 @@ export interface operations {
       header?: never
       path: {
         /**
-         * @description Member Id
-         * @example 2333333333
-         */
+                 * @description Member Id
+                 * @example 2333333333
+                 */
         MemberId: string
       }
       cookie?: never
@@ -2313,9 +2313,9 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /**
-           * Format: binary
-           * @description Image file to upload (max 10MB)
-           */
+                     * Format: binary
+                     * @description Image file to upload (max 10MB)
+                     */
           file: string
         }
       }
