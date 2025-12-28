@@ -5,6 +5,7 @@ import { Textarea, Input, Chip, Skeleton } from "@heroui/react"
 import type { PublicMember } from "../../store/member"
 import dayjs from "dayjs"
 import { EventStatus, UserEventAction } from "../../types/event"
+import ImageGallery from "../../components/ImageGallery"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 type Event = components["schemas"]["Event"]
@@ -15,32 +16,34 @@ function EventLogItem(props: {
   actor?: PublicMember
 }) {
   return (
-    <div className="py-1 flex items-center">
-      <div>
-        <div className="flex items-center">
-          <div className="mr-4">
-            {
-              UserEventAction.find(v => v.action === props.eventLog.action)?.text || props.eventLog.action
-            }
-          </div>
-          <div className="flex items-center">
-            {
-              props.actor?.avatar
-                ? <img src={props.actor?.avatar} alt="actor avatar" className="w-6 aspect-square rounded-full" />
-                : <></>
-            }
-            <span className="text-gray-600 ml-2">
-              {
-                props.actor ? props.actor.alias : ""
-              }
-            </span>
-          </div>
+    <div className="py-1 flex flex-col gap-2">
+      <div className="flex items-center">
+        <div className="mr-4">
+          {
+            UserEventAction.find(v => v.action === props.eventLog.action)?.text || props.eventLog.action
+          }
         </div>
-        <div className="flex flex-col gap-2 items-center mt-1 text-gray-600">
-          {dayjs(props.eventLog.gmtCreate).format("YYYY-MM-DD HH:mm")}
+        <div className="flex items-center">
+          {
+            props.actor?.avatar
+              ? <img src={props.actor?.avatar} alt="actor avatar" className="w-6 aspect-square rounded-full" />
+              : <></>
+          }
+          <span className="text-gray-600 ml-2">
+            {
+              props.actor ? props.actor.alias : ""
+            }
+          </span>
         </div>
       </div>
-
+      <div className="text-gray-600 text-sm">
+        {dayjs(props.eventLog.gmtCreate).format("YYYY-MM-DD HH:mm")}
+      </div>
+      {props.eventLog.images && props.eventLog.images.length > 0 && (
+        <div className="mt-2">
+          <ImageGallery images={props.eventLog.images} columns={2} />
+        </div>
+      )}
     </div>
   )
 }
@@ -105,11 +108,43 @@ const EventDetail = forwardRef<EventDetailRef, {
   children?: (event: PublicEvent) => React.ReactNode
   token?: string
   currentMemberId?: string
+  isClientView?: boolean
 }>((props, ref) => {
       const [event, setEvent] = useState<PublicEvent | undefined>()
       const [eventWithContact, setEventWithContact] = useState<Event | undefined>()
 
       const fetchAndSetEvent = async (eventId: number) => {
+        console.log("fetchAndSetEvent:", { isClientView: props.isClientView, hasToken: !!props.token, eventId })
+
+        // If client view, fetch client event with full details
+        if (props.isClientView && props.token) {
+          try {
+            console.log("Fetching client event from /client/events/{EventId}")
+            const { data } = await saturdayClient.GET("/client/events/{EventId}", {
+              params: {
+                header: {
+                  Authorization: `Bearer ${props.token}`,
+                },
+                path: {
+                  EventId: eventId,
+                },
+              },
+            })
+            // Client event API returns Event type with full details
+            if (data) {
+              console.log("Client event data received:", { hasImages: !!data.images, imageCount: data.images?.length })
+              setEvent(data as unknown as PublicEvent)
+              setEventWithContact(data)
+            }
+            return data as unknown as PublicEvent
+          }
+          catch (error) {
+            console.error("Failed to fetch client event:", error)
+          }
+        }
+
+        // Otherwise fetch public event
+        console.log("Fetching public event from /events/{EventId}")
         const { data } = await saturdayClient.GET("/events/{EventId}", {
           params: {
             path: {
@@ -117,6 +152,7 @@ const EventDetail = forwardRef<EventDetailRef, {
             },
           },
         })
+        console.log("Public event data received:", { hasImages: !!data?.images, imageCount: data?.images?.length })
         setEvent(data)
         return data
       }
@@ -168,10 +204,10 @@ const EventDetail = forwardRef<EventDetailRef, {
         return event?.logs.findLast(v => v.action == "commit" || v.action == "alterCommit")?.description
       }, [event])
 
-      // 初次加载
+      // 初次加载 and re-fetch when token changes (for client view)
       useEffect(() => {
         refresh()
-      }, [])
+      }, [props.token, props.isClientView])
 
       // 暴露给父组件的方法
       useImperativeHandle(ref, () => ({
@@ -211,6 +247,16 @@ const EventDetail = forwardRef<EventDetailRef, {
                     readOnly
                   >
                   </Input>
+                  {
+                    event.images && event.images.length > 0 && (
+                      <div className="flex flex-col gap-2">
+                        <div className="text-sm font-medium text-gray-700">
+                          问题图片
+                        </div>
+                        <ImageGallery images={event.images} />
+                      </div>
+                    )
+                  }
                   {
                     eventWithContact?.phone && (
                       <Input
