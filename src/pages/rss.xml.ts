@@ -2,12 +2,6 @@ import rss from "@astrojs/rss"
 import type { APIContext } from "astro"
 import { SITE_NAME, SITE_DESCRIPTION } from "../consts"
 
-type CoverObject = {
-  url: string
-  square?: string
-  alt?: string
-}
-
 type AuthorObject = {
   name: string
   url?: string
@@ -20,12 +14,11 @@ type PostFrontmatter = {
   description?: string
   author?: string | AuthorObject
   tags?: string[]
-  cover?: string | CoverObject
 }
 
 type MarkdownModule = {
   frontmatter: PostFrontmatter
-  url: string
+  url: string | undefined
 }
 
 function resolveAuthorName(author: PostFrontmatter["author"]): string {
@@ -40,12 +33,12 @@ export async function GET(context: APIContext) {
   })
 
   const items = Object.values(postModules)
-    .filter(post => post.frontmatter.pubDate)
+    .filter(post => post.frontmatter.pubDate && post.url)
     .map(post => ({
       title: post.frontmatter.title,
-      description: post.frontmatter.description ?? "",
+      description: (post.frontmatter.description ?? "").trim(),
       pubDate: new Date(post.frontmatter.pubDate),
-      link: post.url ?? "",
+      link: post.url as string,
       author: resolveAuthorName(post.frontmatter.author),
       categories: post.frontmatter.tags ?? [],
     }))
