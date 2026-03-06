@@ -14,13 +14,41 @@ type ScheduleEvent = {
   end: Date
   summary: string
   description: string
+  location?: string
+  url?: string
   recurrenceId?: string
 }
+
+type EventTextSegment = {
+  type: "text"
+  value: string
+} | {
+  type: "link"
+  value: string
+  href: string
+}
+
+const URL_MATCHER = /\b(?:https?:\/\/|www\.)[^\s<>"']+/gi
+const TRAILING_URL_PUNCTUATION = /[),.:;!?]+$/
 
 const parseCal = async (): Promise<ICAL.Component> => {
   const res = await fetch(CA_PUBLIC_ICAL_URL).then(res => res.text())
   const jcalData = ICAL.parse(res)
   return new ICAL.Component(jcalData)
+}
+
+const toOptionalString = (value: unknown): string | undefined => {
+  if (typeof value === "string") {
+    const trimmed = value.trim()
+    return trimmed || undefined
+  }
+
+  if (value && typeof value === "object" && "toString" in value && typeof value.toString === "function") {
+    const stringified = value.toString().trim()
+    return stringified || undefined
+  }
+
+  return undefined
 }
 
 const extractScheduleEventsInRange = (
@@ -39,6 +67,8 @@ const extractScheduleEventsInRange = (
     if (recurrenceId) {
       const uid = vevent.getFirstPropertyValue("uid")
       const event = new ICAL.Event(vevent)
+      const location = toOptionalString(vevent.getFirstPropertyValue("location"))
+      const url = toOptionalString(vevent.getFirstPropertyValue("url"))
 
       // Check if exception is in range
       if (event.startDate.compare(rangeEnd) <= 0 && event.endDate.compare(rangeStart) >= 0) {
@@ -47,6 +77,8 @@ const extractScheduleEventsInRange = (
           end: event.endDate.toJSDate(),
           summary: event.summary,
           description: event.description,
+          location,
+          url,
           recurrenceId: recurrenceId.toString(),
         })
       }
@@ -64,6 +96,8 @@ const extractScheduleEventsInRange = (
     .filter(vevent => !vevent.getFirstPropertyValue("recurrence-id"))
     .flatMap<ScheduleEvent>((vevent) => {
       const event = new ICAL.Event(vevent)
+      const location = toOptionalString(vevent.getFirstPropertyValue("location"))
+      const url = toOptionalString(vevent.getFirstPropertyValue("url"))
       if (!event.isRecurring()) {
         if (event.startDate.compare(rangeEnd) > 0 || event.endDate.compare(rangeStart) < 0) return []
         return [{
@@ -71,11 +105,13 @@ const extractScheduleEventsInRange = (
           end: event.endDate.toJSDate(),
           summary: event.summary,
           description: event.description,
+          location,
+          url,
           recurrenceId: undefined,
         }]
       }
       const eventExceptions = exceptions.get(event.uid) || new Set()
-      return expandEventOccurrences(event, rangeStart, rangeEnd, eventExceptions)
+      return expandEventOccurrences(event, rangeStart, rangeEnd, eventExceptions, location, url)
     })
 
   return [...regularEvents, ...exceptionEvents]
@@ -87,6 +123,8 @@ const expandEventOccurrences = (
   rangeStart: ICAL.Time,
   rangeEnd: ICAL.Time,
   exceptions?: Set<string>,
+  location?: string,
+  url?: string,
 ): ScheduleEvent[] => {
   const occurrences: ScheduleEvent[] = []
   const iterator = event.iterator()
@@ -105,6 +143,8 @@ const expandEventOccurrences = (
       end: details.endDate.toJSDate(),
       summary: event.summary,
       description: event.description,
+      location,
+      url,
       recurrenceId: next.toString(),
     })
   }
@@ -118,6 +158,68 @@ const formatTimePair = (s: Date, e: Date): string => {
     return `${start.format("HH:mm")} - ${end.format("HH:mm")}`
   }
   return `${start.format("MM.DD")} - ${end.format("MM.DD")}`
+}
+
+const normalizeUrl = (value: string): string => {
+  return value.startsWith("www.") ? `https://${value}` : value
+}
+
+const toEventTextSegments = (value: string): EventTextSegment[] => {
+  const segments: EventTextSegment[] = []
+  let index = 0
+  URL_MATCHER.lastIndex = 0
+
+  let match: RegExpExecArray | null = null
+  while ((match = URL_MATCHER.exec(value)) !== null) {
+    const raw = match[0]
+    const linkText = raw.replace(TRAILING_URL_PUNCTUATION, "")
+    const trailingText = raw.slice(linkText.length)
+
+    if (match.index > index) {
+      segments.push({ type: "text", value: value.slice(index, match.index) })
+    }
+
+    if (linkText) {
+      segments.push({
+        type: "link",
+        value: linkText,
+        href: normalizeUrl(linkText),
+      })
+    }
+
+    if (trailingText) {
+      segments.push({ type: "text", value: trailingText })
+    }
+
+    index = match.index + raw.length
+  }
+
+  if (index < value.length) {
+    segments.push({ type: "text", value: value.slice(index) })
+  }
+
+  return segments.length > 0 ? segments : [{ type: "text", value }]
+}
+
+const renderTextWithLinks = (value: string, keyPrefix: string) => {
+  return toEventTextSegments(value).map((segment, index) => {
+    const key = `${keyPrefix}-${index}`
+    if (segment.type === "link") {
+      return (
+        <a
+          key={key}
+          href={segment.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="break-all text-blue-600 underline decoration-blue-500 underline-offset-2 hover:text-blue-700"
+        >
+          {segment.value}
+        </a>
+      )
+    }
+
+    return <span key={key}>{segment.value}</span>
+  })
 }
 
 export default function Schedule() {
@@ -171,12 +273,12 @@ export default function Schedule() {
       grouped.get(dateKey)!.push(event)
     })
 
-    // 可选：对每个日期内部事件排序（按开始时间升序）
+    // Optional: sort events for each date by start time.
     for (const events of grouped.values()) {
       events.sort((a, b) => a.start.getTime() - b.start.getTime())
     }
 
-    // 可选：按照日期从早到晚排序
+    // Optional: sort dates from earliest to latest.
     return Array.from(grouped.entries()).sort(([a], [b]) => a.localeCompare(b))
   }, [scheduledEvents])
 
@@ -302,29 +404,48 @@ export default function Schedule() {
                     <span className="text-lg mr-1"> { dayjs(date).format("MM.DD") } </span>
                     <span className="text-base"> { dayjs(date).format("ddd") } </span>
                   </div>
-                  {events.map((event, index) => (
-                    <div key={index} className="p-4 mb-2 border rounded-lg ">
-                      <div className="flex items-center gap-1">
-                        <div className="text-lg sm:text-xl font-semibold">{event.summary}</div>
-                        {event.recurrenceId && (
-                        // <span className="text-sm text-blue-500 border border-blue-500 px-1 rounded">重复</span>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4 text-gray-500">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                          </svg>
+                  {events.map((event, index) => {
+                    const shouldRenderEventUrl = Boolean(
+                      event.url
+                      && !event.description.includes(event.url)
+                      && !event.location?.includes(event.url),
+                    )
 
-                        )}
+                    return (
+                      <div key={index} className="p-4 mb-2 border rounded-lg ">
+                        <div className="flex items-center gap-1">
+                          <div className="text-lg sm:text-xl font-semibold">{event.summary}</div>
+                          {event.recurrenceId && (
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4 text-gray-500">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className="text-sm text-gray-600">{formatTimePair(event.start, event.end)}</span>
+                        {
+                          event.location && (
+                            <p className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">
+                              {renderTextWithLinks(event.location, `${date}-${index}-location`)}
+                            </p>
+                          )
+                        }
+                        {
+                          shouldRenderEventUrl && (
+                            <p className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">
+                              {renderTextWithLinks(event.url!, `${date}-${index}-event-url`)}
+                            </p>
+                          )
+                        }
+                        {
+                          event.description && (
+                            <p className="mt-2 whitespace-pre-wrap">
+                              {renderTextWithLinks(event.description, `${date}-${index}-description`)}
+                            </p>
+                          )
+                        }
                       </div>
-                      <span className="text-sm text-gray-600">{formatTimePair(event.start, event.end)}</span>
-                      {
-                        event.description && (
-                          <div
-                            className="mt-2 whitespace-pre-wrap"
-                            dangerouslySetInnerHTML={{ __html: event.description }}
-                          />
-                        )
-                      }
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               ))
             }
