@@ -6,6 +6,12 @@ export const saturdayApiBaseUrl = import.meta.env.PROD ? "https://api.nbtca.spac
 
 export const saturdayClient = createClient<saturdayPaths>({
   baseUrl: saturdayApiBaseUrl,
+  querySerializer: {
+    array: {
+      style: "form",
+      explode: false,
+    },
+  },
 })
 
 export const activeClient = new ApiClient({

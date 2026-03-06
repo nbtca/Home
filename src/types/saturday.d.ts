@@ -298,6 +298,24 @@ export interface paths {
     patch: operations["alter-commit-event"]
     trace?: never
   }
+  "/member/notification-preferences": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get member notification preferences */
+    get: operations["get-notification-preferences"]
+    /** Update member notification preferences */
+    put: operations["update-notification-preferences"]
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/member/token/logto": {
     parameters: {
       query?: never
@@ -547,6 +565,7 @@ export interface components {
       logtoId: string
       memberId: string
       name: string
+      notificationPreferences: components["schemas"]["NotificationPreferences"]
       phone: string
       profile: string
       qq: string
@@ -637,6 +656,10 @@ export interface components {
       logId: number
       memberId: string
     }
+    "Item": {
+      enabled: boolean
+      notificationType: string
+    }
     "Member": {
       /**
        * Format: uri
@@ -653,11 +676,22 @@ export interface components {
       logtoId: string
       memberId: string
       name: string
+      notificationPreferences: components["schemas"]["NotificationPreferences"]
       phone: string
       profile: string
       qq: string
       role: string
       section: string
+    }
+    "NotificationPreferenceItem": {
+      description: string
+      enabled: boolean
+      notificationType: string
+    }
+    "NotificationPreferences": {
+      event_assigned_to_me: boolean
+      event_status_changed: boolean
+      new_event_created: boolean
     }
     "NullInt64": {
       /** Format: int64 */
@@ -768,6 +802,15 @@ export interface components {
       phone: string
       profile: string
       qq: string
+    }
+    "UpdateNotificationPreferencesInputBody": {
+      /**
+       * Format: uri
+       * @description A URL to the JSON Schema for this object.
+       * @example https://api.nbtca.space/schemas/UpdateNotificationPreferencesInputBody.json
+       */
+      readonly $schema?: string
+      preferences: components["schemas"]["Item"][] | null
     }
   }
   responses: never
@@ -1701,6 +1744,84 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "get-notification-preferences": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["NotificationPreferenceItem"][] | null
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "update-notification-preferences": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateNotificationPreferencesInputBody"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": string
         }
       }
       /** @description Error */

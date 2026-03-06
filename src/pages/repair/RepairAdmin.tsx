@@ -34,6 +34,7 @@ import type { PublicMember } from "../../store/member"
 import type { UserInfoResponse } from "@logto/browser"
 import { getAvailableEventActions, type EventAction, type IdentityContext } from "./EventAction"
 import { ExportExcelModal } from "./ExportEventDialog"
+import NotificationPreferences from "./NotificationPreferences"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 
@@ -145,7 +146,12 @@ function TicketDetailDrawer(props: {
           {isLoading && <span className="text-sm text-gray-500">{isLoading}</span>}
         </DrawerHeader>
         <DrawerBody className="px-4 sm:px-6">
-          <EventDetail ref={eventDetailRef} eventId={props.event?.eventId}>
+          <EventDetail
+            ref={eventDetailRef}
+            eventId={props.event?.eventId}
+            token={props.identity?.token}
+            currentMemberId={props.identity?.member?.memberId}
+          >
             {
               event => (
                 <div className="mb-8 sm:mb-12 flex flex-col gap-3 sm:gap-2">
@@ -188,16 +194,32 @@ export const validateRepairRole = (roles: string[]) => {
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true)
-  const [page, setPage] = useState(1)
+
+  // Initialize state from URL query params
+  const getInitialPage = () => {
+    const params = new URLSearchParams(window.location.search)
+    const pageParam = params.get("page")
+    return pageParam ? parseInt(pageParam, 10) : 1
+  }
+
+  const getInitialStatusFilter = () => {
+    const params = new URLSearchParams(window.location.search)
+    const statusParam = params.get("status")
+    if (statusParam) {
+      return statusParam.split(",").filter(Boolean)
+    }
+    return UserEventStatus.filter(v => v.status !== EventStatus.cancelled).map(v => v.status)
+  }
+
+  const [page, setPage] = useState(getInitialPage())
   const rowsPerPage = 10
   const [totalCount, setTotalCount] = useState(0)
-  const [statusFilter, setStatusFilter] = useState<string[]>(
-    UserEventStatus.filter(v => v.status !== EventStatus.cancelled).map(v => v.status),
-  )
+  const [statusFilter, setStatusFilter] = useState<string[]>(getInitialStatusFilter())
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [userInfo, setUserInfo] = useState<UserInfoResponse>()
   const [currentMember, setCurrentMember] = useState<PublicMember>()
   const [token, setToken] = useState<string>()
+  const [errorMessage, setErrorMessage] = useState<string>("")
 
   useEffect(() => {
     const check = async () => {
@@ -228,6 +250,42 @@ export default function App() {
     }
     check()
   }, [])
+
+  // Handle eventid query parameter to auto-open event detail
+  useEffect(() => {
+    const loadEventFromUrl = async () => {
+      if (!token) return // Wait for authentication
+
+      const params = new URLSearchParams(window.location.search)
+      const eventId = params.get("eventid")
+
+      if (eventId) {
+        try {
+          const { data, error } = await saturdayClient.GET("/events/{eventId}", {
+            params: {
+              path: {
+                eventId: eventId,
+              },
+            },
+          })
+
+          if (error || !data) {
+            setErrorMessage(`无法找到工单 #${eventId}，该工单可能不存在或已被删除`)
+          }
+          else {
+            setActiveEvent(data as PublicEvent)
+            onOpen()
+          }
+        }
+        catch (err) {
+          console.log("Error loading event from URL:", err)
+          setErrorMessage(`加载工单 #${eventId} 时出错`)
+        }
+      }
+    }
+
+    loadEventFromUrl()
+  }, [token])
 
   const list = useAsyncList<PublicEvent>({
     async load() {
@@ -281,6 +339,20 @@ export default function App() {
   const pages = useMemo(() => {
     return Math.ceil(totalCount / rowsPerPage)
   }, [totalCount, rowsPerPage])
+
+  // Update URL query params when page or statusFilter changes
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    params.set("page", page.toString())
+    if (statusFilter.length > 0) {
+      params.set("status", statusFilter.join(","))
+    }
+    else {
+      params.delete("status")
+    }
+    const newUrl = `${window.location.pathname}?${params.toString()}`
+    window.history.replaceState({}, "", newUrl)
+  }, [page, statusFilter])
 
   useEffect(() => {
     setPage(1)
@@ -341,50 +413,72 @@ export default function App() {
   const onOpenEventDetail = (event: PublicEvent) => {
     setActiveEvent(event)
     onOpen()
+
+    // Update URL with eventid
+    const params = new URLSearchParams(window.location.search)
+    params.set("eventid", event.eventId)
+    const newUrl = `${window.location.pathname}?${params.toString()}`
+    window.history.replaceState({}, "", newUrl)
+  }
+
+  const handleDrawerOpenChange = (isOpen: boolean) => {
+    onOpenChange()
+
+    // Remove eventid from URL when drawer is closed
+    if (!isOpen) {
+      const params = new URLSearchParams(window.location.search)
+      params.delete("eventid")
+      const newUrl = `${window.location.pathname}?${params.toString()}`
+      window.history.replaceState({}, "", newUrl)
+    }
   }
 
   const MobileEventCard = ({ event }: { event: PublicEvent }) => (
-    <button className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm" onClick={() => onOpenEventDetail(event)}>
-
-      <div className="mb-3 flex gap-2 items-center justify-between">
-        <div className="text font-medium text-gray-900 line-clamp-2">
-          {event.problem}
-          <span className="text font-medium text-gray-400 ml-1">#{event.eventId}</span>
+    <button className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col gap-1 text-start" onClick={() => onOpenEventDetail(event)}>
+      <div className="flex justify-between">
+        <div className="flex">
+          <span className="text font-medium text-gray-400 ml-1">#{event.eventId} </span>
         </div>
-        <div className="">
+        <div className="flex items-center">
           <EventStatusChip status={event.status} size="sm" />
         </div>
       </div>
+      <div className="text font-medium text-gray-900 line-clamp-2 h-12">
+        {event.problem}
+      </div>
 
-      <div className="h-18">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <div className="">
+      <div className="flex items-center justify-between gap-4 text-sm text-gray-600">
+        <div className="grow flex items-center gap-2 min-w-0">
+
+          <div className="flex items-center gap-1 text-nowrap">
+            <svg className="fill-gray-600" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" /></svg>
             { dayjs(event.gmtCreate).format("YYYY-MM-DD HH:mm") }
           </div>
 
           {event.model && (
-            <div>
-              {event.model}
+            <div className="flex items-center gap-1 grow min-w-0">
+              <svg className="fill-gray-600 shrink-0" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M40-120v-80h880v80H40Zm120-120q-33 0-56.5-23.5T80-320v-440q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v440q0 33-23.5 56.5T800-240H160Zm0-80h640v-440H160v440Zm0 0v-440 440Z" /></svg>
+
+              <span className="truncate block min-w-0">
+                {event.model}
+              </span>
             </div>
           )}
 
-          <div>
-            { event.size && <Chip size="sm">size:{event.size}</Chip>}
-          </div>
-          {event.member && (
-            <div className="flex items-center gap-2 ">
-              <User
-                avatarProps={{ radius: "full", src: event.member.avatar, size: "sm" }}
-                name=""
-                classNames={{
-                  base: "justify-start",
-                  name: "text-sm",
-                  description: "text-xs",
-                }}
-              />
-            </div>
-          )}
         </div>
+        {event.member && (
+          <div className="flex items-center gap-2 ">
+            <User
+              avatarProps={{ radius: "full", src: event.member.avatar, size: "sm" }}
+              name=""
+              classNames={{
+                base: "justify-start",
+                name: "text-sm",
+                description: "text-xs",
+              }}
+            />
+          </div>
+        )}
       </div>
     </button>
   )
@@ -445,11 +539,12 @@ export default function App() {
     <section className="box-border max-w-full px-4 sm:px-6 lg:max-w-[1024px] lg:px-[22px] mx-auto mb-16 sm:mb-24">
       <div className="mt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="text-xl sm:text-2xl font-bold">维修管理</div>
-        {
-          userInfo?.roles?.find(v => v.toLowerCase() == "repair admin")
-            ? <div className="w-full sm:w-auto"><ExportExcelModal></ExportExcelModal></div>
-            : <></>
-        }
+        <div className="flex gap-2 w-full sm:w-auto">
+          {token && <NotificationPreferences token={token} />}
+          {userInfo?.roles?.find(v => v.toLowerCase() == "repair admin") && (
+            <ExportExcelModal />
+          )}
+        </div>
       </div>
       <div className="my-8 flex flex-col gap-4">
         {/* Mobile Cards Layout */}
@@ -539,14 +634,36 @@ export default function App() {
           }
         }
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        onClose={() => {
-          onOpenChange()
-        }}
+        onOpenChange={handleDrawerOpenChange}
+        onClose={() => handleDrawerOpenChange(false)}
         onDelete={() => {}}
         onEdit={() => {}}
       >
       </TicketDetailDrawer>
+
+      {/* Error Message Display */}
+      {errorMessage && (
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 max-w-md w-full mx-4">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-lg">
+            <div className="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-red-800">{errorMessage}</p>
+              </div>
+              <button
+                onClick={() => setErrorMessage("")}
+                className="text-red-400 hover:text-red-600 flex-shrink-0"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
