@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"
+import HomepageLayout from "../layouts/HomepageLayout.astro"
 import MoreTile from "../layouts/MoreTile.astro"
 
 const allPosts = await Astro.glob("../pages/posts/*.md")
@@ -21,7 +21,7 @@ Blogs.sort(
 )
 ---
 
-<BaseLayout>
+<HomepageLayout>
 
   <!-- ═══════════════════════════════════════════════════════
     1. HERO  —  min-h-screen, bg-black, image at opacity-60
@@ -180,64 +180,7 @@ Blogs.sort(
       }
     })
   </script>
-</BaseLayout>
-
-<!-- ═══════════════════════════════════════════════════════
-  HOMEPAGE-ONLY NAV OVERRIDE
-  <style is:global> is scoped to this page's <head> only in Astro.
-  Makes the existing HeroUI navbar fixed + dark + transparent.
-═══════════════════════════════════════════════════════ -->
-<style is:global>
-  /* Fix outer nav wrapper */
-  nav.nav {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 50 !important;
-    background: rgba(0, 0, 0, 0.7) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-  }
-
-  /* Kill HeroUI header's own background/shadow */
-  nav.nav [data-slot="base"],
-  nav.nav header {
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-    position: static !important; /* override HeroUI's sticky */
-  }
-
-  /* Text colors → white */
-  nav.nav .nav-item-content,
-  nav.nav span.text-lg,
-  nav.nav a {
-    color: rgba(255, 255, 255, 0.9) !important;
-  }
-  nav.nav a:hover,
-  nav.nav a:hover .nav-item-content {
-    color: #fff !important;
-  }
-  /* GitHub icon invert */
-  nav.nav img[alt="GitHub"] {
-    filter: invert(1) !important;
-  }
-  /* Mobile menu toggle */
-  nav.nav button svg,
-  nav.nav button span {
-    color: #fff !important;
-  }
-  /* Mobile menu panel */
-  nav.nav [data-slot="menu-list"] {
-    background: rgba(0, 0, 0, 0.92) !important;
-    backdrop-filter: blur(20px) !important;
-  }
-  nav.nav [data-slot="menu-list"] a {
-    color: rgba(255, 255, 255, 0.9) !important;
-  }
-</style>
+</HomepageLayout>
 
 <style>
   /* ════════════════════════════════════════════════════════
