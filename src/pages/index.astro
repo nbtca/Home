@@ -48,7 +48,7 @@ Blogs.sort(
   ═══════════════════════════════════════════════════════ -->
   <section id="repair" class="hp-fullimg">
     <div class="hp-fullimg__bg">
-      <img src="/static/images/homepage/repair.png" alt="维修日" />
+      <img src="/static/images/homepage/repair.jpg" alt="维修日" />
       <div class="hp-fullimg__grad"></div>
     </div>
     <div class="hp-fullimg__content">
@@ -103,7 +103,6 @@ Blogs.sort(
 
   <!-- ═══════════════════════════════════════════════════════
     5. MISSION  —  bg-white py-32, large statement text
-       Ref: Home.tsx lines 127-139
   ═══════════════════════════════════════════════════════ -->
   <section class="hp-mission">
     <div class="hp-mission__inner">
@@ -117,10 +116,51 @@ Blogs.sort(
   </section>
 
   <!-- ═══════════════════════════════════════════════════════
-    6. CTA  —  bg-[#004b86] py-32
-       Ref: Home.tsx lines 141-157
+    6. GALLERY  —  黑底，6张照片拼贴，展示 NBTCA 的人文面
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-gallery">
+    <div class="hp-gallery__inner">
+      <div class="hp-gallery__header">
+        <h2 class="hp-gallery__title">我们的故事</h2>
+        <p class="hp-gallery__sub">技术之外，是人与人之间真实的连接</p>
+      </div>
+      <div class="hp-gallery__grid">
+        <figure class="hp-gallery__item hp-gallery__item--featured">
+          <img src="/static/images/homepage/gallery-1.jpg" alt="探索精神" loading="lazy" />
+          <figcaption>探索精神</figcaption>
+        </figure>
+        <figure class="hp-gallery__item">
+          <img src="/static/images/homepage/gallery-2.jpg" alt="天涯共此时" loading="lazy" />
+          <figcaption>天涯共此时</figcaption>
+        </figure>
+        <figure class="hp-gallery__item">
+          <img src="/static/images/homepage/gallery-3.jpg" alt="欢迎加入" loading="lazy" />
+          <figcaption>欢迎加入</figcaption>
+        </figure>
+        <figure class="hp-gallery__item">
+          <img src="/static/images/homepage/gallery-4.jpg" alt="碰撞与启发" loading="lazy" />
+          <figcaption>碰撞与启发</figcaption>
+        </figure>
+        <figure class="hp-gallery__item">
+          <img src="/static/images/homepage/gallery-5.jpg" alt="专注" loading="lazy" />
+          <figcaption>专注</figcaption>
+        </figure>
+        <figure class="hp-gallery__item hp-gallery__item--wide">
+          <img src="/static/images/homepage/gallery-6.jpg" alt="共同决策" loading="lazy" />
+          <figcaption>共同决策</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+    7. CTA  —  欢迎聚会照片背景，深蓝遮罩
   ═══════════════════════════════════════════════════════ -->
   <section class="hp-cta">
+    <div class="hp-cta__bg">
+      <img src="/static/images/homepage/welcome.jpg" alt="" />
+      <div class="hp-cta__overlay"></div>
+    </div>
     <div class="hp-cta__inner">
       <h2 class="hp-cta__title">准备好加入了吗？</h2>
       <p class="hp-cta__desc">成为 NBTCA 的一员，探索技术的无限可能</p>
@@ -461,14 +501,120 @@ Blogs.sort(
   }
 
   /* ════════════════════════════════════════════════════════
-     6. CTA
-     Ref: bg-[#004b86] py-32, white button hover:scale-105
+     6. GALLERY
+  ════════════════════════════════════════════════════════ */
+  .hp-gallery {
+    background: #000;
+    padding: 96px 24px 112px;
+  }
+  .hp-gallery__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hp-gallery__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .hp-gallery__title {
+    font-family: var(--font);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #fff;
+    margin: 0 0 12px;
+  }
+  .hp-gallery__sub {
+    font-family: var(--font);
+    font-size: clamp(16px, 2vw, 19px);
+    color: rgba(255,255,255,0.5);
+    margin: 0;
+  }
+  .hp-gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 8px;
+  }
+  /* 第1张：占左侧前两列 */
+  .hp-gallery__item--featured {
+    grid-column: 1 / 3;
+  }
+  /* 第6张：占右侧两列 */
+  .hp-gallery__item--wide {
+    grid-column: 2 / 4;
+  }
+  .hp-gallery__item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0;
+    cursor: default;
+  }
+  .hp-gallery__item img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .hp-gallery__item--featured img,
+  .hp-gallery__item--wide img {
+    aspect-ratio: 16 / 9;
+  }
+  .hp-gallery__item:hover img {
+    transform: scale(1.04);
+  }
+  .hp-gallery__item figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 28px 14px 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.02em;
+  }
+  @media (max-width: 734px) {
+    .hp-gallery__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .hp-gallery__item--featured {
+      grid-column: 1 / 3;
+    }
+    .hp-gallery__item--wide {
+      grid-column: 1 / 3;
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     7. CTA  —  欢迎聚会照片背景 + 深蓝遮罩
   ════════════════════════════════════════════════════════ */
   .hp-cta {
-    background: #004b86;
+    position: relative;
     padding: 128px 24px;
+    overflow: hidden;
+  }
+  .hp-cta__bg {
+    position: absolute;
+    inset: 0;
+  }
+  .hp-cta__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+  .hp-cta__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 40, 85, 0.82);
   }
   .hp-cta__inner {
+    position: relative;
+    z-index: 1;
     max-width: 900px;
     margin: 0 auto;
     text-align: center;
@@ -484,12 +630,12 @@ Blogs.sort(
   .hp-cta__desc {
     font-family: var(--font);
     font-size: clamp(18px, 2.5vw, 24px);
-    color: rgba(255,255,255,0.9);
+    color: rgba(255,255,255,0.85);
     margin: 0 0 48px;
     font-weight: 400;
   }
   .hp-cta .hp-btn--white {
-    color: #004b86;
+    color: #003366;
   }
 
   /* ════════════════════════════════════════════════════════
