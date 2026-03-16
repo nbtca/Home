@@ -19,162 +19,130 @@ Blogs.sort(
   (a, b) =>
     Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate),
 )
-
-const latestPosts = [...allPosts.slice(0, 6)]
-const galleryImages = [
-  { src: "/static/images/homepage/gallery-1.jpg", alt: "欢迎新同学" },
-  { src: "/static/images/homepage/gallery-2.jpg", alt: "协作与交流" },
-  { src: "/static/images/homepage/gallery-3.jpg", alt: "例会讨论" },
-  { src: "/static/images/homepage/gallery-4.jpg", alt: "技术讲座" },
-  { src: "/static/images/homepage/gallery-5.jpg", alt: "维修工作" },
-  { src: "/static/images/homepage/gallery-6.jpg", alt: "动手实践" },
-]
 ---
 
 <BaseLayout>
-  <!-- ═══════════════════════════════════════════════
-       HERO
-  ═══════════════════════════════════════════════ -->
+
+  <!-- ═══════════════════════════════════════════════════════
+    1. HERO  —  min-h-screen, bg-black, image at opacity-60
+       Ref: Home.tsx lines 11-45
+  ═══════════════════════════════════════════════════════ -->
   <section class="hp-hero">
     <div class="hp-hero__bg">
-      <img
-        src="/static/images/homepage/hero.jpg"
-        alt="NBTCA 计算机协会成员"
-        class="hp-hero__img"
-      />
-      <div class="hp-hero__overlay"></div>
+      <img src="/static/images/homepage/hero.jpg" alt="NBTCA" />
     </div>
     <div class="hp-hero__content">
-      <p class="hp-hero__eyebrow">宁波科技大学计算机协会</p>
-      <h1 class="hp-hero__headline">拔电关机</h1>
-      <p class="hp-hero__sub">技术 · 创造 · 社区</p>
-      <div class="hp-hero__ctas">
-        <a href="/about" class="hp-btn hp-btn--primary">了解我们</a>
-        <a href="/repair" class="hp-btn hp-btn--ghost">预约维修</a>
-      </div>
-    </div>
-    <a href="#services" class="hp-hero__scroll" aria-label="向下滚动">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-      </svg>
-    </a>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════
-       SERVICES
-  ═══════════════════════════════════════════════ -->
-  <section id="services" class="hp-services">
-    <div class="hp-container">
-      <div class="hp-section-header">
-        <h2 class="hp-section-title">我们能做什么</h2>
-        <p class="hp-section-sub">专业、开放、充满热情的技术社区</p>
-      </div>
-      <div class="hp-services__grid">
-
-        <a href="/repair" class="hp-service-card">
-          <div class="hp-service-card__media">
-            <img src="/static/images/homepage/repair.png" alt="设备维修" />
-          </div>
-          <div class="hp-service-card__body">
-            <span class="hp-service-card__tag">维修</span>
-            <h3 class="hp-service-card__title">设备维修</h3>
-            <p class="hp-service-card__desc">
-              专业团队为你的笔记本、手机提供清灰、换屏、数据恢复等服务，让爱机重获新生。
-            </p>
-            <span class="hp-service-card__cta">预约维修 →</span>
-          </div>
-        </a>
-
-        <a href="/calendar" class="hp-service-card">
-          <div class="hp-service-card__media">
-            <img src="/static/images/homepage/events.jpg" alt="社区活动" />
-          </div>
-          <div class="hp-service-card__body">
-            <span class="hp-service-card__tag">活动</span>
-            <h3 class="hp-service-card__title">社区活动</h3>
-            <p class="hp-service-card__desc">
-              定期组织技术分享、竞赛、户外活动，连接对技术充满热爱的同学，一起成长。
-            </p>
-            <span class="hp-service-card__cta">查看日历 →</span>
-          </div>
-        </a>
-
-        <a href="https://docs.nbtca.space" target="_blank" rel="noopener noreferrer" class="hp-service-card">
-          <div class="hp-service-card__media">
-            <img src="/static/images/homepage/tech.jpg" alt="技术文档" />
-          </div>
-          <div class="hp-service-card__body">
-            <span class="hp-service-card__tag">文档</span>
-            <h3 class="hp-service-card__title">技术文档</h3>
-            <p class="hp-service-card__desc">
-              汇集协会成员整理的技术笔记、教程与知识库，开放共享，持续更新。
-            </p>
-            <span class="hp-service-card__cta">阅读文档 →</span>
-          </div>
-        </a>
-
+      <h1 class="hp-hero__title">NBTCA</h1>
+      <p class="hp-hero__sub1">技术与人文的交汇</p>
+      <p class="hp-hero__sub2">自2002年，帮助他人，共同成长</p>
+      <div class="hp-hero__btns">
+        <a href="#repair" class="hp-btn hp-btn--white">探索活动</a>
+        <a href="/join-us" class="hp-btn hp-btn--outline-white">加入我们</a>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════════
-       ACTIVITY HIGHLIGHT (full-bleed feature)
-  ═══════════════════════════════════════════════ -->
-  <section class="hp-feature">
-    <div class="hp-feature__inner">
-      <div class="hp-feature__text">
-        <p class="hp-feature__eyebrow">维修服务</p>
-        <h2 class="hp-feature__title">让技术<br />真正有用</h2>
-        <p class="hp-feature__desc">
-          协会成员自发组织公益维修，帮助同学解决设备难题。无论是散热清灰、
-          系统重装，还是硬件更换，我们用技术回馈校园。
-        </p>
-        <a href="/repair/create-ticket" class="hp-btn hp-btn--dark">立即预约</a>
-      </div>
-      <div class="hp-feature__media">
-        <img
-          src="/static/images/homepage/repair.png"
-          alt="设备维修现场"
-        />
-      </div>
+  <!-- ═══════════════════════════════════════════════════════
+    2. REPAIR DAY  —  min-h-screen, full-bleed photo, text center
+       Ref: Home.tsx lines 47-73
+  ═══════════════════════════════════════════════════════ -->
+  <section id="repair" class="hp-fullimg">
+    <div class="hp-fullimg__bg">
+      <img src="/static/images/homepage/repair.png" alt="维修日" />
+      <div class="hp-fullimg__grad"></div>
+    </div>
+    <div class="hp-fullimg__content">
+      <p class="hp-eyebrow hp-eyebrow--light">维修日</p>
+      <h2 class="hp-heading hp-heading--white">用技术帮助他人</h2>
+      <p class="hp-desc hp-desc--white">
+        每月一次，免费维修电脑，解决软硬件问题
+      </p>
+      <a href="/repair" class="hp-link hp-link--white">了解更多 →</a>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════════
-       PHOTO GALLERY STRIP
-  ═══════════════════════════════════════════════ -->
-  <section class="hp-gallery">
-    <div class="hp-container">
-      <div class="hp-section-header">
-        <h2 class="hp-section-title">协会活动</h2>
-        <p class="hp-section-sub">记录每一次相遇与成长</p>
+  <!-- ═══════════════════════════════════════════════════════
+    3. LECTURE  —  bg-white py-32, text + rounded image card
+       Ref: Home.tsx lines 75-99
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-section hp-section--white">
+    <div class="hp-section__inner">
+      <p class="hp-eyebrow hp-eyebrow--gray">技术讲座</p>
+      <h2 class="hp-heading hp-heading--dark">
+        知识共享<br />触手可及
+      </h2>
+      <p class="hp-desc hp-desc--gray">
+        每学期一次，分享计算机基础技能，让技术不再神秘
+      </p>
+      <div class="hp-imgcard">
+        <img src="/static/images/homepage/lecture.jpg" alt="技术讲座" loading="lazy" />
       </div>
-    </div>
-    <div class="hp-gallery__strip">
-      {galleryImages.map(img => (
-        <div class="hp-gallery__item">
-          <img src={img.src} alt={img.alt} loading="lazy" />
-        </div>
-      ))}
+      <a href="/calendar" class="hp-link hp-link--blue">查看往期讲座 →</a>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════════
-       LATEST ARTICLES  (保留原有博客功能)
-  ═══════════════════════════════════════════════ -->
-  <section class="hp-articles">
-    <div class="hp-container">
-      <div class="hp-articles__header">
+  <!-- ═══════════════════════════════════════════════════════
+    4. NWDC  —  bg-gray-900 py-32, text + rounded image card
+       Ref: Home.tsx lines 101-125
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-section hp-section--dark">
+    <div class="hp-section__inner">
+      <p class="hp-eyebrow hp-eyebrow--dim">NWDC</p>
+      <h2 class="hp-heading hp-heading--white">
+        开发者的<br />技术舞台
+      </h2>
+      <p class="hp-desc hp-desc--dim">
+        每月两次线上分享，致敬 Apple WWDC，探索技术前沿
+      </p>
+      <div class="hp-imgcard">
+        <img src="/static/images/homepage/nwdc.jpg" alt="NWDC" loading="lazy" />
+      </div>
+      <a href="/calendar" class="hp-link hp-link--blue-light">观看往期分享 →</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+    5. MISSION  —  bg-white py-32, large statement text
+       Ref: Home.tsx lines 127-139
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-mission">
+    <div class="hp-mission__inner">
+      <h2 class="hp-mission__text">
+        运用计算机专业能力帮助他人<br />
+        聚集相同兴趣的人<br />
+        彼此启发，共同成长
+      </h2>
+      <p class="hp-mission__label">NBTCA 使命宣言</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+    6. CTA  —  bg-[#004b86] py-32
+       Ref: Home.tsx lines 141-157
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-cta">
+    <div class="hp-cta__inner">
+      <h2 class="hp-cta__title">准备好加入了吗？</h2>
+      <p class="hp-cta__desc">成为 NBTCA 的一员，探索技术的无限可能</p>
+      <a href="/join-us" class="hp-btn hp-btn--white hp-btn--lg hp-btn--scale">立即加入</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+    7. BLOG  —  保留旧有博客功能
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-blog">
+    <div class="hp-blog__inner">
+      <div class="hp-blog__head">
         <div>
-          <h2 class="hp-section-title">最新文章</h2>
-          <p class="hp-section-sub">来自协会成员的技术与生活分享</p>
+          <h2 class="hp-blog__title">最新文章</h2>
+          <p class="hp-blog__sub">来自成员的技术与生活分享</p>
         </div>
-        <a href="/blog" class="hp-btn hp-btn--outline">全部文章</a>
+        <a href="/blog" class="hp-link hp-link--blue">查看全部 →</a>
       </div>
-
-      <ul role="list" class="hp-articles__grid">
+      <ul role="list" class="hp-blog__grid">
         {
-          latestPosts.map(post => (
+          allPosts.slice(0, 6).map(post => (
             <MoreTile
               title={post.frontmatter.title}
               href={post.url}
@@ -196,9 +164,8 @@ const galleryImages = [
           ))
         }
       </ul>
-
-      <div class="hp-articles__more">
-        <a href="/blog" class="hp-btn hp-btn--primary">阅读历史文章</a>
+      <div class="hp-blog__more">
+        <a href="/blog" class="hp-btn hp-btn--blue">阅读历史文章</a>
       </div>
     </div>
   </section>
@@ -211,143 +178,185 @@ const galleryImages = [
       script.onload = function () {
         initImage()
       }
-
-      // Smooth scroll for hero anchor
-      document.querySelectorAll("a[href^=\"#\"]").forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          e.preventDefault()
-          const target = document.querySelector(this.getAttribute("href"))
-          if (target) {
-            target.scrollIntoView({ behavior: "smooth" })
-          }
-        })
-      })
-
-      // Scroll-in animations
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("hp-visible")
-            }
-          })
-        },
-        { threshold: 0.1 },
-      )
-      document.querySelectorAll(".hp-animate").forEach(el => observer.observe(el))
     })
   </script>
 </BaseLayout>
 
+<!-- ═══════════════════════════════════════════════════════
+  HOMEPAGE-ONLY NAV OVERRIDE
+  <style is:global> is scoped to this page's <head> only in Astro.
+  Makes the existing HeroUI navbar fixed + dark + transparent.
+═══════════════════════════════════════════════════════ -->
+<style is:global>
+  /* Fix outer nav wrapper */
+  nav.nav {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 50 !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Kill HeroUI header's own background/shadow */
+  nav.nav [data-slot="base"],
+  nav.nav header {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    position: static !important; /* override HeroUI's sticky */
+  }
+
+  /* Text colors → white */
+  nav.nav .nav-item-content,
+  nav.nav span.text-lg,
+  nav.nav a {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  nav.nav a:hover,
+  nav.nav a:hover .nav-item-content {
+    color: #fff !important;
+  }
+  /* GitHub icon invert */
+  nav.nav img[alt="GitHub"] {
+    filter: invert(1) !important;
+  }
+  /* Mobile menu toggle */
+  nav.nav button svg,
+  nav.nav button span {
+    color: #fff !important;
+  }
+  /* Mobile menu panel */
+  nav.nav [data-slot="menu-list"] {
+    background: rgba(0, 0, 0, 0.92) !important;
+    backdrop-filter: blur(20px) !important;
+  }
+  nav.nav [data-slot="menu-list"] a {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+</style>
+
 <style>
-  /* ─────────────────────────────────────────
-     DESIGN TOKENS
-  ───────────────────────────────────────── */
+  /* ════════════════════════════════════════════════════════
+     TOKENS
+  ════════════════════════════════════════════════════════ */
   :root {
-    --hp-font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
       "PingFang SC", "Helvetica Neue", sans-serif;
-    --hp-black: #1d1d1f;
-    --hp-gray: #6e6e73;
-    --hp-bg: #f5f5f7;
-    --hp-blue: #0071e3;
-    --hp-blue-hover: #0077ed;
-    --hp-radius: 20px;
-    --hp-radius-sm: 12px;
-    --hp-max: 1200px;
-    --hp-transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* ─────────────────────────────────────────
-     SHARED UTILITIES
-  ───────────────────────────────────────── */
-  .hp-container {
-    max-width: var(--hp-max);
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+  /* ════════════════════════════════════════════════════════
+     NAV HEIGHT COMPENSATION
+     Because nav is now fixed, push everything down 48px
+  ════════════════════════════════════════════════════════ */
 
-  .hp-section-header {
-    text-align: center;
-    margin-bottom: 56px;
-  }
-
-  .hp-section-title {
-    font-family: var(--hp-font);
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--hp-black);
-    margin: 0 0 12px;
-  }
-
-  .hp-section-sub {
-    font-family: var(--hp-font);
-    font-size: 17px;
-    color: var(--hp-gray);
-    margin: 0;
-  }
-
-  /* Buttons */
+  /* ════════════════════════════════════════════════════════
+     BUTTONS
+  ════════════════════════════════════════════════════════ */
   .hp-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 12px 28px;
     border-radius: 980px;
-    font-family: var(--hp-font);
-    font-size: 15px;
+    font-family: var(--font);
+    font-size: 17px;
     font-weight: 500;
     text-decoration: none;
+    transition: all 0.3s ease;
     cursor: pointer;
-    transition: all var(--hp-transition);
-    white-space: nowrap;
   }
+  .hp-btn--white {
+    background: #fff;
+    color: #000;
+  }
+  .hp-btn--white:hover { background: rgba(255,255,255,0.9); }
 
-  .hp-btn--primary {
-    background: var(--hp-blue);
-    color: #fff;
-  }
-  .hp-btn--primary:hover {
-    background: var(--hp-blue-hover);
-  }
-
-  .hp-btn--ghost {
-    background: rgba(255, 255, 255, 0.18);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-  }
-  .hp-btn--ghost:hover {
-    background: rgba(255, 255, 255, 0.28);
-  }
-
-  .hp-btn--dark {
-    background: var(--hp-black);
-    color: #fff;
-  }
-  .hp-btn--dark:hover {
-    background: #000;
-  }
-
-  .hp-btn--outline {
+  .hp-btn--outline-white {
     background: transparent;
-    color: var(--hp-blue);
-    border: 1px solid var(--hp-blue);
-    padding: 10px 22px;
-    font-size: 14px;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 12px 28px;
+    border-radius: 980px;
+    font-family: var(--font);
+    font-size: 17px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
   }
-  .hp-btn--outline:hover {
-    background: var(--hp-blue);
+  .hp-btn--outline-white:hover { background: rgba(255,255,255,0.1); }
+
+  .hp-btn--blue {
+    background: #0071e3;
     color: #fff;
   }
+  .hp-btn--blue:hover { background: #0077ed; }
 
-  /* ─────────────────────────────────────────
-     HERO
-  ───────────────────────────────────────── */
+  .hp-btn--lg {
+    padding: 18px 40px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .hp-btn--scale:hover { transform: scale(1.05); }
+
+  /* ════════════════════════════════════════════════════════
+     TYPOGRAPHY PRIMITIVES
+  ════════════════════════════════════════════════════════ */
+  .hp-eyebrow {
+    font-family: var(--font);
+    font-size: clamp(16px, 2vw, 20px);
+    margin: 0 0 16px;
+  }
+  .hp-eyebrow--light { color: rgba(255,255,255,0.8); }
+  .hp-eyebrow--gray  { color: #6e6e73; }
+  .hp-eyebrow--dim   { color: #9ca3af; } /* gray-400 */
+
+  .hp-heading {
+    font-family: var(--font);
+    font-size: clamp(44px, 7vw, 72px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0 0 24px;
+  }
+  .hp-heading--white { color: #fff; }
+  .hp-heading--dark  { color: #1d1d1f; }
+
+  .hp-desc {
+    font-family: var(--font);
+    font-size: clamp(18px, 2.5vw, 24px);
+    line-height: 1.5;
+    margin: 0 0 40px;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hp-desc--white { color: rgba(255,255,255,0.9); }
+  .hp-desc--gray  { color: #6e6e73; }
+  .hp-desc--dim   { color: #9ca3af; }
+
+  .hp-link {
+    font-family: var(--font);
+    font-size: 17px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .hp-link:hover { opacity: 0.75; }
+  .hp-link--white      { color: #fff; }
+  .hp-link--blue       { color: #0071e3; }
+  .hp-link--blue-light { color: #60a5fa; } /* blue-400 */
+
+  /* ════════════════════════════════════════════════════════
+     1. HERO
+     Ref: min-h-screen bg-black, image absolute opacity-60
+  ════════════════════════════════════════════════════════ */
   .hp-hero {
     position: relative;
-    height: 92vh;
-    min-height: 560px;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -358,304 +367,200 @@ const galleryImages = [
   .hp-hero__bg {
     position: absolute;
     inset: 0;
-    z-index: 0;
+    opacity: 0.6;
   }
-
-  .hp-hero__img {
+  .hp-hero__bg img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 30%;
-    filter: brightness(0.55);
-  }
-
-  .hp-hero__overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.2) 0%,
-      rgba(0, 0, 0, 0.1) 50%,
-      rgba(0, 0, 0, 0.55) 100%
-    );
   }
 
   .hp-hero__content {
     position: relative;
-    z-index: 1;
+    z-index: 10;
     text-align: center;
-    padding: 0 24px;
-    max-width: 800px;
+    padding: 80px 24px 24px; /* top pad = nav height */
+    max-width: 900px;
+    width: 100%;
   }
 
-  .hp-hero__eyebrow {
-    font-family: var(--hp-font);
-    font-size: clamp(13px, 1.5vw, 16px);
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.8);
-    text-transform: uppercase;
-    margin: 0 0 20px;
-  }
-
-  .hp-hero__headline {
-    font-family: var(--hp-font);
-    font-size: clamp(52px, 9vw, 96px);
-    font-weight: 700;
-    letter-spacing: -0.03em;
+  /* text-6xl sm:7xl md:8xl lg:9xl font-semibold tracking-tight */
+  .hp-hero__title {
+    font-family: var(--font);
+    font-size: clamp(72px, 14vw, 160px);
+    font-weight: 600;
+    letter-spacing: -0.04em;
     color: #fff;
+    margin: 0 0 32px;
+    line-height: 1;
+  }
+
+  /* text-2xl sm:3xl md:4xl font-medium white/90 */
+  .hp-hero__sub1 {
+    font-family: var(--font);
+    font-size: clamp(22px, 3.5vw, 40px);
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
     margin: 0 0 16px;
-    line-height: 1.05;
   }
 
-  .hp-hero__sub {
-    font-family: var(--hp-font);
-    font-size: clamp(18px, 2.5vw, 24px);
-    font-weight: 300;
-    color: rgba(255, 255, 255, 0.85);
-    margin: 0 0 40px;
-    letter-spacing: 0.05em;
+  /* text-xl sm:2xl white/70 */
+  .hp-hero__sub2 {
+    font-family: var(--font);
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    margin: 0 0 48px;
   }
 
-  .hp-hero__ctas {
+  /* flex gap-4 justify-center */
+  .hp-hero__btns {
     display: flex;
     gap: 16px;
     justify-content: center;
     flex-wrap: wrap;
   }
 
-  .hp-hero__scroll {
-    position: absolute;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-    color: rgba(255, 255, 255, 0.7);
-    animation: bounce 2s ease-in-out infinite;
-    text-decoration: none;
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(8px); }
-  }
-
-  /* ─────────────────────────────────────────
-     SERVICES
-  ───────────────────────────────────────── */
-  .hp-services {
-    padding: 120px 0;
-    background: #fff;
-  }
-
-  .hp-services__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
-  @media (max-width: 900px) {
-    .hp-services__grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .hp-service-card {
+  /* ════════════════════════════════════════════════════════
+     2. FULL-BLEED IMAGE SECTION (Repair Day)
+     Ref: min-h-screen, bg-gradient-to-t from-black/80 via-black/40 to-transparent
+  ════════════════════════════════════════════════════════ */
+  .hp-fullimg {
+    position: relative;
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    background: var(--hp-bg);
-    border-radius: var(--hp-radius);
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    transition: transform var(--hp-transition), box-shadow var(--hp-transition);
-  }
-
-  .hp-service-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
-  }
-
-  .hp-service-card__media {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-  }
-
-  .hp-service-card__media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform var(--hp-transition);
-  }
-
-  .hp-service-card:hover .hp-service-card__media img {
-    transform: scale(1.04);
-  }
-
-  .hp-service-card__body {
-    padding: 28px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .hp-service-card__tag {
-    font-family: var(--hp-font);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--hp-blue);
-    margin-bottom: 10px;
-  }
-
-  .hp-service-card__title {
-    font-family: var(--hp-font);
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--hp-black);
-    margin: 0 0 12px;
-    letter-spacing: -0.01em;
-  }
-
-  .hp-service-card__desc {
-    font-family: var(--hp-font);
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--hp-gray);
-    margin: 0 0 20px;
-    flex: 1;
-  }
-
-  .hp-service-card__cta {
-    font-family: var(--hp-font);
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--hp-blue);
-    transition: gap var(--hp-transition);
-  }
-
-  /* ─────────────────────────────────────────
-     FEATURE (full-bleed highlight)
-  ───────────────────────────────────────── */
-  .hp-feature {
-    background: var(--hp-black);
-    padding: 100px 24px;
-    overflow: hidden;
-  }
-
-  .hp-feature__inner {
-    max-width: var(--hp-max);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
     align-items: center;
-  }
-
-  @media (max-width: 768px) {
-    .hp-feature__inner {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-    .hp-feature__media {
-      order: -1;
-    }
-  }
-
-  .hp-feature__eyebrow {
-    font-family: var(--hp-font);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--hp-blue);
-    margin: 0 0 16px;
-  }
-
-  .hp-feature__title {
-    font-family: var(--hp-font);
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    color: #fff;
-    margin: 0 0 24px;
-    line-height: 1.1;
-  }
-
-  .hp-feature__desc {
-    font-family: var(--hp-font);
-    font-size: 17px;
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.65);
-    margin: 0 0 36px;
-  }
-
-  .hp-feature__media {
-    border-radius: var(--hp-radius);
+    justify-content: center;
     overflow: hidden;
-    aspect-ratio: 4 / 3;
   }
 
-  .hp-feature__media img {
+  .hp-fullimg__bg {
+    position: absolute;
+    inset: 0;
+  }
+  .hp-fullimg__bg img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+  .hp-fullimg__grad {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+  }
 
-  /* ─────────────────────────────────────────
-     GALLERY STRIP
-  ───────────────────────────────────────── */
-  .hp-gallery {
-    padding: 100px 0;
+  .hp-fullimg__content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 80px 24px 24px;
+    max-width: 860px;
+    width: 100%;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     3. TEXT + IMAGE SECTIONS (Lecture & NWDC)
+     Ref: py-32 (128px), text-center, rounded-3xl image card
+  ════════════════════════════════════════════════════════ */
+  .hp-section {
+    padding: 128px 24px;
+  }
+  .hp-section--white { background: #fff; }
+  .hp-section--dark  { background: #111827; } /* gray-900 */
+
+  .hp-section__inner {
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /* rounded-3xl overflow-hidden shadow-2xl mb-12 */
+  .hp-imgcard {
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    margin-bottom: 48px;
+  }
+  .hp-imgcard img {
+    width: 100%;
+    height: clamp(300px, 40vw, 500px);
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     5. MISSION STATEMENT
+     Ref: bg-white py-32, text-4xl..6xl tracking-tight leading-tight
+  ════════════════════════════════════════════════════════ */
+  .hp-mission {
     background: #fff;
-    overflow: hidden;
+    padding: 128px 24px;
+  }
+  .hp-mission__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hp-mission__text {
+    font-family: var(--font);
+    font-size: clamp(28px, 4.5vw, 60px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    color: #1d1d1f;
+    margin: 0 0 32px;
+  }
+  .hp-mission__label {
+    font-family: var(--font);
+    font-size: 18px;
+    color: #6e6e73;
+    margin: 0;
   }
 
-  .hp-gallery__strip {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    padding: 0 24px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+  /* ════════════════════════════════════════════════════════
+     6. CTA
+     Ref: bg-[#004b86] py-32, white button hover:scale-105
+  ════════════════════════════════════════════════════════ */
+  .hp-cta {
+    background: #004b86;
+    padding: 128px 24px;
+  }
+  .hp-cta__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hp-cta__title {
+    font-family: var(--font);
+    font-size: clamp(36px, 5.5vw, 64px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #fff;
+    margin: 0 0 32px;
+  }
+  .hp-cta__desc {
+    font-family: var(--font);
+    font-size: clamp(18px, 2.5vw, 24px);
+    color: rgba(255,255,255,0.9);
+    margin: 0 0 48px;
+    font-weight: 400;
+  }
+  .hp-cta .hp-btn--white {
+    color: #004b86;
   }
 
-  .hp-gallery__strip::-webkit-scrollbar {
-    display: none;
+  /* ════════════════════════════════════════════════════════
+     7. BLOG
+  ════════════════════════════════════════════════════════ */
+  .hp-blog {
+    background: #fff;
+    padding: 96px 24px 120px;
   }
-
-  .hp-gallery__item {
-    flex: 0 0 auto;
-    width: min(340px, 75vw);
-    aspect-ratio: 4 / 3;
-    border-radius: var(--hp-radius-sm);
-    overflow: hidden;
-    scroll-snap-align: start;
+  .hp-blog__inner {
+    max-width: 1200px;
+    margin: 0 auto;
   }
-
-  .hp-gallery__item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform var(--hp-transition);
-  }
-
-  .hp-gallery__item:hover img {
-    transform: scale(1.04);
-  }
-
-  /* ─────────────────────────────────────────
-     ARTICLES
-  ───────────────────────────────────────── */
-  .hp-articles {
-    padding: 100px 0 120px;
-    background: var(--hp-bg);
-  }
-
-  .hp-articles__header {
+  .hp-blog__head {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -663,61 +568,55 @@ const galleryImages = [
     gap: 16px;
     flex-wrap: wrap;
   }
-
-  .hp-articles__header .hp-section-title,
-  .hp-articles__header .hp-section-sub {
-    text-align: left;
+  .hp-blog__title {
+    font-family: var(--font);
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+    margin: 0 0 8px;
   }
-
-  .hp-articles__grid {
+  .hp-blog__sub {
+    font-family: var(--font);
+    font-size: 17px;
+    color: #6e6e73;
+    margin: 0;
+  }
+  .hp-blog__grid {
     list-style: none;
     padding: 0;
     margin: 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    gap: 20px;
   }
-
-  @media (max-width: 734px) {
-    .hp-articles__grid {
-      grid-template-columns: 1fr;
-    }
-    .hp-articles__header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
-
-  .hp-articles__more {
+  .hp-blog__more {
     margin-top: 48px;
     text-align: center;
   }
 
-  /* ─────────────────────────────────────────
+  @media (max-width: 734px) {
+    .hp-blog__grid { grid-template-columns: 1fr; }
+    .hp-blog__head { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* ════════════════════════════════════════════════════════
      DARK MODE
-  ───────────────────────────────────────── */
-  body.theme-dark .hp-services,
-  body.theme-dark .hp-gallery {
+  ════════════════════════════════════════════════════════ */
+  body.theme-dark .hp-section--white,
+  body.theme-dark .hp-mission,
+  body.theme-dark .hp-blog {
     background: #000;
   }
-
-  body.theme-dark .hp-section-title {
+  body.theme-dark .hp-heading--dark,
+  body.theme-dark .hp-mission__text,
+  body.theme-dark .hp-blog__title {
     color: #f5f5f7;
   }
-
-  body.theme-dark .hp-service-card {
-    background: #1c1c1e;
-  }
-
-  body.theme-dark .hp-service-card__title {
-    color: #f5f5f7;
-  }
-
-  body.theme-dark .hp-articles {
-    background: #111;
-  }
-
-  body.theme-dark .hp-section-title {
-    color: #f5f5f7;
+  body.theme-dark .hp-desc--gray,
+  body.theme-dark .hp-eyebrow--gray,
+  body.theme-dark .hp-blog__sub,
+  body.theme-dark .hp-mission__label {
+    color: #a1a1a6;
   }
 </style>

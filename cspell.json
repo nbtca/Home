@@ -25,6 +25,10 @@
     "ical",
     "ICAL",
     "vevents",
-    "getAllSubcomponents"
+    "getAllSubcomponents",
+    "fullimg",
+    "imgcard",
+    "NWDC",
+    "WWDC"
   ]
 }
