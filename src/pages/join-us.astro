@@ -36,12 +36,12 @@ const perks = [
 ]
 
 const gallery = [
-  { src: "/static/images/homepage/gallery-1.jpg", alt: "NBTCA event" },
-  { src: "/static/images/homepage/gallery-2.jpg", alt: "NBTCA event" },
-  { src: "/static/images/homepage/gallery-3.jpg", alt: "NBTCA event" },
-  { src: "/static/images/homepage/gallery-4.jpg", alt: "NBTCA event" },
-  { src: "/static/images/homepage/gallery-5.jpg", alt: "NBTCA event" },
-  { src: "/static/images/homepage/gallery-6.jpg", alt: "NBTCA event" },
+  { src: "/static/images/joinus/gallery-1.jpg", alt: "NBTCA community gathering" },
+  { src: "/static/images/joinus/gallery-2.jpg", alt: "NBTCA group photo" },
+  { src: "/static/images/joinus/gallery-3.jpg", alt: "Outdoor meetup" },
+  { src: "/static/images/joinus/gallery-4.jpg", alt: "Lecture audience" },
+  { src: "/static/images/joinus/gallery-5.jpg", alt: "Behind the scenes" },
+  { src: "/static/images/joinus/gallery-6.jpg", alt: "Team meeting" },
 ]
 ---
 
@@ -52,7 +52,7 @@ const gallery = [
     <div class="ju-hero__body">
       <img src={logoAnimated.src} alt="NBTCA" class="ju-hero__logo" />
       <h1 class="ju-hero__title">
-        加入 NBTCA，<br />做有趣的事
+        加入我们，做有趣的事
       </h1>
       <p class="ju-hero__desc">
         一个由学生自发组织、持续成长的技术社区。<br />
@@ -181,28 +181,28 @@ const gallery = [
   /* ── Hero ───────────────────────────────────────────────── */
   .ju-hero {
     background: #050505;
-    min-height: 85vh;
+    min-height: 75vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 96px 24px;
+    padding: 80px 24px;
   }
   .ju-hero__body {
     max-width: 720px;
   }
   .ju-hero__logo {
-    width: 120px;
+    width: clamp(280px, 50vw, 560px);
     height: auto;
-    margin: 0 auto 40px;
+    margin: 0 auto 48px;
     display: block;
   }
   .ju-hero__title {
     font-family: var(--ju-font);
-    font-size: clamp(48px, 8vw, 88px);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 1.05;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
     color: #f5f5f7;
     margin: 0 0 24px;
   }
@@ -228,7 +228,7 @@ const gallery = [
   .ju-perks__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2px;
+    gap: 12px;
   }
   @media (min-width: 640px) {
     .ju-perks__grid {
@@ -243,6 +243,7 @@ const gallery = [
   .ju-perk {
     background: #f5f5f7;
     padding: clamp(28px, 4vw, 40px);
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -271,28 +272,30 @@ const gallery = [
   /* ── Gallery ────────────────────────────────────────────── */
   .ju-gallery {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
     background: #050505;
+    padding: 0 4px;
   }
   @media (min-width: 768px) {
     .ju-gallery {
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
   .ju-gallery__item {
     margin: 0;
     overflow: hidden;
-    aspect-ratio: 1;
+    border-radius: 8px;
+    aspect-ratio: 3 / 2;
   }
   .ju-gallery__item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s ease;
   }
-  .ju-gallery__item:hover img { transform: scale(1.06); }
+  .ju-gallery__item:hover img { transform: scale(1.04); }
 
   /* ── CTA ────────────────────────────────────────────────── */
   .ju-cta {
