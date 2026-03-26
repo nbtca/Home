@@ -29,6 +29,8 @@ html {
 body {
   margin: 0;
   padding: 0;
+
+  text-autospace: normal;
 }
 
 body, input, textarea, select, button {
