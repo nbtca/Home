@@ -1,0 +1,190 @@
+---
+import CALogoWhite from "./assets/CA-logo-white.png"
+import GithubMark from "./assets/github-mark.svg"
+
+const menuItems = [
+  { href: "/blog", label: "博客" },
+  { href: "/calendar", label: "日程" },
+  { href: "/repair", label: "维修" },
+  { href: "/nwdc", label: "NWDC" },
+  { href: "/lecture", label: "讲座" },
+  { href: "/about", label: "关于我们" },
+]
+---
+
+<header id="hp-header">
+  <div class="hp-header-inner">
+    <div class="hp-header-left">
+      <a href="/" class="hp-header-brand">
+        <img src={CALogoWhite.src} alt="NBTCA" width="28" height="28" />
+        <span>NBTCA</span>
+      </a>
+      <nav class="hp-header-nav">
+        {menuItems.map(item => (
+          <a href={item.href} target={item.external ? "_blank" : "_self"} rel={item.external ? "noopener noreferrer" : undefined}>
+            {item.label}
+          </a>
+        ))}
+      </nav>
+    </div>
+    <div class="hp-header-right">
+      <a href="https://github.com/nbtca" target="_blank" rel="noopener noreferrer" class="hp-header-github" aria-label="GitHub">
+        <img src={GithubMark.src} alt="GitHub" width="20" height="20" />
+      </a>
+      <button id="hp-menu-btn" class="hp-menu-btn" aria-label="菜单" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="hp-mobile-menu" class="hp-mobile-menu" aria-hidden="true">
+    {menuItems.map(item => (
+      <a href={item.href} target={item.external ? "_blank" : "_self"} rel={item.external ? "noopener noreferrer" : undefined} class="hp-mobile-link">
+        {item.label}
+      </a>
+    ))}
+    <a href="https://github.com/nbtca" target="_blank" rel="noopener noreferrer" class="hp-mobile-link">GitHub</a>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById("hp-menu-btn")
+  const menu = document.getElementById("hp-mobile-menu")
+  if (btn && menu) {
+    btn.addEventListener("click", () => {
+      const isOpen = menu.classList.toggle("hp-mobile-menu--open")
+      btn.setAttribute("aria-expanded", String(isOpen))
+      menu.setAttribute("aria-hidden", String(!isOpen))
+    })
+  }
+</script>
+
+<style>
+  #hp-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .hp-header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hp-header-left {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .hp-header-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    transition: opacity 0.2s;
+  }
+  .hp-header-brand:hover {
+    opacity: 0.8;
+  }
+  .hp-header-brand img {
+    flex-shrink: 0;
+  }
+
+  .hp-header-nav {
+    display: none;
+    align-items: center;
+    gap: 28px;
+  }
+  @media (min-width: 640px) {
+    .hp-header-nav {
+      display: flex;
+    }
+  }
+  .hp-header-nav a {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .hp-header-nav a:hover {
+    color: #fff;
+  }
+
+  .hp-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hp-header-github {
+    display: flex;
+    align-items: center;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+  }
+  .hp-header-github:hover {
+    opacity: 1;
+  }
+  .hp-header-github img {
+    filter: invert(1);
+  }
+
+  .hp-menu-btn {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 4px;
+  }
+  @media (min-width: 640px) {
+    .hp-menu-btn {
+      display: none;
+    }
+  }
+
+  .hp-mobile-menu {
+    display: none;
+    flex-direction: column;
+    padding: 8px 24px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .hp-mobile-menu--open {
+    display: flex;
+  }
+
+  .hp-mobile-link {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: color 0.2s;
+  }
+  .hp-mobile-link:last-child {
+    border-bottom: none;
+  }
+  .hp-mobile-link:hover {
+    color: #fff;
+  }
+</style>

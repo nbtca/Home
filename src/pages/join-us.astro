@@ -1,262 +1,329 @@
-﻿---
+---
 import BaseLayout from "../layouts/BaseLayout.astro"
-import logoAnimated from "./_assets/nbtca.gif";
+import logoAnimated from "./_assets/nbtca.gif"
+
+const perks = [
+  {
+    icon: "🛠",
+    title: "真实项目实践",
+    desc: "参与协会维护的开源项目，积累实际开发经验，而不是课堂上的 CRUD。",
+  },
+  {
+    icon: "🎙",
+    title: "技术分享交流",
+    desc: "参与 NWDC 和技术讲座，在真实场景中输出和吸收技术经验。",
+  },
+  {
+    icon: "🔧",
+    title: "维修服务技能",
+    desc: "加入维修日团队，学习硬件诊断与维修，同时为校内同学提供帮助。",
+  },
+  {
+    icon: "🤝",
+    title: "跨届人脉连接",
+    desc: "认识在校同学和校友从业者，建立技术圈子里真实的人际关系。",
+  },
+  {
+    icon: "🌐",
+    title: "开源社区参与",
+    desc: "协会的大多数项目在 GitHub 上公开，你的贡献会留在互联网上。",
+  },
+  {
+    icon: "🎓",
+    title: "零门槛加入",
+    desc: "不限专业，不限年级，只要你对技术有好奇心，都欢迎来试试。",
+  },
+]
+
+const gallery = [
+  { src: "/static/images/joinus/gallery-1.jpg", alt: "NBTCA community gathering" },
+  { src: "/static/images/joinus/gallery-2.jpg", alt: "NBTCA group photo" },
+  { src: "/static/images/joinus/gallery-3.jpg", alt: "Outdoor meetup" },
+  { src: "/static/images/joinus/gallery-4.jpg", alt: "Lecture audience" },
+  { src: "/static/images/joinus/gallery-5.jpg", alt: "Behind the scenes" },
+  { src: "/static/images/joinus/gallery-6.jpg", alt: "Team meeting" },
+]
 ---
 
 <BaseLayout primaryTitle="加入我们">
-  <div class="container pt-16 pb-40 box-border">
-    <img src={logoAnimated.src} class="" alt="" />
-    <div class="flex flex-col items-center">
-      <div class="text-3xl md:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#00ccc7] to-[#9583ef]">
-        <div>
-          加入协会
-        </div>
-        <div>
-          共同创造我们的社区
-        </div>
-      </div>
-      <div class="mt-2">
-        <a
-          href="/about"
-          aria-label="进一步了解 NBTCA 的社区和文化"
-        >
-          进一步了解我们
-        </a>
-      </div>
-      <div class="mt-14">
-        <a
-          href="/freshman/join"
-          aria-label="申请加入 NBTCA"
-          class="text-xl"
-        >
-          立即登记信息 {">"}
-        </a>
 
+  <!-- ── Hero ──────────────────────────────────────────────── -->
+  <section class="ju-hero">
+    <div class="ju-hero__body">
+      <img src={logoAnimated.src} alt="NBTCA" class="ju-hero__logo" />
+      <h1 class="ju-hero__title">
+        加入我们，做有趣的事
+      </h1>
+      <p class="ju-hero__desc">
+        一个由学生自发组织、持续成长的技术社区。<br />
+        欢迎任何对技术有热情的同学。
+      </p>
+      <div class="ju-hero__actions">
+        <a href="/freshman/join" class="ju-btn ju-btn--fill">立即登记信息</a>
+        <a href="/about" class="ju-btn ju-btn--ghost">了解更多 →</a>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- ── Perks ─────────────────────────────────────────────── -->
+  <section class="ju-perks">
+    <div class="ju-container">
+      <p class="ju-label ju-label--dark">Why Join</p>
+      <h2 class="ju-title ju-title--dark">加入之后，你能做什么</h2>
+      <div class="ju-perks__grid">
+        {perks.map(p => (
+          <div class="ju-perk">
+            <span class="ju-perk__icon" aria-hidden="true">{p.icon}</span>
+            <h3 class="ju-perk__title">{p.title}</h3>
+            <p class="ju-perk__desc">{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Gallery ───────────────────────────────────────────── -->
+  <section class="ju-gallery">
+    {gallery.map(img => (
+      <figure class="ju-gallery__item">
+        <img src={img.src} alt={img.alt} loading="lazy" />
+      </figure>
+    ))}
+  </section>
+
+  <!-- ── CTA ───────────────────────────────────────────────── -->
+  <section class="ju-cta">
+    <div class="ju-container">
+      <p class="ju-eyebrow">Ready?</p>
+      <h2 class="ju-cta__title">加入我们</h2>
+      <p class="ju-cta__desc">
+        填写登记表，我们会联系你。<br />
+        有任何问题也可以发邮件给我们。
+      </p>
+      <div class="ju-cta__actions">
+        <a href="/freshman/join" class="ju-btn ju-btn--fill">立即登记信息</a>
+        <a href="mailto:contact@nbtca.space" class="ju-btn ju-btn--ghost">
+          联系我们 →
+        </a>
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>
 
 <style>
-  @media screen and (min-width: 680px) {
-    /*PC*/
-    .container {
-      width: 682px;
-      margin: 0 auto;
-    }
-    .gradient-warm {
-      -webkit-text-size-adjust: 100%;
-      --r-globalmessage-segment-height: 0px;
-      --r-globalnav-segmentbar-height: 0px;
-      --r-globalnav-height: 48px;
-      --rem: 16;
-      --r-globalnav-background-opened: #fafafc;
-      --r-globalnav-background-opened-dark: #161617;
-      --sk-focus-color: #0071e3;
-      --sk-focus-color-alt: rgb(0, 0, 0);
-      --sk-focus-offset: 1px;
-      --sk-focus-offset-container: 3px;
-      color: #333333;
-      font-synthesis: none;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-      direction: ltr;
-      --body-container-width: 645px;
-      text-align: center;
-      font-size: 75px;
-      line-height: 1.06667;
-      font-weight: 600;
-      letter-spacing: 0;
-      font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
-        "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
-      quotes: "“" "”";
-      font-style: normal;
-      -webkit-text-fill-color: transparent;
-      -webkit-box-decoration-break: clone;
-      background: url(https://www.apple.com/careers/images/fy21/apple_jobs_gradient-final_Apple_Jobs_Gradients_Warm/desktop@2x.png);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-    }
-  }
-  @media screen and (max-width: 680px) {
-    /*Mobile*/
-    .gradient-warm {
-      -webkit-text-size-adjust: 100%;
-      --r-globalmessage-segment-height: 0px;
-      --r-globalnav-segmentbar-height: 0px;
-      --r-globalnav-height: 48px;
-      --r-globalnav-background-opened: #fafafc;
-      --r-globalnav-background-opened-dark: #161617;
-      --sk-focus-color: #0071e3;
-      --sk-focus-color-alt: rgb(0, 0, 0);
-      --sk-focus-offset: 1px;
-      --sk-focus-offset-container: 3px;
-      color: #333333;
-      font-synthesis: none;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-      direction: ltr;
-      --body-container-width: 645px;
-      text-align: center;
-      font-size: 38px;
-      line-height: 1.10538;
-      font-weight: 600;
-      letter-spacing: 0;
-      font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
-        "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
-      quotes: "“" "”";
-      font-style: normal;
-      -webkit-text-fill-color: transparent;
-      -webkit-box-decoration-break: clone;
-      background: url(/careers/images/fy21/apple_jobs_gradient-final_Apple_Jobs_Gradients_Warm/desktop@2x.png);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-    }
-  }
-  .body-container {
-    -webkit-text-size-adjust: 100%;
-    color: #333333;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    direction: ltr;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.82353;
-    --body-container-width: 645px;
-    text-align: center;
-    letter-spacing: 0;
-    font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
-      "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
-    quotes: "“" "”";
-    font-style: normal;
-    margin-bottom: 60px;
-    width: 100%;
-  }
-  .life-at-apple__body-text {
-    -webkit-text-size-adjust: 100%;
-    --r-globalnav-height: 44px;
-    --r-globalmessage-segment-height: 0px;
-    --r-globalnav-segmentbar-height: 0px;
-    --r-globalnav-background-opened: #fafafc;
-    --r-globalnav-background-opened-dark: #161617;
-    --sk-focus-color: #0071e3;
-    --sk-focus-color-alt: rgb(0, 0, 0);
-    --sk-focus-offset: 1px;
-    --sk-focus-offset-container: 3px;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    direction: ltr;
-    --body-container-width: 645px;
-    text-align: center;
-    padding: 0;
-    font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
-      "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
-    quotes: "“" "”";
-    font-style: normal;
-    font-size: 30px;
-    line-height: 1.2;
-    font-weight: 400;
-    letter-spacing: 0;
-    color: #000;
-    margin: 20px 0 40px;
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-  .life-at-apple__eyebrow {
-    -webkit-text-size-adjust: 100%;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    direction: ltr;
-    --body-container-width: 645px;
-    text-align: center;
-    padding: 0;
-    font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
-      "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
-    quotes: "“" "”";
-    font-style: normal;
-    font-size: 30px;
-    line-height: 1.2;
-    font-weight: 700;
-    letter-spacing: 0;
-    color: #000;
-    margin: 60px 0 0;
-    margin-bottom: 0;
-  }
-  .t-hero-headline-oversized {
-    -webkit-text-size-adjust: 100%;
-    color: #333333;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    direction: ltr;
-    --body-container-width: 645px;
-    text-align: center;
-    padding: 0;
-    font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
-      "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
-    quotes: "“" "”";
-    font-style: normal;
-    font-size: 75px;
-    line-height: 1.06667;
-    letter-spacing: 0;
-    font-weight: 600;
-    margin: 20px 0 40px;
-  }
-  .t-hero-headline-oversized-span {
-    -webkit-text-size-adjust: 100%;
-    color: #333333;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    direction: ltr;
-    --body-container-width: 645px;
-    text-align: center;
-    font-size: 75px;
-    line-height: 1.06667;
-    font-weight: 600;
-    letter-spacing: 0;
-    font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
-      "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
-    quotes: "“" "”";
-    font-style: normal;
-    -webkit-text-fill-color: transparent;
-    -webkit-box-decoration-break: clone;
-    background: url(https://www.apple.com/careers/images/fy21/apple_jobs_gradient-final_Apple_Jobs_Gradients_Warm/desktop@2x.png);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
+  /* ── Font ───────────────────────────────────────────────── */
+  :root {
+    --ju-font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+      "PingFang SC", "Helvetica Neue", sans-serif;
   }
 
-  .learn-more-link-after {
-    content: ">";
-    margin-left: 2.5px;
-    font-size: 20px;
-    transform: scaleX(0.5);
+  /* ── Container ──────────────────────────────────────────── */
+  .ju-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Shared typography ──────────────────────────────────── */
+  .ju-label {
+    font-family: var(--ju-font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0 0 12px;
+  }
+  .ju-label--dark { color: #6e6e73; }
+
+  .ju-title {
+    font-family: var(--ju-font);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: #f5f5f7;
+    margin: 0 0 40px;
+  }
+  .ju-title--dark { color: #1d1d1f; }
+
+  .ju-eyebrow {
+    font-family: var(--ju-font);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 20px;
+  }
+
+  /* ── Buttons ────────────────────────────────────────────── */
+  .ju-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 13px 28px;
+    border-radius: 980px;
+    font-family: var(--ju-font);
+    font-size: 17px;
+    font-weight: 500;
     text-decoration: none;
+    transition: all 0.2s ease;
   }
-  .learn-more-link {
-    -webkit-text-size-adjust: 100%;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    direction: ltr;
-    --body-container-width: 645px;
-    text-align: center;
-    font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
-      "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
-    quotes: "“" "”";
-    font-style: normal;
-    color: #0070c9;
-    font-size: 20px;
-    line-height: 1.2;
-    font-weight: 400;
-    letter-spacing: 0;
+  .ju-btn--fill {
+    background: #0071e3;
+    color: #fff;
   }
-  .learn-more-link-container {
+  .ju-btn--fill:hover { background: #0077ed; }
+  .ju-btn--ghost {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .ju-btn--ghost:hover { color: #fff; }
+
+  /* ── Hero ───────────────────────────────────────────────── */
+  .ju-hero {
+    background: #050505;
+    min-height: 75vh;
     display: flex;
+    align-items: center;
     justify-content: center;
-    height: 100px;
+    text-align: center;
+    padding: 80px 24px;
+  }
+  .ju-hero__body {
+    max-width: 720px;
+  }
+  .ju-hero__logo {
+    width: clamp(280px, 50vw, 560px);
+    height: auto;
+    margin: 0 auto 48px;
+    display: block;
+  }
+  .ju-hero__title {
+    font-family: var(--ju-font);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: #f5f5f7;
+    margin: 0 0 24px;
+  }
+  .ju-hero__desc {
+    font-family: var(--ju-font);
+    font-size: clamp(17px, 2.5vw, 22px);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 48px;
+  }
+  .ju-hero__actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Perks ──────────────────────────────────────────────── */
+  .ju-perks {
+    background: #fff;
+    padding: 96px 0;
+  }
+  .ju-perks__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 640px) {
+    .ju-perks__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .ju-perks__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ju-perk {
+    background: #f5f5f7;
+    padding: clamp(28px, 4vw, 40px);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: background 0.2s;
+  }
+  .ju-perk:hover { background: #ececee; }
+  .ju-perk__icon {
+    font-size: 28px;
+    line-height: 1;
+  }
+  .ju-perk__title {
+    font-family: var(--ju-font);
+    font-size: 18px;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin: 0;
+  }
+  .ju-perk__desc {
+    font-family: var(--ju-font);
+    font-size: 14px;
+    line-height: 1.65;
+    color: #6e6e73;
+    margin: 0;
+  }
+
+  /* ── Gallery ────────────────────────────────────────────── */
+  .ju-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+    background: #050505;
+    padding: 0 4px;
+  }
+  @media (min-width: 768px) {
+    .ju-gallery {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ju-gallery__item {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    aspect-ratio: 3 / 2;
+  }
+  .ju-gallery__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .ju-gallery__item:hover img { transform: scale(1.04); }
+
+  /* ── CTA ────────────────────────────────────────────────── */
+  .ju-cta {
+    background: #050505;
+    padding: 96px 0;
+    text-align: center;
+  }
+  .ju-cta__title {
+    font-family: var(--ju-font);
+    font-size: clamp(48px, 9vw, 96px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    color: #f5f5f7;
+    margin: 0 0 20px;
+  }
+  .ju-cta__desc {
+    font-family: var(--ju-font);
+    font-size: clamp(16px, 2vw, 19px);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 auto 48px;
+    max-width: 480px;
+  }
+  .ju-cta__actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 </style>

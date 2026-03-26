@@ -13,7 +13,7 @@ type Cover = {
 type Post = {
   layout: string
   title: string
-  pubDate: string // ISO 字符串，可选改为 `Date` 类型
+  pubDate: string
   description: string
   author: string
   cover?: Cover
@@ -35,28 +35,21 @@ const getCover = (post: MarkdownInstance<Post>) => {
   }
   return post.frontmatter.cover || { url: "", square: "", alt: "" }
 }
-
-  // const tags = allPosts.reduce((acc, post) => {
-  //   post.frontmatter.tags.forEach(tag => {
-  //     if (!acc.includes(tag)) {
-  //       acc.push(tag)
-  //     }
-  //   })
-  //   return acc
-  // }, [] as string[]).sort((a, b) => a.localeCompare(b))
-
 ---
 
-<BaseLayout primaryTitle="归档">
-  <div class="box-border border-b sticky top-0 bg-white/80 backdrop-blur z-20 h-12">
-    <div class="h-full flex items-center justify-between text-lg max-w-[1024px] mx-auto px-[22px]">
-      <span id="repair-header" class="font-semibold select-none cursor-default">博客</span>
+<BaseLayout primaryTitle="博客">
+
+  <!-- ── Header ────────────────────────────────────────────── -->
+  <div class="bl-header">
+    <div class="bl-header__inner">
+      <p class="bl-header__label">Blog</p>
+      <h1 class="bl-header__title">博客</h1>
       <a
         href="/rss.xml"
         target="_blank"
         rel="noopener"
+        class="bl-header__rss"
         title="Subscribe via RSS"
-        class="flex items-center gap-1.5 text-xs text-gray-500 hover:text-orange-500 transition-colors duration-150"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z" />
@@ -65,33 +58,180 @@ const getCover = (post: MarkdownInstance<Post>) => {
       </a>
     </div>
   </div>
-  <section class="mb-12">
-    <div class="section-content">
-      <div class="flex flex-col gap-2 group">
-        {
-          allPosts.map((v) => {
-            return (
-              <a class="flex items-start sm:items-center gap-4 sm:gap-6 py-8 no-underline appearance-none text-gray-900 cursor-pointer" style="text-decoration:none" href={v.url}>
-                <img
-                  class="rounded-xl sm:rounded-[20px] w-[105px] sm:w-[264px] xl:w-[295px] shrink-0 aspect-video overflow-hidden bg-gray-100 object-cover object-center archive-cover"
-                  src={getCover(v).url || CA_LOGO_URL}
-                  alt={getCover(v).alt || "fallback cover"}
-                />
-                <div class="flex flex-col gap-1 sm:gap-2">
-                  <div class="flex items-center gap-2">
-                    {v.frontmatter.tags.slice(0, 3).map((tag) => {
-                      return <span class="text-xs text-gray-700">{tag}</span>
-                    })}
-                  </div>
-                  <div class="sm:text-xl font-bold">{v.frontmatter.title}</div>
-                  <div class="text-sm sm:font-semibold text-gray-600 sm:mt-1">{dayjs(v.frontmatter.pubDate).format("YYYY-MM-DD")}</div>
-                </div>
-              </a>
-              <div class="w-full h-[0.5px] bg-gray-600 my-1 flex-shrink-0 last:hidden"></div>
-            )
-          })
-        }
-      </div>
+
+  <!-- ── Post list ─────────────────────────────────────────── -->
+  <section class="bl-list">
+    <div class="bl-container">
+      {allPosts.map(v => (
+        <a class="bl-post" href={v.url} style="text-decoration:none">
+          <img
+            class="bl-post__cover"
+            src={getCover(v).url || CA_LOGO_URL}
+            alt={getCover(v).alt || "post cover"}
+          />
+          <div class="bl-post__body">
+            <div class="bl-post__tags">
+              {v.frontmatter.tags.slice(0, 3).map(tag => (
+                <span>{tag}</span>
+              ))}
+            </div>
+            <p class="bl-post__title">{v.frontmatter.title}</p>
+            <p class="bl-post__date">{dayjs(v.frontmatter.pubDate).format("YYYY-MM-DD")}</p>
+          </div>
+        </a>
+        <div class="bl-divider" aria-hidden="true"></div>
+      ))}
     </div>
   </section>
+
 </BaseLayout>
+
+<style>
+  :root {
+    --bl-font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+      "PingFang SC", "Helvetica Neue", sans-serif;
+  }
+
+  /* ── Header ─────────────────────────────────────────────── */
+  .bl-header {
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 40px 0 32px;
+  }
+  .bl-header__inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .bl-header__label {
+    font-family: var(--bl-font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6e6e73;
+    margin: 0 0 8px;
+  }
+  .bl-header__title {
+    font-family: var(--bl-font);
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #1d1d1f;
+    margin: 0;
+    line-height: 1;
+  }
+  .bl-header__rss {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--bl-font);
+    font-size: 13px;
+    color: #6e6e73;
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 980px;
+    transition: all 0.15s;
+    white-space: nowrap;
+    align-self: flex-end;
+    margin-bottom: 4px;
+  }
+  .bl-header__rss:hover {
+    color: #e8661a;
+    border-color: #e8661a;
+  }
+
+  /* ── List ───────────────────────────────────────────────── */
+  .bl-list {
+    background: #fff;
+    padding: 0 0 80px;
+  }
+  .bl-container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .bl-post {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 0;
+    color: #1d1d1f;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  @media (min-width: 640px) {
+    .bl-post { gap: 28px; }
+  }
+  .bl-post:hover { opacity: 0.75; }
+
+  .bl-post__cover {
+    width: 110px;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    object-fit: cover;
+    object-position: center;
+    background: #f5f5f7;
+    flex-shrink: 0;
+  }
+  @media (min-width: 640px) {
+    .bl-post__cover {
+      width: 220px;
+      border-radius: 14px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .bl-post__cover { width: 260px; }
+  }
+
+  .bl-post__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 2px 0;
+  }
+
+  .bl-post__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .bl-post__tags span {
+    font-family: var(--bl-font);
+    font-size: 11px;
+    font-weight: 500;
+    color: #6e6e73;
+    letter-spacing: 0.02em;
+  }
+
+  .bl-post__title {
+    font-family: var(--bl-font);
+    font-size: clamp(15px, 2.2vw, 19px);
+    font-weight: 600;
+    color: #1d1d1f;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .bl-post__date {
+    font-family: var(--bl-font);
+    font-size: 13px;
+    color: #6e6e73;
+    margin: 4px 0 0;
+  }
+
+  .bl-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.06);
+  }
+  .bl-divider:last-child { display: none; }
+</style>

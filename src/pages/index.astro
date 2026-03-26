@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"
-import Tile from "../layouts/Tile.astro"
+import HomepageLayout from "../layouts/HomepageLayout.astro"
 import MoreTile from "../layouts/MoreTile.astro"
+
 const allPosts = await Astro.glob("../pages/posts/*.md")
-const Blogs = await Astro.glob("../pages/posts/blogs/**/*.md")
+
 allPosts.sort((a, b) => {
   if (
     a.frontmatter.title
@@ -13,126 +13,692 @@ allPosts.sort((a, b) => {
   }
   return Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate)
 })
-
-Blogs.sort(
-  (a, b) =>
-    Date.parse(b.frontmatter.pubDate) - Date.parse(a.frontmatter.pubDate),
-)
 ---
 
-  <BaseLayout>
-    <section class="every-day-feed">
-      <div class="section-content pt-12">
-        <ul role="list" class="section-tiles">
-          {
-          // tile-hero
-            allPosts.slice(0, 1).map((post) => {
-              return (
-                <Tile
-                  title={post.frontmatter.title}
-                  href={post.url}
-                  date={post.frontmatter.pubDate}
-                  tags={post.frontmatter.tags}
-                  cover={post.frontmatter.cover}
-                  level="1"
-                />
-              )
-            })
-          }
+<HomepageLayout>
 
-          {
-          // tile-2up
-            allPosts.slice(1, 5).map((post) => {
-              return (
-                <Tile
-                  title={post.frontmatter.title}
-                  href={post.url}
-                  date={post.frontmatter.pubDate}
-                  tags={post.frontmatter.tags}
-                  cover={post.frontmatter.cover}
-                  level="2"
-                />
-              )
-            })
-          }
-
-          {
-          // tile-3up
-            allPosts.slice(5, 11).map((post) => {
-              return (
-                <Tile
-                  title={post.frontmatter.title}
-                  href={post.url}
-                  date={post.frontmatter.pubDate}
-                  tags={post.frontmatter.tags}
-                  cover={post.frontmatter.cover}
-                  level="3"
-                />
-              )
-            })
-          }
-        </ul>
+  <!-- ═══════════════════════════════════════════════════════
+    1. HERO  —  min-h-screen, bg-black, image at opacity-60
+       Ref: Home.tsx lines 11-45
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-hero">
+    <div class="hp-hero__bg">
+      <img src="/static/images/homepage/hero.jpg" alt="NBTCA" />
+    </div>
+    <div class="hp-hero__content">
+      <h1 class="hp-hero__title">NBTCA</h1>
+      <p class="hp-hero__sub1">技术与人文的交汇</p>
+      <p class="hp-hero__sub2">自2002年，帮助他人，共同成长</p>
+      <div class="hp-hero__btns">
+        <a href="#repair" class="hp-btn hp-btn--white">探索活动</a>
+        <a href="/join-us" class="hp-btn hp-btn--outline-white">加入我们</a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="more-from-newsroom">
-      <div class="section-content">
-        <h2 class="section-head">更多文章</h2>
+  <!-- ═══════════════════════════════════════════════════════
+    2. REPAIR DAY  —  min-h-screen, full-bleed photo, text center
+       Ref: Home.tsx lines 47-73
+  ═══════════════════════════════════════════════════════ -->
+  <section id="repair" class="hp-fullimg">
+    <div class="hp-fullimg__bg">
+      <img src="/static/images/homepage/repair.jpg" alt="维修日" />
+      <div class="hp-fullimg__grad"></div>
+    </div>
+    <div class="hp-fullimg__content">
+      <p class="hp-eyebrow hp-eyebrow--light">维修日</p>
+      <h2 class="hp-heading hp-heading--white">用技术帮助他人</h2>
+      <p class="hp-desc hp-desc--white">
+        每月一次，免费维修电脑，解决软硬件问题
+      </p>
+      <a href="/repair" class="hp-link hp-link--white">了解更多 →</a>
+    </div>
+  </section>
 
-        <ul role="list" class="section-tiles">
-          {
-          // tile-2up
-            allPosts.slice(12, 18).map((post) => {
-              return (
-                <MoreTile
-                  title={post.frontmatter.title}
-                  href={post.url}
-                  date={post.frontmatter.pubDate}
-                  tags={post.frontmatter.tags}
-                  cover={post.frontmatter.cover}
-                />
-              )
-            })
-          }
-          {
-            Blogs.slice(0, 4).map((post) => {
-              return (
-                <MoreTile
-                  title={post.frontmatter.title}
-                  href={post.url}
-                  date={post.frontmatter.pubDate}
-                  tags={post.frontmatter.tags}
-                  cover={post.frontmatter.cover}
-                />
-              )
-            })
-          }
-        </ul>
-        <div class="view-archive-wrapper">
-          <a
-            href="/blog"
-            class="cta-primary-light"
-            data-analytics-region="router"
-            data-analytics-title="view blog"
-          >
-            阅读历史文章
-          </a>
+  <!-- ═══════════════════════════════════════════════════════
+    3. LECTURE  —  bg-white py-32, text + rounded image card
+       Ref: Home.tsx lines 75-99
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-section hp-section--white">
+    <div class="hp-section__inner">
+      <p class="hp-eyebrow hp-eyebrow--gray">技术讲座</p>
+      <h2 class="hp-heading hp-heading--dark">
+        知识共享<br />触手可及
+      </h2>
+      <p class="hp-desc hp-desc--gray">
+        每学期一次，分享计算机基础技能，让技术不再神秘
+      </p>
+      <div class="hp-imgcard">
+        <img src="/static/images/homepage/lecture.jpg" alt="技术讲座" loading="lazy" />
+      </div>
+      <a href="/lecture" class="hp-link hp-link--blue">查看往期讲座 →</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+    4. NWDC  —  bg-gray-900 py-32, text + rounded image card
+       Ref: Home.tsx lines 101-125
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-section hp-section--dark">
+    <div class="hp-section__inner">
+      <p class="hp-eyebrow hp-eyebrow--dim">NWDC</p>
+      <h2 class="hp-heading hp-heading--white">
+        开发者的<br />技术舞台
+      </h2>
+      <p class="hp-desc hp-desc--dim">
+        每月两次线上分享，致敬 Apple WWDC，探索技术前沿
+      </p>
+      <div class="hp-imgcard">
+        <img src="/static/images/homepage/nwdc.jpg" alt="NWDC" loading="lazy" />
+      </div>
+      <a href="/nwdc" class="hp-link hp-link--blue-light">观看往期分享 →</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+    5. MISSION  —  bg-white py-32, large statement text
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-mission">
+    <div class="hp-mission__inner">
+      <h2 class="hp-mission__text">
+        运用计算机专业能力帮助他人<br />
+        聚集相同兴趣的人<br />
+        彼此启发，共同成长
+      </h2>
+      <p class="hp-mission__label">NBTCA 使命宣言</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+    6. GALLERY  —  黑底，6张照片拼贴，展示 NBTCA 的人文面
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-gallery">
+    <div class="hp-gallery__inner">
+      <div class="hp-gallery__header">
+        <h2 class="hp-gallery__title">我们的故事</h2>
+        <p class="hp-gallery__sub">技术之外，是人与人之间真实的连接</p>
+      </div>
+      <div class="hp-gallery__grid">
+        <figure class="hp-gallery__item hp-gallery__item--featured">
+          <img src="/static/images/homepage/gallery-2.jpg" alt="天涯共此时" loading="lazy" />
+          <figcaption>天涯共此时</figcaption>
+        </figure>
+        <figure class="hp-gallery__item">
+          <img src="/static/images/homepage/gallery-1.jpg" alt="探索精神" loading="lazy" />
+          <figcaption>探索精神</figcaption>
+        </figure>
+        <figure class="hp-gallery__item">
+          <img src="/static/images/homepage/gallery-3.jpg" alt="欢迎加入" loading="lazy" />
+          <figcaption>欢迎加入</figcaption>
+        </figure>
+        <figure class="hp-gallery__item">
+          <img src="/static/images/homepage/gallery-4.jpg" alt="碰撞与启发" loading="lazy" />
+          <figcaption>碰撞与启发</figcaption>
+        </figure>
+        <figure class="hp-gallery__item">
+          <img src="/static/images/homepage/gallery-5.jpg" alt="专注" loading="lazy" />
+          <figcaption>专注</figcaption>
+        </figure>
+        <figure class="hp-gallery__item hp-gallery__item--wide">
+          <img src="/static/images/homepage/gallery-6.jpg" alt="共同决策" loading="lazy" />
+          <figcaption>共同决策</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+    7. CTA  —  欢迎聚会照片背景，深蓝遮罩
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-cta">
+    <div class="hp-cta__bg">
+      <img src="/static/images/homepage/welcome.jpg" alt="" />
+      <div class="hp-cta__overlay"></div>
+    </div>
+    <div class="hp-cta__inner">
+      <h2 class="hp-cta__title">准备好加入了吗？</h2>
+      <p class="hp-cta__desc">成为 NBTCA 的一员，探索技术的无限可能</p>
+      <a href="/join-us" class="hp-btn hp-btn--white hp-btn--lg hp-btn--scale">立即加入</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+    7. BLOG  —  保留旧有博客功能
+  ═══════════════════════════════════════════════════════ -->
+  <section class="hp-blog">
+    <div class="hp-blog__inner">
+      <div class="hp-blog__head">
+        <div>
+          <h2 class="hp-blog__title">最新文章</h2>
+          <p class="hp-blog__sub">来自成员的技术与生活分享</p>
         </div>
+        <a href="/blog" class="hp-link hp-link--blue">查看全部 →</a>
       </div>
-    </section>
+      <ul role="list" class="hp-blog__grid">
+        {
+          allPosts.slice(0, 4).map(post => (
+            <MoreTile
+              title={post.frontmatter.title}
+              href={post.url}
+              date={post.frontmatter.pubDate}
+              tags={post.frontmatter.tags}
+              cover={post.frontmatter.cover}
+            />
+          ))
+        }
+      </ul>
+      <div class="hp-blog__more">
+        <a href="/blog" class="hp-btn hp-btn--blue">阅读历史文章</a>
+      </div>
+    </div>
+  </section>
 
-    <script is:inline>
+  <script is:inline>
     document.addEventListener("DOMContentLoaded", function () {
       const script = document.createElement("script")
       script.src = "/static/js/animation.js"
       document.head.appendChild(script)
-
       script.onload = function () {
-        console.log("LazyLoad.js loaded")
-        // when layout is loaded, load the images
-        // eslint-disable-next-line no-undef
         initImage()
       }
     })
-    </script>
-  </BaseLayout>
+  </script>
+</HomepageLayout>
+
+<style>
+  /* ════════════════════════════════════════════════════════
+     TOKENS
+  ════════════════════════════════════════════════════════ */
+  :root {
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+      "PingFang SC", "Helvetica Neue", sans-serif;
+  }
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     NAV HEIGHT COMPENSATION
+     Because nav is now fixed, push everything down 48px
+  ════════════════════════════════════════════════════════ */
+
+  /* ════════════════════════════════════════════════════════
+     BUTTONS
+  ════════════════════════════════════════════════════════ */
+  .hp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    border-radius: 980px;
+    font-family: var(--font);
+    font-size: 17px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .hp-btn--white {
+    background: #fff;
+    color: #000;
+  }
+  .hp-btn--white:hover { background: rgba(255,255,255,0.9); }
+
+  .hp-btn--outline-white {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 12px 28px;
+    border-radius: 980px;
+    font-family: var(--font);
+    font-size: 17px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  .hp-btn--outline-white:hover { background: rgba(255,255,255,0.1); }
+
+  .hp-btn--blue {
+    background: #0071e3;
+    color: #fff;
+  }
+  .hp-btn--blue:hover { background: #0077ed; }
+
+  .hp-btn--lg {
+    padding: 18px 40px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .hp-btn--scale:hover { transform: scale(1.02); }
+
+  /* ════════════════════════════════════════════════════════
+     TYPOGRAPHY PRIMITIVES
+  ════════════════════════════════════════════════════════ */
+  .hp-eyebrow {
+    font-family: var(--font);
+    font-size: clamp(16px, 2vw, 20px);
+    margin: 0 0 16px;
+  }
+  .hp-eyebrow--light { color: rgba(255,255,255,0.8); }
+  .hp-eyebrow--gray  { color: #6e6e73; }
+  .hp-eyebrow--dim   { color: #9ca3af; } /* gray-400 */
+
+  .hp-heading {
+    font-family: var(--font);
+    font-size: clamp(44px, 7vw, 72px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0 0 24px;
+  }
+  .hp-heading--white { color: #fff; }
+  .hp-heading--dark  { color: #1d1d1f; }
+
+  .hp-desc {
+    font-family: var(--font);
+    font-size: clamp(18px, 2.5vw, 24px);
+    line-height: 1.5;
+    margin: 0 0 40px;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hp-desc--white { color: rgba(255,255,255,0.9); }
+  .hp-desc--gray  { color: #6e6e73; }
+  .hp-desc--dim   { color: #9ca3af; }
+
+  .hp-link {
+    font-family: var(--font);
+    font-size: 17px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .hp-link:hover { opacity: 0.75; }
+  .hp-link--white      { color: #fff; }
+  .hp-link--blue       { color: #0071e3; }
+  .hp-link--blue-light { color: #60a5fa; } /* blue-400 */
+
+  /* ════════════════════════════════════════════════════════
+     1. HERO
+     Ref: min-h-screen bg-black, image absolute opacity-60
+  ════════════════════════════════════════════════════════ */
+  .hp-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .hp-hero__bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.6;
+  }
+  .hp-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hp-hero__content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 80px 24px 24px; /* top pad = nav height */
+    max-width: 900px;
+    width: 100%;
+  }
+
+  /* text-6xl sm:7xl md:8xl lg:9xl font-semibold tracking-tight */
+  .hp-hero__title {
+    font-family: var(--font);
+    font-size: clamp(72px, 14vw, 160px);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: #fff;
+    margin: 0 0 32px;
+    line-height: 1;
+  }
+
+  /* text-2xl sm:3xl md:4xl font-medium white/90 */
+  .hp-hero__sub1 {
+    font-family: var(--font);
+    font-size: clamp(22px, 3.5vw, 40px);
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+    margin: 0 0 16px;
+  }
+
+  /* text-xl sm:2xl white/70 */
+  .hp-hero__sub2 {
+    font-family: var(--font);
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    margin: 0 0 48px;
+  }
+
+  /* flex gap-4 justify-center */
+  .hp-hero__btns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     2. FULL-BLEED IMAGE SECTION (Repair Day)
+     Ref: min-h-screen, bg-gradient-to-t from-black/80 via-black/40 to-transparent
+  ════════════════════════════════════════════════════════ */
+  .hp-fullimg {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hp-fullimg__bg {
+    position: absolute;
+    inset: 0;
+  }
+  .hp-fullimg__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hp-fullimg__grad {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+  }
+
+  .hp-fullimg__content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 80px 24px 24px;
+    max-width: 860px;
+    width: 100%;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     3. TEXT + IMAGE SECTIONS (Lecture & NWDC)
+     Ref: py-32 (128px), text-center, rounded-3xl image card
+  ════════════════════════════════════════════════════════ */
+  .hp-section {
+    padding: 128px 24px;
+  }
+  .hp-section--white { background: #fff; }
+  .hp-section--dark  { background: #111827; } /* gray-900 */
+
+  .hp-section__inner {
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /* rounded-3xl overflow-hidden shadow-2xl mb-12 */
+  .hp-imgcard {
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    margin-bottom: 48px;
+  }
+  .hp-imgcard img {
+    width: 100%;
+    height: clamp(300px, 40vw, 500px);
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     5. MISSION STATEMENT
+     Ref: bg-white py-32, text-4xl..6xl tracking-tight leading-tight
+  ════════════════════════════════════════════════════════ */
+  .hp-mission {
+    background: #fff;
+    padding: 128px 24px;
+  }
+  .hp-mission__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hp-mission__text {
+    font-family: var(--font);
+    font-size: clamp(28px, 4.5vw, 60px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    color: #1d1d1f;
+    margin: 0 0 32px;
+  }
+  .hp-mission__label {
+    font-family: var(--font);
+    font-size: 18px;
+    color: #6e6e73;
+    margin: 0;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     6. GALLERY
+  ════════════════════════════════════════════════════════ */
+  .hp-gallery {
+    background: #000;
+    padding: 96px 24px 112px;
+  }
+  .hp-gallery__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hp-gallery__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .hp-gallery__title {
+    font-family: var(--font);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #fff;
+    margin: 0 0 12px;
+  }
+  .hp-gallery__sub {
+    font-family: var(--font);
+    font-size: clamp(16px, 2vw, 19px);
+    color: rgba(255,255,255,0.5);
+    margin: 0;
+  }
+  .hp-gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 8px;
+  }
+  /* 第1张：占左侧前两列 */
+  .hp-gallery__item--featured {
+    grid-column: 1 / 3;
+  }
+  /* 第6张：全宽底部 */
+  .hp-gallery__item--wide {
+    grid-column: 1 / 4;
+  }
+  .hp-gallery__item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0;
+    cursor: default;
+  }
+  .hp-gallery__item img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .hp-gallery__item--featured img {
+    aspect-ratio: 16 / 9;
+  }
+  .hp-gallery__item--wide img {
+    aspect-ratio: 16 / 9;
+  }
+  /* item2 shares row with featured — fill the row height so caption doesn't float */
+  .hp-gallery__item:nth-child(2) img {
+    aspect-ratio: unset;
+    height: 100%;
+  }
+  .hp-gallery__item:hover img {
+    transform: scale(1.04);
+  }
+  .hp-gallery__item figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 28px 14px 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.02em;
+  }
+  @media (max-width: 734px) {
+    .hp-gallery__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .hp-gallery__item--featured {
+      grid-column: 1 / 3;
+    }
+    .hp-gallery__item--wide {
+      grid-column: 1 / 3;
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     7. CTA  —  欢迎聚会照片背景 + 深蓝遮罩
+  ════════════════════════════════════════════════════════ */
+  .hp-cta {
+    position: relative;
+    padding: 128px 24px;
+    overflow: hidden;
+  }
+  .hp-cta__bg {
+    position: absolute;
+    inset: 0;
+  }
+  .hp-cta__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+  .hp-cta__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 40, 85, 0.82);
+  }
+  .hp-cta__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hp-cta__title {
+    font-family: var(--font);
+    font-size: clamp(36px, 5.5vw, 64px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #fff;
+    margin: 0 0 32px;
+  }
+  .hp-cta__desc {
+    font-family: var(--font);
+    font-size: clamp(18px, 2.5vw, 24px);
+    color: rgba(255,255,255,0.85);
+    margin: 0 0 48px;
+    font-weight: 400;
+  }
+  .hp-cta .hp-btn--white {
+    color: #003366;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     7. BLOG
+  ════════════════════════════════════════════════════════ */
+  .hp-blog {
+    background: #fff;
+    padding: 96px 24px 120px;
+  }
+  .hp-blog__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hp-blog__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .hp-blog__title {
+    font-family: var(--font);
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+    margin: 0 0 8px;
+  }
+  .hp-blog__sub {
+    font-family: var(--font);
+    font-size: 17px;
+    color: #6e6e73;
+    margin: 0;
+  }
+  .hp-blog__grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .hp-blog__more {
+    margin-top: 48px;
+    text-align: center;
+  }
+
+  @media (max-width: 734px) {
+    .hp-blog__grid { grid-template-columns: 1fr; }
+    .hp-blog__head { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     DARK MODE
+  ════════════════════════════════════════════════════════ */
+  body.theme-dark .hp-section--white,
+  body.theme-dark .hp-mission,
+  body.theme-dark .hp-blog {
+    background: #000;
+  }
+  body.theme-dark .hp-heading--dark,
+  body.theme-dark .hp-mission__text,
+  body.theme-dark .hp-blog__title {
+    color: #f5f5f7;
+  }
+  body.theme-dark .hp-desc--gray,
+  body.theme-dark .hp-eyebrow--gray,
+  body.theme-dark .hp-blog__sub,
+  body.theme-dark .hp-mission__label {
+    color: #a1a1a6;
+  }
+</style>

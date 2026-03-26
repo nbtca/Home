@@ -1,6 +1,6 @@
 ---
 import BaseHead from "../components/header/BaseHead.astro"
-import Header from "../components/header/Header.astro"
+import SiteHeader from "../components/header/SiteHeader.astro"
 import Footer from "../components/Footer.astro"
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts"
 const { primaryTitle } = Astro.props
@@ -11,8 +11,8 @@ const title = primaryTitle ? `${primaryTitle}  -  ${SITE_TITLE}` : SITE_TITLE;
       <BaseHead title={title} description={SITE_DESCRIPTION} />
       <script type="text/javascript" is:inline>
         (function (c, l, a, r, i, t, y) {
-          c[a] = c[a] || function () {
-            (c[a].q = c[a].q || []).push(arguments)
+          c[a] = c[a] || function (...args) {
+            (c[a].q = c[a].q || []).push(args)
           }
           t = l.createElement(r)
           t.async = 1
@@ -23,7 +23,7 @@ const title = primaryTitle ? `${primaryTitle}  -  ${SITE_TITLE}` : SITE_TITLE;
       </script>
     </head>
     <body class="flex flex-col min-h-screen">
-      <Header />
+      <SiteHeader />
       <div class="flex-grow flex flex-col">
         <slot />
       </div>

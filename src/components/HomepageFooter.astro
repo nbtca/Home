@@ -1,0 +1,135 @@
+---
+const year = new Date().getFullYear()
+---
+
+<footer class="hp-footer">
+  <div class="hp-footer-inner">
+    <div class="hp-footer-grid">
+      <div class="hp-footer-col">
+        <h4 class="hp-footer-heading">活动</h4>
+        <ul>
+          <li><a href="/repair">维修日</a></li>
+          <li><a href="/calendar">技术讲座</a></li>
+          <li><a href="/calendar">NWDC</a></li>
+        </ul>
+      </div>
+      <div class="hp-footer-col">
+        <h4 class="hp-footer-heading">社区</h4>
+        <ul>
+          <li><a href="/about">关于我们</a></li>
+          <li><a href="/about#join">加入我们</a></li>
+          <li><a href="/about#members">成员</a></li>
+        </ul>
+      </div>
+      <div class="hp-footer-col">
+        <h4 class="hp-footer-heading">资源</h4>
+        <ul>
+          <li><a href="/blog">博客</a></li>
+          <li><a href="/calendar">活动日历</a></li>
+          <li><a href="https://github.com/nbtca" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://docs.nbtca.space" target="_blank" rel="noopener noreferrer">文档</a></li>
+        </ul>
+      </div>
+      <div class="hp-footer-col">
+        <h4 class="hp-footer-heading">关于</h4>
+        <ul>
+          <li><a href="/about#vision">愿景</a></li>
+          <li><a href="/about#mission">使命</a></li>
+          <li><a href="mailto:contact@nbtca.space">联系我们</a></li>
+        </ul>
+      </div>
+      <div class="hp-footer-col">
+        <h4 class="hp-footer-heading">关注</h4>
+        <ul>
+          <li><a href="/about#wechat">微信公众号</a></li>
+          <li><a href="https://qm.qq.com/q/djgZhpnlzW" target="_blank" rel="noopener noreferrer">QQ 群</a></li>
+          <li><a href="/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hp-footer-bottom">
+      <p>Copyright &copy; 2002&ndash;{year} NBTCA &middot; 宁波理工学院计算机协会 &middot; 技术与人文的交汇</p>
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2021030831号</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .hp-footer {
+    background: #f5f5f7;
+    border-top: 1px solid #d2d2d7;
+  }
+
+  .hp-footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+  }
+
+  .hp-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 24px;
+    margin-bottom: 40px;
+  }
+  @media (min-width: 768px) {
+    .hp-footer-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .hp-footer-heading {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1d1d1f;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+  }
+
+  .hp-footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hp-footer-col a {
+    font-size: 12px;
+    color: #6e6e73;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .hp-footer-col a:hover {
+    color: #1d1d1f;
+  }
+
+  .hp-footer-bottom {
+    border-top: 1px solid #d2d2d7;
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  @media (min-width: 640px) {
+    .hp-footer-bottom {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .hp-footer-bottom p,
+  .hp-footer-bottom a {
+    font-size: 11px;
+    color: #6e6e73;
+    text-decoration: none;
+  }
+  .hp-footer-bottom a:hover {
+    color: #1d1d1f;
+  }
+</style>
