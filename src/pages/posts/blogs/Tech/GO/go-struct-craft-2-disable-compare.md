@@ -23,7 +23,7 @@ type a struct {
 
 func main() {
     var a1, a2 a
-    fmt.println(a1 == a2)
+    fmt.Println(a1 == a2)
 }
 // OUTPUT
 // true
@@ -32,7 +32,7 @@ func main() {
 但如果结构体包含 map、slice 或 func 类型，编译就会失败：
 
 ```go
-type B syruct {
+type B struct {
     X int
     Y []int
 }
@@ -141,7 +141,7 @@ type Config struct {
 }
 ```
 
-目前它可比较，用户代码中可能大量使用了 `configA == Config{}`。但业务发展后，你需要给 Config 增加一个任意类型的不可比较字段字段：
+目前它可比较，用户代码中可能大量使用了 `configA == Config{}`。但业务发展后，你需要给 Config 增加一个任意类型的不可比较字段：
 
 ```go
 type Config struct {
