@@ -2,13 +2,93 @@
 import BaseLayout from "../layouts/BaseLayout.astro"
 ---
 
-  <BaseLayout primaryTitle="404 Not Found">
-    <section class="archive">
-      <div class="section-content section-tag">
-        <div class="archive-tag">
-          <h2 class="tag-header">404 Not Found</h2>
-          <div class="tag-post-list">来到了一片荒原，这里什么都没有。</div>
-        </div>
+<BaseLayout primaryTitle="404">
+  <section class="e404">
+    <div class="e404__body">
+      <p class="e404__code">404</p>
+      <h1 class="e404__title">页面不存在</h1>
+      <p class="e404__desc">来到了一片荒原，这里什么都没有。</p>
+      <div class="e404__actions">
+        <a href="/" class="e404__btn e404__btn--fill">回到主页</a>
+        <a href="/blog" class="e404__btn e404__btn--ghost">查看博客 →</a>
       </div>
-    </section>
-  </BaseLayout>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  :root {
+    --e404-font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+      "PingFang SC", "Helvetica Neue", sans-serif;
+  }
+
+  .e404 {
+    background: #050505;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+  }
+
+  .e404__body {
+    max-width: 560px;
+  }
+
+  .e404__code {
+    font-family: var(--e404-font);
+    font-size: clamp(96px, 20vw, 180px);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.08);
+    margin: 0 0 -24px;
+    user-select: none;
+  }
+
+  .e404__title {
+    font-family: var(--e404-font);
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #f5f5f7;
+    margin: 0 0 16px;
+  }
+
+  .e404__desc {
+    font-family: var(--e404-font);
+    font-size: clamp(15px, 2vw, 18px);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 40px;
+  }
+
+  .e404__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .e404__btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 11px 24px;
+    border-radius: 980px;
+    font-family: var(--e404-font);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .e404__btn--fill {
+    background: #0071e3;
+    color: #fff;
+  }
+  .e404__btn--fill:hover { background: #0077ed; }
+  .e404__btn--ghost {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .e404__btn--ghost:hover { color: #fff; }
+</style>

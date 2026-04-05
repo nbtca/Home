@@ -1,75 +1,163 @@
 ---
 import { SITE_TITLE, SITE_EMAIL } from "../consts"
-const { theme } = Astro.props
-import { SITE_NAME } from "../consts"
-const date = new Date()
-const year = date.getFullYear();
-
+const year = new Date().getFullYear()
 ---
 
-  <div class:list={["footer-main", { "footer-dark": theme === "dark" }]}>
-    <div class="content-body footer-wrapper">
-      <div class="footer-box">
-        <div class="foot-nav">
-          <div class="foot-nav-items flex flex-col sm:grid gap-2 sm:gap-5 grid-cols-5 text-xs">
-            <div class="item col-span-2">
-              <div>
-                <span class="logo">{SITE_TITLE}</span> By NBTCA
-              </div>
-              <div class="italic">
-                To be at the intersection of technology and liberal arts.
-              </div>
+<footer class="site-footer">
+  <div class="sf-inner">
+    <div class="sf-grid">
 
-              <div class="mt-1 sm:mt-2 !text-xs">
-                联系我们:
-                <span class="ml-1"> <a class="!text-blue-500" href="mailto:contact@nbtca.space">{SITE_EMAIL}</a></span>
-              </div>
-            </div>
-
-            <div class="item products">
-              <div class="item-title">导航</div>
-              <a href="/" target="_blank">主页</a>
-              <a href="https://docs.nbtca.space" target="_blank">文档</a>
-              <a href="/rss.xml" target="_blank" rel="noopener" title="Subscribe via RSS" class="flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z" />
-                </svg>
-                RSS
-              </a>
-            </div>
-
-            <div class="item community">
-              <div class="item-title">社媒</div>
-              <a href="https://github.com/nbtca" target="_blank">Github</a>
-              <a href="https://qm.qq.com/q/djgZhpnlzW" target="_blank">QQ</a>
-            </div>
-
-            <div class="item">
-              <div class="item-title">维修</div>
-              <a href="https://nbtca.space/repair/create-ticket">预约维修</a>
-            </div>
-
-            <!-- <div class="item">
-              <div class="item-title">维修</div>
-              <a href="https://nbtca.space/repair/create-ticket">预约维修</a>
-            </div> -->
-          </div>
-          <!-- <div class="flex text-xs mt-3">
-            联系我们:
-            <div class="ml-1"> <a href="mailto:contact@nbtca.space">{SITE_EMAIL}</a></div>
-          </div> -->
-        </div>
-        <div class=" w-full">
-          <div class="w-full h-[0.5px] my-4 bg-gray-500"> </div>
-          <div class="flex flex-col gap-2 sm:flex-row items-start sm:items-center text-xs text-gray-500">
-            <div class="">
-              Copyright &copy; {`${year}  ${SITE_NAME}`}
-            </div>
-            <div>
-              <a href="https://beian.miit.gov.cn/" target="_blank" class="text-xs">浙ICP备2021030831号</a>
-            </div>
-          </div>
-        </div>
+      <!-- Brand col -->
+      <div class="sf-brand">
+        <p class="sf-brand__name">{SITE_TITLE} <span>By NBTCA</span></p>
+        <p class="sf-brand__tagline">
+          To be at the intersection of technology and liberal arts.
+        </p>
+        <p class="sf-brand__contact">
+          联系我们：<a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a>
+        </p>
       </div>
+
+      <!-- Nav col -->
+      <div class="sf-col">
+        <p class="sf-col__title">导航</p>
+        <a href="/">主页</a>
+        <a href="/blog">博客</a>
+        <a href="/about">关于</a>
+        <a href="https://docs.nbtca.space" target="_blank" rel="noopener noreferrer">文档</a>
+        <a href="/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a>
+      </div>
+
+      <!-- Activities col -->
+      <div class="sf-col">
+        <p class="sf-col__title">活动</p>
+        <a href="/calendar">活动日历</a>
+        <a href="/repair">维修日</a>
+        <a href="/nwdc">NWDC</a>
+        <a href="/lecture">讲座</a>
+      </div>
+
+      <!-- Community col -->
+      <div class="sf-col">
+        <p class="sf-col__title">社区</p>
+        <a href="/members">历届成员</a>
+        <a href="/join-us">加入我们</a>
+        <a href="https://github.com/nbtca" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://qm.qq.com/q/djgZhpnlzW" target="_blank" rel="noopener noreferrer">QQ 群</a>
+      </div>
+
+    </div>
+
+    <div class="sf-bottom">
+      <p>Copyright &copy; 2002&ndash;{year} NBTCA &middot; 宁波理工学院计算机协会 &middot; 技术与人文的交汇</p>
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">
+        浙ICP备2021030831号
+      </a>
     </div>
   </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: #f5f5f7;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .sf-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+  }
+
+  /* ── Grid ───────────────────────────────────────────────── */
+  .sf-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  @media (min-width: 640px) {
+    .sf-grid {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 24px;
+    }
+  }
+
+  /* ── Brand ──────────────────────────────────────────────── */
+  .sf-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sf-brand__name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin: 0;
+  }
+  .sf-brand__name span {
+    font-weight: 400;
+    color: #6e6e73;
+  }
+  .sf-brand__tagline {
+    font-size: 12px;
+    color: #6e6e73;
+    font-style: italic;
+    margin: 0;
+    line-height: 1.5;
+  }
+  .sf-brand__contact {
+    font-size: 12px;
+    color: #6e6e73;
+    margin: 4px 0 0;
+  }
+  .sf-brand__contact a {
+    color: #0071e3;
+    text-decoration: none;
+  }
+  .sf-brand__contact a:hover { text-decoration: underline; }
+
+  /* ── Nav columns ────────────────────────────────────────── */
+  .sf-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .sf-col__title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1d1d1f;
+    margin: 0 0 2px;
+  }
+  .sf-col a {
+    font-size: 12px;
+    color: #6e6e73;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .sf-col a:hover { color: #1d1d1f; }
+
+  /* ── Bottom bar ─────────────────────────────────────────── */
+  .sf-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+  }
+  .sf-bottom p {
+    font-size: 11px;
+    color: #6e6e73;
+    margin: 0;
+  }
+  .sf-bottom a {
+    font-size: 11px;
+    color: #6e6e73;
+    text-decoration: none;
+  }
+  .sf-bottom a:hover { color: #1d1d1f; }
+</style>

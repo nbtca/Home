@@ -1,0 +1,441 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+
+const highlights = [
+  { icon: "📍", label: "线下举办", desc: "面对面交流，更真实的学术氛围" },
+  { icon: "🎓", label: "全校开放", desc: "面向在校学生，欢迎跨专业参与" },
+  { icon: "🔗", label: "邀请校友", desc: "连接在校成员与已毕业从业者" },
+]
+---
+
+<BaseLayout primaryTitle="讲座">
+
+  <!-- ── Hero ─────────────────────────────────────────────── -->
+  <section class="lec-hero">
+    <div class="lec-hero__bg">
+      <img src="/static/images/lecture/hero.jpg" alt="" />
+      <div class="lec-hero__overlay"></div>
+    </div>
+    <div class="lec-hero__body">
+      <p class="lec-eyebrow">每学期 1–2 次 · 线下</p>
+      <h1 class="lec-hero__title">技术讲座</h1>
+      <p class="lec-hero__desc">
+        面向全校的线下学术交流活动<br />
+        邀请在校成员与校友嘉宾分享技术实践
+      </p>
+      <a href="/calendar" class="lec-btn lec-btn--white">查看活动日历 →</a>
+    </div>
+  </section>
+
+  <!-- ── About ─────────────────────────────────────────────── -->
+  <section class="lec-about">
+    <div class="lec-container">
+      <div class="lec-about__text">
+        <p class="lec-label">About</p>
+        <h2 class="lec-title">传承已久的<br />学术交流传统</h2>
+        <p class="lec-body">
+          技术讲座是 NBTCA 继承已久的传统项目，旨在推动校内线下学术交流，
+          并连接不同专业、不同届别的人——包括在校学生与已毕业从业的校友。
+        </p>
+        <p class="lec-body">
+          每学期举办 1–2 次，主题围绕计算机应用与技术实践，
+          让更多同学以轻松、接地气的方式掌握实用技能。
+        </p>
+      </div>
+      <div class="lec-highlights">
+        {highlights.map(h => (
+          <div class="lec-highlight">
+            <span class="lec-highlight__icon" aria-hidden="true">{h.icon}</span>
+            <div>
+              <strong>{h.label}</strong>
+              <p>{h.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Past lectures ─────────────────────────────────────── -->
+  <section class="lec-past">
+    <div class="lec-container">
+      <p class="lec-label lec-label--dark">Past Lectures</p>
+      <h2 class="lec-title lec-title--dark">往期讲座</h2>
+
+      <div class="lec-card">
+        <figure class="lec-card__poster">
+          <img
+            src="/static/images/lecture/poster-1.png"
+            alt="电脑使用和维护讲座海报"
+            loading="lazy"
+          />
+        </figure>
+        <div class="lec-card__body">
+          <p class="lec-card__meta">技术讲座</p>
+          <h3 class="lec-card__title">电脑使用和维护</h3>
+          <p class="lec-card__desc">
+            电脑清理、硬件选购及加装的快速入门。
+            收集最常见的问题，为你提供简明的解决方案，
+            涵盖散热、硬盘分区、系统维护等实用内容。
+          </p>
+          <ul class="lec-card__tags">
+            <li>硬件维护</li>
+            <li>系统优化</li>
+            <li>选购指南</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Photo gallery ─────────────────────────────────────── -->
+  <section class="lec-photos">
+    <div class="lec-container">
+      <div class="lec-photos__grid">
+        <figure class="lec-photo lec-photo--tall">
+          <img
+            src="/static/images/lecture/speaker.jpg"
+            alt="讲座演讲者"
+            loading="lazy"
+          />
+        </figure>
+        <figure class="lec-photo">
+          <img
+            src="/static/images/lecture/classroom.jpg"
+            alt="讲座现场"
+            loading="lazy"
+          />
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How to join ───────────────────────────────────────── -->
+  <section class="lec-join">
+    <div class="lec-container">
+      <h2 class="lec-join__title">如何参与</h2>
+      <p class="lec-join__desc">
+        讲座活动通过 NBTCA 日历与社群渠道主动宣传。
+        关注活动日历，不错过下一场。
+      </p>
+      <div class="lec-join__actions">
+        <a href="/calendar" class="lec-btn lec-btn--primary">查看活动日历</a>
+        <a href="mailto:contact@nbtca.space" class="lec-btn lec-btn--ghost">
+          联系我们 →
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ── Font stack ─────────────────────────────────────────── */
+  :root {
+    --lec-font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+      "PingFang SC", "Helvetica Neue", sans-serif;
+  }
+
+  /* ── Container ──────────────────────────────────────────── */
+  .lec-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Shared typography ──────────────────────────────────── */
+  .lec-label {
+    font-family: var(--lec-font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0 0 12px;
+  }
+  .lec-label--dark { color: #6e6e73; }
+
+  .lec-title {
+    font-family: var(--lec-font);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: #f5f5f7;
+    margin: 0 0 24px;
+  }
+  .lec-title--dark { color: #1d1d1f; }
+
+  .lec-body {
+    font-family: var(--lec-font);
+    font-size: clamp(16px, 2vw, 18px);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0 0 16px;
+  }
+
+  .lec-eyebrow {
+    font-family: var(--lec-font);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0 0 20px;
+  }
+
+  /* ── Buttons ────────────────────────────────────────────── */
+  .lec-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 11px 24px;
+    border-radius: 980px;
+    font-family: var(--lec-font);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .lec-btn--white {
+    background: #fff;
+    color: #000;
+  }
+  .lec-btn--white:hover { background: rgba(255, 255, 255, 0.9); }
+  .lec-btn--primary {
+    background: #0071e3;
+    color: #fff;
+  }
+  .lec-btn--primary:hover { background: #0077ed; }
+  .lec-btn--ghost {
+    color: #0071e3;
+    font-size: 15px;
+  }
+  .lec-btn--ghost:hover { opacity: 0.75; }
+
+  /* ── Hero ───────────────────────────────────────────────── */
+  .lec-hero {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    overflow: hidden;
+    background: #111;
+  }
+  .lec-hero__bg {
+    position: absolute;
+    inset: 0;
+  }
+  .lec-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    opacity: 0.55;
+  }
+  .lec-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.3) 60%,
+      transparent 100%
+    );
+  }
+  .lec-hero__body {
+    position: relative;
+    z-index: 1;
+    padding: 0 clamp(24px, 5vw, 80px) clamp(48px, 8vh, 96px);
+    max-width: 720px;
+  }
+  .lec-hero__title {
+    font-family: var(--lec-font);
+    font-size: clamp(56px, 10vw, 100px);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    color: #fff;
+    margin: 0 0 20px;
+    line-height: 1;
+  }
+  .lec-hero__desc {
+    font-family: var(--lec-font);
+    font-size: clamp(17px, 2.5vw, 22px);
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.55;
+    margin: 0 0 36px;
+  }
+
+  /* ── About ──────────────────────────────────────────────── */
+  .lec-about {
+    background: #1d1d1f;
+    padding: 96px 0;
+  }
+  .lec-about__text { max-width: 680px; }
+  .lec-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 48px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .lec-highlight {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .lec-highlight__icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .lec-highlight strong {
+    display: block;
+    font-family: var(--lec-font);
+    font-size: 15px;
+    font-weight: 600;
+    color: #f5f5f7;
+    margin-bottom: 4px;
+  }
+  .lec-highlight p {
+    font-family: var(--lec-font);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ── Past lectures ──────────────────────────────────────── */
+  .lec-past {
+    background: #fff;
+    padding: 96px 0;
+  }
+
+  .lec-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-top: 48px;
+    background: #f5f5f7;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .lec-card {
+      grid-template-columns: 280px 1fr;
+      gap: 0;
+    }
+  }
+  .lec-card__poster {
+    margin: 0;
+    overflow: hidden;
+    height: 100%;
+    min-height: 240px;
+  }
+  .lec-card__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .lec-card__body {
+    padding: clamp(24px, 4vw, 48px);
+  }
+  .lec-card__meta {
+    font-family: var(--lec-font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6e6e73;
+    margin: 0 0 12px;
+  }
+  .lec-card__title {
+    font-family: var(--lec-font);
+    font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+    margin: 0 0 16px;
+  }
+  .lec-card__desc {
+    font-family: var(--lec-font);
+    font-size: 15px;
+    line-height: 1.7;
+    color: #6e6e73;
+    margin: 0 0 24px;
+  }
+  .lec-card__tags {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .lec-card__tags li {
+    font-family: var(--lec-font);
+    font-size: 12px;
+    font-weight: 500;
+    color: #1d1d1f;
+    background: rgba(0, 0, 0, 0.06);
+    padding: 4px 12px;
+    border-radius: 980px;
+  }
+
+  /* ── Photo gallery ──────────────────────────────────────── */
+  .lec-photos {
+    background: #f5f5f7;
+    padding: 2px 0;
+  }
+  .lec-photos__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+  .lec-photo {
+    margin: 0;
+    overflow: hidden;
+  }
+  .lec-photo img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .lec-photo--tall img {
+    aspect-ratio: 3 / 4;
+  }
+  .lec-photo:hover img { transform: scale(1.03); }
+
+  /* ── How to join ────────────────────────────────────────── */
+  .lec-join {
+    background: #fff;
+    padding: 96px 0;
+    text-align: center;
+  }
+  .lec-join__title {
+    font-family: var(--lec-font);
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #1d1d1f;
+    margin: 0 0 20px;
+  }
+  .lec-join__desc {
+    font-family: var(--lec-font);
+    font-size: clamp(16px, 2vw, 19px);
+    line-height: 1.65;
+    color: #6e6e73;
+    margin: 0 auto 40px;
+    max-width: 520px;
+  }
+  .lec-join__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>
