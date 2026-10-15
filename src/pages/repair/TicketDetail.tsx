@@ -11,6 +11,7 @@ type PublicEvent = components["schemas"]["PublicEvent"]
 
 export default function TicketDetail() {
   const [userInfo, setUserInfo] = useState<UserInfoResponse | null>(null)
+  const [token, setToken] = useState<string>()
   const [loading, setLoading] = useState(true)
   const [eventId, setEventId] = useState<number | null>(null)
   const [event, setEvent] = useState<PublicEvent | null>(null)
@@ -38,6 +39,7 @@ export default function TicketDetail() {
       if (authenticated) {
         const claims = await logtoClient.getIdTokenClaims()
         setUserInfo(claims)
+        setToken(await logtoClient.getAccessToken())
       }
       else {
         // Redirect to login if not authenticated
@@ -114,12 +116,12 @@ export default function TicketDetail() {
     )
   }
 
-  if (!userInfo || !eventId) {
+  if (!userInfo || !eventId || !token) {
     return (
       <div className="container mx-auto pt-16 pb-20">
         <div className="flex flex-col items-center justify-center">
           <p className="text-gray-500 mb-4">
-            {!userInfo ? "请先登录以查看维修详情" : "无效的维修单ID"}
+            {!userInfo || !token ? "请先登录以查看维修详情" : "无效的维修单ID"}
           </p>
           <Button color="primary" onPress={handleBackToHome}>
             返回首页
@@ -134,7 +136,7 @@ export default function TicketDetail() {
 
       {/* Event detail content */}
       <div className="section-content">
-        <EventDetail eventId={eventId}>
+        <EventDetail eventId={eventId} token={token}>
           {(eventData: PublicEvent) => {
             // Store the event data for actions
             if (eventData && !event) {

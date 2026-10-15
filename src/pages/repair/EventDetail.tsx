@@ -5,6 +5,7 @@ import { Textarea, Input, Chip, Skeleton } from "@heroui/react"
 import type { PublicMember } from "../../store/member"
 import dayjs from "dayjs"
 import { EventStatus, UserEventAction } from "../../types/event"
+import EventPhotos from "./EventPhotos"
 
 type PublicEvent = components["schemas"]["PublicEvent"]
 type Event = components["schemas"]["Event"]
@@ -105,6 +106,7 @@ const EventDetail = forwardRef<EventDetailRef, {
   children?: (event: PublicEvent) => React.ReactNode
   token?: string
   currentMemberId?: string
+  isAdmin?: boolean
 }>((props, ref) => {
       const [event, setEvent] = useState<PublicEvent | undefined>()
       const [eventWithContact, setEventWithContact] = useState<Event | undefined>()
@@ -125,16 +127,17 @@ const EventDetail = forwardRef<EventDetailRef, {
         if (!props.token) return
 
         try {
-          const { data } = await saturdayClient.GET("/member/events/{EventId}", {
-            params: {
-              header: {
-                Authorization: `Bearer ${props.token}`,
-              },
-              path: {
-                EventId: eventId,
-              },
+          const params = {
+            header: {
+              Authorization: `Bearer ${props.token}`,
             },
-          })
+            path: {
+              EventId: eventId,
+            },
+          }
+          const { data } = props.currentMemberId
+            ? await saturdayClient.GET("/member/events/{EventId}", { params })
+            : await saturdayClient.GET("/client/events/{EventId}", { params })
           setEventWithContact(data)
         }
         catch (error) {
@@ -149,20 +152,21 @@ const EventDetail = forwardRef<EventDetailRef, {
         if (eventId) {
           const event = await fetchAndSetEvent(eventId as unknown as number)
 
-          // Fetch contact info if user has accepted the event
-          // Show contact info if the event is in any state after acceptance (accepted, committed, closed)
-          if (event && props.token && props.currentMemberId && event.member?.memberId === props.currentMemberId) {
-            const hasAccepted = event.status === EventStatus.accepted
-              || event.status === EventStatus.committed
-              || event.status === EventStatus.closed
-            if (hasAccepted) {
-              await fetchContactInfo(eventId as unknown as number)
-            }
+          const hasAccepted = event?.status === EventStatus.accepted
+            || event?.status === EventStatus.committed
+            || event?.status === EventStatus.closed
+          const isAssignee = props.currentMemberId && event?.member?.memberId === props.currentMemberId
+          if (event && props.token && (props.isAdmin || !props.currentMemberId || (isAssignee && hasAccepted))) {
+            await fetchContactInfo(eventId as unknown as number)
           }
 
           return event
         }
       }
+
+      const canUpload = !!eventWithContact
+        && (eventWithContact.status === EventStatus.accepted || eventWithContact.status === EventStatus.committed)
+        && (!!props.isAdmin || (!!props.currentMemberId && eventWithContact.memberId === props.currentMemberId))
 
       const repairDescription = useMemo(() => {
         return event?.logs.findLast(v => v.action == "commit" || v.action == "alterCommit")?.description
@@ -244,6 +248,17 @@ const EventDetail = forwardRef<EventDetailRef, {
                           />
                         )
                       : <></>
+                  }
+                  {
+                    eventWithContact && (canUpload || !!eventWithContact.photos?.length) && (
+                      <EventPhotos
+                        photos={eventWithContact.photos ?? []}
+                        eventId={eventWithContact.eventId}
+                        token={props.token}
+                        canUpload={canUpload}
+                        onUploaded={setEventWithContact}
+                      />
+                    )
                   }
                   <div className="bg-gray-100 rounded-xl text-sm px-3 py-2 mt-2 ">
                     <div className="text-xs font-semibold text-gray-600 mb-1">

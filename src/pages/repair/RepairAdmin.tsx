@@ -151,6 +151,7 @@ function TicketDetailDrawer(props: {
             eventId={props.event?.eventId}
             token={props.identity?.token}
             currentMemberId={props.identity?.member?.memberId}
+            isAdmin={props.identity?.userInfo?.roles?.some(role => role.toLowerCase() === "repair admin")}
           >
             {
               event => (
