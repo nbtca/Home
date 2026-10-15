@@ -298,6 +298,23 @@ export interface paths {
     patch: operations["alter-commit-event"]
     trace?: never
   }
+  "/member/events/{EventId}/photos": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Upload event photos */
+    post: operations["upload-event-photos"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/member/notification-preferences": {
     parameters: {
       query?: never
@@ -643,6 +660,7 @@ export interface components {
       memberId: string
       model: string
       phone: string
+      photos: components["schemas"]["EventPhoto"][] | null
       problem: string
       qq: string
       size: string
@@ -655,6 +673,13 @@ export interface components {
       /** Format: int64 */
       logId: number
       memberId: string
+    }
+    "EventPhoto": {
+      gmtCreate: string
+      memberId: string
+      /** Format: int64 */
+      photoId: number
+      url: string
     }
     "Item": {
       enabled: boolean
@@ -1729,6 +1754,55 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["AlterCommitEventInputBody"]
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "upload-event-photos": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          photos: string[]
+        }
       }
     }
     responses: {
