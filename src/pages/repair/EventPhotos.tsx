@@ -2,9 +2,16 @@ import { useRef, useState } from "react"
 import { Button } from "@heroui/react"
 import type { components } from "../../types/saturday"
 import { saturdayClient } from "../../utils/client"
+import { makeLogtoClient } from "../../utils/auth"
 
 type Event = components["schemas"]["Event"]
 type EventPhoto = components["schemas"]["EventPhoto"]
+
+const reasons: Record<string, string> = {
+  "only the assigned member or an admin can add photos": "只有接单成员或管理员可以添加照片",
+  "photos can only be added to accepted or committed events": "工单当前的状态不能再添加照片",
+  "an event can have at most 20 photos": "每单最多 20 张照片",
+}
 
 async function compress(file: File): Promise<Blob> {
   const bitmap = await createImageBitmap(file)
@@ -26,11 +33,12 @@ async function compress(file: File): Promise<Blob> {
 export default function EventPhotos(props: {
   photos: EventPhoto[]
   eventId: number
-  token?: string
   canUpload: boolean
   onUploaded: (event: Event) => void
+  onExpired: () => void
 }) {
   const input = useRef<HTMLInputElement>(null)
+  const refreshed = useRef(false)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState("")
 
@@ -54,7 +62,7 @@ export default function EventPhotos(props: {
       const { data, error, response } = await saturdayClient.POST("/member/events/{EventId}/photos", {
         params: {
           path: { EventId: props.eventId },
-          header: { Authorization: `Bearer ${props.token}` },
+          header: { Authorization: `Bearer ${await makeLogtoClient().getAccessToken()}` },
         },
         body: { photos: [] },
         bodySerializer: () => {
@@ -64,7 +72,8 @@ export default function EventPhotos(props: {
         },
       })
       if (data) props.onUploaded(data)
-      else setError(response.status === 422 && error?.detail ? `上传失败：${error.detail}` : "上传失败，请稍后再试")
+      else if (response.status === 422) setError(`上传失败：${reasons[error?.detail ?? ""] ?? "照片没有通过检查，请换一张再试"}`)
+      else setError("上传失败，请稍后再试")
     }
     catch {
       setError("网络异常，上传失败，请稍后再试")
@@ -100,7 +109,17 @@ export default function EventPhotos(props: {
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {props.photos.map(photo => (
                 <a key={photo.photoId} href={photo.url} target="_blank" rel="noreferrer">
-                  <img src={photo.url} alt="现场照片" loading="lazy" className="aspect-square w-full object-cover rounded-lg" />
+                  <img
+                    src={photo.url}
+                    alt="现场照片"
+                    loading="lazy"
+                    className="aspect-square w-full object-cover rounded-lg"
+                    onError={() => {
+                      if (refreshed.current) return
+                      refreshed.current = true
+                      props.onExpired()
+                    }}
+                  />
                 </a>
               ))}
             </div>

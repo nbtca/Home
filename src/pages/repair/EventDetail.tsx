@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import type { components } from "../../types/saturday"
 import { saturdayClient } from "../../utils/client"
+import { makeLogtoClient } from "../../utils/auth"
 import { Textarea, Input, Chip, Skeleton } from "@heroui/react"
 import type { PublicMember } from "../../store/member"
 import dayjs from "dayjs"
@@ -129,7 +130,7 @@ const EventDetail = forwardRef<EventDetailRef, {
         try {
           const params = {
             header: {
-              Authorization: `Bearer ${props.token}`,
+              Authorization: `Bearer ${await makeLogtoClient().getAccessToken()}`,
             },
             path: {
               EventId: eventId,
@@ -158,6 +159,9 @@ const EventDetail = forwardRef<EventDetailRef, {
           const isAssignee = props.currentMemberId && event?.member?.memberId === props.currentMemberId
           if (event && props.token && (props.isAdmin || !props.currentMemberId || (isAssignee && hasAccepted))) {
             await fetchContactInfo(eventId as unknown as number)
+          }
+          else {
+            setEventWithContact(undefined)
           }
 
           return event
@@ -254,9 +258,9 @@ const EventDetail = forwardRef<EventDetailRef, {
                       <EventPhotos
                         photos={eventWithContact.photos ?? []}
                         eventId={eventWithContact.eventId}
-                        token={props.token}
                         canUpload={canUpload}
                         onUploaded={setEventWithContact}
+                        onExpired={() => fetchContactInfo(eventWithContact.eventId)}
                       />
                     )
                   }
