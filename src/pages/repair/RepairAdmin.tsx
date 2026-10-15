@@ -234,7 +234,7 @@ export default function App() {
       setToken(token)
       const hasRole = validateRepairRole(res.roles)
       if (!hasRole) {
-        window.location.href = `/repair/login-hint?redirectUrl=${adminPath}`
+        window.location.href = `/repair/login-hint?redirectUrl=${adminPath}&reason=no-role`
         return
       }
       setUserInfo(res)
@@ -246,6 +246,10 @@ export default function App() {
           },
         },
       })
+      if (!data) {
+        setErrorMessage("无法加载你的成员信息，请联系管理员确认你的账号已登记为维修成员。")
+        return
+      }
       setCurrentMember(data)
     }
     check()
