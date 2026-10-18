@@ -73,7 +73,9 @@ export default function EventPhotos(props: {
       })
       if (data) props.onUploaded(data)
       else if (response.status === 422) setError(`上传失败：${reasons[error?.detail ?? ""] ?? "照片没有通过检查，请换一张再试"}`)
-      else setError("上传失败，请稍后再试")
+      else if (response.status === 401) setError("登录已过期，请重新登录后再上传")
+      else if (response.status === 403) setError("你没有添加照片的权限")
+      else setError(`上传失败（${response.status}${error?.detail ? ` ${error.detail}` : ""}），请稍后再试`)
     }
     catch {
       setError("网络异常，上传失败，请稍后再试")
