@@ -22,8 +22,8 @@ type Post = {
   featured: boolean
 }
 
-const posts: MarkdownInstance<Post>[] = await Astro.glob("./posts/*.md")
-const blogs: MarkdownInstance<Post>[] = await Astro.glob("../pages/posts/blogs/**/*.md")
+const posts: MarkdownInstance<Post>[] = Object.values(import.meta.glob("./posts/*.md", { eager: true }))
+const blogs: MarkdownInstance<Post>[] = Object.values(import.meta.glob("../pages/posts/blogs/**/*.md", { eager: true }))
 
 const allPosts = [...posts, ...blogs].sort((a, b) => {
   return new Date(b.frontmatter.pubDate).getTime() - new Date(a.frontmatter.pubDate).getTime()
