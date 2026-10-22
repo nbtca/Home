@@ -8,7 +8,7 @@ author:
   url: "https://blog.m1ng.space/"
 cover:
   url: ./_assets/conventional-commits.png
-  alt: "Conventional Commits 结构化提交与 Git 流水线工程美学示意图"
+  alt: "暗黑模式代码编辑器与工程开发特写"
 tags: ["Git", "规范", "工程化", "指南"]
 ---
 
