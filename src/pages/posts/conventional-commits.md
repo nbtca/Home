@@ -8,7 +8,7 @@ author:
   url: "https://blog.m1ng.space/"
 cover:
   url: ./_assets/conventional-commits.png
-  alt: "暗黑模式代码编辑器与工程开发特写"
+  alt: "约定式提交核心概念卡片与 Git 分支交付流程示意图"
 tags: ["Git", "规范", "工程化", "指南"]
 ---
 
