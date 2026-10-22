@@ -1,8 +1,8 @@
 ---
 layout: "../../layouts/MarkdownPost.astro"
-title: "约定式提交规范（Conventional Commits）：工程逻辑、语法定义与实践指南"
+title: "约定式提交：从规范语法到自动化交付"
 pubDate: 2026-10-22
-description: "深入解析约定式提交规范的工程价值、形式化语法定义、SemVer 映射机制与自动化工具链落地实践。"
+description: "深入解析 Conventional Commits 约定式提交规范的工程价值、形式化语法定义、SemVer 映射机制与自动化工具链落地实践。"
 author:
   name: "小明"
   url: "https://blog.m1ng.space/"

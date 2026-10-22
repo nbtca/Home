@@ -112,6 +112,13 @@ body.theme-dark .prose :where(code):not(:where(pre *, [class~="not-prose"], [cla
   color: #f3f4f6;
 }
 
+/* Improve headline typography and readability */
+.page-title .hero-headline,
+.tile__headline {
+  line-height: 1.25 !important;
+  text-wrap: balance;
+}
+
 ul,
 ol,
 li,
