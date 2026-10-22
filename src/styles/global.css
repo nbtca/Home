@@ -90,6 +90,28 @@ body.theme-dark .prose a:visited {
   text-decoration-color: rgba(191, 90, 242, 0.4);
 }
 
+/* Remove Tailwind typography default backticks around inline code */
+.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
+.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
+  content: "" !important;
+}
+
+/* Style inline code cleanly */
+.prose :where(code):not(:where(pre *, [class~="not-prose"], [class~="not-prose"] *)) {
+  background-color: rgba(0, 0, 0, 0.06);
+  color: #111827;
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  font-size: 0.875em;
+  font-weight: 500;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+body.theme-dark .prose :where(code):not(:where(pre *, [class~="not-prose"], [class~="not-prose"] *)) {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #f3f4f6;
+}
+
 ul,
 ol,
 li,
