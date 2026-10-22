@@ -6,6 +6,9 @@ description: "深入解析约定式提交规范的工程价值、形式化语法
 author:
   name: "小明"
   url: "https://blog.m1ng.space/"
+cover:
+  url: ./_assets/conventional-commits.png
+  alt: "Conventional Commits 结构化提交与 Git 流水线工程美学示意图"
 tags: ["Git", "规范", "工程化", "指南"]
 ---
 
@@ -313,25 +316,28 @@ Header 是提交信息中必须包含的部分，单行展现核心变更：
 
 为方便日常查阅，核心结构与类型归纳如下：
 
-```text
-+----------+-------------------------------------------------------------+
-| Type     | 语义职责                                                    |
-+----------+-------------------------------------------------------------+
-| feat     | 引入新功能 (Features)                                       |
-| fix      | 修复软件缺陷 (Bug Fixes)                                    |
-| docs     | 仅修改文档说明 (Documentation)                              |
-| style    | 代码格式、排版调整，不涉及逻辑 (Code Formatting)            |
-| refactor | 代码重构，既不增新功能也不修缺陷 (Refactoring)              |
-| perf     | 提升运行效率或减少资源消耗的优化 (Performance)              |
-| test     | 增加或修改测试代码 (Tests)                                  |
-| build    | 构建配置、依赖项调整 (Build & Dependencies)                 |
-| ci       | 持续集成流水线脚本与配置调整 (CI/CD Configuration)          |
-| chore    | 其他日常维护性事务 (Maintenance)                            |
-+----------+-------------------------------------------------------------+
-| 格式约束: <type>[optional scope]: <description>                         |
-| 破坏性变动: <type>!: <description> 或在 Footer 声明 BREAKING CHANGE: ...    |
-+-------------------------------------------------------------------------+
-```
+| Type | 语义职责 | 英文对应分类 |
+| :--- | :--- | :--- |
+| **`feat`** | 引入新功能 | Features |
+| **`fix`** | 修复软件缺陷 | Bug Fixes |
+| **`docs`** | 仅修改文档说明 | Documentation |
+| **`style`** | 代码格式、排版调整，不涉及代码逻辑 | Code Formatting |
+| **`refactor`** | 代码重构，既不增新功能也不修缺陷 | Refactoring |
+| **`perf`** | 提升运行效率或减少资源消耗的优化 | Performance |
+| **`test`** | 增加或修改测试代码 | Tests |
+| **`build`** | 构建配置、外部依赖项调整 | Build & Dependencies |
+| **`ci`** | 持续集成流水线脚本与配置调整 | CI/CD Configuration |
+| **`chore`** | 其他日常维护性事务 | Maintenance |
+
+### 语法结构与变更标记
+
+- **基础格式约束**：
+  ```text
+  <type>[optional scope]: <description>
+  ```
+- **破坏性变更声明**：
+  - 首行标记：`<type>!: <description>`
+  - 页脚声明：在 Footer 声明 `BREAKING CHANGE: <description>`
 
 ---
 
