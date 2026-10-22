@@ -8,7 +8,7 @@ author:
   url: "https://blog.m1ng.space/"
 cover:
   url: ./_assets/conventional-commits.png
-  alt: "约定式提交核心概念卡片与 Git 分支交付流程示意图"
+  alt: "One-Dark 极简暗黑 Git 分支与提交节点 4K 壁纸"
 tags: ["Git", "规范", "工程化", "指南"]
 ---
 
