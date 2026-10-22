@@ -259,7 +259,7 @@ const EventDetail = forwardRef<EventDetailRef, {
                         photos={eventWithContact.photos ?? []}
                         eventId={eventWithContact.eventId}
                         canUpload={canUpload}
-                        onUploaded={setEventWithContact}
+                        onChanged={setEventWithContact}
                         onExpired={() => fetchContactInfo(eventWithContact.eventId)}
                       />
                     )

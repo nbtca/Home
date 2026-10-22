@@ -11,6 +11,8 @@ const reasons: Record<string, string> = {
   "only the assigned member or an admin can add photos": "只有接单成员或管理员可以添加照片",
   "photos can only be added to accepted or committed events": "工单当前的状态不能再添加照片",
   "an event can have at most 20 photos": "每单最多 20 张照片",
+  "only the assigned member or an admin can remove photos": "只有接单成员或管理员可以撤回照片",
+  "photos can only be removed from accepted or committed events": "工单当前的状态不能再撤回照片",
 }
 
 async function compress(file: File): Promise<Blob> {
@@ -34,12 +36,13 @@ export default function EventPhotos(props: {
   photos: EventPhoto[]
   eventId: number
   canUpload: boolean
-  onUploaded: (event: Event) => void
+  onChanged: (event: Event) => void
   onExpired: () => void
 }) {
   const input = useRef<HTMLInputElement>(null)
   const refreshed = useRef(false)
   const [uploading, setUploading] = useState(false)
+  const [removing, setRemoving] = useState<number | null>(null)
   const [error, setError] = useState("")
 
   const upload = async (files: FileList) => {
@@ -71,7 +74,7 @@ export default function EventPhotos(props: {
           return form
         },
       })
-      if (data) props.onUploaded(data)
+      if (data) props.onChanged(data)
       else if (response.status === 422) setError(`上传失败：${reasons[error?.detail ?? ""] ?? "照片没有通过检查，请换一张再试"}`)
       else if (response.status === 401) setError("登录已过期，请重新登录后再上传")
       else if (response.status === 403) setError("你没有添加照片的权限")
@@ -83,6 +86,30 @@ export default function EventPhotos(props: {
     finally {
       setUploading(false)
       if (input.current) input.current.value = ""
+    }
+  }
+
+  const remove = async (photoId: number) => {
+    if (!window.confirm("确定撤回这张照片吗？")) return
+    setError("")
+    setRemoving(photoId)
+    try {
+      const { data, error, response } = await saturdayClient.DELETE("/member/events/{EventId}/photos/{PhotoId}", {
+        params: {
+          path: { EventId: props.eventId, PhotoId: photoId },
+          header: { Authorization: `Bearer ${await makeLogtoClient().getAccessToken()}` },
+        },
+      })
+      if (data) props.onChanged(data)
+      else if (response.status === 404) props.onExpired()
+      else if (response.status === 422) setError(`撤回失败：${reasons[error?.detail ?? ""] ?? "请稍后再试"}`)
+      else setError("撤回失败，请稍后再试")
+    }
+    catch {
+      setError("网络异常，撤回失败，请稍后再试")
+    }
+    finally {
+      setRemoving(null)
     }
   }
 
@@ -110,19 +137,32 @@ export default function EventPhotos(props: {
         ? (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {props.photos.map(photo => (
-                <a key={photo.photoId} href={photo.url} target="_blank" rel="noreferrer">
-                  <img
-                    src={photo.url}
-                    alt="现场照片"
-                    loading="lazy"
-                    className="aspect-square w-full object-cover rounded-lg"
-                    onError={() => {
-                      if (refreshed.current) return
-                      refreshed.current = true
-                      props.onExpired()
-                    }}
-                  />
-                </a>
+                <div key={photo.photoId} className="relative">
+                  <a href={photo.url} target="_blank" rel="noreferrer">
+                    <img
+                      src={photo.url}
+                      alt="现场照片"
+                      loading="lazy"
+                      className="aspect-square w-full object-cover rounded-lg"
+                      onError={() => {
+                        if (refreshed.current) return
+                        refreshed.current = true
+                        props.onExpired()
+                      }}
+                    />
+                  </a>
+                  {props.canUpload && (
+                    <button
+                      type="button"
+                      aria-label="撤回照片"
+                      disabled={removing === photo.photoId}
+                      onClick={() => remove(photo.photoId)}
+                      className="absolute top-1 right-1 size-6 rounded-full bg-black/60 text-white text-sm leading-6 disabled:opacity-50"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
           )

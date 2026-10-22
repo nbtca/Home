@@ -315,6 +315,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/member/events/{EventId}/photos/{PhotoId}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /** Delete an event photo */
+    delete: operations["delete-event-photo"]
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/member/notification-preferences": {
     parameters: {
       query?: never
@@ -1805,6 +1822,54 @@ export interface operations {
         }
       }
     }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "X-Limit"?: number | null
+          "X-Offset"?: number | null
+          "X-Page"?: number | null
+          "X-Total-Count"?: number | null
+          "X-Total-Pages"?: number | null
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Event"]
+        }
+      }
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/problem+json": components["schemas"]["ErrorModel"]
+        }
+      }
+    }
+  }
+  "delete-event-photo": {
+    parameters: {
+      query?: never
+      header?: {
+        /** @description Bearer token or JWT token */
+        Authorization?: string
+      }
+      path: {
+        /**
+                 * @description Event ID
+                 * @example 123
+                 */
+        EventId: number
+        /**
+                 * @description Photo ID
+                 * @example 7
+                 */
+        PhotoId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
