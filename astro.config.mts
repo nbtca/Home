@@ -1,7 +1,6 @@
 import { defineConfig } from "astro/config";
 import { SITE_URL } from "./src/consts";
 import vue from "@astrojs/vue";
-import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 import { handleLocalCoverPlugin } from "./src/plugins/cover";
 import { themePipeline } from "./src/plugins/theme";
@@ -24,7 +23,6 @@ export default defineConfig({
   },
   integrations: [
     vue(),
-    tailwind(),
     react({
       include: ["**/react/*"],
       experimentalReactChildren: true,

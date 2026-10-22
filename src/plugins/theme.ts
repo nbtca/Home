@@ -120,7 +120,9 @@ const image: RehypePlugin = () => (tree) => {
 }
 
 const code: RehypePlugin = () => (tree) => {
-  tree.children.forEach((node) => {
+  tree.children.forEach((child) => {
+    // "raw" nodes come from rehype-raw and are not part of the hast types
+    const node = child as unknown as { type: string, value: string }
     if (node.type === "raw") {
       node.value = `<div class="page-body code component"><div class="component-content code"> ${node.value} </div></div>`
       // node.value = node.value.replace(/astro-code/g, 'astro-code')
@@ -134,7 +136,7 @@ const body: RehypePlugin = () => (tree) => {
     if (node.type === "element" && ["p", "h1", "h2", "h3", "h4", "h5", "h6", "table"].includes(node.tagName)) {
       let next = tree.children[i + 1]
       const nodes = [node]
-      while (next && !["figure"].includes(next.tagName) && next.type != "raw") {
+      while (next && !["figure"].includes(next.tagName) && (next.type as string) != "raw") {
         nodes.push(next)
         next = tree.children[tree.children.indexOf(next) + 1]
       }
