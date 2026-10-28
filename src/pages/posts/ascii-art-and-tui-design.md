@@ -374,7 +374,7 @@ fzf 每输入一个字符就重新过滤一次候选项，[预览窗口](https:/
 
 标签栏先把非当前页换成数字，最后连当前页的名字也去掉，只剩 `[3]`。底栏的提示在代码里准备了九个版本，从“1-5 / Tab 切换 · ↑↓ 移动 · ⏎ 打开 · Esc 返回 · q 退出 · ? 快捷键”开始，先删说明文字，再删不那么要紧的键，最短的版本只剩一个 `q`。浏览菜单放不下六项时，标题旁边会写“1/6”，告诉你下面还有。
 
-中间那张 30 × 12 的首页有个问题：4 条活动只显示了 1 条，没有任何提示，第九节讲怎么改的。
+中间那张 30 × 12 的首页有个问题：4 条活动只显示了 1 条，没有任何提示，第八节讲怎么改的。
 
 ### 窗口变大
 
@@ -411,9 +411,13 @@ Prompt 运行时会切换到终端的备用屏幕，退出时再切回来，所�
 
 所以 Prompt 在显示这些文字之前，会先剥掉其中的 CSI、OSC、DCS 等序列和其他控制字符。具体有哪些序列，可以查 [xterm 的控制序列文档](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html)。
 
-## 八、开头那个乱码
+## 八、改动
 
-回到开头的问题。在调研刚开始时的 [ca3110f](https://github.com/nbtca/Prompt/tree/ca3110f036987e87902733344ffe2d4e20229d0f) 版本里，ASCII 模式读取的 [`ascii-logo.txt`](https://github.com/nbtca/Prompt/blob/ca3110f036987e87902733344ffe2d4e20229d0f/src/logo/ascii-logo.txt) 里装的还是 Braille 字符，所以只支持 ASCII 的终端会把会徽显示成乱码。[PR #92](https://github.com/nbtca/Prompt/pull/92) 把它换成了一个手画的三行字标，最宽 32 列：
+### 乱码的会徽
+
+开头的问题出在 [ca3110f](https://github.com/nbtca/Prompt/tree/ca3110f036987e87902733344ffe2d4e20229d0f) 这个版本：ASCII 模式读取的 [`ascii-logo.txt`](https://github.com/nbtca/Prompt/blob/ca3110f036987e87902733344ffe2d4e20229d0f/src/logo/ascii-logo.txt) 里装的还是 Braille 字符，只支持 ASCII 的终端打开它，会徽就是一片乱码。
+
+[PR #92](https://github.com/nbtca/Prompt/pull/92) 先把它换成一个手画的三行字标，最宽 32 列：
 
 ```text
 |\  |   __   _____   __     /\
@@ -421,43 +425,39 @@ Prompt 运行时会切换到终端的备用屏幕，退出时再切回来，所�
 |  \|  |__)    |    \__   /    \
 ```
 
-B 的两个弧用括号代替，C 的右边留了个口，A 用两条斜线和一道横梁。三行实在太矮，B 和 C 能不能认出来，我们心里也没底。
+B 的两个弧用括号代替，C 的右边留了个口，A 用两条斜线和一道横梁。三行实在太矮，B 和 C 能不能认出来，我们心里没底。更大的问题是，它和 Braille 会徽毫无共同之处：一个是带翅膀的圆环，一个是三行字母。
 
-这个 PR 还顺手改了两处。
+检查完以后，我们又画了一个 26 × 12 的 ASCII 会徽，和 Braille 版一样是一个圆环加两只眼睛。窗口放得下时用它，放不下才退回三行字标。会徽是手画的，眼睛比 Braille 版简化了。见 [#95](https://github.com/nbtca/Prompt/issues/95)。
 
-一是空状态。活动页和文档搜索没有结果时，原来只有一行字，现在旁边多了一幅三行的小画，一个日历或一个放大镜。窗口不到 40 列、或者剩下不到三行，就不画了，只留文字。
+![LANG=C 时启动画面里的 ASCII 会徽：点、短横线、竖线、斜线和括号拼成的圆环，里面是两只眼睛。|inline](/images/posts/ascii-art-and-tui-design/prompt-ascii-emblem.webp)
 
-![Prompt 活动页的日历插画、无近期安排说明与浏览菜单。80×24 的示例，没有近期活动。](/images/posts/ascii-art-and-tui-design/prompt-empty-state.webp)
+### 空状态和周概览
 
-这张图由提交 aabf5e3 的渲染函数生成，示例里没有近期活动。
+PR #92 还改了两处。活动页和文档搜索没有结果时，原来只有一行字，现在旁边多一幅三行的小画，一个日历或一个放大镜。窗口不到 40 列、或者剩下不到三行，就不画，只留文字。
 
-二是登录后首页的一周概览。原来的版本用疏密不同的纹理区分工作日和周末，活动数据还没加载时就空着。问题是这份数据只记录“那天有没有安排”，没有多少之分，用疏密来画会让人误以为有。现在改成三种明确的标记：`▓▓` 有安排，`··` 没安排，`??` 还没加载。ASCII 模式下分别是 `##`、`..` 和 `??`。
+![没有近期活动时的活动页：左上是一个三行的日历小画，旁边写着“近期暂无活动安排”，下面是浏览菜单。](/images/posts/ascii-art-and-tui-design/prompt-empty-state.webp)
 
-![Prompt 首页用问号标记尚未加载的活动数据，图例解释有安排、无安排和尚未加载。80×24 的示例，课程概览已知，活动数据尚未加载。](/images/posts/ascii-art-and-tui-design/prompt-week-overview.webp)
+登录后首页的一周概览，原来用疏密不同的纹理区分工作日和周末，活动数据还没加载时就空着。可这份数据只记录“那天有没有安排”，没有多少之分，用疏密来画会让人误以为有。现在改成三种明确的标记：`▓▓` 有安排，`··` 没安排，`??` 还没加载，ASCII 模式下分别是 `##`、`..` 和 `??`。
 
-生成方式同上，课程、地点和日期都是虚构的。
+![首页的本周概览：课程一行有格子，活动一行全是问号，图例写明有安排、无安排和尚未加载。](/images/posts/ascii-art-and-tui-design/prompt-week-overview.webp)
 
-PR 跑了 1,074 项测试，在 xterm 里回放了从 20 到 160 列、8 到 32 行的真实录屏，中英文、ASCII 与 Unicode、深浅背景都试过。用 `npm pack --dry-run` 比较，压缩包从 128,251 字节涨到 128,653 字节，多了 402 字节，没有新增运行时依赖。PR 目前还在评审中。
+这两张图由提交 aabf5e3 的渲染函数生成，课程和日期是虚构的。PR #92 跑了 1,074 项测试，在 xterm 里回放了从 20 到 160 列、8 到 32 行的真实录屏。用 `npm pack --dry-run` 比较，压缩包从 128,251 字节涨到 128,653 字节，没有新增运行时依赖。
 
-## 九、检查之后改了什么
+### 检查之后
 
-逐页检查时，我们记下了四个问题，各开了一个 issue，随后在 [PR #97](https://github.com/nbtca/Prompt/pull/97) 里一起改掉。前面的截图都是改动之前的样子，下面是改动之后的。
+第六、七节的检查另外挖出三个问题，在 [PR #97](https://github.com/nbtca/Prompt/pull/97) 里一起改掉。
 
-![改动之后的首页。左：30 × 12 的窗口里，放不下的活动用“还有 3 项”标出；右：80 × 24 未登录时，课表提示下面多了“下一场”的倒计时。](/images/posts/ascii-art-and-tui-design/prompt-fixed-home.webp)
+首页放不下的活动，原来直接不显示。30 × 12 时 4 条只显示 1 条，什么提示也没有。24 × 10 更糟：第一条活动要占两行，剩下的空间只有一行，整条活动都没出现，“活动”标题下面是空的，也滚不动。现在会写“还有 3 项”，第一条活动即使放不下，也能用 ↑↓ 滚出来。没登录时，80 × 24 的首页原来下半屏是空的，现在空间够的话，会在活动列表上面放“下一场”的倒计时。见 [#93](https://github.com/nbtca/Prompt/issues/93) 和 [#94](https://github.com/nbtca/Prompt/issues/94)。
 
-**首页放不下的活动，现在会说明。** 原来首页按剩余行数决定显示几条，放不下的直接不显示。30 × 12 时 4 条只显示 1 条，什么提示也没有。24 × 10 的情况更糟，第一条活动要占两行，剩下的空间只有一行，于是整条活动都没出现，“活动”标题下面是空的，也滚不动。现在会写“还有 3 项”，第一条活动即使放不下，也能用 ↑↓ 滚出来。见 [#93](https://github.com/nbtca/Prompt/issues/93)。
+![30 × 12 的首页：只显示了第一条活动，下一行写着“还有 3 项”。|inline](/images/posts/ascii-art-and-tui-design/prompt-home-30x12.webp)
 
-**未登录时，首页多了倒计时。** 80 × 24 的首页原来只有一句登录提示和 4 条活动。现在空间够的时候，会把“下一场 · 活动名 · 还有 2 天 22 小时”放在活动列表上面；如果放进去会把第一条活动挤出屏幕，就不放。见 [#94](https://github.com/nbtca/Prompt/issues/94)。
+![80 × 24、未登录的首页：登录提示下面多了“下一场”和倒计时，再下面是 4 条活动。|inline](/images/posts/ascii-art-and-tui-design/prompt-home-countdown.webp)
 
-![热力图里选中 10 月 27 日。网格下方写着日期、当天有 1 场活动，以及这场活动的时间和名称。](/images/posts/ascii-art-and-tui-design/prompt-fixed-heatmap.webp)
+热力图原来只能看深浅。现在 ↑↓ 移动一天，←→ 移动一周，选中的格子高亮，格子下面写出日期、当天有几场活动和活动名称，回车把那一天打开成列表。光标不会越过今天，也不会跑出当前宽度画得下的那一段；没有颜色时，高亮格子换成一个圆点。热力图原来按任意键就退出，现在只有 Esc 退出。活动页高度够、热力图已经画在页面上时，浏览菜单里多了一项“逐日查看活跃度”，否则这种窗口里没有入口。见 [#96](https://github.com/nbtca/Prompt/issues/96)。
 
-**热力图可以逐日查看了。** 在热力图里，↑↓ 移动一天，←→ 移动一周，被选中的格子高亮，格子下面写出日期、当天有几场活动和活动名称，按回车可以把那一天打开成列表。光标不会越过今天，也不会跑出当前宽度画得下的那一段。在没有颜色的终端里，高亮格子换成一个圆点。活动页高度够、热力图已经画在页面上时，浏览菜单里多了一项“逐日查看活跃度”，不然这种窗口里没有入口。热力图原来按任意键就退出，现在只有 Esc 退出。见 [#96](https://github.com/nbtca/Prompt/issues/96)。
+![热力图里选中 10 月 27 日：网格右侧一格高亮，下方写着日期、当天有 1 场活动，以及这场活动的时间和名称。|inline](/images/posts/ascii-art-and-tui-design/prompt-heatmap-day.webp)
 
-![LANG=C 时的启动画面。一个由点、短横线、竖线、斜线和括号组成的圆环，里面是两只眼睛，下面是标语和版本号。](/images/posts/ascii-art-and-tui-design/prompt-fixed-emblem.webp)
-
-**ASCII 终端有了自己的会徽。** 原来只支持 ASCII 的终端看到的是三行 `NBTCA` 字母，和 Braille 会徽毫无关系。现在窗口放得下时，会画一个 26 × 12 的 ASCII 会徽，和 Braille 版一样是一个圆环加两只眼睛，放不下时才退回三行字标。这个会徽是手画的，眼睛比 Braille 版简化了，还没有经过评审。见 [#95](https://github.com/nbtca/Prompt/issues/95)。
-
-## 十、延伸阅读
+## 九、延伸阅读
 
 历史与文化：Heikki Lotvonen 的 [Amiga ASCII art](https://blog.glyphdrawing.club/amiga-ascii-art/)、Anders Carlsson 的 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)、[SAC 档案](https://www.roysac.com/sac.html)。
 
