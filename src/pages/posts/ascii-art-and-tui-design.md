@@ -12,11 +12,11 @@ cover:
 tags: ["设计", "ASCII", "TUI", "Prompt"]
 ---
 
-[NBTCA Prompt](https://github.com/nbtca/Prompt) 是社团写的命令行工具，在终端里输入 `nbtca`，就能看到课表、校历、活动和知识库。它启动时会先画一个用 Braille 点阵拼成的社团会徽。终端不支持 Unicode 时，程序会改读一个叫 `ascii-logo.txt` 的文件。有一天我们打开这个文件，发现里面装的还是 Braille 字符。也就是说，在最需要 ASCII 的终端上，会徽只会显示成一片问号或方框。
+[NBTCA Prompt](https://github.com/nbtca/Prompt) 是社团写的命令行工具，在终端里输入 `nbtca`，就能看到课表、校历、活动和知识库。它启动时会先画一个用 Braille 点阵拼成的社团会徽。终端不支持 Unicode 时，程序会改读一个叫 `ascii-logo.txt` 的文件。有一天我们打开这个文件，发现里面装的还是 Braille 字符。于是在只支持 ASCII 的终端上，用户看到的会徽是一片乱码。
 
-修这个问题的时候，我们发现自己其实说不清楚很多事：一个字符在终端里到底占多大地方？为什么同一段字符画换个字体就散架？别的 TUI 程序是怎么在 80 列里塞下那么多信息的？于是我们从一百多年前的打字机艺术一路看到今天的 btop 和 fzf，又把 Prompt 放进伪终端里一页一页地检查。
+要修它，得先弄明白几件事：一个字符在终端里占多大地方，同一段字符画为什么换个字体就散架，别的 TUI 程序怎样在 80 列里放下那么多信息。我们从一百多年前的打字机艺术看到今天的 btop 和 fzf，又把 Prompt 放进伪终端，一页一页地检查。
 
-这篇文章是这次调研的笔记。前半部分讲字符怎样变成图像，后半部分讲字符怎样组成界面，最后回到 Prompt，看它做对了什么，还有哪些地方值得想得更清楚。资料查阅截至 2026 年 10 月 24 日，Prompt 的截图摄于 10 月 28 日。
+下面是这次调研的笔记。资料查阅截至 2026 年 10 月 24 日，Prompt 的截图摄于 10 月 28 日。
 
 ## 一、一个单元格
 
@@ -35,9 +35,9 @@ ESC[0m         恢复默认样式
 
 以 ESC 开头的那几段，终端会执行，但不会显示出来。它们的格式由 [ECMA-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) 规定，大家习惯叫它 ANSI 转义序列。至于 `@` 代表玩家，那是游戏自己的规则，终端并不知道。
 
-这里顺便分清三个常被混用的词。ASCII 是一套字符编码，[RFC 20](https://www.rfc-editor.org/rfc/rfc20) 记录的 ASCII 有 128 个码位，其中从空格到波浪号的 95 个可以打印出来，严格意义上的 ASCII art 只用这 95 个字符。ANSI art 是 BBS 时代的叫法，指用上面那种转义序列加上 IBM PC 字符集里的方块字符画出的彩色画面。TUI 则是 Text User Interface，说的是交互方式，一个只靠反显标出选中行的文件选择器也算 TUI。
+先分清三个常被混用的词。ASCII 是一套字符编码，[RFC 20](https://www.rfc-editor.org/rfc/rfc20) 记录的 ASCII 有 128 个码位，其中从空格到波浪号的 95 个可以打印出来，严格意义上的 ASCII art 只用这 95 个字符。ANSI art 是 BBS 时代的叫法，指用上面那种转义序列加上 IBM PC 字符集里的方块字符画出的彩色画面。TUI 则是 Text User Interface，说的是交互方式，一个只靠反显标出选中行的文件选择器也算 TUI。
 
-Anders Carlsson 在 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/) 里指出，这些按编码起的名字其实说明不了作品长什么样。同样是 ASCII 字符，Amiga 字体里的斜线能首尾相连，DOS 字体里却留着缝隙，两边的风格就这样分开了。后文沿用这些常见叫法，遇到字体影响大的作品再单独说明。
+Anders Carlsson 在 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/) 里指出，这些按编码起的名字说明不了作品长什么样。同样是 ASCII 字符，Amiga 字体里的斜线能首尾相连，DOS 字体里却留着缝隙，两边的风格就这样分开了。后文沿用这些常见叫法，遇到字体影响大的作品再单独说明。
 
 还有一种情况容易混淆：Kitty graphics、Sixel 等协议能让终端直接显示位图，[Yazi 的文档](https://yazi-rs.github.io/docs/image-preview/)列出了各终端的支持情况。网上很多漂亮的终端截图，里面其实混着真正的图片。
 
@@ -91,7 +91,7 @@ Anders Carlsson 在 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/be
 
 1982 年 9 月 19 日上午 11 点 44 分，Scott Fahlman 在 CMU 的电子布告栏上提议，用 `:-)` 标记玩笑话，并补了一句“侧着看”。这条消息一度失传，2002 年才有人从备份磁带里把它[找了回来](https://www.cs.cmu.edu/~sef/Orig-Smiley.htm)。
 
-三个字符，什么都没画，却改变了一整句话的语气。
+它没有画任何东西，只是告诉读者这句话是玩笑。
 
 ### BBS
 
@@ -99,7 +99,7 @@ Anders Carlsson 在 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/be
 
 接下来二十年，人们拨号进入各种 BBS，最先看到的就是用字符画的欢迎画面。据 [scene.org 保存的一篇 1998 年的文章](https://archive.scene.org/pub/mirrors/artpacks/www/mirrors/acheron/articles/ar-history.shtml)，1990 年代初，ANSI 艺术家们开始组成团体，每月把成员的作品打包发布，叫作 art pack。最早的大型团体是 Aces of ANSI Art，随后有了 ACiD、iCE 等一大批。[Sixteen Colors](https://16colo.rs/) 今天还保存着大量原始文件，想看团体自己的记录，可以翻翻 [SAC 的档案](https://www.roysac.com/sac.html)。
 
-BBS 的字符画大多是有用途的：欢迎画面介绍站点，菜单告诉你按什么键，文件列表里还有小字标。上传文件附带的说明文件 FILE_ID.DIZ [通常不超过 10 行、每行 45 个字符](https://blog.glyphdrawing.club/amiga-ascii-art/)，艺术家要在这么小的地方把团体的名字画得认得出来。同一个团体的大画、菜单和小字标会用同一套笔画和配色，看多了，扫一眼文件列表就知道是谁做的。
+BBS 的字符画大多是有用途的：欢迎画面介绍站点，菜单告诉你按什么键，文件列表里还有小字标。上传文件附带的说明文件 FILE_ID.DIZ [通常不超过 10 行、每行 45 个字符](https://blog.glyphdrawing.club/amiga-ascii-art/)，艺术家要在这么小的地方把团体的名字画得认得出来。
 
 ## 三、几件作品
 
@@ -113,7 +113,7 @@ Joan G. Stark 常以 `jgs` 署名，Usenet 上很多流传甚广的 ASCII 小画
 
 图版来自 Carlsson 的 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)，作者与日期按其中署名保留。
 
-左边这匹马，我们试着数了数让人认出它的线索：外轮廓、头的朝向、腿的姿势、穿过身体的立柱，一共就这么几样。其余的字符删掉几个，照样认得出来。
+左边的旋转木马，能认出它靠的是外轮廓、头的朝向、腿的姿势和穿过身体的立柱。
 
 ### Amiga 的斜线
 
@@ -129,7 +129,7 @@ Joan G. Stark 常以 `jgs` 署名，Usenet 上很多流传甚广的 ASCII 小画
 
 ### Roy 的小画布
 
-Roy 是 SAC 的成员，[SAC 字标图集](https://www.roysac.com/sac_asciis.html)收了大量用在 NFO 和 FILE_ID.DIZ 里的小字标，可以和 [Roy 的自选作品](https://www.roysac.com/roy_bestof.html)对照着看。他写过一篇 [Width Restrictions & Challenges](https://www.roysac.com/tutorial/roy-ascii-widthandtips.html)，专门讲怎样在有限宽度里画字标，其中一条建议是：艺术字标旁边最好再写一遍普通文字的名字，因为不是每个人都认得出艺术字。
+Roy 是 SAC 的成员，[SAC 字标图集](https://www.roysac.com/sac_asciis.html)收了大量用在 NFO 和 FILE_ID.DIZ 里的小字标，可以和 [Roy 的自选作品](https://www.roysac.com/roy_bestof.html)对照着看。他写过一篇 [Width Restrictions & Challenges](https://www.roysac.com/tutorial/roy-ascii-widthandtips.html)，专门讲怎样在有限宽度里画字标，其中一条建议是：艺术字标旁边再写一遍普通文字的名字，因为不是每个人都认得出艺术字。
 
 Prompt 也是这么做的：启动画面画会徽，进入程序后，大多数页面的左上角都写着普通文字的 `nbtca`。
 
@@ -217,25 +217,13 @@ Braille 的编码很规整。八个点各有一个权重，从 1、2、4 一直�
 
 ### 空白和颜色
 
-在字符界面里，空白就是排版。课程名、时间和教室连着写三行，人会把它们读成一组；下一门课之前空一行，就分开了。
+字符界面没有别的分组手段时，空行和缩进就是排版：课程名、时间和教室连着写三行，会被读成一组，下一门课之前空一行，就分开了。
 
-颜色能表达的东西很多：品牌、选中项、状态。但总有人的终端关了颜色，或者分不清某些颜色。[NO_COLOR](https://no-color.org/) 是一个简单的约定：只要设置了这个环境变量，程序就不该输出颜色。所以选中项除了变色，最好还有一个箭头；“没有安排”和“还没加载”也最好用不同的符号，而不只是不同的颜色。
+颜色能表达的东西很多：品牌、选中项、状态。但总有人的终端关了颜色，或者分不清某些颜色。[NO_COLOR](https://no-color.org/) 是一个简单的约定：只要设置了这个环境变量，程序就不该输出颜色。Prompt 的做法是让选中项除了变色还有箭头，“没有安排”和“还没加载”也用不同的符号，第七节会看到。
 
 ## 五、别人的 TUI
 
-我们对照官方文档、截图和演示，看了一批口碑不错的终端程序，主要想看它们怎么回答几个问题：我在哪一页，选中了什么，数据是不是最新的，下一步能按什么。
-
-| 程序 | 我们主要看了什么 |
-| --- | --- |
-| [Midnight Commander](https://midnight-commander.org/) | 常驻底部的功能键提示 |
-| [htop](https://htop.dev/screenshots.html)、[btop](https://github.com/aristocratos/btop#screenshots) | 字符图表和数值怎样并排 |
-| [fzf](https://junegunn.github.io/fzf/) | 边输入边过滤，结果和预览怎样对应 |
-| [Helix](https://helix-editor.com/) | 按下前缀键后弹出的按键提示 |
-| [Lazygit](https://github.com/jesseduffield/lazygit)、[Harlequin](https://harlequin.sh/) | 多个面板时，焦点在哪里 |
-| [Yazi](https://yazi-rs.github.io/) | 加载中的区域怎样保持不跳动 |
-| [K9s](https://k9scli.io/) | 当前范围始终显示在顶部 |
-| [Glow](https://github.com/charmbracelet/glow) | 终端里的 Markdown 排版 |
-| [Gum](https://github.com/charmbracelet/gum)、[Huh](https://github.com/charmbracelet/huh) | 表单的输入、出错和完成 |
+我们挑了几个口碑不错的终端程序，看它们怎样回答同样几个问题：我在哪一页，选中了什么，数据是不是最新的，下一步能按什么。
 
 Midnight Commander 是 Miguel de Icaza 发起的双栏文件管理器，[项目 FAQ](https://github.com/MidnightCommander/mc/blob/master/doc/FAQ) 记录的第一批合作者在 1994 年加入。它最显眼的是底部那行功能键：
 
@@ -243,7 +231,7 @@ Midnight Commander 是 Miguel de Icaza 发起的双栏文件管理器，[项目 
 
 截图来源：[Midnight Commander](https://midnight-commander.org/)。
 
-F1 到 F10 一直写在屏幕最下面，新用户不看手册也能摸索着用起来。
+F1 到 F10 一直写在屏幕最下面，不用翻手册就能知道每个键干什么。
 
 btop 则把比例条、曲线和精确数值放在一起：
 
@@ -255,11 +243,9 @@ btop 则把比例条、曲线和精确数值放在一起：
 
 fzf 每输入一个字符就重新过滤一次候选项，[预览窗口](https://github.com/junegunn/fzf#preview-window)跟着当前选中项变化。Helix 按下 `space` 或 `g` 这样的前缀键后，会弹出一个小框，列出接下来能按的键。K9s 把集群、资源类型和筛选条件固定在画面顶部，你不用记自己在看什么。
 
-后面检查 Prompt 的时候，我们会拿它和这几个程序对照。
-
 ## 六、把 Prompt 跑起来
 
-前面这些都是看别人的。轮到 Prompt，我们决定不看设计稿，直接看它跑起来的样子。
+轮到 Prompt，我们没有看设计稿，直接看它跑起来的样子。
 
 一开始我们用 vhs 录屏，结果被骗了一次：按下 `2` 切到课表页，截图里高亮的却是活动页。我们以为找到了一个 bug，做对照实验才发现，vhs 在隐藏和显示画面之间切换后，截图的帧顺序会乱。后来我们改用 Python 的 `pty` 模块在伪终端里启动 Prompt，用 `pyte` 这个终端模拟库解析它的输出，等画面上出现预期的文字再截图，最后按每个字符的真实宽度和颜色转成图片。下面的截图都是这样得到的。
 
@@ -279,7 +265,7 @@ fzf 每输入一个字符就重新过滤一次候选项，[预览窗口](https:/
 
 ![Prompt 活动页，80 × 24。五个编号依次标出标签栏、下一场活动的倒计时、近期安排、浏览菜单和底栏按键提示。](/images/posts/ascii-art-and-tui-design/prompt-events.webp)
 
-对照第五节那几个问题来看：
+按前面那四个问题逐条对一下：
 
 1. 我在哪一页：当前标签加了方括号，用加粗的品牌蓝显示。
 2. 下一场是什么：顶部写着下一场活动和倒计时。
@@ -336,9 +322,9 @@ fzf 每输入一个字符就重新过滤一次候选项，[预览窗口](https:/
 
 ## 七、换一台终端会怎样
 
-### 关掉 Unicode，关掉颜色
+### 四项能力
 
-管道里的那次变化让我们好奇：Prompt 到底在判断什么？读了 `src/core` 下面的代码，答案是四件事，各自独立：
+输出接到管道里符号就变了，说明 Prompt 在判断终端的能力。读 `src/core` 下面的代码，一共四项，各自独立：
 
 | 能力 | 在什么情况下关闭 |
 | --- | --- |
@@ -405,7 +391,7 @@ Prompt 的 `visualWidth` 是这样算的：先用 [`Intl.Segmenter`](https://dev
 
 Prompt 运行时会切换到终端的备用屏幕，退出时再切回来，所以你原来终端里的内容不会被冲掉。每次刷新，它先把整屏拼成和窗口一样高的一组字符串，再和上一帧逐行比较。行数没变，就只把光标移到变了的行，重写那一行；行数变了，才整屏重画。在菜单里上下移动时，变化的通常只有新旧两个选中行。curses 当年做的也是这件事。
 
-### 不信任网上来的字
+### 网上来的文字
 
 活动标题、地点和说明来自社团的公开日历，文档来自文档站。第一节说过，终端会执行以 ESC 开头的字节。如果有人在日历里写进一段转义序列，就可能清屏、乱移光标，甚至改掉终端窗口的标题。
 
@@ -413,7 +399,7 @@ Prompt 运行时会切换到终端的备用屏幕，退出时再切回来，所�
 
 ## 八、还没想清楚的事
 
-把 Prompt 一页一页看下来，好用的地方和别扭的地方，差别其实在同一件事上。标签栏缩到 24 列也不乱，底栏提示有九个版本，周概览里 `??` 和 `··` 分得清清楚楚，这些地方都有人事先想好了：放不下时先丢什么，再丢什么，每个符号代表什么。别扭的地方是首页。30 × 12 的窗口里，4 条近期活动只显示了 1 条，没有任何提示；再小到 24 × 10，第一条活动整条不见，“活动”两个字下面空着。这里没有谁决定过留什么，显示几条，纯粹取决于前面的内容占了几行。
+把 Prompt 一页一页看下来，好用的地方和别扭的地方，差别在同一件事上。标签栏缩到 24 列也不乱，底栏提示有九个版本，周概览里 `??` 和 `··` 分得清清楚楚，这些地方都有人事先想好了：放不下时先丢什么，再丢什么，每个符号代表什么。别扭的地方是首页。30 × 12 的窗口里，4 条近期活动只显示了 1 条，没有任何提示；再小到 24 × 10，第一条活动整条不见，“活动”两个字下面空着。这里没有谁决定过留什么，显示几条，纯粹取决于前面的内容占了几行。
 
 所以我们现在觉得，窗口尺寸不是排版阶段才考虑的事，它决定了内容的取舍。可具体到首页，24 × 10 的一屏里到底必须有什么，我们没有答案。已经登录的用户，大概最想看下一节课；没登录的用户，也许是下一场活动。这两种人能不能共用一个优先级，要不要在放不下的时候明说“还有 3 项”，都还没定。这几件事分别记在了 [#93](https://github.com/nbtca/Prompt/issues/93) 和 [#94](https://github.com/nbtca/Prompt/issues/94) 里。
 
@@ -421,7 +407,7 @@ Prompt 运行时会切换到终端的备用屏幕，退出时再切回来，所�
 
 品牌那一块，我们多少有点心虚。Braille 会徽是个点阵拼的圆环，里面有两只眼睛和一道弧，终端不支持 Unicode 时却换成三行 `NBTCA` 字母，两者毫无关系。SAC 的字标不管宽窄都像一家人，这提醒我们可以反过来做，先画最窄的那一档，再往细的材料里放大。我们手画过一个 26 列宽的版本，画完发现它读起来像一张笑脸。这是好事还是坏事？会徽的辨识度究竟在圆环上，还是在那两只眼睛上？我们还没想清楚（[#95](https://github.com/nbtca/Prompt/issues/95)）。
 
-这次调研里最值得留下来的，也许不是上面任何一个想法，而是检查的办法。Unicode、颜色、动画是各自独立的开关，再乘上窗口尺寸，组合多到没人愿意手动看。我们在伪终端里启动 Prompt，等画面稳定后截图，几分钟就能把几十种组合看一遍。如果把它做成每次改界面都自动跑的文本快照，评审时直接看 diff，大概能挡住不少悄悄发生的退化。代价也很明显：每改一句文案，快照都要跟着变，这笔维护成本值不值，要用一阵才知道。
+这次调研留下的东西里，也许最有用的不是上面任何一个想法，而是检查的办法。Unicode、颜色、动画是各自独立的开关，再乘上窗口尺寸，组合多到没人愿意手动看。我们在伪终端里启动 Prompt，等画面稳定后截图，几分钟就能把几十种组合看一遍。如果把它做成每次改界面都自动跑的文本快照，评审时直接看 diff，大概能挡住不少悄悄发生的退化。代价也很明显：每改一句文案，快照都要跟着变，这笔维护成本值不值，要用一阵才知道。
 
 ## 九、延伸阅读
 
