@@ -45,45 +45,47 @@ Anders Carlsson 在 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/be
 
 ### 打字机
 
-用字符画画，比计算机早得多。Isaac Pitman 在 1893 年出版的打字教材 [*A Manual of the Typewriter*](https://books.google.com/books/about/A_Manual_of_the_Typewriter.html?id=xadbAAAAQAAJ) 里，已经有用字符排出的装饰图案。这本书 1897 年再版时改名为 *Pitman's Typewriter Manual*，后来的文章多用这个名字称呼它，见 [Sue Walker 对早期打字手册的研究](https://centaur.reading.ac.uk/69514/)。五年后，一位叫 Flora Stacey 的女士用打字机做了一只蝴蝶，刊登在 1898 年 10 月 15 日的 *The Phonetic Journal* 上。
+用字符画画，比计算机早得多。Isaac Pitman 1893 年出版的打字教材 [*A Manual of the Typewriter*](https://books.google.com/books/about/A_Manual_of_the_Typewriter.html?id=xadbAAAAQAAJ)，1897 年再版时改名 *Pitman's Typewriter Manual*，见 [Sue Walker 对早期打字手册的研究](https://centaur.reading.ac.uk/69514/)。[Heikki Lotvonen](https://blog.glyphdrawing.club/amiga-ascii-art/) 提到书里的打字机图案，认为它们比下面这只蝴蝶更接近今天的 ASCII 艺术。
+
+蝴蝶出自一位叫 Flora Stacey 的秘书之手，刊登在 1898 年 10 月 15 日的 *The Phonetic Journal* 上。据 Lotvonen，她把同一张纸以不同的角度反复放回打字机，把字母叠在一起来成形，所以整幅画更像铅笔画，不像由字符拼成的马赛克。
 
 ![1898 年 10 月 15 日 The Phonetic Journal 第 662 页，刊登 Flora Stacey 的蝴蝶。四周的边框由反复打出的字符组合构成。|inline](/images/posts/ascii-art-and-tui-design/stacey-butterfly-1898.webp)
 
-图像来自 [oz.Typewriter 对 Stacey 生平的考证](https://oztypewriter.blogspot.com/2020/02/flora-fanny-stacey-1845-1909-worlds.html)，原刊已进入公有领域。更多早期作品可以看 [The Marginalian 对 Barrie Tullett 著作的介绍](https://www.themarginalian.org/2014/05/23/typewriter-art-laurence-king/)。
+来源：[oz.Typewriter](https://oztypewriter.blogspot.com/2020/02/flora-fanny-stacey-1845-1909-worlds.html) 对 Stacey 生平的考证。原刊出版于 1898 年，在美国已进入公有领域。更多早期作品见 [The Marginalian 对 Barrie Tullett 著作的介绍](https://www.themarginalian.org/2014/05/23/typewriter-art-laurence-king/)。
 
-边框里那些反复出现的字符组合，单独看只是字母和横线，排在一起就成了花纹。
+蝴蝶四周的边框，单独看只是字母和横线，排在一起成了花纹。
 
-打字机还能叠打：在同一个位置敲好几次，颜色就更深。1919 年 6 月，*Photoplay* 杂志登了一幅 Kenneth Taylor 用打字机打出来的卓别林像。
+1919 年 6 月，*Photoplay* 杂志登了一幅 Kenneth Taylor 用打字机打出来的卓别林像。
 
 ![Kenneth Taylor 的打字机肖像，刊于 1919 年 6 月的 Photoplay。头发和胡子用密集字符，脸部只用稀疏的点。|inline](/images/posts/ascii-art-and-tui-design/typewriter-chaplin-1919.webp)
 
-图像来源：[Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Typewritten_portrait_of_Charlie_Chaplin.jpg)，在美国属于公有领域。
+来源：Kenneth Taylor，*Photoplay* 1919 年 6 月，经 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Typewritten_portrait_of_Charlie_Chaplin.jpg)。在美国属于公有领域。
 
 凑近看是一排排字母，退后几步才是一张脸。蝴蝶的边框用的是字符的形状，卓别林像用的是字符的深浅。这两种用法到今天还是字符画的两条主要路线，第四节我们会实际测一测。
 
 ### Bell Labs 的恶作剧
 
-1966 年，Bell Labs 的 Leon Harmon 想趁上司 Ed David 出差搞个恶作剧，找同事 Ken Knowlton 帮忙。他们用计算机扫描了一张照片，按明暗挑出晶体管、电阻之类的电子元件符号，拼成一幅 12 英尺宽的裸体像，挂在 David 的办公室墙上。
+1960 年代中期，Bell Labs 的 Leon Harmon 想趁上司 Ed David 出差搞个恶作剧，找 Ken Knowlton 帮忙。他们扫描了编舞家 Deborah Hay 的一张照片，把灰度换成符号，印成一幅 12 英尺宽的裸体像，挂在 David 的办公室墙上。符号取自晶体管、电阻之类的电子元件。年份各处的记录不一，有 1966 年，也有 1967 年。
 
-据 Knowlton 的[回忆](https://www.kenknowlton.com/pages/04portrait.htm)，这幅画只挂了一天，就因为被认为不适合挂在实验室里而摘了下来。后来它登上了 1967 年 10 月 11 日的《纽约时报》，又以 *Studies in Perception I* 的名字进入 MoMA 1968 年的[机器主题展](https://www.moma.org/momaorg/shared/pdfs/docs/press_archives/4149/releases/MOMA_1968_July-December_0081.pdf)。
+据 Knowlton 的[回忆](https://www.kenknowlton.com/pages/04portrait.htm)，这幅画只挂了一天，就因为被认为不适合挂在实验室里而摘了下来。后来它登上了 1967 年 10 月 11 日的《纽约时报》，题为 *Studies in Perception I*，又在 1968 年纽约 MoMA 的 *The Machine as Seen at the End of the Mechanical Age* 展上展出，见 [V&A 的藏品记录](https://collections.vam.ac.uk/item/O1488651/studies-in-perception-i-screenprint-ken-knowlton/)。
 
 它用的是自制符号，不算严格意义上的 ASCII 字符画。但它让计算机接手了卓别林像那种按明暗挑字符的工作。
 
 ### VT100 与 Rogue
 
-电传打字机只能一行接一行往下打印，没法回头修改。后来的视频终端能把光标移到屏幕上任意位置，但每家厂商的指令都不一样。DEC 自己的 VT52 要移动光标，得发送 `ESC Y` 再加两个代表行和列的字符，[维修手册](https://vt100.net/docs/vt52-mm/chapter2.html)里就有这样的测试步骤。
+电传打字机只能一行接一行往下打印，没法回头修改。后来的视频终端能把光标移到屏幕上任意位置，但各家厂商的指令并不统一。DEC 自己的 VT52 要移动光标，得发送 `ESC Y` 再加两个代表行和列的字符，[维修手册](https://vt100.net/docs/vt52-mm/chapter2.html)里就有这样的测试步骤。
 
-1978 年 8 月，DEC 推出了 VT100。据 [DEC 的年表](https://www.vt100.net/timeline/1978.html)，这是它第一台符合 ANSI 标准的视频终端。[VT100 的用户手册](https://vt100.net/docs/vt100-ug/chapter1.html)写明，它在 ANSI 模式下按 X3.64-1977 标准收发控制序列，移动光标写成 `ESC[行;列H`，同时保留了兼容旧软件的 VT52 模式。今天的 xterm 等终端模拟器仍以 VT100 及其后继型号为参照，见 [xterm 的控制序列文档](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html)。
+1978 年 8 月，DEC 推出了 VT100。据 [DEC 的年表](https://www.vt100.net/timeline/1978.html)，这是它第一台符合 ANSI 标准的视频终端。[VT100 的用户手册](https://vt100.net/docs/vt100-ug/chapter1.html)写明，它在 ANSI 模式下按 X3.64-1977 标准收发控制序列，同时保留了兼容旧软件的 VT52 模式。移动光标的序列叫 CUP，写成 `ESC[行;列H`，见[手册第三章](https://vt100.net/docs/vt100-ug/chapter3.html)。今天的 xterm 等终端模拟器仍以 VT100 及其后继型号为参照，见 [xterm 的控制序列文档](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html)。
 
 ![DEC VT100 终端，摄于 Living Computer Museum。](/images/posts/ascii-art-and-tui-design/vt100.webp)
 
-照片：Jason Scott，[CC BY 2.0](https://creativecommons.org/licenses/by/2.0/)，来自 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:DEC_VT100_terminal.jpg)。
+来源：Jason Scott 摄，经 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:DEC_VT100_terminal.jpg)，[CC BY 2.0](https://creativecommons.org/licenses/by/2.0/)。
 
-光标能自由移动以后，屏幕就能当成一张地图来用。大约同一时期，加州大学的 Michael Toy 和 Glenn Wichman 开始写 Rogue。Wichman 在 [A Brief History of Rogue](https://www.wichman.org/roguehistory.html) 里回忆，正是 Ken Arnold 写的 curses 库让他们能把字符放到屏幕的指定位置，才有了屏幕上的地下城。后来 Rogue 随 4.2BSD 发行，传遍了各地大学的机房。
+光标能自由移动以后，屏幕就能当成一张地图来用。几年后，Michael Toy 和 Glenn Wichman 开始写 Rogue，他们起初在加州大学圣克鲁兹分校，后来 Toy 转到了伯克利。Wichman 在 [A Brief History of Rogue](https://www.wichman.org/roguehistory.html) 里回忆，正是 Ken Arnold 写的 curses 库让他们能把字符放到屏幕的指定位置，才有了屏幕上的地下城。后来 Rogue 随 4.2BSD 发行，传遍了各地大学的机房。
 
 ![BSD 版 Rogue。横线和竖线围出房间，# 是走廊，+ 是门，@ 是玩家，最下面一行是状态栏。|inline](/images/posts/ascii-art-and-tui-design/rogue-bsd.webp)
 
-截图：Thedarkb，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)，来自 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Rogue_Screenshot.png)。
+来源：Thedarkb，经 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Rogue_Screenshot.png)，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)。
 
 在纯文字的冒险游戏里，要用一段话描述“你的东边有一扇门”。在 Rogue 里，`+` 就待在房间墙上，玩家一眼就能看到。代价是每个符号都得有固定的含义，玩家得去查。[NetHack 的 Guidebook](https://www.nethack.org/v367/Guidebook.html) 到今天还在逐个解释这些符号。
 
@@ -95,7 +97,7 @@ Anders Carlsson 在 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/be
 
 ### BBS
 
-1978 年 1 月 16 日，Ward Christensen 和 Randy Suess 在芝加哥商量出一个主意：让电脑俱乐部的会员用调制解调器拨进一台电脑，互相留言。他们在 30 天后的 2 月 16 日让系统上了线，后来在 [1978 年 11 月的 BYTE 杂志](https://archive.org/details/byte-magazine-1978-11)第 150 页写文章介绍了它。这就是第一个 BBS。
+1978 年 1 月 16 日，Ward Christensen 想到一个主意，和 Randy Suess 商量：让电脑俱乐部的会员用调制解调器拨进一台电脑，互相留言。他们在 30 天后的 2 月 16 日让系统上了线，后来在 [1978 年 11 月的 BYTE 杂志](https://archive.org/details/byte-magazine-1978-11)第 150 页写文章介绍了它。这个叫 CBBS 的系统，被 [Lotvonen](https://blog.glyphdrawing.club/amiga-ascii-art/) 等人称为世界上第一个 BBS。
 
 接下来二十年，人们拨号进入各种 BBS，最先看到的就是用字符画的欢迎画面。据 [scene.org 保存的一篇 1998 年的文章](https://archive.scene.org/pub/mirrors/artpacks/www/mirrors/acheron/articles/ar-history.shtml)，1990 年代初，ANSI 艺术家们开始组成团体，每月把成员的作品打包发布，叫作 art pack。最早的大型团体是 Aces of ANSI Art，随后有了 ACiD、iCE 等一大批。[Sixteen Colors](https://16colo.rs/) 今天还保存着大量原始文件，想看团体自己的记录，可以翻翻 [SAC 的档案](https://www.roysac.com/sac.html)。
 
@@ -107,29 +109,29 @@ BBS 的字符画大多是有用途的：欢迎画面介绍站点，菜单告诉�
 
 ### Joan Stark 的旋转木马
 
-Joan G. Stark 常以 `jgs` 署名，Usenet 上很多流传甚广的 ASCII 小画都出自她手。她的[原站存档](https://www.oocities.org/joan_stark/)按动物、人物、节庆分类，[动物分类](https://oldcompcz.github.io/jgs/joan_stark/indexanimals.html)里有不少小品。
+Joan G. Stark 常以 `jgs` 署名。她的[作品集](https://oldcompcz.github.io/jgs/joan_stark/indexanimals.html)按动物、人物、节庆分类，站上说几乎所有的画都出自她一个人之手。
 
-![左侧是 Joan Stark 于 1998 年制作的旋转木马，右侧是 Stylez 于 1995 年制作的透视字标。|inline](/images/posts/ascii-art-and-tui-design/ascii-comparison.webp)
+![左侧是 Joan Stark 的旋转木马，右侧是 Stylez 的透视字标。|inline](/images/posts/ascii-art-and-tui-design/ascii-comparison.webp)
 
-图版来自 Carlsson 的 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)，作者与日期按其中署名保留。
+来源：Anders Carlsson，[Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)，图 1。左为 Joan Stark（1998，Usenet 风格），右为 Stylez（1995，scene 风格）。
 
 左边的旋转木马，能认出它靠的是外轮廓、头的朝向、腿的姿势和穿过身体的立柱。
 
 ### Amiga 的斜线
 
-上图右边是 Stylez 的字标，字母被拉进了透视里，大块的内部空白和黑底一起撑起了体积。
+右边是 Stylez 的字标，字母被拉进了透视里，大块的内部空白和黑底一起撑起了体积。
 
-这种画法离不开 Amiga 的默认字体 Topaz。Heikki Lotvonen 在 [Amiga ASCII art](https://blog.glyphdrawing.club/amiga-ascii-art/) 里解释了原因：Topaz 的字距和行距都很窄，下划线后面紧跟一条斜线，看起来就是连着的；上下两行的斜线也能接成一条长线。所以 Amiga 上的字标几乎都是斜体。同一篇文章还收了芬兰艺术家 Antti “h7” Kiuru 的 *Jungle Fever*。
+这种画法离不开 Amiga 的默认字体 Topaz。Heikki Lotvonen 在 [Amiga ASCII art](https://blog.glyphdrawing.club/amiga-ascii-art/) 里解释了原因：Topaz 的字距和行距都很窄，下划线后面紧跟一条斜线，看起来就是连着的；上下两行的斜线也能接成一条长线，所以许多 Amiga 字标看起来是斜体。同一篇文章还收了芬兰艺术家 Antti “h7” Kiuru 的 *Jungle Fever*。
 
-![h7 于 2015 年制作的 Jungle Fever 标题图版，以斜线字标、细长竖线和大面积留白组织阅读节奏。|inline](/images/posts/ascii-art-and-tui-design/amiga-jungle-fever.webp)
+![h7 的 Jungle Fever 标题图版，以斜线字标、细长竖线和大面积留白组织阅读节奏。|inline](/images/posts/ascii-art-and-tui-design/amiga-jungle-fever.webp)
 
-图版与署名来源：[Lotvonen 的研究](https://blog.glyphdrawing.club/amiga-ascii-art/)。
+来源：Heikki Lotvonen，[Amiga ASCII art](https://blog.glyphdrawing.club/amiga-ascii-art/)，图 15。
 
 这张图远看是一个大字标，近看是一列细竖线串起的短句，中间大片留白。这类字标靠空白分开字母，想把它压窄，只删空格是不行的，字母会粘成一团。
 
 ### Roy 的小画布
 
-Roy 是 SAC 的成员，[SAC 字标图集](https://www.roysac.com/sac_asciis.html)收了大量用在 NFO 和 FILE_ID.DIZ 里的小字标，可以和 [Roy 的自选作品](https://www.roysac.com/roy_bestof.html)对照着看。他写过一篇 [Width Restrictions & Challenges](https://www.roysac.com/tutorial/roy-ascii-widthandtips.html)，专门讲怎样在有限宽度里画字标，其中一条建议是：艺术字标旁边再写一遍普通文字的名字，因为不是每个人都认得出艺术字。
+Roy 是 SAC 的组织者，SAC 成立于 1994 年 12 月，[官网](https://www.roysac.com/sac.html)有它的历史。[SAC 字标图集](https://www.roysac.com/sac_asciis.html)收了大量用在 NFO 和 FILE_ID.DIZ 里的小字标。Roy 写过一篇 [Width Restrictions & Challenges](https://www.roysac.com/tutorial/roy-ascii-widthandtips.html)，讲怎样在有限的宽度里画字标，其中一条建议是：在字标下面用普通文字再写一遍名字。他的理由有两个，一是不是每个人都读得懂艺术字，二是搜索引擎只认普通文字。
 
 Prompt 也是这么做的：启动画面画会徽，进入程序后，大多数页面的左上角都写着普通文字的 `nbtca`。
 
@@ -137,31 +139,29 @@ Prompt 也是这么做的：启动画面画会徽，进入程序后，大多数�
 
 [ECMA-48](https://ecma-international.org/wp-content/uploads/ECMA-48_5th_edition_june_1991.pdf) 第 8.3.117 节的 SGR 只定义了 8 种前景色和 8 种背景色，参数 30 到 37 和 40 到 47。PC 上把“加粗”显示成高亮，前景色就多出 8 种，所以 ANSI art 一般有 [16 种前景色和 8 种背景色](https://blog.glyphdrawing.club/amiga-ascii-art/)。打开 [ACiD 100 的作品包](https://16colo.rs/pack/acid-100/)，再翻翻 [Blocktronics 的档案](https://16colo.rs/group/blocktronics)，能看到艺术家们在同样的限制下画出了多么不同的东西。
 
-其中一件是 ungenannt 的 [ungenannt_1453.ans](https://16colo.rs/pack/blocktronics_blocktober/ungenannt_1453.ans)，收录在 2016 年的 *blocktronics_blocktober* 里。这是一幅长卷，要在档案站上一路滚动着看。整幅画几乎只用了红、黑、灰、白四种颜色，大块的明暗反复出现，把很多细节连成了一个整体。
+其中一件是 ungenannt 的 [ungenannt_1453.ans](https://16colo.rs/pack/blocktronics_blocktober/ungenannt_1453.ans)，收录在 2016 年的 *blocktronics_blocktober* 包里。画的是 1453 年的君士坦丁堡之围，顶端是大字的“1453”，往下依次是 Mehmet II、城墙、攻城的士兵和 Constantine XI。这是一幅 640 × 9904 像素的长卷，要在档案站上一路滚动着看。整幅画只用了红、黑、灰、白四种颜色，大块的明暗反复出现，把很多细节连成了一个整体。
 
-### 日本的 AA
+### 东亚的两个传统
 
-日本的 AA 用的是日文字符和 MS PGothic 这样的比例字体，能用的字符比纯 ASCII 多得多。Carlsson 的研究里收了 Illiorzilli 在 2013 年画的一个机器人，也讨论了字体对这类作品的影响，见 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)。
+日本的 AA（在西方常叫 Shift-JIS art）用日文字符和 MS PGothic 这样的可变宽度字体，Carlsson 说它的字符集更大，所以能画得比西方的 ASCII 更细。Carlsson 的文章里收了 Illiorzilli 在 2013 年画的一个机器人。这类作品是为比例字体排的，换成等宽字体，对齐就会乱。
 
-AA 里的角色，眼睛挪一格、嘴换一个字符，表情就变了。不过它们依赖比例字体，复制到等宽的终端里，比例就全乱了。
+台湾的 PTT 是另一个传统。
 
-### PTT 的中文 ANSI
+![上方是 PTT 的登录画面，下方是一幅人物群像。](/images/posts/ascii-art-and-tui-design/ptt-ansi.webp)
 
-![上方是 jacky90527 的 PTT 登录画面，下方是 else 于 2013 年制作的人物群像，展示几何块形与中文构图。](/images/posts/ascii-art-and-tui-design/ptt-ansi.webp)
+来源：Anders Carlsson，[Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)，图 5。上为登录画面，作者 jacky90527，Carlsson 未标注日期；下为 else 的作品（2013）。
 
-图版、署名与下方作品日期来源：[Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)。上方登录画面的创作日期未见标注。
-
-Carlsson 注意到，台湾 PTT 用的中文字符集里方块字符比西方的多得多，那里的艺术家更喜欢用整块的几何色面，很少用明暗渐变的字符。登录画面里，椰树的剪影、几条水平色带和一句中文，就交代了天空和海面。下方的群像靠清楚的色块边界，让好几个人物同时站得住。
+Carlsson 注意到，PTT 用的中文字符集里方块字符比西方的多得多，那里的艺术家更喜欢用整块的几何色面，很少用明暗渐变的字符。登录画面里是红色的落日、几棵棕榈树的剪影和几条水平色带，一句中文诗竖排在右上角。下方的群像靠清楚的色块边界，让好几个人物同时站得住。
 
 这是我们找到的离 Prompt 最近的传统：中文、终端、色块。不过这些作品是为当年的 BBS 客户端画的，放到今天的 Unicode 终端里，方块字符的宽度未必还一样，我们没有逐个验证。
 
 ### Raquel Meyers 的 PETSCII
 
-Raquel Meyers 的[作品](https://www.raquelmeyers.com/selected/)横跨 Commodore 64 的 PETSCII、Teletext 和现场表演。下图是她 2015 年的一件 PETSCII 作品。
+PETSCII 是 Commodore 机器上的字符集。Raquel Meyers 的[作品列表](https://www.raquelmeyers.com/selected/)里既有 PETSCII，也有 Teletext，还有展览和工作坊。
 
-![Raquel Meyers 于 2015 年制作的 PETSCII 作品，以白、浅蓝和棕色几何单元形成对称结构。|inline](/images/posts/ascii-art-and-tui-design/raquel-meyers-petscii.webp)
+![Raquel Meyers 的 PETSCII 作品，以白、浅蓝和棕色几何单元形成对称结构。|inline](/images/posts/ascii-art-and-tui-design/raquel-meyers-petscii.webp)
 
-图版与日期来源：[Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)。更多 Teletext 作品见 [Teletext Art 的艺术家页面](https://teletextart.co.uk/artists/raquel-meyers)。
+来源：Anders Carlsson，[Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)，图 6，2015 年作品。更多 Teletext 作品见 [Teletext Art 的艺术家页面](https://teletextart.co.uk/artists/raquel-meyers)。
 
 画面里的东西不多，就是几种阶梯、斜线和小方块，换着方向和颜色反复出现。
 
@@ -172,10 +172,6 @@ Raquel Meyers 的[作品](https://www.raquelmeyers.com/selected/)横跨 Commodor
 ![用 FIGlet 的 Standard、Slant、Small Slant 和 Doom 四种字体排出 nbtca。](/images/posts/ascii-art-and-tui-design/figlet-fonts.webp)
 
 Slant 的斜线写法和 Amiga 字标很像。对 Prompt 这样名字固定的程序，没必要在运行时调用 FIGlet，挑好的字标存成文本文件随程序发布就够了。
-
-### 字符版《星球大战》
-
-[Star Wars ASCIIMATION](https://www.asciimation.co.nz/) 是 Simon Jansen 从 1997 年开始逐帧手工做的字符版《星球大战》。看的时候可以数一数：一个新场景出现后，要过几帧才认得出是哪里；一句字幕停留多久才读得完。
 
 ## 四、字符的几何
 
@@ -193,7 +189,7 @@ Slant 的斜线写法和 Amiga 字标很像。对 Prompt 这样名字固定的�
 
 ### 格子是窄长的
 
-终端的格子不是正方形。等宽字体的字宽一般是 0.6 em，行高在 1.2 em 左右，所以一个格子大约宽 1、高 2。
+终端的格子不是正方形。等宽字体的字宽一般约为 0.6 em，终端的行高多在 1.2 到 1.4 em 之间，所以一个格子大约宽 1、高 2。
 
 ![8 × 8 与 16 × 8 个字符组成的方块，以及单个单元格的比例。](/images/posts/ascii-art-and-tui-design/cell-aspect.webp)
 
@@ -225,11 +221,11 @@ Braille 的编码很规整。八个点各有一个权重，从 1、2、4 一直�
 
 我们挑了几个口碑不错的终端程序，看它们怎样回答同样几个问题：我在哪一页，选中了什么，数据是不是最新的，下一步能按什么。
 
-Midnight Commander 是 Miguel de Icaza 发起的双栏文件管理器，[项目 FAQ](https://github.com/MidnightCommander/mc/blob/master/doc/FAQ) 记录的第一批合作者在 1994 年加入。它最显眼的是底部那行功能键：
+Midnight Commander 是 Miguel de Icaza 发起的双栏文件管理器，[项目 FAQ](https://github.com/MidnightCommander/mc/blob/master/doc/FAQ) 列出的早期合作者是从 1994 年下半年起陆续加入的。它最显眼的是底部那行功能键：
 
 ![Midnight Commander 官方截图，展示双栏文件列表、打开的 File 菜单和底部功能键提示。](/images/posts/ascii-art-and-tui-design/midnight-commander.webp)
 
-截图来源：[Midnight Commander](https://midnight-commander.org/)。
+来源：[Midnight Commander 官网](https://midnight-commander.org/)的截图。
 
 F1 到 F10 一直写在屏幕最下面，不用翻手册就能知道每个键干什么。
 
@@ -237,11 +233,11 @@ btop 则把比例条、曲线和精确数值放在一起：
 
 ![btop 官方截图，以固定区域显示 CPU、内存、磁盘、网络和进程信息，图形与精确数值并列。](/images/posts/ascii-art-and-tui-design/btop.webp)
 
-截图来源：[btop 官方仓库](https://github.com/aristocratos/btop#screenshots)。
+来源：[btop 官方仓库](https://github.com/aristocratos/btop#screenshots)的截图。
 
 条形让你一眼看出 CPU 忙不忙，旁边的数字告诉你具体是多少。
 
-fzf 每输入一个字符就重新过滤一次候选项，[预览窗口](https://github.com/junegunn/fzf#preview-window)跟着当前选中项变化。Helix 按下 `space` 或 `g` 这样的前缀键后，会弹出一个小框，列出接下来能按的键。K9s 把集群、资源类型和筛选条件固定在画面顶部，你不用记自己在看什么。
+fzf 每输入一个字符就重新过滤一次候选项，[预览窗口](https://github.com/junegunn/fzf#preview-window)跟着当前选中项变化。Helix 按下 `space` 或 `g` 这样的前缀键后，会弹出一个小框，列出接下来能按的键，由[配置项 `auto-info`](https://docs.helix-editor.com/editor.html) 控制，默认开启。K9s 在画面顶部固定显示当前连接的集群，你不用记自己在看哪个。
 
 ## 六、把 Prompt 跑起来
 
@@ -358,7 +354,7 @@ fzf 每输入一个字符就重新过滤一次候选项，[预览窗口](https:/
 
 ![同一个程序在 40 × 16、30 × 12 和 24 × 10 下的样子。标签栏逐步压缩成编号，长标题折行，底栏只保留关键按键；浏览菜单显示“1/6”提示还有更多项。](/images/posts/ascii-art-and-tui-design/prompt-narrow.webp)
 
-标签栏先把非当前页换成数字，最后连当前页的名字也去掉，只剩 `[3]`。底栏的提示在代码里准备了九个版本，从“1-5 / Tab 切换 · ↑↓ 移动 · ⏎ 打开 · Esc 返回 · q 退出 · ? 快捷键”开始，先删说明文字，再删不那么要紧的键，最短的版本只剩一个 `q`。浏览菜单放不下六项时，标题旁边会写“1/6”，告诉你下面还有。
+标签栏先把非当前页换成数字，最后连当前页的名字也去掉，只剩 `[3]`。交互页面的底栏提示在代码里准备了九个版本，从“1-5 / Tab 切换 · ↑↓ 移动 · ⏎ 打开 · Esc 返回 · q 退出 · ? 快捷键”开始，先删说明文字，再删不那么要紧的键，最短的版本只剩一个 `q`。浏览菜单放不下六项时，标题旁边会写“1/6”，告诉你下面还有。
 
 中间那张 30 × 12 的首页有个问题：4 条活动只显示了 1 条，没有任何提示。
 
@@ -385,7 +381,7 @@ fzf 每输入一个字符就重新过滤一次候选项，[预览窗口](https:/
 
 ![上方是“数据结构 A203”在终端网格中的占位，每个汉字占两格；下方左侧按 .length 补空格，分隔线错位，右侧按显示列数补空格，分隔线对齐。|inline](/images/posts/ascii-art-and-tui-design/cjk-width.webp)
 
-Prompt 的 `visualWidth` 是这样算的：先用 [`Intl.Segmenter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter) 把字符串切成用户眼中的一个个字，再按 [Unicode East Asian Width](https://www.unicode.org/reports/tr11/) 的范围，给汉字、假名和全角符号各记两列，emoji 也记两列，组合符号、零宽连接符和变体选择符记零列。算之前还会先把颜色代码剥掉。TR11 自己也说，终端里的实际宽度要看具体实现，emoji 尤其不统一，所以这套规则只能覆盖大多数情况。
+Prompt 的 `visualWidth` 是这样算的：先用 [`Intl.Segmenter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter) 把字符串切成用户眼中的一个个字，再按 [Unicode East Asian Width](https://www.unicode.org/reports/tr11/) 的范围，给汉字、假名和全角符号各记两列，emoji 也记两列，组合符号、零宽连接符和变体选择符记零列。算之前还会先把颜色代码剥掉。TR11 本身也提醒，终端需要按自己的情况调整，所以这套规则只能覆盖大多数情况。
 
 ### 只重画变了的那一行
 
@@ -399,7 +395,7 @@ Prompt 运行时会切换到终端的备用屏幕，退出时再切回来，所�
 
 ## 八、还没想清楚的事
 
-把 Prompt 一页一页看下来，好用的地方和别扭的地方，差别在同一件事上。标签栏缩到 24 列也不乱，底栏提示有九个版本，周概览里 `??` 和 `··` 分得清清楚楚，这些地方都有人事先想好了：放不下时先丢什么，再丢什么，每个符号代表什么。别扭的地方是首页。30 × 12 的窗口里，4 条近期活动只显示了 1 条，没有任何提示；再小到 24 × 10，第一条活动整条不见，“活动”两个字下面空着。这里没有谁决定过留什么，显示几条，纯粹取决于前面的内容占了几行。
+把 Prompt 一页一页看下来，好用的地方和别扭的地方，差别在同一件事上。标签栏缩到 24 列也不乱，交互页面的底栏提示有九个版本，周概览里 `??` 和 `··` 分得清清楚楚，这些地方都有人事先想好了：放不下时先丢什么，再丢什么，每个符号代表什么。别扭的地方是首页。30 × 12 的窗口里，4 条近期活动只显示了 1 条，没有任何提示；再小到 24 × 10，第一条活动整条不见，“活动”两个字下面空着。这里没有谁决定过留什么，显示几条，纯粹取决于前面的内容占了几行。
 
 所以我们现在觉得，窗口尺寸不是排版阶段才考虑的事，它决定了内容的取舍。可具体到首页，24 × 10 的一屏里到底必须有什么，我们没有答案。已经登录的用户，大概最想看下一节课；没登录的用户，也许是下一场活动。这两种人能不能共用一个优先级，要不要在放不下的时候明说“还有 3 项”，都还没定。这几件事分别记在了 [#93](https://github.com/nbtca/Prompt/issues/93) 和 [#94](https://github.com/nbtca/Prompt/issues/94) 里。
 
@@ -419,6 +415,6 @@ Prompt 运行时会切换到终端的备用屏幕，退出时再切回来，所�
 
 ## 图版与资料说明
 
-历史作品的作者、年份和出处标在相应图版旁，无法从引文确定的日期保持空缺。第五节的应用截图来自各项目官方，实际版本和用户配置可能不同。第六、七节的 Prompt 截图于 2026 年 10 月 28 日在伪终端中实际运行提交 2a75b1a 得到，启动动画的四帧由程序自身的函数以固定随机种子生成。
+每张第三方图片下面的“来源”写明了作者、年份和出处，“图 N”指来源文章里的图号；来源里没有标注的日期，这里也留空。第五节的应用截图来自各项目官方，实际版本和用户配置可能不同。第六、七节的 Prompt 截图于 2026 年 10 月 28 日在伪终端中实际运行提交 2a75b1a 得到，启动动画的四帧由程序自身的函数以固定随机种子生成。
 
 第三方艺术作品、照片和应用截图的权利归各自作者所有，页面底部对本文的许可声明不包括这些材料。Rogue 截图按 CC BY-SA 4.0、VT100 照片按 CC BY 2.0 使用，1898 年与 1919 年的期刊图像已进入公有领域。本文引用这些图版用于评论与比较，完整作品、原始文件和使用条件请查看对应来源。封面、示意图和字符试验为本次调研绘制。
