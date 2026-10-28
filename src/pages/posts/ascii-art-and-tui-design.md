@@ -45,7 +45,7 @@ Anders Carlsson 在 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/be
 
 ### 打字机
 
-用字符画画，比计算机早得多。1893 年的 *Pitman's Typewriter Manual* 里已经有用字符排出的装饰图案。五年后，一位叫 Flora Stacey 的女士用打字机做了一只蝴蝶，刊登在 1898 年 10 月 15 日的 *The Phonetic Journal* 上。
+用字符画画，比计算机早得多。Isaac Pitman 在 1893 年出版的打字教材 [*A Manual of the Typewriter*](https://books.google.com/books/about/A_Manual_of_the_Typewriter.html?id=xadbAAAAQAAJ) 里，已经有用字符排出的装饰图案。这本书 1897 年再版时改名为 *Pitman's Typewriter Manual*，后来的文章多用这个名字称呼它，见 [Sue Walker 对早期打字手册的研究](https://centaur.reading.ac.uk/69514/)。五年后，一位叫 Flora Stacey 的女士用打字机做了一只蝴蝶，刊登在 1898 年 10 月 15 日的 *The Phonetic Journal* 上。
 
 ![1898 年 10 月 15 日 The Phonetic Journal 第 662 页，刊登 Flora Stacey 的蝴蝶。四周的边框由反复打出的字符组合构成。|inline](/images/posts/ascii-art-and-tui-design/stacey-butterfly-1898.webp)
 
@@ -71,7 +71,9 @@ Anders Carlsson 在 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/be
 
 ### VT100 与 Rogue
 
-电传打字机只能一行接一行往下打印，没法回头修改。后来的视频终端能把光标移到屏幕上任意位置，但每家厂商的指令都不一样。1978 年，DEC 推出了 VT100，它是最早采用 ECMA-48 这类标准序列的终端之一，今天的终端模拟器大多仍兼容它的行为。
+电传打字机只能一行接一行往下打印，没法回头修改。后来的视频终端能把光标移到屏幕上任意位置，但每家厂商的指令都不一样。DEC 自己的 VT52 要移动光标，得发送 `ESC Y` 再加两个代表行和列的字符，[维修手册](https://vt100.net/docs/vt52-mm/chapter2.html)里就有这样的测试步骤。
+
+1978 年 8 月，DEC 推出了 VT100。据 [DEC 的年表](https://www.vt100.net/timeline/1978.html)，这是它第一台符合 ANSI 标准的视频终端。[VT100 的用户手册](https://vt100.net/docs/vt100-ug/chapter1.html)写明，它在 ANSI 模式下按 X3.64-1977 标准收发控制序列，移动光标写成 `ESC[行;列H`，同时保留了兼容旧软件的 VT52 模式。今天的 xterm 等终端模拟器仍以 VT100 及其后继型号为参照，见 [xterm 的控制序列文档](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html)。
 
 ![DEC VT100 终端，摄于 Living Computer Museum。](/images/posts/ascii-art-and-tui-design/vt100.webp)
 
@@ -93,7 +95,9 @@ Anders Carlsson 在 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/be
 
 ### BBS
 
-1978 年，Ward Christensen 和 Randy Suess 架起了第一个 BBS。接下来二十年，人们拨号进入各种 BBS，最先看到的就是用字符画的欢迎画面。ACiD、iCE 这样的团体每月发布一次作品包，[Sixteen Colors](https://16colo.rs/) 今天还保存着大量原始文件。想了解这些团体的来历，可以读 [scene.org 保存的 1998 年文章](https://archive.scene.org/pub/mirrors/artpacks/www/mirrors/acheron/articles/ar-history.shtml) 和 [SAC 的档案](https://www.roysac.com/sac.html)。
+1978 年 1 月 16 日，Ward Christensen 和 Randy Suess 在芝加哥商量出一个主意：让电脑俱乐部的会员用调制解调器拨进一台电脑，互相留言。他们在 30 天后的 2 月 16 日让系统上了线，后来在 [1978 年 11 月的 BYTE 杂志](https://archive.org/details/byte-magazine-1978-11)第 150 页写文章介绍了它。这就是第一个 BBS。
+
+接下来二十年，人们拨号进入各种 BBS，最先看到的就是用字符画的欢迎画面。据 [scene.org 保存的一篇 1998 年的文章](https://archive.scene.org/pub/mirrors/artpacks/www/mirrors/acheron/articles/ar-history.shtml)，1990 年代初，ANSI 艺术家们开始组成团体，每月把成员的作品打包发布，叫作 art pack。最早的大型团体是 Aces of ANSI Art，随后有了 ACiD、iCE 等一大批。[Sixteen Colors](https://16colo.rs/) 今天还保存着大量原始文件，想看团体自己的记录，可以翻翻 [SAC 的档案](https://www.roysac.com/sac.html)。
 
 BBS 的字符画大多是有用途的：欢迎画面介绍站点，菜单告诉你按什么键，文件列表里还有小字标。上传文件附带的说明文件 FILE_ID.DIZ [通常不超过 10 行、每行 45 个字符](https://blog.glyphdrawing.club/amiga-ascii-art/)，艺术家要在这么小的地方把团体的名字画得认得出来。同一个团体的大画、菜单和小字标会用同一套笔画和配色，看多了，扫一眼文件列表就知道是谁做的。
 
@@ -103,7 +107,7 @@ BBS 的字符画大多是有用途的：欢迎画面介绍站点，菜单告诉�
 
 ### Joan Stark 的旋转木马
 
-Joan G. Stark 常以 `jgs` 署名，是 Usenet 时代最高产的 ASCII 艺术家之一。她的[原站存档](https://www.oocities.org/joan_stark/)按动物、人物、节庆分类，[动物分类](https://oldcompcz.github.io/jgs/joan_stark/indexanimals.html)里有不少小品。
+Joan G. Stark 常以 `jgs` 署名，Usenet 上很多流传甚广的 ASCII 小画都出自她手。她的[原站存档](https://www.oocities.org/joan_stark/)按动物、人物、节庆分类，[动物分类](https://oldcompcz.github.io/jgs/joan_stark/indexanimals.html)里有不少小品。
 
 ![左侧是 Joan Stark 于 1998 年制作的旋转木马，右侧是 Stylez 于 1995 年制作的透视字标。|inline](/images/posts/ascii-art-and-tui-design/ascii-comparison.webp)
 
@@ -131,7 +135,7 @@ Prompt 也是这么做的：启动画面画会徽，进入程序后，大多数�
 
 ### ACiD 与 Blocktronics
 
-PC 上的 ANSI art 一般只有 16 种前景色和 8 种背景色。打开 [ACiD 100 的作品包](https://16colo.rs/pack/acid-100/)，再翻翻 [Blocktronics 的档案](https://16colo.rs/group/blocktronics)，能看到艺术家们在同样的限制下画出了多么不同的东西。
+[ECMA-48](https://ecma-international.org/wp-content/uploads/ECMA-48_5th_edition_june_1991.pdf) 第 8.3.117 节的 SGR 只定义了 8 种前景色和 8 种背景色，参数 30 到 37 和 40 到 47。PC 上把“加粗”显示成高亮，前景色就多出 8 种，所以 ANSI art 一般有 [16 种前景色和 8 种背景色](https://blog.glyphdrawing.club/amiga-ascii-art/)。打开 [ACiD 100 的作品包](https://16colo.rs/pack/acid-100/)，再翻翻 [Blocktronics 的档案](https://16colo.rs/group/blocktronics)，能看到艺术家们在同样的限制下画出了多么不同的东西。
 
 其中一件是 ungenannt 的 [ungenannt_1453.ans](https://16colo.rs/pack/blocktronics_blocktober/ungenannt_1453.ans)，收录在 2016 年的 *blocktronics_blocktober* 里。这是一幅长卷，要在档案站上一路滚动着看。整幅画几乎只用了红、黑、灰、白四种颜色，大块的明暗反复出现，把很多细节连成了一个整体。
 
@@ -163,7 +167,7 @@ Raquel Meyers 的[作品](https://www.raquelmeyers.com/selected/)横跨 Commodor
 
 ### FIGlet
 
-[FIGlet](https://www.figlet.org/) 是 1991 年写成的小工具，能把一行文字排成大字。我们用它试了几种字体：
+[FIGlet](https://www.figlet.org/) 是 Glenn Chappell 和 Ian Chai 写的小工具，能把一行文字排成大字。名字来自“Frank, Ian and Glenn's letters”，[手册页](https://github.com/cmatsuoka/figlet/blob/master/figlet.6)上最早的版权年份是 1991 年。我们用它试了几种字体：
 
 ![用 FIGlet 的 Standard、Slant、Small Slant 和 Doom 四种字体排出 nbtca。](/images/posts/ascii-art-and-tui-design/figlet-fonts.webp)
 
@@ -233,7 +237,7 @@ Braille 的编码很规整。八个点各有一个权重，从 1、2、4 一直�
 | [Glow](https://github.com/charmbracelet/glow) | 终端里的 Markdown 排版 |
 | [Gum](https://github.com/charmbracelet/gum)、[Huh](https://github.com/charmbracelet/huh) | 表单的输入、出错和完成 |
 
-Midnight Commander 是 1994 年开始开发的双栏文件管理器，最显眼的是底部那行功能键：
+Midnight Commander 是 Miguel de Icaza 发起的双栏文件管理器，[项目 FAQ](https://github.com/MidnightCommander/mc/blob/master/doc/FAQ) 记录的第一批合作者在 1994 年加入。它最显眼的是底部那行功能键：
 
 ![Midnight Commander 官方截图，展示双栏文件列表、打开的 File 菜单和底部功能键提示。](/images/posts/ascii-art-and-tui-design/midnight-commander.webp)
 
