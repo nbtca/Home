@@ -427,9 +427,9 @@ Prompt 运行时会切换到终端的备用屏幕，退出时再切回来，所�
 
 B 的两个弧用括号代替，C 的右边留了个口，A 用两条斜线和一道横梁。三行实在太矮，B 和 C 能不能认出来，我们心里没底。更大的问题是，它和 Braille 会徽毫无共同之处：一个是带翅膀的圆环，一个是三行字母。
 
-检查完以后，我们又画了一个 26 × 12 的 ASCII 会徽，和 Braille 版一样是一个圆环加两只眼睛。窗口放得下时用它，放不下才退回三行字标。会徽是手画的，眼睛比 Braille 版简化了。见 [#95](https://github.com/nbtca/Prompt/issues/95)。
+检查完以后，我们又画了一个 26 × 11 的 ASCII 会徽，和 Braille 版一样有圆环、两只眼睛和一道弧。窗口放得下时用它，放不下才退回三行字标。它是手画的，细节比 Braille 版少得多。见 [#95](https://github.com/nbtca/Prompt/issues/95)。
 
-![LANG=C 时启动画面里的 ASCII 会徽：点、短横线、竖线、斜线和括号拼成的圆环，里面是两只眼睛。|inline](/images/posts/ascii-art-and-tui-design/prompt-ascii-emblem.webp)
+![LANG=C 时启动画面里的 ASCII 会徽：圆环里有两只眼睛和一道弧线，全部由 ASCII 字符拼成。|inline](/images/posts/ascii-art-and-tui-design/prompt-ascii-emblem.webp)
 
 ### 空状态和周概览
 
