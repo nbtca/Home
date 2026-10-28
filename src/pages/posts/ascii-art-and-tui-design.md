@@ -2,641 +2,414 @@
 layout: "../../layouts/MarkdownPost.astro"
 title: "字符的形状，终端的秩序：ASCII 艺术与 TUI 设计调研"
 pubDate: 2026-10-24
-description: "从打字机艺术、BBS 与 Amiga 字标，到日本 AA、台湾 ANSI 和现代 terminal 应用，研究字符如何承载图像、品牌与交互，为 NBTCA Prompt 寻找设计灵感。"
+description: "从 1898 年的打字机蝴蝶、Rogue 的 @、BBS 字标到今天的 fzf 与 btop，看字符怎样成为图像，又怎样组成界面，再把 NBTCA Prompt 放进真实终端里逐页检查。"
 author:
   name: "NBTCA"
   url: "https://github.com/nbtca"
 cover:
   url: "https://nbtca.space/images/posts/ascii-art-and-tui-design/cover.webp"
-  alt: "由字符字标和课程网格组成的终端设计研究封面"
+  alt: "深色背景中央，由上千个小字符按明暗拼成的 @ 符号"
 tags: ["设计", "ASCII", "TUI", "Prompt"]
 ---
 
-打开终端，想知道下一节课在哪里上、社团下一场活动什么时候开始，我们能给用户多少信息，又能留下多少个性？
+[NBTCA Prompt](https://github.com/nbtca/Prompt) 是社团写的命令行工具，在终端里输入 `nbtca`，就能看到课表、校历、活动和知识库。它启动时会先画一个用 Braille 点阵拼成的社团会徽。终端不支持 Unicode 时，程序会改读一个叫 `ascii-logo.txt` 的文件。有一天我们打开这个文件，发现里面装的还是 Braille 字符。也就是说，在最需要 ASCII 的终端上，会徽只会显示成一片问号或方框。
 
-这个问题贯穿 [NBTCA Prompt](https://github.com/nbtca/Prompt) 的设计。它需要容纳课程、校历、活动、考试、成绩和知识库，也需要在不同终端、窗口尺寸与网络条件下保持可用。一个字符占据多少空间，一条分隔线放在哪里，选中项怎样出现，都在影响使用体验。
+修这个问题的时候，我们发现自己其实说不清楚很多事：一个字符在终端里到底占多大地方？为什么同一段字符画换个字体就散架？别的 TUI 程序是怎么在 80 列里塞下那么多信息的？于是我们从一百多年前的打字机艺术一路看到今天的 btop 和 fzf，又把 Prompt 放进伪终端里一页一页地检查。
 
-研究 ASCII 艺术，可以让我们看到字符造型的广度；研究优秀的 terminal 应用，则能看到这些材料如何组成可操作的界面。两者放在一起，才容易把欣赏转化为设计能力。
+这篇文章是这次调研的笔记。前半部分讲字符怎样变成图像，后半部分讲字符怎样组成界面，最后回到 Prompt，看它做对了什么，还有哪些地方没做好。资料查阅截至 2026 年 10 月 24 日，Prompt 的截图摄于 10 月 28 日。
 
-本文依据艺术家的作品与回忆、历史档案、技术规范、研究论文和项目官方文档展开。案例按历史影响、造型方法、交互清晰度以及与 Prompt 的关联选取，覆盖欧美 scene、日本 AA、台湾 BBS 等不同传统。应用比较以公开界面、官方演示和文档为依据，文中没有进行跨产品性能排名。
+## 一、一个单元格
 
-资料查阅截至 2026 年 10 月 24 日。历史事实、画面观察与针对 Prompt 的设计建议会分别交代。文章中的界面草图和课程、日期、地点均为虚构示例。
+终端屏幕是一张网格，经典尺寸是 80 列、24 行，每个格子放一个字符。先看其中一个格子。
 
-## 阅读导航
+![一张 Rogue 式小地图中玩家 @ 所在的单元格，以及画出它所需的四段字节。|inline](/images/posts/ascii-art-and-tui-design/cell-anatomy.webp)
 
-- [理解字符、字体与显示控制](#一先理解我们使用的材料)
-- [回顾历史中的设计条件](#二历史告诉我们限制怎样成为风格)
-- [细读艺术作品与字标](#三细看作品从欣赏转向造型判断)
-- [练习字符造型的基本功](#四字符艺术的几项基本功)
-- [研究十二组 terminal 应用](#五从十二组-terminal-应用中学习交互)
-- [把研究用于 Prompt](#六这些研究怎样用于-prompt)
-- [处理显示条件与性能](#七把显示条件与性能纳入设计判断)
-- [比较和验证设计](#八怎样判断设计是否产生了收益)
-- [继续练习与阅读](#九把调研变成可以持续练习的能力)
-- [查看第一次落地与验证](#十第一次落地字标空状态与一周概览)
+高亮的格子在第 2 行第 4 列，里面是黄色加粗的 `@`，背景是紫色。程序要画出它，会向终端依次发送四段字节：
 
-## 一、先理解我们使用的材料
+```text
+ESC[2;4H       把光标移到第 2 行第 4 列
+ESC[1;33;45m   粗体、黄字、紫底
+@              字符本身
+ESC[0m         恢复默认样式
+```
 
-### ASCII、ANSI 和 TUI 分别指什么
+以 ESC 开头的那几段，终端会执行，但不会显示出来。它们的格式由 [ECMA-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) 规定，大家习惯叫它 ANSI 转义序列。至于 `@` 代表玩家，那是游戏自己的规则，终端并不知道。
 
-[ASCII](https://www.rfc-editor.org/rfc/rfc20) 是字符编码标准。严格讨论造型时，通常使用从空格到波浪号的 95 个可打印字符。换行负责组织文本行，控制字符不属于这组可打印造型材料。
+这里顺便分清三个常被混用的词。ASCII 是一套字符编码，[RFC 20](https://www.rfc-editor.org/rfc/rfc20) 记录的 ASCII 有 128 个码位，其中从空格到波浪号的 95 个可以打印出来，严格意义上的 ASCII art 只用这 95 个字符。ANSI art 是 BBS 时代的叫法，指用上面那种转义序列加上 IBM PC 字符集里的方块字符画出的彩色画面。TUI 则是 Text User Interface，说的是交互方式，一个只靠反显标出选中行的文件选择器也算 TUI。
 
-在这套材料里，斜线可以成为屋顶，括号可以成为弧线，字母可以成为眼睛，也可以只是某种密度的纹理。字符原有的语言含义与它的视觉形状，可以同时参与作品。
+Anders Carlsson 在 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/) 里指出，这些按编码起的名字其实说明不了作品长什么样。同样是 ASCII 字符，Amiga 字体里的斜线能首尾相连，DOS 字体里却留着缝隙，两边的风格就这样分开了。后文沿用这些常见叫法，遇到字体影响大的作品再单独说明。
 
-ANSI art 是艺术社群形成的名称。传统 PC BBS 作品经常把 CP437 等字符资源与颜色、光标控制结合起来。这里需要区分两件事：字符编码决定字节如何对应字符，控制序列决定终端如何设置属性、移动光标等。[ECMA-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) 是理解后一层的重要规范。给一段 UTF-8 中文文字加上颜色，也可以使用这类控制序列。
+还有一种情况容易混淆：Kitty graphics、Sixel 等协议能让终端直接显示位图，[Yazi 的文档](https://yazi-rs.github.io/docs/image-preview/)列出了各终端的支持情况。网上很多漂亮的终端截图，里面其实混着真正的图片。
 
-TUI 是 Text User Interface，即文本用户界面。它描述交互方式，范围比字符画更广。一个只使用普通文字和反显选中行的文件选择器，同样可以是完整的 TUI。
+## 二、在屏幕出现之前
 
-为了准确讨论设计，我们可以把终端画面拆成四层：
+### 打字机
 
-| 层次 | 需要回答的问题 | 对应的设计决策 |
-| --- | --- | --- |
-| 字符资源 | 有哪些字符可以使用？ | ASCII、中文、线框、块元素、Braille |
-| 字体与网格 | 字符怎样占据一个单元？ | 字宽、行高、笔画粗细、连接方式 |
-| 显示控制 | 可以改变哪些显示属性？ | 颜色、反显、光标位置、局部刷新 |
-| 交互与语义 | 用户怎样理解和操作？ | 焦点、选择、搜索、帮助、状态反馈 |
+用字符画画，比计算机早得多。1893 年的 *Pitman's Typewriter Manual* 里已经有用字符排出的装饰图案。五年后，一位叫 Flora Stacey 的女士用打字机做了一只蝴蝶，刊登在 1898 年 10 月 15 日的 *The Phonetic Journal* 上。
 
-这四层相互关联。字体换了，字标的斜线可能断开；颜色关了，选中项仍需要可辨认；窗口变窄了，信息顺序也要作出取舍。
+![1898 年 10 月 15 日 The Phonetic Journal 第 662 页，刊登 Flora Stacey 的蝴蝶。四周的边框由反复打出的字符组合构成。|inline](/images/posts/ascii-art-and-tui-design/stacey-butterfly-1898.webp)
 
-### 几种值得分别研究的传统
+图像来自 [oz.Typewriter 对 Stacey 生平的考证](https://oztypewriter.blogspot.com/2020/02/flora-fanny-stacey-1845-1909-worlds.html)，原刊已进入公有领域。更多早期作品可以看 [The Marginalian 对 Barrie Tullett 著作的介绍](https://www.themarginalian.org/2014/05/23/typewriter-art-laurence-king/)。
 
-| 传统 | 常见的视觉语言 | 适合研究的问题 |
-| --- | --- | --- |
-| 手绘 ASCII | 轮廓线、标点、字母、小型具象形象 | 少量字符怎样建立识别 |
-| PC BBS ANSI | 块字符、明暗字符、前景与背景色 | 有限色板与界面整体性 |
-| Amiga scene ASCII | 连贯斜线、字标、纵向作品集 | 字形、负空间与社群品牌 |
-| 日本 AA | 日文字符、表情、角色、特定字体 | 姿态、情绪与字体依赖 |
-| 台湾 BBS ANSI | 几何块形、大色面、中文构图 | 东亚字符环境中的画面组织 |
-| PETSCII、Teletext | 各自显示系统中的图形单元 | 重复模块与有限资源配色 |
-| 现代 Unicode TUI | 线框、比例条、点阵、字符图表 | 数据表达与显示能力适配 |
+边框里那些反复出现的字符组合，单独看只是字母和横线，排在一起就成了花纹。
 
-这些分类既有技术背景，也有社群习惯。Anders Carlsson 的研究 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/) 对这种交叉关系有专门讨论。本文沿用常见名称，同时在需要时说明作品的材料与显示条件。
+打字机还能叠打：在同一个位置敲好几次，颜色就更深。1919 年 6 月，*Photoplay* 杂志登了一幅 Kenneth Taylor 用打字机打出来的卓别林像。
 
-还有一种容易混淆的情况：现代终端可以通过 Kitty graphics、Sixel、iTerm2 等协议显示真正的图像。它们与字符拼出的图形属于不同的显示路径。[Yazi 的图像预览文档](https://yazi-rs.github.io/docs/image-preview/) 列出了相关能力与适配方式。看到漂亮的 terminal 截图时，可以先确认其中哪些内容由字符组成。
+![Kenneth Taylor 的打字机肖像，刊于 1919 年 6 月的 Photoplay。头发和胡子用密集字符，脸部只用稀疏的点。|inline](/images/posts/ascii-art-and-tui-design/typewriter-chaplin-1919.webp)
 
-## 二、历史告诉我们，限制怎样成为风格
+图像来源：[Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Typewritten_portrait_of_Charlie_Chaplin.jpg)，在美国属于公有领域。
 
-### 打字机艺术：字符可以先成为形状
+凑近看是一排排字母，退后几步才是一张脸。蝴蝶的边框用的是字符的形状，卓别林像用的是字符的深浅。这两种用法到今天还是字符画的两条主要路线，第四节我们会实际测一测。
 
-字符构图早于计算机。1893 年的 *Pitman’s Typewriter Manual* 包含装饰性字符图案；Flora Stacey 在 1898 年制作的蝴蝶，是经常被讨论的早期打字机艺术案例。[Barrie Tullett 著作的图文介绍](https://www.themarginalian.org/2014/05/23/typewriter-art-laurence-king/) 和 [Heikki Lotvonen 的研究](https://blog.glyphdrawing.club/amiga-ascii-art/) 都展示了这些材料。
+### Bell Labs 的恶作剧
 
-这里最有价值的观察，是字符可以脱离句子的顺序，转而参与轮廓、对称与密度的组织。我们可以先看见一只蝴蝶，再靠近辨认组成它的字符。
+1966 年，Bell Labs 的 Leon Harmon 想趁上司 Ed David 出差搞个恶作剧，找同事 Ken Knowlton 帮忙。他们用计算机扫描了一张照片，按明暗挑出晶体管、电阻之类的电子元件符号，拼成一幅 12 英尺宽的裸体像，挂在 David 的办公室墙上。
 
-打字机还允许叠打、重新定位纸张等操作。了解这些条件，可以解释为什么某些作品像连续的素描，也能提醒我们：把打字机作品搬到固定网格中，通常需要重新设计。
+据 Knowlton 的[回忆](https://www.kenknowlton.com/pages/04portrait.htm)，这幅画只挂了一天，就因为被认为不适合挂在实验室里而摘了下来。后来它登上了 1967 年 10 月 11 日的《纽约时报》，又以 *Studies in Perception I* 的名字进入 MoMA 1968 年的[机器主题展](https://www.moma.org/momaorg/shared/pdfs/docs/press_archives/4149/releases/MOMA_1968_July-December_0081.pdf)。
 
-对 Prompt 而言，这条传统提供了一种观看方法。设计小插画时，先判断用户能否认出形象，再考虑它用了多少种字符、技术上有多复杂。
+它用的是自制符号，不算严格意义上的 ASCII 字符画。但它让计算机接手了卓别林像那种按明暗挑字符的工作。
 
-### Bell Labs：字符也可以成为明暗单元
+### VT100 与 Rogue
 
-Ken Knowlton 与 Leon Harmon 在 Bell Labs 的图像实验，展示了另一条路线：用大量符号形成远看连续的图像。Knowlton 在 [Portrait of the Artist as a Young Scientist](https://www.kenknowlton.com/pages/04portrait.htm) 中回忆了相关实验与 Harmon–Knowlton 作品的制作、传播。[MoMA 1968 年的展览资料](https://www.moma.org/momaorg/shared/pdfs/docs/press_archives/4149/releases/MOMA_1968_July-December_0081.pdf) 则列出了 *Studies in Perception* 系列。
+电传打字机只能一行接一行往下打印，没法回头修改。后来的视频终端能把光标移到屏幕上任意位置，但每家厂商的指令都不一样。1978 年，DEC 推出了 VT100，它是最早采用 ECMA-48 这类标准序列的终端之一，今天的终端模拟器大多仍兼容它的行为。
 
-这类作品适合放在计算机字符图像与马赛克的历史中理解。它们涉及特定的符号、输出设备与图像处理过程，不能仅凭外观就断定使用了今天所说的 ASCII 字符画方法。
+![DEC VT100 终端，摄于 Living Computer Museum。](/images/posts/ascii-art-and-tui-design/vt100.webp)
 
-它带来的设计启发很明确：**单个字符既可以贡献形状，也可以贡献明度。** 同样的一块区域，可以用稀疏标点保留轻盈感，也可以用密集字形形成重量。
+照片：Jason Scott，[CC BY 2.0](https://creativecommons.org/licenses/by/2.0/)，来自 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:DEC_VT100_terminal.jpg)。
 
-### Rogue 与早期屏幕界面：字符开始承担空间语义
+光标能自由移动以后，屏幕就能当成一张地图来用。大约同一时期，加州大学的 Michael Toy 和 Glenn Wichman 开始写 Rogue。Wichman 在 [A Brief History of Rogue](https://www.wichman.org/roguehistory.html) 里回忆，正是 Ken Arnold 写的 curses 库让他们能把字符放到屏幕的指定位置，才有了屏幕上的地下城。后来 Rogue 随 4.2BSD 发行，传遍了各地大学的机房。
 
-Rogue 的共同创作者 Glenn Wichman 在 [A Brief History of Rogue](https://www.wichman.org/roguehistory.html) 中讲述，能够把字符放到屏幕指定位置的 curses，为他们构思屏幕上的地下城提供了条件。
+![BSD 版 Rogue。横线和竖线围出房间，# 是走廊，+ 是门，@ 是玩家，最下面一行是状态栏。|inline](/images/posts/ascii-art-and-tui-design/rogue-bsd.webp)
 
-这一步对 TUI 很关键。信息有了稳定位置，字符之间也有了空间关系。门、墙、道路与角色可以同时存在，用户不必每次重新阅读一段完整的环境描述。
+截图：Thedarkb，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)，来自 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Rogue_Screenshot.png)。
 
-[NetHack 3.6 的 Guidebook](https://www.nethack.org/v367/Guidebook.html) 保留了字符界面的示意，以及地图、顶部消息和底部状态的解释。这里引用的是历史版本文档。
+在纯文字的冒险游戏里，要用一段话描述“你的东边有一扇门”。在 Rogue 里，`+` 就待在房间墙上，玩家一眼就能看到。代价是每个符号都得有固定的含义，玩家得去查。[NetHack 的 Guidebook](https://www.nethack.org/v367/Guidebook.html) 到今天还在逐个解释这些符号。
 
-我们可以把它看成一堂符号设计课：一个字符可以承载多少含义，取决于它是否出现在稳定的位置、是否遵守一致的规则，以及用户能否查到解释。Prompt 中代表课程、活动、冲突和未知状态的标记，也需要这样的语义基础。
+### :-)
 
-### 三个字符也能改变阅读
+1982 年 9 月 19 日上午 11 点 44 分，Scott Fahlman 在 CMU 的电子布告栏上提议，用 `:-)` 标记玩笑话，并补了一句“侧着看”。这条消息一度失传，2002 年才有人从备份磁带里把它[找了回来](https://www.cs.cmu.edu/~sef/Orig-Smiley.htm)。
 
-1982 年 9 月 19 日，Scott Fahlman 在讨论串中提出用 `:-)` 标记玩笑。CMU 保存了[原始讨论与恢复经过](https://www.cs.cmu.edu/~sef/Orig-Smiley.htm)。
+三个字符，什么都没画，却改变了一整句话的语气。
 
-这件事适合用来理解微型字符设计。一个符号未必需要描绘复杂对象，它也可以给整句话增加语气。对界面而言，一个稳定的选中标记、一个容易理解的提示符，也可能比一幅细密插画更直接地影响阅读。
+### BBS
 
-### BBS 与 scene：品牌、作品和使用场景一起生长
+1978 年，Ward Christensen 和 Randy Suess 架起了第一个 BBS。接下来二十年，人们拨号进入各种 BBS，最先看到的就是用字符画的欢迎画面。ACiD、iCE 这样的团体每月发布一次作品包，[Sixteen Colors](https://16colo.rs/) 今天还保存着大量原始文件。想了解这些团体的来历，可以读 [scene.org 保存的 1998 年文章](https://archive.scene.org/pub/mirrors/artpacks/www/mirrors/acheron/articles/ar-history.shtml) 和 [SAC 的档案](https://www.roysac.com/sac.html)。
 
-BBS 的欢迎画面、菜单、文件信息和社群字标，为字符艺术提供了持续的使用环境。艺术家围绕这些场景制作作品，作品又通过 artpack 等形式传播。ACiD、iCE、SAC 等团体的历史，可以从 [scene.org 保存的 1998 年历史文章](https://archive.scene.org/pub/mirrors/artpacks/www/mirrors/acheron/articles/ar-history.shtml)、[SAC 自身档案](https://www.roysac.com/sac.html) 以及 [Sixteen Colors](https://16colo.rs/) 的作品包中继续追踪。
+BBS 的字符画大多是有用途的：欢迎画面介绍站点，菜单告诉你按什么键，文件列表里还有小字标。上传文件附带的说明文件 FILE_ID.DIZ [通常不超过 10 行、每行 45 个字符](https://blog.glyphdrawing.club/amiga-ascii-art/)，艺术家要在这么小的地方把团体的名字画得认得出来。同一个团体的大画、菜单和小字标会用同一套笔画和配色，看多了，扫一眼文件列表就知道是谁做的。
 
-研究这段历史时，值得把一组材料连起来看：大幅欢迎画面怎样介绍社群，菜单怎样延续相同气质，极短的字标怎样在文件列表中保持识别。
+## 三、几件作品
 
-这与社团工具很接近。NBTCA 的品牌会出现在开屏、页眉、活动详情和文档里。统一感可以来自一套重复使用的笔画、间距、色板和小型符号。
+下面这些作品，建议都打开原作看。先看整体，再放大看字符。
 
-## 三、细看作品：从欣赏转向造型判断
+### Joan Stark 的旋转木马
 
-下面的评论以图版本身为观察对象。推荐打开原作，先看整体，再放大看字符。作品在不同字体、字号和显示系统中的外观可能变化，截图可以保留当时的展示效果。
-
-### Joan Stark：抓住形象最少需要哪些特征
-
-Joan G. Stark 常用 `jgs` 署名。她的[原站存档](https://www.oocities.org/joan_stark/) 保留了动物、人物、节庆与生活物件等分类，也说明了作品使用方式。可以先从[动物分类](https://oldcompcz.github.io/jgs/joan_stark/indexanimals.html) 选择体量较小的作品观察。
+Joan G. Stark 常以 `jgs` 署名，是 Usenet 时代最高产的 ASCII 艺术家之一。她的[原站存档](https://www.oocities.org/joan_stark/)按动物、人物、节庆分类，[动物分类](https://oldcompcz.github.io/jgs/joan_stark/indexanimals.html)里有不少小品。
 
 ![左侧是 Joan Stark 于 1998 年制作的旋转木马，右侧是 Stylez 于 1995 年制作的透视字标。|inline](/images/posts/ascii-art-and-tui-design/ascii-comparison.webp)
 
 图版来自 Carlsson 的 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)，作者与日期按其中署名保留。
 
-旋转木马的识别来自几种线索的协作：马的外轮廓、头部方向、腿部姿态，以及贯穿画面的立柱。即使不能逐个辨认字符，也能读出对象与姿态。
+左边这匹马，我们试着数了数让人认出它的线索：外轮廓、头的朝向、腿的姿势、穿过身体的立柱，一共就这么几样。其余的字符删掉几个，照样认得出来。
 
-我们可以从中提炼一个适合小插画的练习：先列出对象的三个关键特征，给每个特征安排必要的字符，再决定要不要补纹理。画猫时，耳朵、眼睛和坐姿可能已经足够；画课表空状态时，一本合上的书也许只需要一个可辨认的轮廓。
+### Amiga 的斜线
 
-对 Prompt 来说，适合探索的小插画场景包括空日程、没有搜索结果、导出成功和初次使用。它们需要与说明文字共同工作。用户应该先读懂当前情况，再感受到形象带来的温度。
+上图右边是 Stylez 的字标，字母被拉进了透视里，大块的内部空白和黑底一起撑起了体积。
 
-### Stylez 与 h7：让空白成为字形的一部分
-
-上图右侧的 Stylez 字标把字母拉进透视关系。笔画、字间连接与大块内部空白共同建立体积，黑底也参与了形状的构成。
-
-Amiga ASCII 的字体条件尤其值得注意。Topaz 等字体让斜线和相邻笔画形成特有的连接效果。Lotvonen 的 [Amiga ASCII art](https://blog.glyphdrawing.club/amiga-ascii-art/) 同时讨论了字形、社群与作品集形式，并展示了芬兰艺术家 Antti “h7” Kiuru 的 *Jungle Fever*。
+这种画法离不开 Amiga 的默认字体 Topaz。Heikki Lotvonen 在 [Amiga ASCII art](https://blog.glyphdrawing.club/amiga-ascii-art/) 里解释了原因：Topaz 的字距和行距都很窄，下划线后面紧跟一条斜线，看起来就是连着的；上下两行的斜线也能接成一条长线。所以 Amiga 上的字标几乎都是斜体。同一篇文章还收了芬兰艺术家 Antti “h7” Kiuru 的 *Jungle Fever*。
 
 ![h7 于 2015 年制作的 Jungle Fever 标题图版，以斜线字标、细长竖线和大面积留白组织阅读节奏。|inline](/images/posts/ascii-art-and-tui-design/amiga-jungle-fever.webp)
 
 图版与署名来源：[Lotvonen 的研究](https://blog.glyphdrawing.club/amiga-ascii-art/)。
 
-这张图值得从三个尺度看。拉远看，大字标决定视觉重心；正常阅读时，标题与短句之间的留白形成节奏；靠近看，细长的竖线和小型形象又把不同段落串起来。
+这张图远看是一个大字标，近看是一列细竖线串起的短句，中间大片留白。这类字标靠空白分开字母，想把它压窄，只删空格是不行的，字母会粘成一团。
 
-对 Prompt 的品牌探索，可以从一个 3 至 5 行的字标开始。先确定一种笔画逻辑，再画紧凑和展开版本。这样，开屏上的完整作品与页眉中的小字标就可能保留相同的家族特征。
+### Roy 的小画布
 
-这也是理解负空间的好机会。字标的内部空洞、字间间隙和外部留白，都需要有意识地安排。压窄一个字标时，仅仅删去空格，可能会让字母粘成无法辨认的团块。
+Roy 是 SAC 的成员，[SAC 字标图集](https://www.roysac.com/sac_asciis.html)收了大量用在 NFO 和 FILE_ID.DIZ 里的小字标，可以和 [Roy 的自选作品](https://www.roysac.com/roy_bestof.html)对照着看。他写过一篇 [Width Restrictions & Challenges](https://www.roysac.com/tutorial/roy-ascii-widthandtips.html)，专门讲怎样在有限宽度里画字标，其中一条建议是：艺术字标旁边最好再写一遍普通文字的名字，因为不是每个人都认得出艺术字。
 
-### Roy/SAC：小画布上的可读性是一门具体技术
+Prompt 也是这么做的：启动画面画会徽，进入程序后，大多数页面的左上角都写着普通文字的 `nbtca`。
 
-[SAC 字标图集](https://www.roysac.com/sac_asciis.html) 收录了用于 NFO 与 FILE_ID.DIZ 的作品。可以把它们与 [Roy 自选作品](https://www.roysac.com/roy_bestof.html) 对照，观察不同宽度下的笔画、字距和重量。
+### ACiD 与 Blocktronics
 
-Roy 在 [Width Restrictions & Challenges](https://www.roysac.com/tutorial/roy-ascii-widthandtips.html) 中讨论了宽度限制与压缩。他还提醒创作者，在艺术字标附近保留普通文字名称，方便读者识别。
+PC 上的 ANSI art 一般只有 16 种前景色和 8 种背景色。打开 [ACiD 100 的作品包](https://16colo.rs/pack/acid-100/)，再翻翻 [Blocktronics 的档案](https://16colo.rs/group/blocktronics)，能看到艺术家们在同样的限制下画出了多么不同的东西。
 
-这个建议很适合 Prompt。艺术字标可以建立气质，普通文字中的 `NBTCA` 和应用名则承担直接识别。新用户、搜索引擎、日志阅读者和辅助技术，对同一画面的读取方式并不相同。
+其中一件是 ungenannt 的 [ungenannt_1453.ans](https://16colo.rs/pack/blocktronics_blocktober/ungenannt_1453.ans)，收录在 2016 年的 *blocktronics_blocktober* 里。这是一幅长卷，要在档案站上一路滚动着看。整幅画几乎只用了红、黑、灰、白四种颜色，大块的明暗反复出现，把很多细节连成了一个整体。
 
-练习时，可以给自己两个画布：24 列和 48 列。分别设计同一个词，记录哪些笔画必须保留、哪些连接可以重做。最后再比较它们是否像同一家族，而不只比较大小。
+### 日本的 AA
 
-### ACiD、iCE 与 Blocktronics：有限色板怎样支撑复杂画面
+日本的 AA 用的是日文字符和 MS PGothic 这样的比例字体，能用的字符比纯 ASCII 多得多。Carlsson 的研究里收了 Illiorzilli 在 2013 年画的一个机器人，也讨论了字体对这类作品的影响，见 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)。
 
-打开 [ACiD 100 的作品包](https://16colo.rs/pack/acid-100/)，可以同时看到字标、图像和不同类型的文件。继续浏览 [Blocktronics 档案](https://16colo.rs/group/blocktronics)，则能看到众多艺术家在相近材料条件下发展出的差异。
+AA 里的角色，眼睛挪一格、嘴换一个字符，表情就变了。不过它们依赖比例字体，复制到等宽的终端里，比例就全乱了。
 
-其中一个适合细读的案例，是 ungenannt 的 [ungenannt_1453.ans](https://16colo.rs/pack/blocktronics_blocktober/ungenannt_1453.ans)，收录于 2016 年的 *blocktronics_blocktober*。原作是长卷，建议在档案站完整滚动观看。
+### PTT 的中文 ANSI
 
-画面主要围绕红、黑、灰、白组织人物和建筑。不同场景中的明暗大面反复出现，把局部复杂度连接成整体。观察时，可以暂时忽略人物细节，只记录沿纵向出现了哪些明亮区域、深色区域和强烈红色区域。
+![上方是 jacky90527 的 PTT 登录画面，下方是 else 于 2013 年制作的人物群像，展示几何块形与中文构图。](/images/posts/ascii-art-and-tui-design/ptt-ansi.webp)
 
-对 Prompt 的启发在于色板纪律。活动专题、欢迎画面或 About 页可以容纳较强的艺术表达，但一套有限色板和清楚的重心，会让画面更容易保持整体性。普通数据页中的状态色还承担实际含义，需要预留区分空间。
+图版、署名与下方作品日期来源：[Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)。上方登录画面的创作日期未见标注。
 
-### 日本 AA：姿态与表情建立亲近感
+Carlsson 注意到，台湾 PTT 用的中文字符集里方块字符比西方的多得多，那里的艺术家更喜欢用整块的几何色面，很少用明暗渐变的字符。登录画面里，椰树的剪影、几条水平色带和一句中文，就交代了天空和海面。下方的群像靠清楚的色块边界，让好几个人物同时站得住。
 
-日本 AA 使用的字符资源和字体条件，与西方常见的纯 ASCII 作品不同。Carlsson 的研究展示了包括 Illiorzilli 在 2013 年制作的机器人在内的案例，并讨论了 MS PGothic 等字体的影响。[日本 AA 图版与背景](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)。
+这是我们找到的离 Prompt 最近的传统：中文、终端、色块。不过这些作品是为当年的 BBS 客户端画的，放到今天的 Unicode 终端里，方块字符的宽度未必还一样，我们没有逐个验证。
 
-对我们最有帮助的观察，是形象如何通过极少量位置变化表达情绪。眼睛的间距、嘴的位置、身体的倾斜，都会改变一个角色的语气。这种能力适合用于简短反馈与小型插画。
+### Raquel Meyers 的 PETSCII
 
-移植时，需要保留对显示条件的判断。浏览器中依赖特定字体排好的 AA，在另一种等宽终端字体中可能失去原有比例。对 Prompt 而言，可以学习表情与姿态，再用自身可控制的字符和网格重新设计。
-
-### 台湾 PTT ANSI：中文和大色面可以共同构图
-
-![上方是 jacky90527 的 PTT 登录画面，下方是 else 于 2013 年制作的人物群像，展示几何块形与中文构图。|inline](/images/posts/ascii-art-and-tui-design/ptt-ansi.webp)
-
-图版、署名与下方作品日期来源：[Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)。其中未明确标注上方登录画面的创作日期。
-
-登录画面的椰树、落日和中文短句共同建立了观看顺序。树的剪影提供稳定轮廓，水平色面拉开天空与水面，文字则出现在相对容易阅读的位置。下方群像依靠明确的块形边界，让多个角色同时存在。
-
-这条传统与 Prompt 的中文使用环境有直接关联。我们可以研究中文标题、日期与图形重心怎样相互让位，也可以比较同一幅画面里，哪些区域需要细节，哪些区域适合保留平整色面。
-
-实际实现仍需要考虑当前 Unicode 终端中的字符与字宽。历史作品的视觉方法可以保留，具体字节和字符映射需要按目标环境重新验证。
-
-### Raquel Meyers：从一套视觉零件发展出完整风格
-
-Raquel Meyers 的[项目档案](https://www.raquelmeyers.com/selected/) 涵盖 PETSCII、Teletext 与展演。图版选用其 2015 年的 PETSCII 作品。
+Raquel Meyers 的[作品](https://www.raquelmeyers.com/selected/)横跨 Commodore 64 的 PETSCII、Teletext 和现场表演。下图是她 2015 年的一件 PETSCII 作品。
 
 ![Raquel Meyers 于 2015 年制作的 PETSCII 作品，以白、浅蓝和棕色几何单元形成对称结构。|inline](/images/posts/ascii-art-and-tui-design/raquel-meyers-petscii.webp)
 
-图版与日期来源：[Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)。更多 Teletext 案例可见 [Teletext Art 的艺术家页面](https://teletextart.co.uk/artists/raquel-meyers)。
+图版与日期来源：[Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)。更多 Teletext 作品见 [Teletext Art 的艺术家页面](https://teletextart.co.uk/artists/raquel-meyers)。
 
-这里的风格来自重复使用的形状、方向与颜色。阶梯、斜线和小块面像一组视觉零件，在规则内重新组合，就能形成明显的统一感。
+画面里的东西不多，就是几种阶梯、斜线和小方块，换着方向和颜色反复出现。
 
-Prompt 也可以建立这样的小型素材系统：少量分隔符、装饰角、活动徽记和空状态形象。每增加一个素材，都检查它与已有素材的笔画、密度和留白是否一致。数量可以慢慢增长，规则应当先变得清楚。
+### FIGlet
 
-### FIGlet：快速研究字符排字的尺度
+[FIGlet](https://www.figlet.org/) 是 1991 年写成的小工具，能把一行文字排成大字。我们用它试了几种字体：
 
-[FIGlet](https://www.figlet.org/) 把普通文字排成大字，官方页面提供了不同字体的示例。它很适合探索字高、笔画重量、字间关系和外轮廓。
+![用 FIGlet 的 Standard、Slant、Small Slant 和 Doom 四种字体排出 nbtca。](/images/posts/ascii-art-and-tui-design/figlet-fonts.webp)
 
-可以让同一个词依次使用五种字体，再把它们缩小观看。某些字体在大尺寸下细节丰富，缩小后却可能失去识别；某些字体比较朴素，在狭窄窗口中仍然清楚。
+Slant 的斜线写法和 Amiga 字标很像。对 Prompt 这样名字固定的程序，没必要在运行时调用 FIGlet，挑好的字标存成文本文件随程序发布就够了。
 
-对固定应用名而言，FIGlet 可以留在设计阶段。选定所需字标后，把文本资源随应用发布，通常就能保留效果。是否需要运行时生成，取决于产品是否真的允许用户输入任意标题。
+### 字符版《星球大战》
 
-### Simon Jansen：字符艺术还有时间维度
+[Star Wars ASCIIMATION](https://www.asciimation.co.nz/) 是 Simon Jansen 从 1997 年开始逐帧手工做的字符版《星球大战》。看的时候可以数一数：一个新场景出现后，要过几帧才认得出是哪里；一句字幕停留多久才读得完。
 
-[Star Wars ASCIIMATION](https://www.asciimation.co.nz/) 是 Simon Jansen 自 1997 年开始的项目。它展示了角色姿态、镜头切换和字幕如何在字符画面中协作。
+## 四、字符的几何
 
-观看时，可以专门记录三个时刻：新场景何时变得可辨认，字幕停留多久，以及动作需要多少次变化才能读懂。这会帮助我们理解动画的可读节奏。
+### 哪个字符最黑
 
-对 Prompt 的动效设计，值得探索的是很短的状态过渡：点阵徽记形成、任务完成、加载结束。每个动画都应当有完整的静止结果，并允许用户迅速继续操作。动画占据的时间和输出量，也应当进入设计评估。
+卓别林像按深浅挑字符，那么，哪个字符最“黑”？
 
-## 四、字符艺术的几项基本功
+网上流传着不少密度序列，比如 ` .:-=+*#%@`，但没说是在哪种字体下测的。我们干脆自己测：在浏览器里用 JetBrains Mono 逐个渲染 95 个可打印字符，数每个字符占了单元格多少面积。
 
-### 把轮廓造型与明暗造型分别练习
+![上方是 JetBrains Mono 中 13 个字符的实测墨量。下方左侧是明暗式，按亮度为球体逐格挑选字符；右侧是轮廓式，用字符的线条勾出同一个球。](/images/posts/ascii-art-and-tui-design/shape-tone-structure.webp)
 
-轮廓式造型关心字符的形状与对象线条是否接近。明暗式造型关心字符在一块区域中贡献了多少视觉密度。[Structure-based ASCII Art](https://ttwong12.github.io/papers/asciiart/asciiart.html) 是 SIGGRAPH 2010 的研究，讨论了轮廓结构的近似方法，并与已有的明暗式生成方法比较。
+最黑的是 `@`，也只盖住了单元格的 29.8%。`#` 是 22%，`.` 只有 3.1%。换一种字体，排名多半会变，我们只测了这一种。
 
-对小尺寸图标和字标，可以先寻找关键轮廓。对较大画布中的图像，可以进一步研究密度与层次。两种能力可以结合，但练习时分开，更容易发现问题出在哪里。
+图中左边的球，就是按测出来的墨量，逐格给每个位置挑了一个字符。右边的球是手画的，只用字符的线条去贴合轮廓。Xu、Zhang 与 Wong 在 SIGGRAPH 2010 的论文 [Structure-based ASCII Art](https://ttwong12.github.io/papers/asciiart/asciiart.html) 里，把这两种做法分别叫作 tone-based 和 structure-based。他们指出，前者要很多字符才有层次，后者直到论文发表时还主要靠手画，因为要用很少的几种字符形状去贴合任意曲线，太难自动完成。
 
-下面是本文编写的字符笔触试验。它们只用于比较材料，不是既有艺术作品的摘录：
+### 格子是窄长的
 
-```text
-Horizontal    ________    --------    ........
-Vertical      | | | |     : : : :     ! ! ! !
-Diagonal      ////////   \\\\\\\\    /\/\/\/\
-Arc           (    )      /----\      .----.
-Mass          ######      @@@@@@      MMMMMM
-Texture       .,:;.,:;    +*+*+*+*    xoxoxoxo
-```
+终端的格子不是正方形。等宽字体的字宽一般是 0.6 em，行高在 1.2 em 左右，所以一个格子大约宽 1、高 2。
 
-同一组字符需要在实际字体中比较。一个字体里的 `M` 很重，另一个字体里的 `@` 可能有更大内部空洞。常见的密度序列只能用作试验起点，不能代替实际观察。
+![8 × 8 与 16 × 8 个字符组成的方块，以及单个单元格的比例。](/images/posts/ascii-art-and-tui-design/cell-aspect.webp)
 
-### 字符单元的宽高比例会改变图像
+8 列 × 8 行的字符拼出来是竖长条，要 16 列才接近正方形。把一张照片按字符数等比缩小，结果总是又高又瘦。
 
-终端字符单元通常不能直接当作正方形像素。相同数量的列与行，未必形成视觉上的正方形。把一张照片直接按字符数量等比缩小，可能会得到过高或过扁的形象。
+行高的影响更隐蔽。文本文件里只存了字符和换行，字体和行高都由看的人的终端决定：
 
-因此，画圆、人物和徽记时，应当在目标终端里观察比例。保存文本只能保存字符与位置，无法固定用户选择的字体、字距和行高。必要时，作品需要为小、中、大尺寸分别重画，而不只是机械缩放。
+![同一个 FIGlet 字标在行高 1.0 与 1.6 下的样子。](/images/posts/ascii-art-and-tui-design/line-height.webp)
 
-这也解释了为什么一个漂亮的字符 Logo 应当同时有展示条件：大致需要多少列、多少行，使用哪类字符，在哪些字体下看过效果。对产品来说，这些条件最终会转化为资产选择与布局规则。
+我们自己就踩过这个坑。写这篇文章时，博客上的代码块继承了正文 1.7 倍的行高，第八节那个三行的 NBTCA 字标被拉得斜线全断了。查下去发现，是博客的 Markdown 插件把代码块原有的样式类覆盖掉了，修好以后行高回到 1.35，斜线才重新接上。
 
-### Braille 提供更细的点位，也带来自己的纹理
+### 把格子再切小
 
-[Unicode Braille Patterns](https://www.unicode.org/charts/PDF/U2800.pdf) 提供 2 列、4 行的八个点位。一个终端单元因而可以承载更细的空间分布。常见的点阵图形和小型趋势图会使用这组字符。
+想画得更细，可以把一个格子再切开。Unicode 有半格和四分格的方块字符，还有 [Braille 点字](https://www.unicode.org/charts/PDF/U2800.pdf)：每个字符是 2 列 × 4 行共 8 个点，256 种组合，从 U+2800 到 U+28FF。
 
-但点位数量增加，并不保证小图一定更容易辨认。点与点之间有空隙，字体会影响点的形状和重量，缩小后也可能出现散碎感。它适合哪些轮廓，需要与块字符和普通线条一起比较。
+![把一个单元格分成 1 × 1、1 × 2、2 × 2 和 2 × 4 块，分别对应整格、半格、四分格和 Braille，下方是各自画出的同一条正弦曲线。](/images/posts/ascii-art-and-tui-design/subcell.webp)
 
-对 Prompt 的徽记，可以同时画轮廓线版、块面版和 Braille 版。对课表数据，则要先问：我们需要表达的是准确位置、忙闲分布，还是连续趋势？材料应服务于这个问题。
+Braille 的编码很规整。八个点各有一个权重，从 1、2、4 一直到 128，亮起的点的权重加起来，再加上 U+2800，就是要输出的字符。图里那个例子亮了权重为 1、4、64、128 的四个点，加起来是 197，所以是 U+28C5，也就是 `⣅`。程序不用查表，直接算就行。btop 的曲线和 Prompt 的会徽都是这么画出来的。
 
-### 空白决定了信息怎样成组
+点越多，曲线越平滑，但每个点之间都有空隙，看起来也越稀疏。
 
-字符界面的空白有两个作用。一个作用是形成图像内部的形状，另一个作用是帮助用户把内容归为一组。
+### 空白和颜色
 
-例如，课程标题、时间和教室放在连续的几行里，用户会把它们读成一个对象；下一条课程之前留出少量间隔，就能建立对象边界。边框与分隔线可以进一步强化关系，但它们本身也占据空间和注意力。
+在字符界面里，空白就是排版。课程名、时间和教室连着写三行，人会把它们读成一组；下一门课之前空一行，就分开了。
 
-画界面时，可以先只用缩进和空行分组，再评估哪些边界需要画出来。每条新增线都应该帮助读者理解关系。
+颜色能表达的东西很多：品牌、选中项、状态。但总有人的终端关了颜色，或者分不清某些颜色。[NO_COLOR](https://no-color.org/) 是一个简单的约定：只要设置了这个环境变量，程序就不该输出颜色。所以选中项除了变色，最好还有一个箭头；“没有安排”和“还没加载”也最好用不同的符号，而不只是不同的颜色。
 
-### 颜色需要有稳定的分工
+## 五、别人的 TUI
 
-颜色可以表达品牌、焦点、类别和状态。这几种含义同时出现时，需要先决定优先级。
+我们对照官方文档、截图和演示，看了一批口碑不错的终端程序，主要想看它们怎么回答几个问题：我在哪一页，选中了什么，数据是不是最新的，下一步能按什么。
 
-对 Prompt，可以把正文的基本可读性、当前焦点和数据状态作为独立问题考虑。品牌蓝青色适合形成识别，但“当前选中”“即将开始”“数据过期”还应通过文字、位置或符号表达各自含义。
+| 程序 | 我们主要看了什么 |
+| --- | --- |
+| [Midnight Commander](https://midnight-commander.org/) | 常驻底部的功能键提示 |
+| [htop](https://htop.dev/screenshots.html)、[btop](https://github.com/aristocratos/btop#screenshots) | 字符图表和数值怎样并排 |
+| [fzf](https://junegunn.github.io/fzf/) | 边输入边过滤，结果和预览怎样对应 |
+| [Helix](https://helix-editor.com/) | 按下前缀键后弹出的按键提示 |
+| [Lazygit](https://github.com/jesseduffield/lazygit)、[Harlequin](https://harlequin.sh/) | 多个面板时，焦点在哪里 |
+| [Yazi](https://yazi-rs.github.io/) | 加载中的区域怎样保持不跳动 |
+| [K9s](https://k9scli.io/) | 当前范围始终显示在顶部 |
+| [Glow](https://github.com/charmbracelet/glow) | 终端里的 Markdown 排版 |
+| [Gum](https://github.com/charmbracelet/gum)、[Huh](https://github.com/charmbracelet/huh) | 表单的输入、出错和完成 |
 
-检查单色输出时，要实际运行关闭颜色后的版本。把截图转成灰度，只能帮助观察明暗层级。[NO_COLOR](https://no-color.org/) 约定的是抑制默认添加的 ANSI 颜色，其他样式、字符与交互能力还需要分别处理。
-
-### 每个符号都需要可解释的语义
-
-下面是为讨论编写的一组示例标记：
-
-```text
-##  has a scheduled item
-..  no scheduled item
-??  data not loaded
-!!  conflicting items
->   current selection
-```
-
-这组标记的价值在于区分状态。尤其要保留未知状态：没有安排、尚未加载、刷新失败和缓存可读，会导致不同的用户判断。
-
-Prompt 面向中文用户时，实际图例应当使用自然中文。图形可以帮助扫读，说明文字负责消除歧义。随着用户熟悉，解释可以收敛到需要时出现的位置。
-
-## 五、从十二组 terminal 应用中学习交互
-
-艺术作品适合研究造型，应用界面还需要回答焦点、状态、反馈和下一步操作的问题。下表提供一个便于选择的入口，后文展开与 Prompt 最相关的做法。
-
-| 应用或传统 | 优先观察的内容 | 对 Prompt 的关联 |
-| --- | --- | --- |
-| [Rogue](https://www.wichman.org/roguehistory.html)、[NetHack](https://www.nethack.org/v367/Guidebook.html) | 空间位置与符号语义 | 时间网格、课程与状态标记 |
-| [Midnight Commander](https://midnight-commander.org/) | 双栏、菜单和功能键 | 列表与详情、操作可见性 |
-| [htop](https://htop.dev/screenshots.html) | 对齐、排序、单色界面 | 考试与成绩等结构化列表 |
-| [btop](https://github.com/aristocratos/btop#screenshots) | 字符图表与数值并置 | 周分布、比例与趋势 |
-| [fzf](https://junegunn.github.io/fzf/) | 查询、结果与预览 | 文档、课程和活动搜索 |
-| [Helix](https://helix-editor.com/) | 模式、picker 与按键提示 | 快捷键的逐步发现 |
-| [Lazygit](https://github.com/jesseduffield/lazygit) | 焦点面板与上下文操作 | 列表、详情和可用动作 |
-| [Yazi](https://yazi-rs.github.io/) | 浏览、异步任务与预览 | 文档导航、缓存与刷新反馈 |
-| [K9s](https://k9scli.io/) | 持续可见的范围与筛选 | 学期、周次和当前数据范围 |
-| [Glow](https://github.com/charmbracelet/glow) | Markdown 阅读与分页 | Docs 的阅读排版 |
-| [Gum](https://github.com/charmbracelet/gum)、[Huh](https://github.com/charmbracelet/huh) | 输入、选择、确认与表单 | 登录、设置和导出流程 |
-| [Harlequin](https://harlequin.sh/) | 数据目录、编辑和结果区 | 密集数据与区域放大 |
-
-### Midnight Commander：操作可以直接出现在界面里
-
-Midnight Commander 的[官方页面](https://midnight-commander.org/) 介绍了双栏文件管理、查看、编辑等功能，并提供截图。
+Midnight Commander 是 1994 年开始开发的双栏文件管理器，最显眼的是底部那行功能键：
 
 ![Midnight Commander 官方截图，展示双栏文件列表、打开的 File 菜单和底部功能键提示。](/images/posts/ascii-art-and-tui-design/midnight-commander.webp)
 
 截图来源：[Midnight Commander](https://midnight-commander.org/)。
 
-这张图可以同时观察两种提示。底部功能键持续占据固定位置，菜单则把更多动作与对应快捷键放在一起。用户可以通过浏览逐渐学会操作。
+F1 到 F10 一直写在屏幕最下面，新用户不看手册也能摸索着用起来。
 
-它给 Prompt 的启发是让少量当前操作保持可见。活动列表、搜索输入和登录表单，各自需要的操作不同。底栏可以随上下文改变，而完整帮助仍有稳定入口。
-
-双栏也值得有条件地借鉴。列表与详情同时出现，有助于保持对象关系；窗口过窄时，独立详情页可能更清楚。采用哪种布局，需要比较实际内容能否读完整。
-
-### htop 与 btop：图形承担概览，数值承担精确阅读
-
-[htop 的官方截图集](https://htop.dev/screenshots.html) 同时展示了单色、不同主题、树形结构和图表。它适合研究对齐、排序和较高信息密度下的阅读。
+btop 则把比例条、曲线和精确数值放在一起：
 
 ![btop 官方截图，以固定区域显示 CPU、内存、磁盘、网络和进程信息，图形与精确数值并列。](/images/posts/ascii-art-and-tui-design/btop.webp)
 
-截图来源：[btop 官方仓库](https://github.com/aristocratos/btop#screenshots)。仓库还说明了图形符号、颜色模式和字体要求。
+截图来源：[btop 官方仓库](https://github.com/aristocratos/btop#screenshots)。
 
-在这张截图里，比例条和图形帮助快速找到大致状态，旁边的数值与单位支持精确判断。它们承担不同的阅读任务。
+条形让你一眼看出 CPU 忙不忙，旁边的数字告诉你具体是多少。
 
-对 Prompt，适合比较的图形包括一周课程分布、近期活动分布和年度活跃度。使用图形前，需要定义单位与尺度。同样宽的一格代表一天、一周还是一节课，应当容易查到；没有加载的格子也要与零值区分。
+fzf 每输入一个字符就重新过滤一次候选项，[预览窗口](https://github.com/junegunn/fzf#preview-window)跟着当前选中项变化。Helix 按下 `space` 或 `g` 这样的前缀键后，会弹出一个小框，列出接下来能按的键。K9s 把集群、资源类型和筛选条件固定在画面顶部，你不用记自己在看什么。
 
-### fzf：搜索过程可以持续给人方向感
+后面检查 Prompt 的时候，我们会拿它和这几个程序对照。
 
-fzf 的[官方文档](https://junegunn.github.io/fzf/) 与[预览窗口说明](https://github.com/junegunn/fzf#preview-window) 展示了输入驱动过滤、当前候选项与可配置预览。
+## 六、把 Prompt 跑起来
 
-研究它时，可以沿着一条连续的阅读路径观察：输入查询，看到候选变化，识别当前项，再判断预览是否与当前项对应。查询、结果和预览之间保持关系，搜索过程就容易理解。
+前面这些都是看别人的。轮到 Prompt，我们决定不看设计稿，直接看它跑起来的样子。
 
-Prompt 的文档与课程搜索可以借鉴这种组织方式。在进入搜索后，用户应当知道当前查什么、筛选了什么、还剩多少项。若宽屏加入预览，选中项变化时也应明确处理正在加载、已加载和不可用的状态。
+一开始我们用 vhs 录屏，结果被骗了一次：按下 `2` 切到课表页，截图里高亮的却是活动页。我们以为找到了一个 bug，做对照实验才发现，vhs 在隐藏和显示画面之间切换后，截图的帧顺序会乱。后来我们改用 Python 的 `pty` 模块在伪终端里启动 Prompt，用 `pyte` 这个终端模拟库解析它的输出，等画面上出现预期的文字再截图，最后按每个字符的真实宽度和颜色转成图片。下面的截图都是这样得到的。
 
-搜索退出后的定位同样重要。回到原列表时，如果之前的选择和上下文仍然容易找到，用户会更愿意把搜索当成日常导航的一部分。
+我们测的是 v1.5.22，对应 [PR #92 的提交 2a75b1a](https://github.com/nbtca/Prompt/tree/2a75b1aaa01dd1292f4338df90eae96b3bc38157)。用的是全新的配置目录，没有登录统一认证，活动和文档都是 10 月 28 日的公开数据。
 
-### Helix：让快捷键随着任务逐步出现
+### 启动动画
 
-[Helix 的键位文档](https://docs.helix-editor.com/keymap.html) 区分了模式、minor modes、picker 和 prompt。它提供了一种研究按键发现的入口：用户当前处于什么状态，接下来有哪些有效输入。
+![Prompt 启动动画的第 3、6、9、12 帧，Braille 点阵会徽从零散的点逐渐成形，最后一帧换成从深蓝到青色的渐变。](/images/posts/ascii-art-and-tui-design/prompt-startup.webp)
 
-我们可以把 Prompt 的快捷键分为三类：始终可用的导航键，当前页面的操作，以及输入或确认过程中的操作。每种提示都应该出现在相应语境中。
+动画太快，从外面截不到中间帧，所以这四帧是直接调用 Prompt 自己的 `materializeBraille` 函数、固定随机种子生成的。读了代码才知道它是怎么做的：先把会徽里每个 Braille 字符拆成一个个亮着的点，打乱顺序，然后分 12 帧，每帧多点亮一批，帧与帧之间隔 35 毫秒。每一帧要输出的字符，就是用上一节的办法，把已经点亮的点的权重加起来算出来的。
 
-例如，浏览活动时重点提示打开和搜索；编辑查询时突出输入、提交与取消；导出前则突出目标和确认。完整帮助可以保持完整，日常提示则服务于眼前的任务。
+中间帧都是单一的品牌蓝 #0ea5e9，最后一帧才换成按列从 #124689 经 #0ea5e9 渐变到 #06b6d4。按任意键可以跳过。
 
-### Lazygit：焦点决定了操作对象
+会徽有三档。窗口至少 60 列、34 行时，用带外圈文字的大会徽；至少 44 列、24 行时用中号；再小用小号。终端不支持 Unicode 时，换成三行的 ASCII 字标；字标也放不下，就只写 `NBTCA`；还放不下，干脆跳过启动画面。开头说的那个问题，出在 ASCII 字标这一档，第八节再讲。
 
-Lazygit 的[官方仓库与演示](https://github.com/jesseduffield/lazygit) 展示了文件、diff、提交等区域之间的交互。它适合研究多面板中的焦点与动作对象。
+### 活动页
 
-对 Prompt 的课程与成绩界面，至少有三种状态需要容易区分：当前键盘焦点在哪个区域，列表选中了哪一项，以及哪些状态只是信息提醒。把它们都涂成相同颜色，容易增加判断负担。
+![Prompt 活动页，80 × 24。五个编号依次标出标签栏、下一场活动的倒计时、近期安排、浏览菜单和底栏按键提示。](/images/posts/ascii-art-and-tui-design/prompt-events.webp)
 
-因此，分栏设计需要先建立焦点规则。用户移动时，应该能预期选中对象和详情怎样变化；执行动作前，也应该知道动作作用于哪个对象。
+对照第五节那几个问题来看：
 
-### Yazi：等待过程也有可设计的状态
+1. 我在哪一页：当前标签加了方括号，用加粗的品牌蓝显示。
+2. 下一场是什么：顶部写着下一场活动和倒计时。
+3. 近期有什么：最近的一场正常显示，更远的日期变暗，`↻` 表示每周重复的活动。
+4. 选中了什么：浏览菜单里，选中项前面有 `→`，并且变成品牌蓝。
+5. 能按什么：底栏只列当前页面有效的键。首页没有可选的东西，底栏就不写 `↑↓` 和 `⏎`。
 
-Yazi 的[官方说明](https://yazi-rs.github.io/) 强调异步 I/O、任务管理与预览，操作入口可以从 [Quick Start](https://yazi-rs.github.io/docs/quick-start/) 继续查看。
+活动页里还能打开一张近一年的活跃度热力图：
 
-对 Prompt 最有价值的启发，是把内容可读与后台刷新分别表达。缓存已存在时，用户可以先阅读；刷新过程需要一个清楚的状态；刷新失败后，也要让人知道当前看到的是什么。
+![Prompt 的近一年活跃度热力图。横向是 53 周，纵向是周一到周日，每格的深浅表示当天的活动数量，底部是“少”到“多”的图例。](/images/posts/ascii-art-and-tui-design/prompt-heatmap.webp)
 
-预览同样如此。正在加载的区域应当保留稳定位置，旧内容是否继续显示也需要明确规则。这样，等待不会不断改变画面结构。
+每列是一周，每行是星期几，格子的深浅就是那天有几场活动，4 场以上都算最深。行首只标了一、三、五，月份标签放不下的时候会自动省略。
 
-### K9s：让范围始终容易确认
+### 课表页
 
-[K9s 的官方预览](https://k9scli.io/) 包含资源列表、日志与不同视图。研究这类应用时，可以留意运行上下文、当前对象范围和筛选条件分别放在哪里。
+![Prompt 课表页，未登录状态。第一行是学年、学期和周次，下方是学期进度条、距期末考试周的天数，以及登录、考试和成绩三个入口。](/images/posts/ascii-art-and-tui-design/prompt-schedule.webp)
 
-Prompt 对应的上下文包括学期、教学周、日期范围和筛选条件。成绩列表如果切换了学期，界面上应有稳定可见的依据；活动列表如果只显示未来安排，也应让人能读到当前范围。
+第一行永远是学年、学期和第几周，和 K9s 把范围钉在顶部是一个意思。进度条的画法像 btop：`█` 和 `░` 给出大概位置，旁边写着“第 7/17 周”和“距离期末考试周还有 77 天”。
 
-上下文持续可见，可以减少用户在记忆中保留条件的负担。空间不足时，可以压缩名称或提供展开入口，但仍要保留足够的定位信息。
+选“登录查看我的课表”会进入统一认证的表单，学号输入框下面写着一行小字：“仅发送给学校统一认证”。
 
-### Glow：阅读需要自己的空间安排
+### 文档
 
-[Glow](https://github.com/charmbracelet/glow) 提供 Markdown 阅读、文本宽度、样式与分页等能力。它适合研究 Docs 页面中标题、段落、代码块和导航提示之间的关系。
+文档页可以按分类浏览，也可以搜索。搜索和 fzf 不同，要按回车才提交，因为结果来自远程的文档站，每输入一个字就请求一次并不划算。结果页的排法倒是和 fzf 很像，左边是标题，右边是命中位置附近的摘要：
 
-阅读一篇长文时，用户需要持续知道内容结构与当前位置。正文宽度、段间距和代码块的处理，会直接影响阅读节奏。代码中的长行还需要保留语义和复制能力，单纯截断可能让示例失去用途。
+![Prompt 文档搜索结果。“git”共 20 篇，左列是标题，右列是命中位置附近的摘要，过长的部分以省略号截断。](/images/posts/ascii-art-and-tui-design/prompt-docs-search.webp)
 
-Prompt 可以为文档列表、搜索结果和正文阅读分别评估布局。它们属于不同任务，适合呈现的信息密度也可能不同。
+打开一篇以后，顶部的 `nbtca` 换成“文档 › 标题”，正文按 Markdown 排版，右下角显示读到了百分之几：
 
-### Gum 与 Huh：把输入过程作为完整体验设计
+![Prompt 文档阅读页。标题和小节标题为青色，二级标题下方有横线，列表用圆点，链接单独着色，底栏右侧显示阅读进度 0%。](/images/posts/ascii-art-and-tui-design/prompt-docs-reader.webp)
 
-[Gum](https://github.com/charmbracelet/gum) 与 [Huh](https://github.com/charmbracelet/huh) 提供选择、输入、确认与表单等交互。这里更值得借鉴的是状态组织：空值怎样提示，当前输入怎样显示，错误怎样说明，完成后留下什么结果。
+在这里按 `?`，快捷键页会先列全局按键，再单独列出这一页特有的 `f` 链接模式和 `b` 在浏览器中打开，和 Helix 的做法差不多。
 
-Prompt 的登录、学期选择和日历导出，都可以沿这些状态逐个检查。出现错误时，应当保留用户仍能继续使用的上下文；操作完成后，应当能读到发生了什么，以及接下来可以做什么。
+### 不进全屏的时候
 
-### Harlequin：密集数据需要按任务分配空间
+`nbtca status`、`nbtca events --week` 这些子命令会直接打印结果然后退出。我们把输出接到管道里，发现符号都变了：
 
-[Harlequin](https://harlequin.sh/) 的官方介绍区分 Data Catalog、Query Editor 和 Results Viewer，也提供放大主要区域的能力。
+![nbtca status 输出到管道时的结果。在线服务标为“+ 在线”，超时的内网服务标为“! 超时”，分隔线是连字符。](/images/posts/ascii-art-and-tui-design/prompt-pipe.webp)
 
-这类界面提醒我们，数据量增加后，可以让用户在概览与局部阅读之间切换。考试和成绩列表适合扫读，完整课程名称、时间说明和原始成绩信息则可能需要更多空间。
+原因是标准输出不再是终端，程序就假设对面可能不认识 Unicode，换成了纯 ASCII。如果要给脚本用，可以加 `--json`：
 
-对 Prompt 的借鉴应当围绕具体阅读任务：概览页保留哪些字段，选中后展开哪些字段，窄屏下怎样读到完整信息。评估重点是用户能否取得所需数据，并理解各区域的关系。
-
-## 六、这些研究怎样用于 Prompt
-
-### 先看现有基础
-
-本节依据 Prompt 的[代码快照 ca3110f](https://github.com/nbtca/Prompt/tree/ca3110f036987e87902733344ffe2d4e20229d0f)。固定快照便于后续对照，避免把未来变化与本次观察混在一起。
-
-![Prompt 现有活动页，使用蓝青色强调、顶部标签、近期安排列表和底部操作提示。](/images/posts/ascii-art-and-tui-design/prompt-events.webp)
-
-截图来源：[Prompt 仓库中的活动页截图](https://github.com/nbtca/Prompt/blob/ca3110f036987e87902733344ffe2d4e20229d0f/.github/screenshot.webp)。截图展示的是仓库保存的界面与示例活动，不代表本文发布时的实时安排。
-
-当前实现已有值得延续的基础：蓝青色品牌色、Braille 点阵 Logo、多尺寸 Logo 选择、图标的 ASCII 替代、随窗口变化压缩的导航，以及一周分布与进度表达。对应实现可以查看 [theme](https://github.com/nbtca/Prompt/blob/ca3110f036987e87902733344ffe2d4e20229d0f/src/core/theme.ts)、[logo](https://github.com/nbtca/Prompt/blob/ca3110f036987e87902733344ffe2d4e20229d0f/src/core/logo.ts)、[chrome](https://github.com/nbtca/Prompt/blob/ca3110f036987e87902733344ffe2d4e20229d0f/src/app/chrome.ts) 与 [Home](https://github.com/nbtca/Prompt/blob/ca3110f036987e87902733344ffe2d4e20229d0f/src/app/views/home.ts)。
-
-一个具体的兼容观察是：该快照中，ASCII 图标模式下的 Logo 读取 `ascii-logo.txt`，但[文件内容](https://github.com/nbtca/Prompt/blob/ca3110f036987e87902733344ffe2d4e20229d0f/src/logo/ascii-logo.txt) 仍然使用 Braille。这个例子说明，资产名称、设置名称与实际字符能力需要一起检查。
-
-### 品牌可以形成三个尺度
-
-从 Amiga 字标、SAC 与小画布作品中，我们可以提出一个设计假设：完整徽记、紧凑字标和最小 wordmark 共享笔画或轮廓特征，会比彼此无关的几张资产更容易形成识别。
-
-完整徽记适合有足够空间的展示；紧凑字标适合首页或 About；最小 wordmark 适合持续出现的页眉。终端空间不足时，可以按尺度选择，而不是裁掉作品的一部分。
-
-这并不要求马上增加很多资产。先做三个相互关联的版本，再在实际终端中比较识别、空间占用和显示条件，就能检验这个方向。
-
-### 首页先回答时间与下一步
-
-对一个校园工具，首页可以优先尝试回答：下一节课是什么、接下来有什么社团活动、当前数据是否可用。下面是一张内容草图，全部数据均为虚构示例。
-
-```text
-nbtca   [首页]   课表   活动   文档   设置
-────────────────────────────────────────────────────────
-
-今天 · 第 7 周                         缓存于 09:42
-
-下一节课
-→ 10:20  数据结构                       还有 18 分钟
-         教学楼 A203                    2 节
-
-本周          一   二   三   四   五   六   日
-课程          ##   ##   ..   ##   ##   ..   ..
-活动          ..   ..   ??   ..   ##   ..   ..
-              ## 有安排   .. 无安排   ?? 尚未加载
-
-下一场活动
-  10-30 19:00   Weekly meeting
-
-────────────────────────────────────────────────────────
-1–5 切换   / 搜索   Enter 查看   ? 帮助
+```json
+{
+  "date": "10-27",
+  "time": "18:00",
+  "title": "下教室招新",
+  "location": "待定",
+  "description": "",
+  "startDateISO": "2026-10-27T10:00:00.000Z",
+  "recurring": false,
+  "uid": "clh64e316gr66b9i6so3gb9kc8s32bb26dijcb9o64p66dj3c5j68or460@google.com"
+}
 ```
 
-草图中，文字给出精确时间和地点，简短网格提供一周概览，缓存时间说明数据状态。它提出的是信息层级，具体按键与布局仍需通过原型验证。
+## 七、换一台终端会怎样
 
-如果窗口变窄，可以让概览压缩为纵向条目，同时保留课程、时间与状态的关系：
+### 关掉 Unicode，关掉颜色
 
-```text
-nbtca · 首页
+管道里的那次变化让我们好奇：Prompt 到底在判断什么？读了 `src/core` 下面的代码，答案是四件事，各自独立：
 
-下一节课
-10:20 数据结构
-A203 · 2 节 · 还有 18 分钟
-
-本周
-一 ##  二 ##  三 ..
-四 ##  五 ##  六 ..  日 ..
-
-活动数据尚未加载
-
-? 帮助
-```
-
-同样的信息在不同尺寸下，可以改变排列方式。需要比较的是用户是否仍能迅速找到课程，以及是否会把未知读成没有活动。
-
-### 搜索需要保留查询、结果与对象关系
-
-从 fzf、Yazi 与 Lazygit 可以提出第二个假设：当查询、当前项和详情关系稳定时，用户会更容易理解搜索过程。
-
-下面仍是虚构示例：
-
-```text
-文档 / 搜索
-> git
-找到 12 项                         范围：全部文档
-
-→ Git 入门                         Git 入门
-  提交约定                         从版本记录开始……
-  协作流程
-
-↑↓ 选择   Enter 打开   Esc 返回   ? 帮助
-```
-
-宽屏中可以评估并列预览；窄屏中可以保留结果列表，把完整内容放到独立阅读页。两种形式都需要处理选中项、滚动位置和返回路径。
-
-### 数据图形优先说明单位与状态
-
-课表、活动分布和热力图都很适合字符表达，但它们需要明确的尺度。一个格子代表什么，深浅代表次数还是时长，当前周如何定位，都应当能回答。
-
-对年度活动图，活动次数与参与人数也是不同维度。数据源没有提供的人数，不应由视觉密度暗示出来。对于尚未加载的月份，可以提供独立状态，让用户理解覆盖范围。
-
-这里可以吸收 btop 的方法：图形提供概览，文字保留精确值。选中某一天时，再显示日期、数量和对应活动，就能把概览连接到具体内容。
-
-### 用小型插画补足具体状态
-
-可以先选择四种状态做同一风格的试验：
-
-| 状态 | 插画适合传达的感觉 | 必须保留的说明 |
-| --- | --- | --- |
-| 今天没有课程 | 轻松、留白 | 当前日期与查询范围 |
-| 没有搜索结果 | 等待、寻找 | 当前查询与可调整条件 |
-| 离线但缓存可读 | 稳定、继续阅读 | 缓存时间与刷新结果 |
-| 日历导出成功 | 完成、确认 | 文件位置与后续操作 |
-
-每幅图的体量可以很小。先检查它是否与文案一致、是否挤占主要信息，再比较风格。对错误状态，用户需要的恢复路径应当持续清楚。
-
-### 三种值得制作原型的方向
-
-研究可以先收敛为三个能比较的视觉方向：
-
-| 方向 | 核心做法 | 验证重点 |
-| --- | --- | --- |
-| 清晰的信息排版 | 借鉴 fzf、Glow 的文字层级与定位 | 首次阅读能否找到下一步 |
-| 有辨识度的社团品牌 | 借鉴 Amiga、SAC 的小字标与负空间 | 品牌是否清楚、空间是否合适 |
-| 可扫读的时间分布 | 借鉴字符图表的概览与精确值协作 | 是否更容易理解一周安排 |
-
-比较时，应使用相同课程、活动、窗口尺寸与任务。这样才能知道，差异来自视觉选择，还是来自内容条件不同。
-
-## 七、把显示条件与性能纳入设计判断
-
-### 中文混排需要按实际显示宽度处理
-
-JavaScript 的字符串长度、Unicode 码点数量、用户感知的字符数量与终端显示列数，分别回答不同问题。它们不能在排版中随意互换。
-
-[Unicode East Asian Width](https://www.unicode.org/reports/tr11/) 提供字符宽度属性背景，也明确说明现代 terminal 需要针对具体情况调整。对中文、组合字符、emoji、变体选择符与某些符号，最终仍需要观察目标终端的行为。
-
-对设计原型，应特别检查包含中文课程名、英文缩写、数字、标点和长文件路径的组合。截断后的文字是否仍可理解，焦点标记是否还在正确位置，都直接影响可用性。
-
-### 兼容能力应分别表达
-
-颜色、Unicode 图形、特殊字体和动画是不同维度。用户关掉颜色后，可能仍能使用 Unicode；选择 ASCII 图标后，中文正文也未必需要改变。功能名应说明它控制的是图形符号、颜色，还是其他行为。
-
-同样，`NO_COLOR`、减少动效、`TERM=dumb`、非交互输出与真正的纯文本模式，应当分别有清楚的含义。设计上可以把它们映射到具体能力，再按能力选择素材和布局。
-
-[xterm 的控制序列文档](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html) 也提醒我们，终端能力包含许多可选项。产品应以已经验证的能力作出选择。
-
-### 动画和刷新会产生实际成本
-
-ASCII 文件很小，并不意味着任何动效都没有成本。大量帧、反复清屏和整屏重绘，会增加输出量，也可能影响远程连接中的观感。
-
-因此，原型比较可以记录首次可操作时间、切换响应、动画输出量和空闲时刷新频率。对静态内容，按必要变化刷新；对固定字标，优先保存需要的文本资源。引入生成器或框架前，应先确定产品需要它提供什么能力。
-
-本文对这些成本提出检查方法，没有给出未经测量的性能结论。后续实现应记录实际环境和测量方式，让结果可复现。
-
-### 文本界面同样需要考虑辅助使用
-
-字符画的逐字朗读、反复更新的全屏输出、只靠颜色区分的状态，都可能增加使用难度。NetHack 的[历史 Guidebook](https://www.nethack.org/v367/Guidebook.html) 甚至包含针对盲人玩家的配置章节，值得作为不同使用方式的观察入口。
-
-对 Prompt，可以让普通文本中的应用名、状态和结果保持可读，为艺术展示提供跳过或关闭方式，并继续保留适合脚本和一次性查询的输出。具体支持程度需要在实际工具中验证。
-
-## 八、怎样判断设计是否产生了收益
-
-### 用具体任务比较原型
-
-审美偏好可以帮助选方向，实际任务则能检查设计是否有效。可以先让第一次接触原型的人完成这些任务：
-
-1. 找到下一节课的开始时间和教室。
-2. 找到下一场社团活动，并判断是否已经结束。
-3. 搜索一篇文档，打开后再返回之前的位置。
-4. 解释当前显示的是刚刷新的数据、缓存，还是尚未加载的内容。
-5. 在没有颜色时，指出当前选中项与一条错误提示。
-
-记录完成时间、误操作与误解发生的位置。若要设定时间目标，应把它当作团队自行提出的验收目标，并与真实观察一起调整。
-
-### 让同一原型经历不同显示条件
-
-建议至少比较正常内容、空结果、加载中、刷新失败但有缓存，以及长中文标题等状态。再把这些内容放进不同窗口和显示能力中。
-
-| 比较条件 | 主要观察 |
+| 能力 | 在什么情况下关闭 |
 | --- | --- |
-| 80×24 与 120×36 | 信息顺序、空间分配与完整详情 |
-| 更窄或更矮的窗口 | 换行、截断与必要操作提示 |
-| 深色与浅色背景 | 正文、弱化文字和焦点的可读性 |
-| 关闭颜色 | 状态与选择能否继续区分 |
-| ASCII 图形模式 | 图形资源是否真正使用兼容字符 |
-| 减少动效 | 静止结果与首次可操作时间 |
-| 中文与英文混排 | 对齐、截断与焦点位置 |
-| 远程终端与网络失败 | 输出量、刷新节奏与数据状态 |
+| 交互 | 标准输入或标准输出不是终端 |
+| Unicode 符号 | 设置里选了 ASCII；或者不是终端、`TERM=dumb`、语言环境里没有 UTF-8 |
+| 颜色 | 设置了 `NO_COLOR`；或者设置里关了颜色；或者输出不是终端 |
+| 动画 | 不是终端、设置了 `NBTCA_NO_MOTION`、在 CI 里、`TERM=dumb`，或者颜色和 Unicode 有一个不可用 |
 
-实现后，应检查生产构建产物。开发服务器中的资源路径、字体和刷新行为，未必代表发布后的结果。npm 包体积、启动耗时和运行时依赖，也应与改动前的实际基线比较。
+界面上的每个符号都准备了两份：
 
-### 把待验证的判断保留下来
+| 用途 | Unicode | ASCII |
+| --- | --- | --- |
+| 选中项 | `→` | `>` |
+| 分隔线 | `─` | `-` |
+| 分隔点 | `·` | `-` |
+| 下一场活动 | `●` | `*` |
+| 每周重复 | `↻` | `~` |
+| 进度条 | `█` `░` | `#` `-` |
+| 热力图五级 | `·` `░` `▒` `▓` `█` | 空格 `.` `:` `-` `=` |
+| 警告 | `⚠` | `!` |
 
-这份研究提出的几个方向，可以转成明确的设计假设：
+我们分别用正常设置、`LANG=C` 和 `NO_COLOR=1` 打开了活动页：
 
-- 三档共享特征的品牌资产，能在不同窗口中保持识别。
-- 当前语境中的少量操作提示，能帮助新用户找到下一步。
-- 图形与精确值并置，能帮助用户同时理解时间概览与具体安排。
-- 未知与空值使用不同标记，能减少对数据完整性的误解。
-- 小型插画能增加亲和力，同时保留主要任务的阅读空间。
+![同一个活动页在三种条件下的样子。上：Unicode 与颜色；中：LANG=C 时换成 ASCII 字符；下：NO_COLOR=1 时去掉所有颜色和粗体，靠方括号、箭头和圆点区分状态。](/images/posts/ascii-art-and-tui-design/prompt-modes.webp)
 
-它们还需要通过原型和实际使用检查。保存失败案例与观测条件，会让下一轮设计更有依据。
+最下面那张连粗体都没了，但当前页还有方括号，选中项还有箭头，下一场活动前面还有圆点。哪怕一点颜色都没有，也能看出状态。
 
-## 九、把调研变成可以持续练习的能力
+### 窗口变小
 
-### 第一轮：只研究轮廓和空白
+我们把窗口一路缩到 24 × 10：
 
-选一幅 jgs 小作品和一幅 Amiga 字标，各记录三个最关键的识别特征。随后自己画一个 16×8 的物件，再把它压缩到更小尺寸，观察识别在哪里开始丢失。
+![同一个程序在 40 × 16、30 × 12 和 24 × 10 下的样子。标签栏逐步压缩成编号，长标题折行，底栏只保留关键按键；浏览菜单显示“1/6”提示还有更多项。](/images/posts/ascii-art-and-tui-design/prompt-narrow.webp)
 
-重点是判断关键特征。可以暂时不用颜色，也不使用图片自动转换。
+标签栏先把非当前页换成数字，最后连当前页的名字也去掉，只剩 `[3]`。底栏的提示在代码里准备了九个版本，从“1-5 / Tab 切换 · ↑↓ 移动 · ⏎ 打开 · Esc 返回 · q 退出 · ? 快捷键”开始，先删说明文字，再删不那么要紧的键，最短的版本只剩一个 `q`。浏览菜单放不下六项时，标题旁边会写“1/6”，告诉你下面还有。
 
-### 第二轮：建立一个小型字符家族
+中间那张 30 × 12 的首页有个问题，我们放到第九节说。
 
-为 NBTCA 设计三种 3 至 5 行的字标，选出一种笔画逻辑，再画两个关联尺寸。用两种真实 terminal 字体查看，并在单色下比较。
+### 窗口变大
 
-接着为同一风格增加一个分隔符和一个空状态形象。检查这些素材是否共享密度、转角和留白。
+反过来，把窗口拉到 140 × 40：
 
-### 第三轮：拆解一次完整交互
+![Prompt 在 140 × 40 的终端中。内容区限制在 120 列以内并居中，活动页首屏直接嵌入了活跃度热力图。](/images/posts/ascii-art-and-tui-design/prompt-wide.webp)
 
-观看 fzf、Helix 或 Lazygit 的官方示例，选一段任务，记录开始、选择、执行与返回时的画面。每个时刻都写下：当前对象是什么、焦点在哪里、下一步怎样操作、结果怎样确认。
+内容最宽只到 120 列，再宽就居中，两边留白，免得一行字横跨整个屏幕。高度够的时候，活动页会把热力图直接放进首屏，月份标签也从“11”换成了“11月”，浏览菜单里相应地少了“近一年活跃度”这一项。
 
-再把这套观察用于 Prompt 的文档搜索或学期选择。这样，借鉴会落到可讨论的状态，而不仅是配色与边框。
+### 一个汉字占几格
 
-### 第四轮：用同一份内容比较三种方向
+这些折行和截断，都得先知道一段文字在终端里有多宽。这比看起来麻烦：
 
-选定一组虚构课程与活动，在相同尺寸中分别尝试清晰排版、社团字标和时间概览。每种方向都保留同样的主要任务。
+| 字符串 | `.length` | 码点 | 用户眼中的字 | 终端列数 |
+| --- | --- | --- | --- | --- |
+| `A203` | 4 | 4 | 4 | 4 |
+| `数据结构` | 4 | 4 | 4 | 8 |
+| `👍🏽` | 4 | 2 | 1 | 2 |
+| `é`，由 e 和组合重音符构成 | 2 | 2 | 1 | 1 |
 
-让首次接触的人完成上一节的任务，记录收益与问题。保留有效元素，再制作组合原型。
+如果直接按 JavaScript 的 `.length` 补空格，中文一多，表格就对不齐了：
 
-### 推荐继续阅读的三条路径
+![上方是“数据结构 A203”在终端网格中的占位，每个汉字占两格；下方左侧按 .length 补空格，分隔线错位，右侧按显示列数补空格，分隔线对齐。|inline](/images/posts/ascii-art-and-tui-design/cjk-width.webp)
 
-历史与文化可以从 [Amiga ASCII art](https://blog.glyphdrawing.club/amiga-ascii-art/)、[Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/) 和 [SAC 档案](https://www.roysac.com/sac.html) 开始。它们帮助我们把字体、作品和社群放回同一个场景。
+Prompt 的 `visualWidth` 是这样算的：先用 [`Intl.Segmenter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter) 把字符串切成用户眼中的一个个字，再按 [Unicode East Asian Width](https://www.unicode.org/reports/tr11/) 的范围，给汉字、假名和全角符号各记两列，emoji 也记两列，组合符号、零宽连接符和变体选择符记零列。算之前还会先把颜色代码剥掉。TR11 自己也说，终端里的实际宽度要看具体实现，emoji 尤其不统一，所以这套规则只能覆盖大多数情况。
 
-造型与工具可以从 [Structure-based ASCII Art](https://ttwong12.github.io/papers/asciiart/asciiart.html)、[Roy 的宽度教程](https://www.roysac.com/tutorial/roy-ascii-widthandtips.html)、[FIGlet](https://www.figlet.org/) 和 [Moebius](https://blocktronics.github.io/moebius/) 开始。[Chafa](https://hpjansson.org/chafa/) 则提供观察图像到终端图形转换的另一个入口。
+### 只重画变了的那一行
 
-交互与实现可以从 [fzf 文档](https://junegunn.github.io/fzf/)、[Helix 键位](https://docs.helix-editor.com/keymap.html)、[Glow](https://github.com/charmbracelet/glow)、[btop](https://github.com/aristocratos/btop) 和 [Unicode East Asian Width](https://www.unicode.org/reports/tr11/) 开始。阅读时带着 Prompt 中的一项具体任务，更容易判断哪些经验适合我们。
+Prompt 运行时会切换到终端的备用屏幕，退出时再切回来，所以你原来终端里的内容不会被冲掉。每次刷新，它先把整屏拼成和窗口一样高的一组字符串，再和上一帧逐行比较。行数没变，就只把光标移到变了的行，重写那一行；行数变了，才整屏重画。在菜单里上下移动时，变化的通常只有新旧两个选中行。curses 当年做的也是这件事。
 
-## 十、第一次落地：字标、空状态与一周概览
+### 不信任网上来的字
 
-沿着前面的判断，Prompt 的第一轮实现选择了三个范围较小、能够直接比较的改动。代码位于 [ASCII 与数据状态优化 PR](https://github.com/nbtca/Prompt/pull/92)，以下说明对应[实现快照](https://github.com/nbtca/Prompt/tree/aabf5e39e65c9c1242ce6af5c5f58d9850ccec07)。这部分记录提案中的行为与验证结果，发布状态以 PR 为准。
+活动标题、地点和说明来自社团的公开日历，文档来自文档站。第一节说过，终端会执行以 ESC 开头的字节。如果有人在日历里写进一段转义序列，就可能清屏、乱移光标，甚至改掉终端窗口的标题。
 
-### 让 ASCII 模式拥有真正的 ASCII 字标
+所以 Prompt 在显示这些文字之前，会先剥掉其中的 CSI、OSC、DCS 等序列和其他控制字符。具体有哪些序列，可以查 [xterm 的控制序列文档](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html)。
 
-原有 Braille 徽记适合表现轮廓与层次。ASCII 模式则需要另一份符合字符能力的资产。本轮用三行、最宽 32 列的手绘字标作为紧凑版本：
+## 八、开头那个乱码
+
+回到开头的问题。在调研刚开始时的 [ca3110f](https://github.com/nbtca/Prompt/tree/ca3110f036987e87902733344ffe2d4e20229d0f) 版本里，ASCII 模式读取的 [`ascii-logo.txt`](https://github.com/nbtca/Prompt/blob/ca3110f036987e87902733344ffe2d4e20229d0f/src/logo/ascii-logo.txt) 里装的还是 Braille 字符，所以只支持 ASCII 的终端会把会徽显示成乱码。[PR #92](https://github.com/nbtca/Prompt/pull/92) 把它换成了一个手画的三行字标，最宽 32 列：
 
 ```text
 |\  |   __   _____   __     /\
@@ -644,48 +417,46 @@ ASCII 文件很小，并不意味着任何动效都没有成本。大量帧、�
 |  \|  |__)    |    \__   /    \
 ```
 
-它用竖线、斜线与下划线组成 NBTCA。B 的两个弧部交给括号，C 留出右侧开口，A 用斜线形成顶点与横梁。三行字标的识别依赖这些转折和空白，因此应在真实 terminal 字体中继续比较，尤其观察 B 与 C 是否容易辨认。
+B 的两个弧用括号代替，C 的右边留了个口，A 用两条斜线和一道横梁。三行实在太矮，B 和 C 能不能认出来，我们心里也没底。
 
-Logo 的选择同时考虑宽度和高度。支持 Unicode 且空间充足时，界面仍可选择已有的多档 Braille 徽记；空间缩小后尝试这份紧凑字标，再缩小则显示普通 `NBTCA` 文字。说明语与版本号也纳入行数预算，并按可用宽度换行。连最小版本都放不下时，启动展示会跳过。
+这个 PR 还顺手改了两处。
 
-这次落地主要验证了显示能力与布局选择，尚未完成前面提出的三档统一品牌家族。Braille 徽记与 ASCII 字标之间的造型关联，仍然值得继续设计。
+一是空状态。活动页和文档搜索没有结果时，原来只有一行字，现在旁边多了一幅三行的小画，一个日历或一个放大镜。窗口不到 40 列、或者剩下不到三行，就不画了，只留文字。
 
-### 空状态先留下说明，再决定是否增加插画
+![Prompt 活动页的日历插画、无近期安排说明与浏览菜单。80×24 的示例，没有近期活动。](/images/posts/ascii-art-and-tui-design/prompt-empty-state.webp)
 
-活动页和文档搜索分别加入一枚日历和放大镜。它们由三个文本行构成，使用较弱的色阶，状态文字保持完整。插画需要至少 40 列宽度，也需要在预留菜单、返回操作和其他状态说明后，仍然有三行空间。文字太长、窗口太窄或高度不足时，界面回到纯文字说明。
+这张图由提交 aabf5e3 的渲染函数生成，示例里没有近期活动。
 
-![Prompt 活动页的日历插画、无近期安排说明与浏览菜单](/images/posts/ascii-art-and-tui-design/prompt-empty-state.webp)
+二是登录后首页的一周概览。原来的版本用疏密不同的纹理区分工作日和周末，活动数据还没加载时就空着。问题是这份数据只记录“那天有没有安排”，没有多少之分，用疏密来画会让人误以为有。现在改成三种明确的标记：`▓▓` 有安排，`··` 没安排，`??` 还没加载。ASCII 模式下分别是 `##`、`..` 和 `??`。
 
-*图版 8。80×24 的活动页示例。画面由该实现快照的生产构建渲染函数生成，再把 ANSI 文本转换为浏览器图版；示例状态没有近期活动。它用于比较内容位置，具体字形和颜色仍会随终端配置变化。*
+![Prompt 首页用问号标记尚未加载的活动数据，图例解释有安排、无安排和尚未加载。80×24 的示例，课程概览已知，活动数据尚未加载。](/images/posts/ascii-art-and-tui-design/prompt-week-overview.webp)
 
-这个取舍借鉴了小型 ASCII 作品使用轮廓建立识别的方法，也吸收了 terminal 应用对行动路径的重视。插画与说明并列之后，用户依然可以浏览活动、修改查询或返回。宽屏中的亲和力需要通过实际使用观察；能否保住说明和操作，则可以直接验证。
+生成方式同上，课程、地点和日期都是虚构的。
 
-在 20×12 的文档搜索示例中，插画会隐藏，查询、零结果说明和返回操作仍然显示。高度预算也作用于宽而矮的窗口，避免只看列数就增加装饰。
+PR 跑了 1,074 项测试，在 xterm 里回放了从 20 到 160 列、8 到 32 行的真实录屏，中英文、ASCII 与 Unicode、深浅背景都试过。用 `npm pack --dry-run` 比较，压缩包从 128,251 字节涨到 128,653 字节，多了 402 字节，没有新增运行时依赖。PR 目前还在评审中。
 
-### 用三个状态取代含糊的疏密暗示
+## 九、还没做好的地方
 
-原有周概览使用不同纹理表示工作日与周末，活动数据尚未到达时则留空。对于只记录“当天是否有安排”的布尔数据，“较满”和“较空”会让人联想到实际并不存在的数量或时长。
+逐页检查的时候，我们记下了几个问题，都已经开了 issue。
 
-本轮把格子的意义收敛到数据能够支持的范围：`▓▓` 表示有安排，`··` 表示无安排，`??` 表示活动数据尚未加载。ASCII 模式分别使用 `##`、`..` 与 `??`。无安排的工作日和周末采用同一标记；活动数据到达后，未知标记会被真实的有无状态替换。
+首页会悄悄截掉放不下的活动。首页按剩余的行数决定显示几条，放不下的直接不显示，也不能往下滚。上面那张 30 × 12 的截图里，4 条近期活动只显示了 1 条；到 24 × 10，“活动”标题下面干脆是空的。用户没法知道还有内容被藏起来了。见 [#93](https://github.com/nbtca/Prompt/issues/93)。
 
-![Prompt 首页用问号标记尚未加载的活动数据，图例解释有安排、无安排和尚未加载](/images/posts/ascii-art-and-tui-design/prompt-week-overview.webp)
+没登录的时候，80 × 24 的首页只有一句登录提示和 4 条活动，下半屏是空的。活动页最有用的那行“下一场 · 还有 3 天 0 小时”，其实可以放到首页来。见 [#94](https://github.com/nbtca/Prompt/issues/94)。
 
-*图版 9。80×24 的首页示例，生成方式与图版 8 相同。课程、地点与日期均为虚构数据；课程概览已知，活动数据尚未加载。问号表达数据覆盖状态，不能据此判断该周没有活动。*
+热力图只能看出哪天多、哪天少，看不到具体是哪天、有哪几场。btop 会在图形旁边写上数字，Prompt 的热力图还没有类似的办法。见 [#96](https://github.com/nbtca/Prompt/issues/96)。
 
-这个改动来自调研中反复出现的一项经验：图形概览与精确语义需要一起出现。格子承担快速扫视，图例交代含义，页面中的加载或失败文字补充原因。即使用户不能从色彩分辨状态，也可以通过字符和文字理解它们。
+Braille 会徽是一个带翅膀的圆，ASCII 字标是三行字母，两者长得毫无关系。在 ASCII 终端里打开 Prompt 的人，看到的是另一个 logo。见 [#95](https://github.com/nbtca/Prompt/issues/95)。
 
-### 验证覆盖显示与包体积，使用收益继续观察
+## 十、延伸阅读
 
-实现的检查覆盖了 ASCII 字符范围、完整字标与元信息的宽高约束、短窗口中的文字与操作保留，以及未知活动数据到达后的状态变化。生产构建生成的界面在 80×24 与 20×12 两种尺寸下做了前后比较。完整检查通过 1,065 项测试、CLI 契约检查和安装后的 npm 包验证。
+历史与文化：Heikki Lotvonen 的 [Amiga ASCII art](https://blog.glyphdrawing.club/amiga-ascii-art/)、Anders Carlsson 的 [Beyond Encoding](https://widerscreen.fi/numerot/2017-1-2/beyond-encoding-a-critical-look-at-the-terminology-of-text-graphics/)、[SAC 档案](https://www.roysac.com/sac.html)。
 
-打包比较使用同一版本的 `npm pack --dry-run`，基线是本文前面引用的 `ca3110f` 快照。压缩包从 128,251 字节变为 128,577 字节，增加 326 字节；解包内容从 528,891 字节变为 530,236 字节。没有增加运行时依赖。这些数字描述当前构建的体积，不代表启动耗时或交互速度的改善。
+造型与工具：论文 [Structure-based ASCII Art](https://ttwong12.github.io/papers/asciiart/asciiart.html)、Roy 的 [Width Restrictions & Challenges](https://www.roysac.com/tutorial/roy-ascii-widthandtips.html)、[FIGlet](https://www.figlet.org/)、ANSI 编辑器 [Moebius](https://blocktronics.github.io/moebius/)、把图片转成终端字符的 [Chafa](https://hpjansson.org/chafa/)。
 
-自动检查能够确认尺寸和数据状态，也能发现装饰挤占操作的回归。字标是否更容易识别、插画是否帮助理解、未知标记是否减少误读，还需要把前文的任务交给实际使用者，记录他们寻找下一步时的表现。下一轮可以从这三个问题继续推进。
+终端与实现：[fzf 文档](https://junegunn.github.io/fzf/)、[Helix 键位](https://docs.helix-editor.com/keymap.html)、[xterm 控制序列](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html)、[Unicode East Asian Width](https://www.unicode.org/reports/tr11/)。Prompt 的[源码](https://github.com/nbtca/Prompt)也不长，能力检测、符号表、宽度计算和启动动画都在 `src/core` 目录下。
 
 ## 图版与资料说明
 
-历史作品的作者、年份与出处在相应图版旁标注；未能从引文确定的日期保持未确定。应用界面来自项目官方截图，实际版本与用户配置可能不同。现有界面的观察与第一轮实现分别固定在相应章节注明的 Prompt 快照。
+历史作品的作者、年份和出处标在相应图版旁，无法从引文确定的日期保持空缺。第五节的应用截图来自各项目官方，实际版本和用户配置可能不同。第六、七节的 Prompt 截图于 2026 年 10 月 28 日在伪终端中实际运行提交 2a75b1a 得到，启动动画的四帧由程序自身的函数以固定随机种子生成；第八节的两张图由 aabf5e3 的渲染函数生成，使用虚构数据。
 
-第三方艺术作品和应用截图的权利归各自作者所有，页面底部对本文的许可声明不包含这些第三方材料。本文将图版用于评论与比较；完整作品、原始文件和使用条件请查看对应来源。封面与文中字符试验、界面草图为本次研究编写。
-
-后续对 Prompt 的探索，可以从一个小字标、一张更清楚的首页，或一次更容易理解的搜索开始。每次留下观察、原型和验证结果，让这份研究继续获得真实使用中的证据。
+第三方艺术作品、照片和应用截图的权利归各自作者所有，页面底部对本文的许可声明不包括这些材料。Rogue 截图按 CC BY-SA 4.0、VT100 照片按 CC BY 2.0 使用，1898 年与 1919 年的期刊图像已进入公有领域。本文引用这些图版用于评论与比较，完整作品、原始文件和使用条件请查看对应来源。封面、示意图和字符试验为本次调研绘制。
