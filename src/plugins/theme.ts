@@ -148,10 +148,13 @@ const body: RehypePlugin = () => (tree) => {
             node.tagName = "div"
           }
           if (node.tagName === "pre") {
-            const originalClassName = node.properties.className
-            node.properties.className = originalClassName instanceof Array
-              ? [...originalClassName, "page-body-copy"]
-              : ["page-body-copy"]
+            // Shiki sets `class` as a string; overwriting `className` alone drops `astro-code`
+            const original = node.properties.class ?? node.properties.className
+            const classes = typeof original === "string"
+              ? original.split(" ")
+              : Array.isArray(original) ? original : []
+            delete node.properties.class
+            node.properties.className = [...classes, "page-body-copy"]
           }
           if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(node.tagName)) {
             node.properties.className = ["page-body-header"]

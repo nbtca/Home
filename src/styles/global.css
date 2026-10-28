@@ -55,6 +55,7 @@ body.theme-dark .astro-code span {
 }
 .astro-code{
   padding: 12px;
+  line-height: 1.35;
   border-radius: var(--borer-radius);
   background-color: var(--gray-primary) !important; 
 }
