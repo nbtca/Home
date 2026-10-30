@@ -7,7 +7,7 @@ author:
   name: "NBTCA"
   url: "https://github.com/nbtca"
 cover:
-  url: "https://nbtca.space/images/posts/ascii-art-and-tui-design/cover.webp"
+  url: "/images/posts/ascii-art-and-tui-design/cover.webp"
   alt: "深色背景中央，由上千个小字符按明暗拼成的 @ 符号"
 tags: ["设计", "ASCII", "TUI", "Prompt"]
 ---
