@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Button, Spinner, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/react"
+import { Button, Link, Spinner, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/react"
 import { makeLogtoClient } from "../../utils/auth"
 import { saturdayClient } from "../../utils/client"
 import EventDetail from "./EventDetail"
@@ -148,24 +148,33 @@ export default function TicketDetail() {
             return (
               <div className="mt-6 flex flex-col gap-4">
                 {/* Client Action Buttons */}
-                {canModify && (
-                  <div className="flex gap-2">
-                    <Button
-                      color="primary"
-                      variant="flat"
-                      onPress={handleEdit}
-                    >
-                      编辑
-                    </Button>
-                    <Button
-                      color="danger"
-                      variant="flat"
-                      onPress={handleCancel}
-                    >
-                      取消预约
-                    </Button>
-                  </div>
-                )}
+                <div className="flex gap-2">
+                  {canModify && (
+                    <>
+                      <Button
+                        color="primary"
+                        variant="flat"
+                        onPress={handleEdit}
+                      >
+                        编辑
+                      </Button>
+                      <Button
+                        color="danger"
+                        variant="flat"
+                        onPress={handleCancel}
+                      >
+                        取消预约
+                      </Button>
+                    </>
+                  )}
+                  <Button
+                    as={Link}
+                    href={`https://card.nbtca.space/r/${eventData.eventId}`}
+                    variant="bordered"
+                  >
+                    维修卡
+                  </Button>
+                </div>
               </div>
             )
           }}
