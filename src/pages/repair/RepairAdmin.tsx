@@ -1,4 +1,6 @@
 import {
+  Autocomplete,
+  AutocompleteItem,
   Table,
   TableHeader,
   TableColumn,
@@ -98,6 +100,47 @@ function CheckboxPopover(props: {
               })
             }
           </CheckboxGroup>
+        </div>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+function MemberFilter(props: {
+  members: PublicMember[]
+  value: string
+  onValueChange: (value: string) => void
+}) {
+  const selected = props.members.find(m => m.memberId === props.value)
+  return (
+    <Popover placement="bottom">
+      <PopoverTrigger>
+        <Button size="sm" variant={props.value ? "flat" : "bordered"} color={props.value ? "primary" : "default"}>
+          {props.value ? (selected?.alias || props.value) : "全部"}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <div className="p-2 flex flex-col gap-2">
+          <Autocomplete
+            size="sm"
+            aria-label="处理人"
+            placeholder="搜索处理人"
+            className="w-56"
+            defaultItems={props.members}
+            selectedKey={props.value || null}
+            onSelectionChange={key => props.onValueChange(key ? String(key) : "")}
+          >
+            {member => (
+              <AutocompleteItem key={member.memberId} textValue={member.alias}>
+                {member.alias}
+              </AutocompleteItem>
+            )}
+          </Autocomplete>
+          {props.value && (
+            <Button size="sm" variant="light" onPress={() => props.onValueChange("")}>
+              显示全部处理人
+            </Button>
+          )}
         </div>
       </PopoverContent>
     </Popover>
@@ -216,6 +259,8 @@ export default function App() {
   const rowsPerPage = 10
   const [totalCount, setTotalCount] = useState(0)
   const [statusFilter, setStatusFilter] = useState<string[]>(getInitialStatusFilter())
+  const [memberFilter, setMemberFilter] = useState(() => new URLSearchParams(window.location.search).get("member") ?? "")
+  const [members, setMembers] = useState<PublicMember[]>([])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [userInfo, setUserInfo] = useState<UserInfoResponse>()
   const [currentMember, setCurrentMember] = useState<PublicMember>()
@@ -254,6 +299,8 @@ export default function App() {
       setCurrentMember(data)
     }
     check()
+    saturdayClient.GET("/members", { params: { query: { offset: 0, limit: 500 } } })
+      .then(({ data }) => setMembers((data ?? []).filter(m => m.alias)))
   }, [])
 
   // Handle eventid query parameter to auto-open event detail
@@ -303,6 +350,7 @@ export default function App() {
             offset: offset,
             limit: rowsPerPage,
             status: statusFilter.length > 0 ? statusFilter : null,
+            memberId: memberFilter || undefined,
           },
         },
       })
@@ -355,14 +403,20 @@ export default function App() {
     else {
       params.delete("status")
     }
+    if (memberFilter) {
+      params.set("member", memberFilter)
+    }
+    else {
+      params.delete("member")
+    }
     const newUrl = `${window.location.pathname}?${params.toString()}`
     window.history.replaceState({}, "", newUrl)
-  }, [page, statusFilter])
+  }, [page, statusFilter, memberFilter])
 
   useEffect(() => {
     setPage(1)
     list.reload()
-  }, [statusFilter])
+  }, [statusFilter, memberFilter])
 
   useEffect(() => {
     list.reload()
@@ -393,6 +447,12 @@ export default function App() {
     {
       key: "memberId",
       label: "处理人",
+      content: (
+        <div className="flex items-center gap-2">
+          处理人
+          <MemberFilter members={members} value={memberFilter} onValueChange={setMemberFilter} />
+        </div>
+      ),
     },
     {
       key: "gmtCreate",
@@ -558,6 +618,8 @@ export default function App() {
           <div className="mb-4 flex items-center gap-2">
             <span className="text-sm font-medium">筛选状态:</span>
             <CheckboxPopover value={statusFilter} onValueChange={setStatusFilter} />
+            <span className="text-sm font-medium ml-2">处理人:</span>
+            <MemberFilter members={members} value={memberFilter} onValueChange={setMemberFilter} />
           </div>
 
           <div className="min-h-[600px]">
