@@ -1177,6 +1177,8 @@ export interface operations {
         limit?: number
         status?: string[] | null
         order?: string
+        /** @description Only events assigned to this member */
+        memberId?: string
       }
       header?: never
       path?: never
