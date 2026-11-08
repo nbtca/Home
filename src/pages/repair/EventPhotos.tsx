@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { Button } from "@heroui/react"
+import { Button, Modal, ModalContent } from "@heroui/react"
 import type { components } from "../../types/saturday"
 import { saturdayClient } from "../../utils/client"
 import { makeLogtoClient } from "../../utils/auth"
@@ -44,6 +44,7 @@ export default function EventPhotos(props: {
   const [uploading, setUploading] = useState(false)
   const [removing, setRemoving] = useState<number | null>(null)
   const [error, setError] = useState("")
+  const [preview, setPreview] = useState<string | null>(null)
 
   const upload = async (files: FileList) => {
     setError("")
@@ -138,7 +139,7 @@ export default function EventPhotos(props: {
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {props.photos.map(photo => (
                 <div key={photo.photoId} className="relative">
-                  <a href={photo.url} target="_blank" rel="noreferrer">
+                  <button type="button" aria-label="查看大图" className="block w-full" onClick={() => setPreview(photo.url)}>
                     <img
                       src={photo.url}
                       alt="现场照片"
@@ -150,7 +151,7 @@ export default function EventPhotos(props: {
                         props.onExpired()
                       }}
                     />
-                  </a>
+                  </button>
                   {props.canUpload && (
                     <button
                       type="button"
@@ -168,6 +169,11 @@ export default function EventPhotos(props: {
           )
         : <p className="text-gray-500">还没有照片</p>}
       {error && <p className="text-danger mt-2">{error}</p>}
+      <Modal isOpen={!!preview} onClose={() => setPreview(null)} size="5xl" backdrop="blur" classNames={{ base: "bg-transparent shadow-none", closeButton: "bg-black/60 text-white hover:bg-black/80" }}>
+        <ModalContent>
+          {preview && <img src={preview} alt="现场照片" className="max-h-[90vh] w-full object-contain" onClick={() => setPreview(null)} />}
+        </ModalContent>
+      </Modal>
     </div>
   )
 }
