@@ -15,7 +15,7 @@ import booth2014 from "./_assets/repair-day/serviceday-2014-booth.webp"
 import cart2025 from "./_assets/repair-day/repair-day-cart.webp"
 
 const steps = [
-  { title: "提前预约。", detail: "在网站上填好机型和问题，到场就能直接开始。没预约也可以来，找现场负责的同学登记。" },
+  { title: "提前预约。", detail: "在网站上填好机型和问题，到场就能直接开始。只是来看看，领一张入场券就行。" },
   { title: "带上充电器。", detail: "修完要开机测试，重装系统时也要一直插着电。" },
   { title: "备份好数据。", detail: "重装系统会清空 C 盘，请先把重要文件存到网盘或移动硬盘。动手前，队员会和你确认方案。" },
 ]
@@ -45,6 +45,7 @@ const intro = "text-[19px] leading-[29px] sm:text-[21px] sm:leading-[32px]"
       <span class="text-[19px] sm:text-[21px] font-semibold text-[#1d1d1f]">{repairDay.title}</span>
       <div class="flex items-center gap-5">
         <a href="/repair-day.ics" class="hidden sm:inline text-[12px] text-[#1d1d1f]/80 hover:text-[#0066cc] hover:no-underline">加入日历</a>
+        <a href={repairDay.pass} class="text-[12px] text-[#1d1d1f]/80 hover:text-[#0066cc] hover:no-underline">领取入场券</a>
         <a href="/repair/create-ticket" class="rounded-full bg-[#0071e3] px-[11px] py-[4px] text-[12px] leading-[16px] text-white hover:bg-[#0077ed] hover:no-underline">预约维修</a>
       </div>
     </div>
@@ -65,8 +66,9 @@ const intro = "text-[19px] leading-[29px] sm:text-[21px] sm:leading-[32px]"
       </div>
       <div class="mt-12 sm:mt-14 flex flex-wrap items-center justify-center gap-4">
         <a href="/repair/create-ticket" class={pillLight}>预约维修</a>
-        <a href="/repair-day.ics" class={pillOutline}>加入日历</a>
+        <a href={repairDay.pass} class={pillOutline}>领取入场券</a>
       </div>
+      <a href="/repair-day.ics" class="mt-6 text-[17px] text-[#5ac8fa] hover:underline">加入日历 ›</a>
     </div>
   </section>
 
@@ -159,7 +161,7 @@ const intro = "text-[19px] leading-[29px] sm:text-[21px] sm:leading-[32px]"
       <p class:list={["mt-4 text-white/70", intro]}>{repairDayDate.weekday} {repairDayDate.time} · {repairDayLocation}</p>
       <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
         <a href="/repair/create-ticket" class={pillLight}>预约维修</a>
-        <a href="/repair-day.ics" class={pillOutline}>加入日历</a>
+        <a href={repairDay.pass} class={pillOutline}>领取入场券</a>
       </div>
       <a href="/freshman/join" class="mt-8 inline-block text-[17px] text-[#5ac8fa] hover:underline">加入计算机协会 ›</a>
     </div>

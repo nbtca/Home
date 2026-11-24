@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets"
 import RepairDayCountdown from "./RepairDayCountdown.astro"
-import { repairDay, repairDayDate, repairDayLocation, isRepairDayOver, pillLight } from "../repair-day"
+import { repairDay, repairDayDate, repairDayLocation, isRepairDayOver, pillLight, pillOutline } from "../repair-day"
 import cover from "../pages/_assets/repair-day/2022-05-outdoor-desk.webp"
 ---
 
@@ -19,6 +19,7 @@ import cover from "../pages/_assets/repair-day/2022-05-outdoor-desk.webp"
         </div>
         <div class="mt-8 sm:mt-10 flex flex-wrap items-center gap-4">
           <a href="/repair/create-ticket" class={pillLight}>预约维修</a>
+          <a href={repairDay.pass} class={pillOutline}>领取入场券</a>
           <a href="/repair-day" class="text-[17px] text-[#5ac8fa] hover:underline">进一步了解 ›</a>
         </div>
       </div>

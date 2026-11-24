@@ -3,6 +3,7 @@ export const repairDay = {
   start: "2026-11-28T09:30:00+08:00",
   end: "2026-11-28T17:00:00+08:00",
   location: "NB122",
+  pass: "https://card.nbtca.space/e/repair-day-2026-11-28",
 }
 
 export const repairDayLocation = repairDay.location || "地点待公布"
