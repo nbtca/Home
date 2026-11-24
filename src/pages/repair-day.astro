@@ -3,16 +3,17 @@ import { Image } from "astro:assets"
 import BaseLayout from "../layouts/BaseLayout.astro"
 import RepairDayCountdown from "../components/RepairDayCountdown.astro"
 import { repairDay, repairDayDate, repairDayLocation, repairDayServices, pillLight, pillOutline, pillBlue } from "../repair-day"
-import hero from "./_assets/repair-day/2022-05-outdoor-desk.webp"
-import outdoor from "./_assets/repair-day/2022-05-outdoor-wide.webp"
-import mentor from "./_assets/repair-day/2024-12-mentor.webp"
-import screws from "./_assets/repair-day/2024-12-screws.webp"
-import software from "./_assets/repair-day/2023-05-software.webp"
-import teaching from "./_assets/repair-day/2025-03-teaching.webp"
-import booth2023 from "./_assets/repair-day/2023-04-booth.webp"
+import hero from "./_assets/repair-day/2022-05-helping.webp"
+import outdoor from "./_assets/repair-day/2022-05-outdoor-tables.webp"
+import board from "./_assets/repair-day/2023-04-explaining-board.webp"
+import cover2018 from "./_assets/repair-day/2018-03-bottom-cover.webp"
+import pointing from "./_assets/repair-day/2025-03-pointing.webp"
+import explaining from "./_assets/repair-day/2024-11-explaining.webp"
+import tent2022 from "./_assets/repair-day/2022-04-tent.webp"
 import booth2008 from "./_assets/repair-day/2008-11-booth.webp"
-import booth2014 from "./_assets/repair-day/serviceday-2014-booth.webp"
-import cart2025 from "./_assets/repair-day/repair-day-cart.webp"
+import community2010 from "./_assets/repair-day/2010-07-community.webp"
+import service2018 from "./_assets/repair-day/2018-03-service-day.webp"
+import clean2025 from "./_assets/repair-day/2025-12-cleaning.webp"
 
 const steps = [
   { title: "提前预约。", detail: "在网站上填好机型和问题，到场就能直接开始。只是来看看，领一张入场券就行。" },
@@ -22,17 +23,19 @@ const steps = [
 
 const gallery = [
   { image: outdoor, alt: "树荫下几张长桌拼成工位，队员和同学围坐着处理电脑", caption: "2022 年 5 月，树荫下拼起几张长桌当工位。", wide: true },
-  { image: mentor, alt: "一名队员坐在一旁，看另一名队员用螺丝刀拧下笔记本底壳的螺丝", caption: "2024 年 12 月，两名队员一起拆后盖。" },
-  { image: screws, alt: "队员低头拧下合着的笔记本底壳上的螺丝，旁边摆着螺丝刀套装", caption: "2024 年 12 月，拧下底壳螺丝。" },
-  { image: software, alt: "队员在笔记本上操作，旁边的同学看着屏幕", caption: "2023 年 5 月，队员操作电脑，旁边的同学看着屏幕。" },
-  { image: teaching, alt: "一名队员指着笔记本屏幕，给另一名队员讲解", caption: "2025 年 3 月，两名队员对着屏幕讨论问题。" },
-  { image: booth2023, alt: "广场上的红色帐篷挂着协会旗帜，同学们围在帐篷下等候维修", caption: "2023 年 4 月，广场上挂着协会旗的帐篷。", wide: true },
+  { image: board, alt: "一名队员拿着拆开后盖的笔记本，指着散热模组给旁边的同学讲解", caption: "2023 年 4 月，拆开后盖，给旁边的同学讲解。" },
+  { image: cover2018, alt: "广场上的维修桌前，队员用螺丝刀拧下笔记本底壳的螺丝", caption: "2018 年 3 月，理工服务日上拆底壳清灰。" },
+  { image: pointing, alt: "穿红马甲的队员和同学一起看笔记本屏幕，同学指着屏幕上的问题", caption: "2025 年 3 月，同学指着屏幕说问题，队员在旁边看。" },
+  { image: explaining, alt: "阶梯教室里，一名队员站着俯身，和坐着的同学一起看笔记本屏幕", caption: "2024 年 11 月，在阶梯教室里一起排查问题。" },
+  { image: tent2022, alt: "蓝色帐篷下挂着协会旗，旁边立着写有维修项目的易拉宝，队员在桌前处理电脑，同学站在一旁等候", caption: "2022 年 4 月，协会旗挂在帐篷下，队员在桌前修电脑。", wide: true },
 ]
 
 const history = [
-  { year: "2008", image: booth2008, alt: "教学楼前的摊位，一群学生围着桌上的笔记本，桌前立着计算机协会维修队简介展板", text: "维修队在教学楼前摆开桌子，同学围过来看。" },
-  { year: "2014", image: booth2014, alt: "露天广场上的蓝色帐篷，红色横幅写着 NIT计算机协会理工服务日，学生在长桌前排队", text: "理工服务日在露天广场摆摊，同学排队等着修电脑。" },
-  { year: "2025", image: cart2025, alt: "装满物资的折叠拖车，车身贴着协会的圆形标识", text: "帐篷、桌椅和工具箱，用一辆拖车拉到场地。" },
+  { year: "2003", text: "协会成立的第二年，维修队成立，上门帮同学修电脑。这一时期没有留下照片。" },
+  { year: "2008", image: booth2008, alt: "校园里的摊位，一群学生围着桌上的笔记本，桌前立着计算机协会和维修队的简介展板", text: "维修队重建，在校园里摆开摊位。" },
+  { year: "2010", image: community2010, alt: "街边的遮阳伞下，几名穿白色文化衫的队员坐在桌后，桌前挂着写有暑期实践和计算机协会的海报", text: "暑期社会实践，把维修摊摆进社区。" },
+  { year: "2018", image: service2018, alt: "露天广场的帐篷下挂着红色横幅，写着 3 月 23 日电脑服务日，露天广场见", text: "理工服务日在露天广场摆摊。" },
+  { year: "2025", image: clean2025, alt: "三名队员围在桌前，中间的队员用气罐给拆开后盖的笔记本清灰，桌上摆着螺丝刀套装", text: "维修日搬进室内，几名队员一起拆机清灰。" },
 ]
 
 const sectionHead = "text-[32px] leading-[40px] sm:text-[48px] sm:leading-[56px] font-semibold"
@@ -52,7 +55,7 @@ const intro = "text-[19px] leading-[29px] sm:text-[21px] sm:leading-[32px]"
   </nav>
 
   <section class="relative isolate overflow-hidden bg-[#0b1f3a] text-[#f5f5f7]">
-    <Image src={hero} alt="" widths={[734, 1068, 1800]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-10 size-full object-cover object-[60%_40%] opacity-60" />
+    <Image src={hero} alt="" widths={[734, 1068, 1800]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-10 size-full object-cover object-[70%_40%] opacity-45" />
     <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(11,31,58,.55)_0%,rgba(11,31,58,.8)_55%,#0b1f3a_100%)]"></div>
     <div class="section-content flex min-h-[calc(100svh-96px)] flex-col items-center justify-center py-[80px] text-center">
       <p class="text-[17px] leading-[25px] sm:text-[21px] sm:leading-[29px] font-semibold text-[#5ac8fa]">NBTCA 计算机协会</p>
@@ -137,21 +140,24 @@ const intro = "text-[19px] leading-[29px] sm:text-[21px] sm:leading-[32px]"
 
   <section class="bg-[#f5f5f7] text-[#1d1d1f]">
     <div class="section-content py-[100px] sm:py-[140px]">
-      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>从 2008 年修到今天。</h2>
+      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>从 2003 年修到今天。</h2>
       <p class:list={["mt-6 max-w-[640px] text-[#6e6e73]", intro]}>
-        2008 年，维修队在教学楼前摆一张桌子修电脑。后来有了露天广场上的理工服务日，再到今天的理工维修日。
+        2002 年，计算机协会成立；第二年，维修队成立。中间停过、重建过，后来有了露天广场上的理工服务日，再到今天的理工维修日。
       </p>
-      <ol class="mt-14 grid gap-x-5 gap-y-10 sm:grid-cols-3">
+      <ol class="mt-14 grid gap-x-5 gap-y-10 sm:grid-cols-3 md:grid-cols-5">
         {
           history.map(item => (
             <li>
-              <Image src={item.image} alt={item.alt} widths={[480, 734]} sizes="(max-width: 734px) 88vw, 320px" class="aspect-[4/3] w-full rounded-[18px] object-cover" />
+              {item.image
+                ? <Image src={item.image} alt={item.alt} widths={[480, 734]} sizes="(max-width: 734px) 88vw, (max-width: 1068px) 30vw, 190px" class="aspect-[4/3] w-full rounded-[18px] object-cover" />
+                : <blockquote class="box-border flex aspect-[4/3] w-full flex-col justify-end overflow-hidden rounded-[18px] bg-white p-6 md:p-4 text-[17px] leading-[25px] md:text-[14px] md:leading-[20px] text-[#1d1d1f]">“我们计算机协会维修队于 2003 年成立。”<cite class="mt-2 block text-[14px] md:text-[12px] not-italic text-[#6e6e73]">2010 年维修队通知</cite></blockquote>}
               <p class="mt-5 text-[28px] leading-[32px] font-semibold tabular-nums text-[#1d1d1f]">{item.year}</p>
               <p class="mt-2 text-[15px] sm:text-[17px] leading-[25px] text-[#6e6e73]">{item.text}</p>
             </li>
           ))
         }
       </ol>
+      <a href="https://docs.nbtca.space/about/organization" class="mt-12 inline-block text-[17px] text-[#0066cc] hover:underline">维修队的历史 ›</a>
     </div>
   </section>
 
