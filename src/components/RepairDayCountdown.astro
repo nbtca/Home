@@ -1,0 +1,75 @@
+---
+import { repairDay, repairDayDate } from "../repair-day"
+
+const { size = "lg" } = Astro.props
+const units = [
+  ["days", "天"],
+  ["hours", "小时"],
+  ["minutes", "分钟"],
+  ["seconds", "秒"],
+]
+const digit = size === "lg" ? "text-[52px] sm:text-[88px] md:text-[112px]" : "text-[44px] sm:text-[64px]"
+const status = size === "lg" ? "text-[32px] leading-[40px] sm:text-[48px] sm:leading-[52px]" : "text-[28px] leading-[32px] sm:text-[40px] sm:leading-[44px]"
+---
+
+<repair-day-countdown data-start={repairDay.start} data-end={repairDay.end} class="block text-white">
+  <p class="sr-only">{repairDay.title}将于 <time datetime={repairDay.start}>{repairDayDate.long} {repairDayDate.startTime}</time> 开始。</p>
+  <div data-state="upcoming" aria-hidden="true" class:list={["flex gap-5 sm:gap-10 md:gap-14 opacity-0 transition-opacity duration-700 [&[hidden]]:hidden", size === "lg" && "justify-center"]}>
+    {
+      units.map(([unit, label]) => (
+        <div class="flex flex-col items-center">
+          <span data-unit={unit} class:list={["font-semibold tabular-nums leading-none tracking-[-0.02em]", digit]}>00</span>
+          <span class="mt-2 sm:mt-3 text-[12px] sm:text-[14px] text-white/55">{label}</span>
+        </div>
+      ))
+    }
+  </div>
+  <div data-state="live" hidden class:list={["flex items-center gap-3 [&[hidden]]:hidden", size === "lg" && "justify-center"]}>
+    <span class="relative flex size-3">
+      <span class="absolute inline-flex size-full rounded-full bg-[#30d158] opacity-75 motion-safe:animate-ping"></span>
+      <span class="relative inline-flex size-3 rounded-full bg-[#30d158]"></span>
+    </span>
+    <span class:list={["font-semibold", status]}>正在进行</span>
+  </div>
+  <p data-state="ended" hidden class:list={["font-semibold text-white/70", status]}>本场维修日已结束</p>
+</repair-day-countdown>
+
+<script>
+  class RepairDayCountdown extends HTMLElement {
+    timer?: number
+
+    connectedCallback() {
+      const start = Date.parse(this.dataset.start!)
+      const end = Date.parse(this.dataset.end!)
+      const states = [...this.querySelectorAll<HTMLElement>("[data-state]")]
+      const fields = Object.fromEntries(
+        [...this.querySelectorAll<HTMLElement>("[data-unit]")].map(el => [el.dataset.unit!, el]),
+      )
+      let current = ""
+
+      const tick = () => {
+        const now = Date.now()
+        const state = now < start ? "upcoming" : now < end ? "live" : "ended"
+        if (state !== current) {
+          current = state
+          for (const el of states) el.hidden = el.dataset.state !== state
+        }
+        if (state === "upcoming") {
+          const s = Math.ceil((start - now) / 1000)
+          const values = { days: Math.floor(s / 86400), hours: Math.floor(s / 3600) % 24, minutes: Math.floor(s / 60) % 60, seconds: s % 60 }
+          for (const [unit, value] of Object.entries(values)) {
+            fields[unit].textContent = String(value).padStart(2, "0")
+          }
+          states[0].classList.remove("opacity-0")
+        }
+        if (state !== "ended") this.timer = window.setTimeout(tick, 1000 - (now % 1000))
+      }
+      tick()
+    }
+
+    disconnectedCallback() {
+      clearTimeout(this.timer)
+    }
+  }
+  customElements.define("repair-day-countdown", RepairDayCountdown)
+</script>

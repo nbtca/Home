@@ -25,6 +25,13 @@
     "ical",
     "ICAL",
     "vevents",
-    "getAllSubcomponents"
+    "getAllSubcomponents",
+    "nums",
+    "VCALENDAR",
+    "PRODID",
+    "VEVENT",
+    "DTSTAMP",
+    "DTSTART",
+    "DTEND"
   ]
 }

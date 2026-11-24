@@ -1,0 +1,37 @@
+---
+import { Image } from "astro:assets"
+import RepairDayCountdown from "./RepairDayCountdown.astro"
+import { repairDay, repairDayDate, repairDayLocation, isRepairDayOver, pillLight, pillOutline } from "../repair-day"
+import cover from "../pages/_assets/repair-day/2022-05-outdoor-desk.webp"
+---
+
+{
+  !isRepairDayOver() && (
+    <section id="repair-day-banner" data-end={repairDay.end} class="relative isolate overflow-hidden bg-[#0b1f3a] text-[#f5f5f7]">
+      <Image src={cover} alt="" widths={[734, 1068, 1800]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-10 size-full object-cover object-[70%_40%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#0b1f3a_0%,rgba(11,31,58,.92)_38%,rgba(11,31,58,.55)_70%,rgba(11,31,58,.35)_100%)] max-sm:bg-[linear-gradient(180deg,rgba(11,31,58,.75)_0%,#0b1f3a_70%)]" />
+      <div class="section-content py-[56px] sm:py-[72px] md:py-[88px]">
+        <p class="text-[17px] sm:text-[21px] leading-[25px] font-semibold text-[#5ac8fa]">{repairDayDate.long} {repairDayDate.weekday}</p>
+        <h2 class="mt-1 text-[#f5f5f7] text-[40px] leading-[48px] sm:text-[56px] sm:leading-[64px] font-semibold">{repairDay.title}</h2>
+        <p class="mt-2 text-[17px] leading-[25px] sm:text-[21px] sm:leading-[29px] text-white/70">{repairDayDate.time} · {repairDayLocation} · 免费电脑维修</p>
+        <div class="mt-8 sm:mt-10">
+          <RepairDayCountdown size="md" />
+        </div>
+        <div class="mt-8 sm:mt-10 flex flex-wrap items-center gap-4">
+          <a href="/repair/create-ticket" class={pillLight}>预约维修</a>
+          <a href={repairDay.pass} class={pillOutline}>领取入场券</a>
+          <a href="/repair-day" class="text-[17px] text-[#5ac8fa] hover:underline">进一步了解 ›</a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  const banner = document.getElementById("repair-day-banner")
+  if (banner) {
+    const left = Date.parse(banner.dataset.end!) - Date.now()
+    if (left <= 0) banner.remove()
+    else setTimeout(() => banner.remove(), Math.min(left, 2 ** 31 - 1))
+  }
+</script>
