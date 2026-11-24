@@ -1,0 +1,167 @@
+---
+import { Image } from "astro:assets"
+import BaseLayout from "../layouts/BaseLayout.astro"
+import RepairDayCountdown from "../components/RepairDayCountdown.astro"
+import { repairDay, repairDayDate, repairDayLocation, repairDayServices, pillLight, pillOutline, pillBlue } from "../repair-day"
+import hero from "./_assets/repair-day/2022-05-outdoor-desk.webp"
+import outdoor from "./_assets/repair-day/2022-05-outdoor-wide.webp"
+import mentor from "./_assets/repair-day/2024-12-mentor.webp"
+import screws from "./_assets/repair-day/2024-12-screws.webp"
+import software from "./_assets/repair-day/2023-05-software.webp"
+import teaching from "./_assets/repair-day/2025-03-teaching.webp"
+import booth2023 from "./_assets/repair-day/2023-04-booth.webp"
+import booth2008 from "./_assets/repair-day/2008-11-booth.webp"
+import booth2014 from "./_assets/repair-day/serviceday-2014-booth.webp"
+import cart2025 from "./_assets/repair-day/repair-day-cart.webp"
+
+const steps = [
+  { title: "提前预约。", detail: "在网站上填好机型和问题，到场就能直接开始。没预约也可以来，找现场负责的同学登记。" },
+  { title: "带上充电器。", detail: "修完要开机测试，重装系统时也要一直插着电。" },
+  { title: "备份好数据。", detail: "重装系统会清空 C 盘，请先把重要文件存到网盘或移动硬盘。动手前，队员会和你确认方案。" },
+]
+
+const gallery = [
+  { image: outdoor, alt: "树荫下几张长桌拼成工位，队员和同学围坐着处理电脑", caption: "2022 年 5 月，树荫下拼起几张长桌当工位。", wide: true },
+  { image: mentor, alt: "一名队员坐在一旁，看另一名队员用螺丝刀拧下笔记本底壳的螺丝", caption: "2024 年 12 月，两名队员一起拆后盖。" },
+  { image: screws, alt: "队员低头拧下合着的笔记本底壳上的螺丝，旁边摆着螺丝刀套装", caption: "2024 年 12 月，拧下底壳螺丝。" },
+  { image: software, alt: "队员在笔记本上操作，旁边的同学看着屏幕", caption: "2023 年 5 月，队员操作电脑，旁边的同学看着屏幕。" },
+  { image: teaching, alt: "一名队员指着笔记本屏幕，给另一名队员讲解", caption: "2025 年 3 月，两名队员对着屏幕讨论问题。" },
+  { image: booth2023, alt: "广场上的红色帐篷挂着协会旗帜，同学们围在帐篷下等候维修", caption: "2023 年 4 月，广场上挂着协会旗的帐篷。", wide: true },
+]
+
+const history = [
+  { year: "2008", image: booth2008, alt: "教学楼前的摊位，一群学生围着桌上的笔记本，桌前立着计算机协会维修队简介展板", text: "维修队在教学楼前摆开桌子，同学围过来看。" },
+  { year: "2014", image: booth2014, alt: "露天广场上的蓝色帐篷，红色横幅写着 NIT计算机协会理工服务日，学生在长桌前排队", text: "理工服务日在露天广场摆摊，同学排队等着修电脑。" },
+  { year: "2025", image: cart2025, alt: "装满物资的折叠拖车，车身贴着协会的圆形标识", text: "帐篷、桌椅和工具箱，用一辆拖车拉到场地。" },
+]
+
+const sectionHead = "text-[32px] leading-[40px] sm:text-[48px] sm:leading-[56px] font-semibold"
+const intro = "text-[19px] leading-[29px] sm:text-[21px] sm:leading-[32px]"
+---
+
+<BaseLayout primaryTitle={repairDay.title}>
+  <nav class="sticky top-0 z-30 border-b border-black/10 bg-white/75 backdrop-blur-xl backdrop-saturate-[1.8]" aria-label="理工维修日">
+    <div class="section-content flex h-[48px] sm:h-[52px] items-center justify-between">
+      <span class="text-[19px] sm:text-[21px] font-semibold text-[#1d1d1f]">{repairDay.title}</span>
+      <div class="flex items-center gap-5">
+        <a href="/repair-day.ics" class="hidden sm:inline text-[12px] text-[#1d1d1f]/80 hover:text-[#0066cc] hover:no-underline">加入日历</a>
+        <a href="/repair/create-ticket" class="rounded-full bg-[#0071e3] px-[11px] py-[4px] text-[12px] leading-[16px] text-white hover:bg-[#0077ed] hover:no-underline">预约维修</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="relative isolate overflow-hidden bg-[#0b1f3a] text-[#f5f5f7]">
+    <Image src={hero} alt="" widths={[734, 1068, 1800]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-10 size-full object-cover object-[60%_40%] opacity-60" />
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(11,31,58,.55)_0%,rgba(11,31,58,.8)_55%,#0b1f3a_100%)]"></div>
+    <div class="section-content flex min-h-[calc(100svh-96px)] flex-col items-center justify-center py-[80px] text-center">
+      <p class="text-[17px] leading-[25px] sm:text-[21px] sm:leading-[29px] font-semibold text-[#5ac8fa]">NBTCA 计算机协会</p>
+      <h1 class="mt-2 text-[#f5f5f7] text-[48px] leading-[56px] sm:text-[80px] sm:leading-[88px] font-semibold">{repairDay.title}</h1>
+      <p class:list={["mt-4 text-white/80", intro]}>
+        <time datetime={repairDay.start}>{repairDayDate.long} {repairDayDate.weekday}</time> · {repairDayDate.time}
+      </p>
+      <p class="mt-1 text-[17px] sm:text-[19px] text-white/55">{repairDayLocation}</p>
+      <div class="mt-12 sm:mt-16">
+        <RepairDayCountdown size="lg" />
+      </div>
+      <div class="mt-12 sm:mt-14 flex flex-wrap items-center justify-center gap-4">
+        <a href="/repair/create-ticket" class={pillLight}>预约维修</a>
+        <a href="/repair-day.ics" class={pillOutline}>加入日历</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-black text-[#f5f5f7]">
+    <div class="section-content py-[100px] sm:py-[140px]">
+      <h2 class:list={["text-[#f5f5f7]", sectionHead]}>免费修电脑，<br />就在校园里。</h2>
+      <p class:list={["mt-6 max-w-[640px] text-[#86868b]", intro]}>
+        计算机协会维修队摆开工位，帮全校师生处理电脑问题。新成员也在这里跟着老成员学维修。
+      </p>
+      <ul class="mt-14 sm:mt-16 grid gap-3 sm:gap-5 sm:grid-cols-2 md:grid-cols-3">
+        {
+          repairDayServices.map(service => (
+            <li class="rounded-[18px] bg-[#1d1d1f] p-7 sm:p-8">
+              <h3 class="text-[#f5f5f7] text-[21px] leading-[25px] font-semibold">{service.name}</h3>
+              <p class="mt-3 text-[15px] sm:text-[17px] leading-[25px] text-[#a1a1a6]">{service.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-8 text-[12px] leading-[16px] text-[#86868b]">维修日不修硬件故障。遇到主板、屏幕这类损坏，我们会建议你去专业维修点。</p>
+    </div>
+  </section>
+
+  <section class="bg-[#f5f5f7] text-[#1d1d1f]">
+    <div class="section-content py-[100px] sm:py-[140px]">
+      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>来之前，准备好这些。</h2>
+      <ol class="mt-14 grid gap-3 sm:gap-5 sm:grid-cols-3">
+        {
+          steps.map((step, i) => (
+            <li class="rounded-[18px] bg-white p-7 sm:p-8">
+              <span class="block text-[40px] leading-none font-semibold tabular-nums text-[#0071e3]">{i + 1}</span>
+              <h3 class="mt-6 text-[#1d1d1f] text-[21px] leading-[25px] font-semibold">{step.title}</h3>
+              <p class="mt-3 text-[15px] sm:text-[17px] leading-[25px] text-[#6e6e73]">{step.detail}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="mt-12 flex flex-wrap items-center gap-6">
+        <a href="/repair/create-ticket" class={pillBlue}>预约维修</a>
+        <a href="/repair" class="text-[17px] text-[#0066cc] hover:underline">平时也能在网上报修 ›</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white text-[#1d1d1f]">
+    <div class="section-content py-[100px] sm:py-[140px]">
+      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>在现场。</h2>
+      <div class="mt-14 grid gap-x-5 gap-y-10 sm:grid-cols-2">
+        {
+          gallery.map(item => (
+            <figure class:list={[item.wide && "sm:col-span-2"]}>
+              <Image
+                src={item.image}
+                alt={item.alt}
+                widths={item.wide ? [734, 1068, 1600] : [734, 1068]}
+                sizes={item.wide ? "(max-width: 734px) 88vw, 980px" : "(max-width: 734px) 88vw, 480px"}
+                class:list={["w-full rounded-[18px] object-cover", item.wide ? "aspect-[16/9]" : "aspect-[3/2]"]}
+              />
+              <figcaption class="mt-3 text-[14px] leading-[20px] text-[#6e6e73]">{item.caption}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#f5f5f7] text-[#1d1d1f]">
+    <div class="section-content py-[100px] sm:py-[140px]">
+      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>从 2008 年修到今天。</h2>
+      <p class:list={["mt-6 max-w-[640px] text-[#6e6e73]", intro]}>
+        2008 年，维修队在教学楼前摆一张桌子修电脑。后来有了露天广场上的理工服务日，再到今天的理工维修日。
+      </p>
+      <ol class="mt-14 grid gap-x-5 gap-y-10 sm:grid-cols-3">
+        {
+          history.map(item => (
+            <li>
+              <Image src={item.image} alt={item.alt} widths={[480, 734]} sizes="(max-width: 734px) 88vw, 320px" class="aspect-[4/3] w-full rounded-[18px] object-cover" />
+              <p class="mt-5 text-[28px] leading-[32px] font-semibold tabular-nums text-[#1d1d1f]">{item.year}</p>
+              <p class="mt-2 text-[15px] sm:text-[17px] leading-[25px] text-[#6e6e73]">{item.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="bg-[#0b1f3a] text-[#f5f5f7]">
+    <div class="section-content py-[100px] sm:py-[120px] text-center">
+      <h2 class:list={["text-[#f5f5f7]", sectionHead]}>{repairDayDate.long}，{repairDayDate.weekday}见。</h2>
+      <p class:list={["mt-4 text-white/70", intro]}>{repairDayDate.weekday} {repairDayDate.time} · {repairDayLocation}</p>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <a href="/repair/create-ticket" class={pillLight}>预约维修</a>
+        <a href="/repair-day.ics" class={pillOutline}>加入日历</a>
+      </div>
+      <a href="/freshman/join" class="mt-8 inline-block text-[17px] text-[#5ac8fa] hover:underline">加入计算机协会 ›</a>
+    </div>
+  </section>
+</BaseLayout>
