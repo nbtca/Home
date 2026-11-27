@@ -240,6 +240,11 @@ export function mountMachine(root: HTMLElement) {
       }
     })
 
+    // The bottom shell's sides are coplanar with the cabinet and panel sides and flicker. Inset the mesh, not the node,
+    // because the node also parents the rest of the machine.
+    const shell = nodes.get("Black bottom shell")
+    if (shell instanceof THREE.Mesh) shell.geometry = shell.geometry.clone().scale(0.997, 1, 0.996)
+
     for (const k of KEY_NAMES) {
       const n = nodes.get(`Key ${k}`)
       if (n) keyRest.set(k, n.position.y)
@@ -338,12 +343,17 @@ export function mountMachine(root: HTMLElement) {
   }
 
   const messageIndex = (t: number) => tape.beeps.filter(b => b <= t).length
+  // Track the target separately so repeated presses step through messages even before playback reaches the beep.
+  let current = 0
   const seekMessage = (step: number) => {
-    const current = Math.max(0, messageIndex(audio.currentTime) - 1)
-    const i = Math.max(0, Math.min(tape.announce.length - 1, current + step))
-    audio.currentTime = Math.max(0, tape.announce[i] - 0.4)
+    current = Math.max(0, Math.min(tape.announce.length - 1, current + step))
+    audio.currentTime = Math.max(0, tape.announce[current] - 0.25)
     if (audio.paused) void audio.play()
   }
+  audio.addEventListener("timeupdate", () => {
+    if (audio.seeking) return
+    current = Math.max(0, tape.announce.filter(a => a - 0.3 <= audio.currentTime).length - 1)
+  })
 
   const onKey = (k: Key) => {
     if (!inserted) return begin()
@@ -355,7 +365,7 @@ export function mountMachine(root: HTMLElement) {
     }
     else if (k === "STOP") audio.pause()
     else if (k === "FF") seekMessage(1)
-    else if (k === "REW") seekMessage(audio.currentTime - tape.announce[Math.max(0, messageIndex(audio.currentTime) - 1)] > 3 ? 0 : -1)
+    else if (k === "REW") seekMessage(audio.currentTime - tape.announce[current] > 3 ? 0 : -1)
   }
 
   start.addEventListener("click", begin)
@@ -368,6 +378,7 @@ export function mountMachine(root: HTMLElement) {
     }, { once: true })
   }
   replay.addEventListener("click", () => {
+    current = 0
     audio.currentTime = 0
     void audio.play()
     root.dataset.state = "playing"
