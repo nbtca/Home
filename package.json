@@ -42,6 +42,7 @@
     "remark-toc": "^9.0.0",
     "sharp": "^0.35.5",
     "tailwindcss": "^3.4.17",
+    "three": "0.181.2",
     "unist-util-visit": "^5.0.0",
     "uuid": "11.1.1",
     "vue": "^3.5.44"
@@ -57,6 +58,7 @@
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.6",
+    "@types/three": "0.181.0",
     "@types/uuid": "10.0.0",
     "autoprefixer": "^10.6.1",
     "eslint": "^8.57.1",

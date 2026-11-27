@@ -32,6 +32,14 @@
     "VEVENT",
     "DTSTAMP",
     "DTSTART",
-    "DTEND"
+    "DTEND",
+    "clearcoat",
+    "lerp",
+    "Menlo",
+    "Meshopt",
+    "metalness",
+    "pmrem",
+    "slerp",
+    "GLTF"
   ]
 }
