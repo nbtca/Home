@@ -42,6 +42,8 @@
     "slerp",
     "GLTF",
     "MSAA",
-    "Yuna"
+    "Yuna",
+    "EXIF",
+    "NWDC"
   ]
 }

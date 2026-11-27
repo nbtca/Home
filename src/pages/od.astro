@@ -11,96 +11,116 @@ const photo = (name: string) => photos[`./_assets/od/${name}.webp`].default
 type Shot = { image: ImageMetadata, alt: string }
 const shot = (name: string, alt: string): Shot => ({ image: photo(name), alt })
 
+// Dates come from EXIF, cross-checked against photo.nbtca.space and docs.nbtca.space.
 const chapters: { date: string, title: string, text: string, rows: Shot[][] }[] = [
   {
-    date: "2024 年 9 月",
-    title: "第一场讲座。",
-    text: "CA101 招新讲座，阶梯教室坐得满满当当。",
-    rows: [[shot("2024-09-ca101", "阶梯教室里坐满了新生，讲台前站着主讲人")]],
+    date: "2023 年 10 月 21 日",
+    title: "全体大会。",
+    text: "他来协会的第一个学期，几十个人站上台阶拍了这张合影，又围坐在沙发上开会。",
+    rows: [[shot("all-stage", "全体大会后，几十名社员站在台阶上合影"), shot("all-sofa", "几十名社员围坐在沙发上开会")]],
   },
   {
-    date: "2024 年 10 月",
-    title: "白板上画了只小马。",
-    text: "讲台边摆着蛋糕，白板上留着画。讲完拍了合影，又在讲台前凑过去看同一块屏幕。",
+    date: "2023 年 12 月 9 日",
+    title: "CA102，站上讲台。",
+    text: "讲安卓系统怎么调。",
     rows: [
-      [shot("2024-10-lecture", "陈正浩站在讲台后讲课，身后的白板上画着动漫人物和一只小马，讲台前摆着蛋糕"), shot("2024-10-group", "几十名社员举着协会旗，在教室前排成两排合影")],
-      [shot("2024-10-podium", "阶梯教室里，一名社员站在讲台边比划，前排有人低头看平板"), shot("2024-10-pair", "两名社员站在投影幕前，低头看着讲台")],
+      [shot("talk-android", "陈正浩拿着话筒讲课，身后的投影写着安卓系统优化指南"), shot("talk-hall", "大教室的投影上写着“全球各大安卓操作系统厂商”，讲台后站着主讲人")],
+      [shot("talk-laptop", "讲座结束后，两名社员凑在笔记本前，一个人摊开手讲解")],
     ],
   },
   {
-    date: "2024 年 12 月",
+    date: "2024 年 9 月 21 日",
+    title: "CA101 招新讲座。",
+    text: "他负责内容科普。阶梯教室坐得满满当当，协会第一次在 B 站直播。",
+    rows: [[shot("2024-09-ca101", "阶梯教室里坐满了新生，讲台前站着主讲人")]],
+  },
+  {
+    date: "2024 年 10 月 13 日",
+    title: "迎新会。",
+    text: "讲台边摆着蛋糕，白板上画了只小马。讲完，大家举着协会旗合影。",
+    rows: [[shot("2024-10-lecture", "陈正浩站在讲台后讲课，身后的白板上画着动漫人物和一只小马，讲台前摆着蛋糕"), shot("2024-10-group", "几十名社员举着协会旗，在教室前排成两排合影")]],
+  },
+  {
+    date: "2024 年 10 月 19 日",
+    title: "维修日。",
+    text: "",
+    rows: [[shot("2024-10-podium", "阶梯教室里，一名社员站在讲台边比划，前排有人低头看平板"), shot("2024-10-pair", "两名社员站在投影幕前，低头看着讲台")]],
+  },
+  {
+    date: "2024 年 12 月 28 日",
     title: "拆机。",
-    text: "维修日上，他低着头拧螺丝，头发挡住了眼睛。",
+    text: "这学期的最后一次维修日。他低着头拧螺丝，头发挡住了眼睛。",
     rows: [
       [shot("2024-12-close", "陈正浩侧脸的特写，头发垂下来挡住了眼睛"), shot("2024-12-repair", "陈正浩低着头，拿螺丝刀拆一台笔记本的底壳")],
       [shot("2024-12-screw", "陈正浩和旁边的社员一起，用螺丝刀拆笔记本"), shot("2024-12-bend", "陈正浩俯身贴近桌面，专心拧螺丝")],
     ],
   },
   {
-    date: "2025 年 3 月",
-    title: "新学期的第一次维修日。",
-    text: "",
-    rows: [[shot("2025-03-tables", "几名社员围坐在圆桌前，各自对着一台笔记本"), shot("2025-03-standing", "一名社员站在圆桌边，看着大家修电脑")], [shot("2025-03-round", "社员们挤在圆桌前，一起看同一台笔记本")]],
+    date: "2025 年 3 月 22 日",
+    title: "学雷锋，理工维修三月特别活动。",
+    text: "新学期的第一次维修日，在 NB122 从早上九点修到下午五点半。",
+    rows: [[shot("2025-03-tables", "几名社员围坐在圆桌前，各自对着一台笔记本"), shot("2025-03-standing", "一名社员站在圆桌边，看着大家修电脑")]],
   },
   {
-    date: "2025 年 9 月",
+    date: "2025 年 10 月 18 日",
+    title: "全天维修日，下午迎新。",
+    text: "他讲浏览器插件和路由器，然后切蛋糕，分给每一个人。",
+    rows: [
+      [shot("2025-10-stage", "讲台上的投影写着“计算机协会是什么”，台前挂着协会旗"), shot("2025-10-cake", "几名社员围着蛋糕，正在切分"), shot("2025-10-slice", "陈正浩托着一盘切好的蛋糕")],
+      [shot("2025-10-group", "迎新会后，社员们举着协会旗在教室里合影")],
+    ],
+  },
+  {
+    date: "2025 年冬",
+    title: "又一个维修日。",
+    text: "11 月 29 日拆开一台笔记本，12 月 27 日大家挤在圆桌前看同一块屏幕。",
+    rows: [[shot("2025-11-repair", "一名社员俯身拆开笔记本，桌上放着刷子和一个橘子"), shot("2025-12-round", "社员们挤在圆桌前，一起看同一台笔记本")]],
+  },
+  {
+    date: "2026 年 4 月 25 日",
+    title: "NWDC。",
+    text: "技术分享结束，一起吃饭。",
+    rows: [[shot("all-dinner", "十几名社员围坐在圆桌边吃饭，对着镜头")]],
+  },
+  {
+    date: "2026 年 6 月 16 日",
+    title: "送走毕业的学长。",
+    text: "",
+    rows: [[shot("2026-06-graduation", "毕业季，社员们在协会易拉宝旁合影，有人穿着学位服")]],
+  },
+  {
+    date: "2026 年 7 月 17 日",
+    title: "团建。",
+    text: "有人给他戴上一顶金色小帽，叫他巴依老爷。",
+    rows: [[shot("him-hat", "陈正浩戴着一顶金色小帽，坐在暖光里笑")]],
+  },
+  {
+    date: "2026 年 9 月 20 日",
     title: "百团大战。",
-    text: "前一晚领帐篷、摆展板。第二天在帐篷底下给气球打气，端着相机，也被别人拍。",
+    text: "八点前到场搭帐篷、摆展板。下午给贴着协会贴纸的气球打气，端着相机，也被别人拍。",
     rows: [
       [shot("fair-portrait", "百团大战的帐篷前，陈正浩穿着横条纹 T 恤，望向远处"), shot("fair-balloon", "陈正浩举着打气筒，给一个印着协会标志的气球打气")],
       [shot("fair-camera", "帐篷下，陈正浩端着相机，旁边的社员凑过来看取景"), shot("fair-phone", "陈正浩低头看着旁边社员的手机")],
     ],
   },
   {
-    date: "2025 年 10 月",
-    title: "迎新大会。",
-    text: "讲计算机协会是什么，然后切蛋糕，分给每一个人。",
+    date: "2026 年 10 月",
+    title: "新人大会。",
+    text: "11 日在浙理拾光试讲，18 日正式开场。",
     rows: [
-      [shot("2025-10-stage", "讲台上的投影写着“计算机协会是什么”，台前挂着协会旗"), shot("2025-10-cake", "几名社员围着蛋糕，正在切分"), shot("2025-10-slice", "陈正浩托着一盘切好的蛋糕")],
-      [shot("2025-10-group", "迎新大会后，社员们举着协会旗在教室里合影")],
+      [shot("all-room", "试讲时，一名社员站在屏幕前讲话，其他人抱着手臂站成一排听"), shot("talk-departments", "一名社员拿着话筒，介绍宣传部、维修部和开发部")],
+      [shot("all-flag", "新人大会后，社员们举着协会旗，站在黄色地面的大厅里合影"), shot("all-watch", "陈正浩和两名社员靠墙站着，看向同一个方向")],
     ],
   },
   {
-    date: "2025 年秋",
-    title: "站上讲台。",
-    text: "讲安卓系统怎么调，讲协会的三个部门，也把讲台让给后来的人。",
+    date: "2026 年 10 月 31 日",
+    title: "去杭州，NWDC 第一次线下。",
+    text: "白天在会场，下午在街边等人。有人用一台黑莓拍下了他的笑。",
     rows: [
-      [shot("talk-android", "陈正浩拿着话筒讲课，身后的投影写着安卓系统优化指南"), shot("talk-hall", "大教室的投影上写着“全球各大安卓操作系统厂商”，讲台后站着主讲人")],
-      [shot("talk-departments", "一名社员拿着话筒，介绍宣传部、维修部和开发部"), shot("talk-laptop", "两名社员凑在笔记本前，一个人摊开手讲解")],
+      [shot("him-trio-2", "陈正浩和两名社员并肩站着，对着镜头笑"), shot("him-trio-1", "陈正浩和两名社员站在“行动成就未来”的标语前合影")],
+      [shot("him-shelf", "陈正浩和两名社员在书架前低头看手里的东西"), shot("him-laptop", "陈正浩坐在笔记本后面笑，身后的社员弯腰看他的屏幕"), shot("all-street", "一群社员站在街边店门口，一个人往他们走去")],
     ],
   },
-  {
-    date: "2025 年 11 月",
-    title: "又一个维修日。",
-    text: "",
-    rows: [[shot("2025-11-repair", "一名社员俯身拆开笔记本，桌上放着刷子和一个橘子")]],
-  },
-  {
-    date: "这三年",
-    title: "和大家一起。",
-    text: "合影、开会、一起吃饭，一起走在去吃饭的路上。",
-    rows: [
-      [shot("all-stage", "几十名社员站在台阶上合影"), shot("all-flag", "社员们举着协会旗，站在黄色地面的大厅里合影")],
-      [shot("all-sofa", "几十名社员围坐在沙发上开会"), shot("all-street", "一群社员站在街边店门口，一个人往他们走去")],
-      [shot("all-room", "一名社员站在屏幕前讲话，其他人抱着手臂站成一排听"), shot("all-watch", "陈正浩和两名社员靠墙站着，看向同一个方向")],
-      [shot("all-dinner", "十几名社员围坐在圆桌边吃饭，对着镜头")],
-      [shot("all-trees", "树荫下，社员们站成两排合影")],
-    ],
-  },
-  {
-    date: "2026 年 6 月",
-    title: "送走毕业的学长。",
-    text: "",
-    rows: [[shot("2026-06-graduation", "毕业季，社员们在协会易拉宝旁合影，有人穿着学位服")]],
-  },
-]
-
-const him: Shot[] = [
-  shot("him-hat", "陈正浩戴着一顶金色小帽，坐在暖光里笑"),
-  shot("him-trio-2", "陈正浩和两名社员并肩站着，对着镜头笑"),
-  shot("him-laptop", "陈正浩坐在笔记本后面笑，身后的社员弯腰看他的屏幕"),
-  shot("him-shelf", "陈正浩和两名社员在书架前低头看手里的东西"),
-  shot("him-trio-1", "陈正浩和两名社员站在“行动成就未来”的标语前合影"),
 ]
 
 // Placeholder names until each speaker is confirmed.
@@ -191,20 +211,13 @@ const sectionHead = "text-[32px] leading-[40px] sm:text-[48px] sm:leading-[56px]
           ))
         }
       </ol>
+      <div class="mt-[88px] sm:mt-[120px]">
+        <PhotoRow photos={[shot("all-trees", "树荫下，社员们站成两排合影")]} />
+      </div>
+      <p class="mt-8 text-[17px] sm:text-[21px] text-[#6e6e73]">这些照片也洗了出来，装成一本相册，今天交给他。</p>
     </div>
   </section>
 
-  <section class="bg-white text-[#1d1d1f]">
-    <div class="section-content py-[100px] sm:py-[140px]">
-      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>还有他自己。</h2>
-      <div class="mt-14 flex flex-col gap-3 sm:gap-4">
-        <PhotoRow photos={him.slice(0, 2)} />
-        <PhotoRow photos={him.slice(2, 4)} />
-        <PhotoRow photos={him.slice(4)} />
-      </div>
-      <p class="mt-10 text-[17px] text-[#6e6e73]">这些照片也洗了出来，装成一本相册，今天交给他。</p>
-    </div>
-  </section>
 </BaseLayout>
 
 <script>
