@@ -120,9 +120,10 @@ export function mountMachine(root: HTMLElement) {
   const replay = root.querySelector<HTMLButtonElement>("[data-replay]")!
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: "high-performance" })
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = THREE.PCFSoftShadowMap
+  // Only the lid and cassette move, and only during the intro; re-render shadows on demand.
+  renderer.shadowMap.autoUpdate = false
 
   const scene = new THREE.Scene()
   const bg = new THREE.Color("#0c0907")
@@ -140,8 +141,11 @@ export function mountMachine(root: HTMLElement) {
   key.position.set(-0.45, 0.95, 0.55)
   key.castShadow = true
   key.shadow.mapSize.set(2048, 2048)
-  key.shadow.bias = -0.0002
-  key.shadow.radius = 6
+  key.shadow.bias = -0.00005
+  key.shadow.normalBias = 0.0015
+  key.shadow.radius = 4
+  key.shadow.camera.near = 0.5
+  key.shadow.camera.far = 2
   scene.add(key, key.target)
   const rim = new THREE.DirectionalLight("#8fb3ff", 0.7)
   rim.position.set(0.6, 0.4, -0.8)
@@ -152,7 +156,8 @@ export function mountMachine(root: HTMLElement) {
   desk.receiveShadow = true
   scene.add(desk)
 
-  const composer = new EffectComposer(renderer)
+  // EffectComposer's default target has no MSAA, so edges crawl as the camera drifts.
+  const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: 4 }))
   composer.addPass(new RenderPass(scene, camera))
   const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.4, 0.4, 0.96)
   composer.addPass(bloom)
@@ -185,7 +190,14 @@ export function mountMachine(root: HTMLElement) {
       o.castShadow = true
       o.receiveShadow = true
       const m = o.material as THREE.MeshPhysicalMaterial
-      if (m.transparent || m.opacity < 1) m.depthWrite = false
+      if (m.transparent) {
+        // Wear decals sit a hair above the surface and z-fight without an offset.
+        m.depthWrite = false
+        m.polygonOffset = true
+        m.polygonOffsetFactor = -2
+        m.polygonOffsetUnits = -2
+        o.castShadow = false
+      }
       switch (m.name) {
         case "Charcoal":
           m.color.set("#151413")
@@ -275,6 +287,7 @@ export function mountMachine(root: HTMLElement) {
     selector = nodes.get("SELECTOR knob")
     selectorRest = selector?.rotation.y ?? 0
     scene.add(model)
+    renderer.shadowMap.needsUpdate = true
     ready = true
     root.dataset.ready = ""
   })
@@ -395,9 +408,14 @@ export function mountMachine(root: HTMLElement) {
 
   const resize = () => {
     const { clientWidth: w, clientHeight: h } = root
+    // A retina big screen at full density drops to ~19 fps, and the uneven pacing reads as flicker.
+    const ratio = Math.min(devicePixelRatio, 2, Math.sqrt(4_000_000 / (w * h)))
+    renderer.setPixelRatio(ratio)
+    composer.setPixelRatio(ratio)
     renderer.setSize(w, h, false)
     composer.setSize(w, h)
-    bloom.resolution.set(w, h)
+    bloom.resolution.set(w / 2, h / 2)
+    renderer.shadowMap.needsUpdate = true
     camera.aspect = w / h
     camera.fov = w / h < 1 ? 46 : 30
     camera.updateProjectionMatrix()
@@ -467,6 +485,7 @@ export function mountMachine(root: HTMLElement) {
     }
 
     if (lid) lid.quaternion.slerpQuaternions(lidClosed, LID_OPEN, lidOpen)
+    if (introAt >= 0 && !inserted) renderer.shadowMap.needsUpdate = true
     if (selector) selector.rotation.y += ((inserted ? selectorRest - 1.2 : selectorRest) - selector.rotation.y) * Math.min(1, dt * 6)
 
     // A real reel speeds up as its pack of tape gets thinner.
