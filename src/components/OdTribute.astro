@@ -10,18 +10,18 @@ const { href } = Astro.props
   <div class="mx-auto grid max-w-[1180px] items-center gap-8 px-6 pt-10 pb-14 sm:pt-14 sm:pb-20 md:grid-cols-[minmax(0,1fr)_minmax(0,1.55fr)] md:gap-14">
     <div class="order-2 md:order-1 text-center md:text-left">
       <h1 class="text-[#1d1d1f] text-[44px] leading-[1.08] sm:text-[64px] font-[200] tracking-[-0.01em]">{od.name}</h1>
-      <p class="mt-2 text-[28px] sm:text-[36px] leading-[1.1] font-[200] tabular-nums text-[#86868b]">{od.years}</p>
-      <p class="mt-6 text-[17px] sm:text-[19px] leading-[1.5] text-[#6e6e73]">在计算机协会的三年。<br />生日快乐。</p>
+      <p class="mt-1 text-[72px] sm:text-[96px] leading-none font-[200] tabular-nums text-[#86868b]">{od.age}</p>
+      <p class="mt-5 text-[17px] sm:text-[19px] leading-[1.5] text-[#6e6e73]">生日快乐。<br />谢谢你在计算机协会的这三年。</p>
       {href && <a href={href} class="mt-6 inline-block text-[17px] sm:text-[19px] text-[#0066cc] hover:underline">听听大家的留言 ›</a>}
     </div>
     <Image
       src={portrait}
-      alt="陈正浩托着下巴，看着面前的笔记本电脑，嘴角带笑，黑白照片"
-      widths={[734, 1068, 1600, 2133]}
+      alt="陈正浩托着下巴，看着面前的笔记本电脑，嘴角带笑"
+      widths={[734, 1068, 1600, 2120]}
       sizes="(max-width: 734px) 92vw, 700px"
       loading="eager"
       fetchpriority="high"
-      class="order-1 md:order-2 w-full"
+      class="order-1 md:order-2 w-full rounded-[18px]"
     />
   </div>
 </section>

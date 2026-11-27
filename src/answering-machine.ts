@@ -359,6 +359,14 @@ export function mountMachine(root: HTMLElement) {
   }
 
   start.addEventListener("click", begin)
+  const kiosk = "kiosk" in root.dataset
+  if (kiosk) {
+    root.style.cursor = "none"
+    addEventListener("pointerdown", () => {
+      void document.documentElement.requestFullscreen?.().catch(() => {})
+      begin()
+    }, { once: true })
+  }
   replay.addEventListener("click", () => {
     audio.currentTime = 0
     void audio.play()
@@ -400,6 +408,7 @@ export function mountMachine(root: HTMLElement) {
   audio.addEventListener("ended", () => {
     root.dataset.state = "ended"
     finale.hidden = false
+    if (kiosk) setTimeout(() => replay.click(), 20_000)
   })
   audio.addEventListener("play", () => {
     root.dataset.state = "playing"

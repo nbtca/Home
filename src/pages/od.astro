@@ -3,29 +3,57 @@ import { Image } from "astro:assets"
 import BaseLayout from "../layouts/BaseLayout.astro"
 import OdTribute from "../components/OdTribute.astro"
 import { od } from "../od"
+import ca101 from "./_assets/od/2024-09-ca101.webp"
+import group2024 from "./_assets/od/2024-10-group.webp"
+import repair2024 from "./_assets/od/2024-12-repair.webp"
+import repair2025 from "./_assets/od/2025-03-repair.webp"
+import welcome2025 from "./_assets/od/2025-10-welcome.webp"
+import cake2025 from "./_assets/od/2025-10-cake.webp"
+import repairNov from "./_assets/od/2025-11-repair.webp"
+import graduation from "./_assets/od/2026-06-graduation.webp"
 import fair from "./_assets/od/fair.webp"
-import repair from "./_assets/od/repair.webp"
-import trio from "./_assets/od/trio.webp"
-import cake from "./_assets/od/cake.webp"
 import hat from "./_assets/od/hat.webp"
-import camera from "./_assets/od/camera.webp"
 import balloon from "./_assets/od/balloon.webp"
-import welcome from "./_assets/od/welcome.webp"
-import group from "./_assets/od/group.webp"
-import graduation from "./_assets/od/graduation.webp"
+import camera from "./_assets/od/camera.webp"
+import trio from "./_assets/od/trio.webp"
+import stage from "./_assets/od/stage.webp"
+import trees from "./_assets/od/trees.webp"
 
-const gallery = [
-  { image: fair, alt: "百团大战的帐篷前，陈正浩穿着横条纹 T 恤，望向远处", wide: true },
-  { image: repair, alt: "维修日上，陈正浩低着头，拿螺丝刀拆一台笔记本的底壳" },
-  { image: camera, alt: "百团大战的帐篷下，陈正浩端着相机，旁边的社员凑过来看取景" },
-  { image: balloon, alt: "陈正浩举着打气筒，给一个印着协会标志的气球打气" },
-  { image: cake, alt: "一名社员托着切好的蛋糕" },
-  { image: hat, alt: "陈正浩戴着一顶金色小帽，坐在暖光里笑" },
-  { image: trio, alt: "陈正浩和两名社员并肩站着，对着镜头笑" },
-  { image: welcome, alt: "迎新活动结束后，几十名社员站在台阶上合影", wide: true },
-  { image: graduation, alt: "毕业季，社员们在协会易拉宝旁合影，有人穿着学位服" },
-  { image: group, alt: "树荫下，社员们站成两排合影" },
+const timeline = [
+  { date: "2024 年 9 月", image: ca101, alt: "阶梯教室里坐满了新生，讲台前站着主讲人", text: "CA101 招新讲座，阶梯教室坐满了人。" },
+  { date: "2024 年 10 月", image: group2024, alt: "社员们举着协会旗，在教室前排成两排合影", text: "举着协会旗，在教室前合影。" },
+  { date: "2024 年 12 月", image: repair2024, alt: "陈正浩低着头，拿螺丝刀拆一台笔记本的底壳", text: "维修日上拆机。", wide: true },
+  { date: "2025 年 3 月", image: repair2025, alt: "几名社员围坐在圆桌前，各自对着一台笔记本", text: "新学期第一次维修日。" },
+  { date: "2025 年 9 月", image: fair, alt: "百团大战的帐篷前，陈正浩穿着横条纹 T 恤，望向远处", text: "百团大战，前一晚领好帐篷和展板。" },
+  { date: "2025 年 10 月", image: welcome2025, alt: "讲台上的投影写着“计算机协会是什么”，台前挂着协会旗", text: "迎新大会，讲计算机协会是什么。" },
+  { date: "2025 年 10 月", image: cake2025, alt: "一名社员托着切好的蛋糕", text: "大会散场，一起分蛋糕。" },
+  { date: "2025 年 11 月", image: repairNov, alt: "一名社员俯身拆开笔记本，桌上放着刷子和一个橘子", text: "又一个维修日。", wide: true },
+  { date: "2026 年 6 月", image: graduation, alt: "毕业季，社员们在协会易拉宝旁合影，有人穿着学位服", text: "送走毕业的学长。", wide: true },
 ]
+
+const moments = [
+  { image: hat, alt: "陈正浩戴着一顶金色小帽，坐在暖光里笑" },
+  { image: balloon, alt: "陈正浩举着打气筒，给一个印着协会标志的气球打气" },
+  { image: camera, alt: "百团大战的帐篷下，陈正浩端着相机，旁边的社员凑过来看取景" },
+  { image: trio, alt: "陈正浩和两名社员并肩站着，对着镜头笑" },
+  { image: stage, alt: "几十名社员站在台阶上合影", wide: true },
+  { image: trees, alt: "树荫下，社员们站成两排合影", wide: true },
+]
+
+// Placeholder names until each speaker is confirmed.
+const messages = [
+  { from: "小明", text: "非常感谢你这些年对计算机协会的贡献。想来第一次见面的时候你还那么青涩，现在已经过去三年了。" },
+  { from: "小马", text: "上次您对我整整一下午的教导，让我感受到了你对计协是多么的用心。当一个快乐的计协皇帝。" },
+  { from: "第三条留言", text: "感谢橘狗在我进入计协期间一直给我的各种照顾，比如说网络基础设施，还有带我去吃的小脚丫。" },
+  { from: "第四条留言", text: "OD，祝你生日快乐，永远的老大！" },
+  { from: "文浩", text: "在每一次的线下维修都能见到你的身影，热心到位地帮我们解决了许多非技术与技术上的问题。" },
+  { from: "第六条留言", text: "陈正浩，Orange Dog，祝你生日快乐。" },
+  { from: "第七条留言", text: "希望 OD 毕业设计顺顺利利完成，也希望计协永远都越办越好。" },
+  { from: "第八条留言", text: "感觉是一个非常认真负责，有时候又有点可爱的会长大人呀。" },
+  { from: "Yuna", text: "我们计协的大家，会永远记住这么一个独一无二的橘子狗。" },
+]
+
+const sectionHead = "text-[32px] leading-[40px] sm:text-[48px] sm:leading-[56px] font-semibold"
 ---
 
 <BaseLayout primaryTitle={od.name}>
@@ -64,15 +92,54 @@ const gallery = [
       <button data-replay type="button" class="mt-10 text-[17px] sm:text-[19px] text-[#ffb02e] hover:underline">再听一遍 ›</button>
     </div>
 
-    <p class="pointer-events-none absolute bottom-3 right-4 hidden text-[12px] text-white/35 sm:block">点击机身上的按键也能操作 · 空格暂停 · ← → 切换留言</p>
+    <p class="pointer-events-none absolute bottom-3 right-4 hidden text-[12px] text-white/35 sm:block [[data-kiosk]_&]:!hidden">点击机身上的按键也能操作 · 空格暂停 · ← → 切换留言</p>
+  </section>
+
+  <section class="bg-white text-[#1d1d1f]">
+    <div class="section-content py-[100px] sm:py-[140px]">
+      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>他们说。</h2>
+      <ul class="mt-14 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+        {
+          messages.map((m, i) => (
+            <li class="flex flex-col rounded-[18px] bg-[#f5f5f7] p-7 sm:p-8">
+              <p class="text-[17px] leading-[1.6] text-[#1d1d1f]">“{m.text}”</p>
+              <p class="mt-auto pt-6 text-[14px] text-[#6e6e73]"><span class="tabular-nums text-[#ffb02e] font-semibold">{String(i + 1).padStart(2, "0")}</span> · {m.from}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </section>
 
   <section class="bg-[#f5f5f7] text-[#1d1d1f]">
     <div class="section-content py-[100px] sm:py-[140px]">
-      <h2 class="text-[#1d1d1f] text-[32px] leading-[40px] sm:text-[48px] sm:leading-[56px] font-semibold">这三年。</h2>
+      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>这三年。</h2>
+      <ol class="mt-14 grid gap-x-5 gap-y-12 sm:grid-cols-2">
+        {
+          timeline.map(item => (
+            <li class:list={[item.wide && "sm:col-span-2"]}>
+              <Image
+                src={item.image}
+                alt={item.alt}
+                widths={item.wide ? [734, 1068, 1600] : [734, 1068]}
+                sizes={item.wide ? "(max-width: 734px) 88vw, 980px" : "(max-width: 734px) 88vw, 480px"}
+                class:list={["w-full rounded-[18px] object-cover", item.wide ? "aspect-[16/9]" : "aspect-[3/2]"]}
+              />
+              <p class="mt-5 text-[21px] leading-[25px] font-semibold tabular-nums text-[#1d1d1f]">{item.date}</p>
+              <p class="mt-1 text-[17px] leading-[25px] text-[#6e6e73]">{item.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="bg-white text-[#1d1d1f]">
+    <div class="section-content py-[100px] sm:py-[140px]">
+      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>还有这些瞬间。</h2>
       <div class="mt-14 grid gap-5 sm:grid-cols-2">
         {
-          gallery.map(item => (
+          moments.map(item => (
             <Image
               src={item.image}
               alt={item.alt}
@@ -97,4 +164,8 @@ const gallery = [
     void import("../answering-machine").then(m => m.mountMachine(root))
   }, { rootMargin: "100% 0px" }).observe(root)
   if (location.hash === "#machine") root.focus()
+  if (new URLSearchParams(location.search).has("kiosk")) {
+    root.dataset.kiosk = ""
+    root.scrollIntoView()
+  }
 </script>

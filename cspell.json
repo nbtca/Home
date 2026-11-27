@@ -41,6 +41,7 @@
     "pmrem",
     "slerp",
     "GLTF",
-    "MSAA"
+    "MSAA",
+    "Yuna"
   ]
 }

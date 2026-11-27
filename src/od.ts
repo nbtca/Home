@@ -1,7 +1,6 @@
 export const od = {
   name: "陈正浩",
-  alias: "Orange Dog",
-  years: "2023–2026",
+  age: 22,
 }
 
 // Seconds into public/od/messages.m4a, measured from the recording.
