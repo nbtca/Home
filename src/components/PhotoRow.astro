@@ -1,0 +1,27 @@
+---
+import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
+interface Props {
+  photos: { image: ImageMetadata, alt: string }[]
+}
+
+const { photos } = Astro.props
+const ratios = photos.map(p => p.image.width / p.image.height)
+const total = ratios.reduce((a, b) => a + b, 0)
+---
+
+<div class="flex flex-col gap-3 sm:flex-row sm:gap-4">
+  {
+    photos.map((p, i) => (
+      <Image
+        src={p.image}
+        alt={p.alt}
+        widths={[480, 734, 1068, 1600]}
+        sizes={`(max-width: 734px) 92vw, ${Math.round((ratios[i] / total) * 980)}px`}
+        style={`flex: ${ratios[i]} 1 0%; aspect-ratio: ${p.image.width} / ${p.image.height}`}
+        class="h-auto w-full min-w-0 rounded-[14px] sm:w-auto"
+      />
+    ))
+  }
+</div>

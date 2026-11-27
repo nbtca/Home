@@ -1,43 +1,106 @@
 ---
-import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
 import BaseLayout from "../layouts/BaseLayout.astro"
 import OdTribute from "../components/OdTribute.astro"
+import PhotoRow from "../components/PhotoRow.astro"
 import { od } from "../od"
-import ca101 from "./_assets/od/2024-09-ca101.webp"
-import group2024 from "./_assets/od/2024-10-group.webp"
-import repair2024 from "./_assets/od/2024-12-repair.webp"
-import repair2025 from "./_assets/od/2025-03-repair.webp"
-import welcome2025 from "./_assets/od/2025-10-welcome.webp"
-import cake2025 from "./_assets/od/2025-10-cake.webp"
-import repairNov from "./_assets/od/2025-11-repair.webp"
-import graduation from "./_assets/od/2026-06-graduation.webp"
-import fair from "./_assets/od/fair.webp"
-import hat from "./_assets/od/hat.webp"
-import balloon from "./_assets/od/balloon.webp"
-import camera from "./_assets/od/camera.webp"
-import trio from "./_assets/od/trio.webp"
-import stage from "./_assets/od/stage.webp"
-import trees from "./_assets/od/trees.webp"
 
-const timeline = [
-  { date: "2024 年 9 月", image: ca101, alt: "阶梯教室里坐满了新生，讲台前站着主讲人", text: "CA101 招新讲座，阶梯教室坐满了人。" },
-  { date: "2024 年 10 月", image: group2024, alt: "社员们举着协会旗，在教室前排成两排合影", text: "举着协会旗，在教室前合影。" },
-  { date: "2024 年 12 月", image: repair2024, alt: "陈正浩低着头，拿螺丝刀拆一台笔记本的底壳", text: "维修日上拆机。", wide: true },
-  { date: "2025 年 3 月", image: repair2025, alt: "几名社员围坐在圆桌前，各自对着一台笔记本", text: "新学期第一次维修日。" },
-  { date: "2025 年 9 月", image: fair, alt: "百团大战的帐篷前，陈正浩穿着横条纹 T 恤，望向远处", text: "百团大战，前一晚领好帐篷和展板。" },
-  { date: "2025 年 10 月", image: welcome2025, alt: "讲台上的投影写着“计算机协会是什么”，台前挂着协会旗", text: "迎新大会，讲计算机协会是什么。" },
-  { date: "2025 年 10 月", image: cake2025, alt: "一名社员托着切好的蛋糕", text: "大会散场，一起分蛋糕。" },
-  { date: "2025 年 11 月", image: repairNov, alt: "一名社员俯身拆开笔记本，桌上放着刷子和一个橘子", text: "又一个维修日。", wide: true },
-  { date: "2026 年 6 月", image: graduation, alt: "毕业季，社员们在协会易拉宝旁合影，有人穿着学位服", text: "送走毕业的学长。", wide: true },
+const photos = import.meta.glob<{ default: ImageMetadata }>("./_assets/od/*.webp", { eager: true })
+const photo = (name: string) => photos[`./_assets/od/${name}.webp`].default
+
+type Shot = { image: ImageMetadata, alt: string }
+const shot = (name: string, alt: string): Shot => ({ image: photo(name), alt })
+
+const chapters: { date: string, title: string, text: string, rows: Shot[][] }[] = [
+  {
+    date: "2024 年 9 月",
+    title: "第一场讲座。",
+    text: "CA101 招新讲座，阶梯教室坐得满满当当。",
+    rows: [[shot("2024-09-ca101", "阶梯教室里坐满了新生，讲台前站着主讲人")]],
+  },
+  {
+    date: "2024 年 10 月",
+    title: "白板上画了只小马。",
+    text: "讲台边摆着蛋糕，白板上留着画。讲完拍了合影，又在讲台前凑过去看同一块屏幕。",
+    rows: [
+      [shot("2024-10-lecture", "陈正浩站在讲台后讲课，身后的白板上画着动漫人物和一只小马，讲台前摆着蛋糕"), shot("2024-10-group", "几十名社员举着协会旗，在教室前排成两排合影")],
+      [shot("2024-10-podium", "阶梯教室里，一名社员站在讲台边比划，前排有人低头看平板"), shot("2024-10-pair", "两名社员站在投影幕前，低头看着讲台")],
+    ],
+  },
+  {
+    date: "2024 年 12 月",
+    title: "拆机。",
+    text: "维修日上，他低着头拧螺丝，头发挡住了眼睛。",
+    rows: [
+      [shot("2024-12-close", "陈正浩侧脸的特写，头发垂下来挡住了眼睛"), shot("2024-12-repair", "陈正浩低着头，拿螺丝刀拆一台笔记本的底壳")],
+      [shot("2024-12-screw", "陈正浩和旁边的社员一起，用螺丝刀拆笔记本"), shot("2024-12-bend", "陈正浩俯身贴近桌面，专心拧螺丝")],
+    ],
+  },
+  {
+    date: "2025 年 3 月",
+    title: "新学期的第一次维修日。",
+    text: "",
+    rows: [[shot("2025-03-tables", "几名社员围坐在圆桌前，各自对着一台笔记本"), shot("2025-03-standing", "一名社员站在圆桌边，看着大家修电脑")], [shot("2025-03-round", "社员们挤在圆桌前，一起看同一台笔记本")]],
+  },
+  {
+    date: "2025 年 9 月",
+    title: "百团大战。",
+    text: "前一晚领帐篷、摆展板。第二天在帐篷底下给气球打气，端着相机，也被别人拍。",
+    rows: [
+      [shot("fair-portrait", "百团大战的帐篷前，陈正浩穿着横条纹 T 恤，望向远处"), shot("fair-balloon", "陈正浩举着打气筒，给一个印着协会标志的气球打气")],
+      [shot("fair-camera", "帐篷下，陈正浩端着相机，旁边的社员凑过来看取景"), shot("fair-phone", "陈正浩低头看着旁边社员的手机")],
+    ],
+  },
+  {
+    date: "2025 年 10 月",
+    title: "迎新大会。",
+    text: "讲计算机协会是什么，然后切蛋糕，分给每一个人。",
+    rows: [
+      [shot("2025-10-stage", "讲台上的投影写着“计算机协会是什么”，台前挂着协会旗"), shot("2025-10-cake", "几名社员围着蛋糕，正在切分"), shot("2025-10-slice", "陈正浩托着一盘切好的蛋糕")],
+      [shot("2025-10-group", "迎新大会后，社员们举着协会旗在教室里合影")],
+    ],
+  },
+  {
+    date: "2025 年秋",
+    title: "站上讲台。",
+    text: "讲安卓系统怎么调，讲协会的三个部门，也把讲台让给后来的人。",
+    rows: [
+      [shot("talk-android", "陈正浩拿着话筒讲课，身后的投影写着安卓系统优化指南"), shot("talk-hall", "大教室的投影上写着“全球各大安卓操作系统厂商”，讲台后站着主讲人")],
+      [shot("talk-departments", "一名社员拿着话筒，介绍宣传部、维修部和开发部"), shot("talk-laptop", "两名社员凑在笔记本前，一个人摊开手讲解")],
+    ],
+  },
+  {
+    date: "2025 年 11 月",
+    title: "又一个维修日。",
+    text: "",
+    rows: [[shot("2025-11-repair", "一名社员俯身拆开笔记本，桌上放着刷子和一个橘子")]],
+  },
+  {
+    date: "这三年",
+    title: "和大家一起。",
+    text: "合影、开会、一起吃饭，一起走在去吃饭的路上。",
+    rows: [
+      [shot("all-stage", "几十名社员站在台阶上合影"), shot("all-flag", "社员们举着协会旗，站在黄色地面的大厅里合影")],
+      [shot("all-sofa", "几十名社员围坐在沙发上开会"), shot("all-street", "一群社员站在街边店门口，一个人往他们走去")],
+      [shot("all-room", "一名社员站在屏幕前讲话，其他人抱着手臂站成一排听"), shot("all-watch", "陈正浩和两名社员靠墙站着，看向同一个方向")],
+      [shot("all-dinner", "十几名社员围坐在圆桌边吃饭，对着镜头")],
+      [shot("all-trees", "树荫下，社员们站成两排合影")],
+    ],
+  },
+  {
+    date: "2026 年 6 月",
+    title: "送走毕业的学长。",
+    text: "",
+    rows: [[shot("2026-06-graduation", "毕业季，社员们在协会易拉宝旁合影，有人穿着学位服")]],
+  },
 ]
 
-const moments = [
-  { image: hat, alt: "陈正浩戴着一顶金色小帽，坐在暖光里笑" },
-  { image: balloon, alt: "陈正浩举着打气筒，给一个印着协会标志的气球打气" },
-  { image: camera, alt: "百团大战的帐篷下，陈正浩端着相机，旁边的社员凑过来看取景" },
-  { image: trio, alt: "陈正浩和两名社员并肩站着，对着镜头笑" },
-  { image: stage, alt: "几十名社员站在台阶上合影", wide: true },
-  { image: trees, alt: "树荫下，社员们站成两排合影", wide: true },
+const him: Shot[] = [
+  shot("him-hat", "陈正浩戴着一顶金色小帽，坐在暖光里笑"),
+  shot("him-trio-2", "陈正浩和两名社员并肩站着，对着镜头笑"),
+  shot("him-laptop", "陈正浩坐在笔记本后面笑，身后的社员弯腰看他的屏幕"),
+  shot("him-shelf", "陈正浩和两名社员在书架前低头看手里的东西"),
+  shot("him-trio-1", "陈正浩和两名社员站在“行动成就未来”的标语前合影"),
 ]
 
 // Placeholder names until each speaker is confirmed.
@@ -114,19 +177,16 @@ const sectionHead = "text-[32px] leading-[40px] sm:text-[48px] sm:leading-[56px]
   <section class="bg-[#f5f5f7] text-[#1d1d1f]">
     <div class="section-content py-[100px] sm:py-[140px]">
       <h2 class:list={["text-[#1d1d1f]", sectionHead]}>这三年。</h2>
-      <ol class="mt-14 grid gap-x-5 gap-y-12 sm:grid-cols-2">
+      <ol class="mt-16 sm:mt-20 flex flex-col gap-[88px] sm:gap-[120px]">
         {
-          timeline.map(item => (
-            <li class:list={[item.wide && "sm:col-span-2"]}>
-              <Image
-                src={item.image}
-                alt={item.alt}
-                widths={item.wide ? [734, 1068, 1600] : [734, 1068]}
-                sizes={item.wide ? "(max-width: 734px) 88vw, 980px" : "(max-width: 734px) 88vw, 480px"}
-                class:list={["w-full rounded-[18px] object-cover", item.wide ? "aspect-[16/9]" : "aspect-[3/2]"]}
-              />
-              <p class="mt-5 text-[21px] leading-[25px] font-semibold tabular-nums text-[#1d1d1f]">{item.date}</p>
-              <p class="mt-1 text-[17px] leading-[25px] text-[#6e6e73]">{item.text}</p>
+          chapters.map(c => (
+            <li>
+              <p class="text-[17px] sm:text-[19px] font-semibold tabular-nums text-[#86868b]">{c.date}</p>
+              <h3 class="mt-1 text-[#1d1d1f] text-[28px] leading-[34px] sm:text-[40px] sm:leading-[48px] font-semibold">{c.title}</h3>
+              {c.text && <p class="mt-3 max-w-[640px] text-[17px] sm:text-[21px] leading-[1.5] text-[#6e6e73]">{c.text}</p>}
+              <div class="mt-8 sm:mt-10 flex flex-col gap-3 sm:gap-4">
+                {c.rows.map(row => <PhotoRow photos={row} />)}
+              </div>
             </li>
           ))
         }
@@ -136,19 +196,11 @@ const sectionHead = "text-[32px] leading-[40px] sm:text-[48px] sm:leading-[56px]
 
   <section class="bg-white text-[#1d1d1f]">
     <div class="section-content py-[100px] sm:py-[140px]">
-      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>还有这些瞬间。</h2>
-      <div class="mt-14 grid gap-5 sm:grid-cols-2">
-        {
-          moments.map(item => (
-            <Image
-              src={item.image}
-              alt={item.alt}
-              widths={item.wide ? [734, 1068, 1600] : [734, 1068]}
-              sizes={item.wide ? "(max-width: 734px) 88vw, 980px" : "(max-width: 734px) 88vw, 480px"}
-              class:list={["w-full rounded-[18px] object-cover", item.wide ? "sm:col-span-2 aspect-[16/9]" : "aspect-[3/2]"]}
-            />
-          ))
-        }
+      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>还有他自己。</h2>
+      <div class="mt-14 flex flex-col gap-3 sm:gap-4">
+        <PhotoRow photos={him.slice(0, 2)} />
+        <PhotoRow photos={him.slice(2, 4)} />
+        <PhotoRow photos={him.slice(4)} />
       </div>
       <p class="mt-10 text-[17px] text-[#6e6e73]">这些照片也洗了出来，装成一本相册，今天交给他。</p>
     </div>
