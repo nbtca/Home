@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets"
+import Zoomable from "./Zoomable.astro"
 import { od } from "../od"
 import portrait from "../pages/_assets/od/portrait.webp"
 
@@ -14,14 +15,14 @@ const { href } = Astro.props
       <p class="mt-5 text-[17px] sm:text-[19px] leading-[1.5] text-[#6e6e73]">生日快乐。<br />谢谢你在计算机协会的这三年。</p>
       {href && <a href={href} class="mt-6 inline-block text-[17px] sm:text-[19px] text-[#0066cc] hover:underline">听听大家的留言 ›</a>}
     </div>
-    <Image
-      src={portrait}
-      alt="陈正浩托着下巴，看着面前的笔记本电脑，嘴角带笑"
-      widths={[734, 1068, 1600, 2120]}
-      sizes="(max-width: 734px) 92vw, 700px"
-      loading="eager"
-      fetchpriority="high"
-      class="order-1 md:order-2 w-full rounded-[18px]"
-    />
+    {
+      href
+        ? (
+            <a href={href} class="order-1 md:order-2 block">
+              <Image src={portrait} alt="陈正浩托着下巴，看着面前的笔记本电脑，嘴角带笑" widths={[734, 1068, 1600, 2120]} sizes="(max-width: 734px) 92vw, 700px" loading="eager" fetchpriority="high" class="w-full rounded-[18px]" />
+            </a>
+          )
+        : <Zoomable image={portrait} alt="陈正浩托着下巴，看着面前的笔记本电脑，嘴角带笑" widths={[734, 1068, 1600, 2120]} sizes="(max-width: 734px) 92vw, 700px" loading="eager" fetchpriority="high" class="order-1 md:order-2 overflow-hidden rounded-[18px]" />
+    }
   </div>
 </section>

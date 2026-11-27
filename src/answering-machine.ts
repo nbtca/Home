@@ -33,33 +33,134 @@ type Key = typeof KEY_NAMES[number]
 const smooth = (x: number) => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x)
 const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`
 
-function woodTexture() {
-  const c = document.createElement("canvas")
-  c.width = 1024
-  c.height = 512
-  const g = c.getContext("2d")!
-  const base = g.createLinearGradient(0, 0, 0, 512)
-  base.addColorStop(0, "#5b2815")
-  base.addColorStop(0.5, "#4a1f10")
-  base.addColorStop(1, "#56240f")
-  g.fillStyle = base
-  g.fillRect(0, 0, 1024, 512)
-  for (let i = 0; i < 420; i++) {
-    const y = Math.random() * 512
-    const dark = Math.random() < 0.7
-    g.strokeStyle = dark ? `rgba(28,10,4,${0.12 + Math.random() * 0.35})` : `rgba(140,70,35,${0.06 + Math.random() * 0.12})`
-    g.lineWidth = 0.4 + Math.random() * (dark ? 2.6 : 1.4)
-    g.beginPath()
-    const a = 60 + Math.random() * 200
-    const p = Math.random() * 10
-    for (let x = -8; x <= 1032; x += 8) g.lineTo(x, y + Math.sin(x / a + p) * 5 + Math.sin(x / 23 + p * 3) * 0.7)
-    g.stroke()
+// Value noise keeps the grain organic without shipping an image.
+function noise1(seed: number) {
+  const r = (i: number) => {
+    const x = Math.sin(i * 127.1 + seed * 311.7) * 43758.5453
+    return x - Math.floor(x)
   }
-  const t = new THREE.CanvasTexture(c)
-  t.colorSpace = THREE.SRGBColorSpace
-  t.wrapS = t.wrapT = THREE.RepeatWrapping
-  t.anisotropy = 8
-  return t
+  return (x: number) => {
+    const i = Math.floor(x)
+    const f = x - i
+    const u = f * f * (3 - 2 * f)
+    return r(i) * (1 - u) + r(i + 1) * u
+  }
+}
+
+// Walnut is drawn as long growth rings bent by noise, with pores and a few figure streaks.
+// Returns color, roughness and bump maps that share the same pattern.
+function walnutMaps() {
+  const W = 2048
+  const H = 1024
+  const color = document.createElement("canvas")
+  color.width = W
+  color.height = H
+  const g = color.getContext("2d")!
+  const tone = g.createLinearGradient(0, 0, 0, H)
+  tone.addColorStop(0, "#4a2013")
+  tone.addColorStop(0.35, "#5a2817")
+  tone.addColorStop(0.7, "#46200f")
+  tone.addColorStop(1, "#542514")
+  g.fillStyle = tone
+  g.fillRect(0, 0, W, H)
+
+  const bump = document.createElement("canvas")
+  bump.width = W
+  bump.height = H
+  const b = bump.getContext("2d")!
+  b.fillStyle = "#808080"
+  b.fillRect(0, 0, W, H)
+
+  const warp = noise1(3)
+  const warpFine = noise1(7)
+  const rings = 170
+  for (let i = 0; i < rings; i++) {
+    const y0 = (i / rings) * H + (Math.random() - 0.5) * 4
+    const late = i % 3 === 0
+    const width = late ? 2.4 + Math.random() * 3.6 : 0.8 + Math.random() * 1.4
+    const dark = late ? 0.5 + Math.random() * 0.35 : 0.12 + Math.random() * 0.16
+    const path = new Path2D()
+    for (let x = -10; x <= W + 10; x += 6) {
+      const y = y0 + (warp(x / 420 + i * 0.07) - 0.5) * 34 + (warpFine(x / 60 + i) - 0.5) * 3
+      if (x === -10) path.moveTo(x, y)
+      else path.lineTo(x, y)
+    }
+    g.strokeStyle = `rgba(24,9,3,${dark})`
+    g.lineWidth = width
+    g.stroke(path)
+    b.strokeStyle = `rgba(40,40,40,${late ? 0.5 : 0.18})`
+    b.lineWidth = width
+    b.stroke(path)
+    if (Math.random() < 0.25) {
+      g.strokeStyle = `rgba(150,78,40,${0.05 + Math.random() * 0.08})`
+      g.lineWidth = 2 + Math.random() * 5
+      g.stroke(path)
+    }
+  }
+
+  // Open pores: short dark dashes along the grain.
+  for (let i = 0; i < 9000; i++) {
+    const x = Math.random() * W
+    const y = Math.random() * H
+    const len = 3 + Math.random() * 10
+    g.fillStyle = `rgba(15,5,2,${0.18 + Math.random() * 0.3})`
+    g.fillRect(x, y, len, 0.9)
+    b.fillStyle = "rgba(20,20,20,0.55)"
+    b.fillRect(x, y, len, 0.9)
+  }
+
+  // Broad figure so large panels do not look uniform.
+  const figure = noise1(11)
+  for (let x = 0; x < W; x += 4) {
+    const a = (figure(x / 260) - 0.5) * 0.28
+    g.fillStyle = a > 0 ? `rgba(160,80,40,${a})` : `rgba(10,4,2,${-a})`
+    g.fillRect(x, 0, 4, H)
+  }
+
+  const rough = document.createElement("canvas")
+  rough.width = W
+  rough.height = H
+  const r = rough.getContext("2d")!
+  r.filter = "grayscale(1) contrast(0.6) brightness(1.5)"
+  r.drawImage(color, 0, 0)
+
+  const tex = (c: HTMLCanvasElement, srgb: boolean) => {
+    const t = new THREE.CanvasTexture(c)
+    if (srgb) t.colorSpace = THREE.SRGBColorSpace
+    t.wrapS = t.wrapT = THREE.RepeatWrapping
+    t.anisotropy = 16
+    return t
+  }
+  return { map: tex(color, true), roughnessMap: tex(rough, false), bumpMap: tex(bump, false) }
+}
+
+// The cabinet's UVs collapse whole faces onto one point, so the grain is projected from object space instead.
+// Each face picks the projection along its dominant normal axis; the grain runs along x.
+function boxMapWood(m: THREE.MeshPhysicalMaterial, maps: ReturnType<typeof walnutMaps>) {
+  m.map = maps.map
+  m.roughnessMap = maps.roughnessMap
+  m.bumpMap = maps.bumpMap
+  m.bumpScale = 1.2
+  m.onBeforeCompile = (shader) => {
+    shader.vertexShader = shader.vertexShader
+      .replace("#include <common>", "#include <common>\nvarying vec3 vWoodPos;\nvarying vec3 vWoodNormal;")
+      .replace("#include <begin_vertex>", "#include <begin_vertex>\nvWoodPos = position;\nvWoodNormal = normal;")
+    const uv = `
+      vec3 wn = abs(normalize(vWoodNormal));
+      woodUv = wn.y > max(wn.x, wn.z) ? vWoodPos.xz : wn.z > wn.x ? vWoodPos.xy : vWoodPos.zy;
+      woodUv = woodUv * vec2(2.2, 3.4) + vec2(0.37, 0.11);
+    `
+    // Chunks are still #include lines at this point, so expand the ones that sample maps before renaming their UVs.
+    const chunk = (name: keyof typeof THREE.ShaderChunk, from: string) => THREE.ShaderChunk[name].replaceAll(from, "woodUv")
+    shader.fragmentShader = shader.fragmentShader
+      .replace("#include <common>", "#include <common>\nvarying vec3 vWoodPos;\nvarying vec3 vWoodNormal;\nvec2 woodUv;")
+      .replace("#include <bumpmap_pars_fragment>", chunk("bumpmap_pars_fragment", "vBumpMapUv"))
+      .replace("void main() {", `void main() {\n${uv}`)
+      .replace("#include <map_fragment>", chunk("map_fragment", "vMapUv"))
+      .replace("#include <roughnessmap_fragment>", chunk("roughnessmap_fragment", "vRoughnessMapUv"))
+  }
+  m.customProgramCacheKey = () => "box-mapped-walnut"
+  m.needsUpdate = true
 }
 
 class DotMatrix {
@@ -182,7 +283,7 @@ export function mountMachine(root: HTMLElement) {
 
   const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder)
   loader.load("/od/machine.glb", ({ scene: model }) => {
-    const wood = woodTexture()
+    const wood = walnutMaps()
     model.traverse((o) => {
       // GLTFLoader sanitizes node names; the original glTF name survives in userData.
       nodes.set(o.userData.name ?? o.name, o)
@@ -204,10 +305,11 @@ export function mountMachine(root: HTMLElement) {
           m.roughness = 0.62
           break
         case "Red walnut":
-          m.map = wood
-          m.roughness = 0.48
-          m.clearcoat = 0.35
-          m.clearcoatRoughness = 0.28
+          boxMapWood(m, wood)
+          m.color.set("#ffffff")
+          m.roughness = 0.62
+          m.clearcoat = 0.45
+          m.clearcoatRoughness = 0.22
           break
         case "Champagne":
           m.color.set("#c9b48d")

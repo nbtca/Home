@@ -42,9 +42,13 @@
     "slerp",
     "GLTF",
     "MSAA",
-    "Yuna",
     "EXIF",
     "NWDC",
-    "sheepkinn"
+    "sheepkinn",
+    "Yonagi",
+    "bumpmap",
+    "roughnessmap",
+    "nvec",
+    "Zoomable"
   ]
 }
