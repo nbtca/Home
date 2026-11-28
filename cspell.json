@@ -32,6 +32,23 @@
     "VEVENT",
     "DTSTAMP",
     "DTSTART",
-    "DTEND"
+    "DTEND",
+    "clearcoat",
+    "lerp",
+    "Menlo",
+    "Meshopt",
+    "metalness",
+    "pmrem",
+    "slerp",
+    "GLTF",
+    "MSAA",
+    "EXIF",
+    "NWDC",
+    "sheepkinn",
+    "Yonagi",
+    "bumpmap",
+    "roughnessmap",
+    "nvec",
+    "Zoomable"
   ]
 }

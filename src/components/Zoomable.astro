@@ -1,0 +1,218 @@
+---
+import { Image, getImage } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
+interface Props {
+  image: ImageMetadata
+  alt: string
+  widths: number[]
+  sizes: string
+  class?: string
+  style?: string
+  imgClass?: string
+  loading?: "eager" | "lazy"
+  fetchpriority?: "high" | "low" | "auto"
+}
+
+const { image, alt, widths, sizes, class: className, style, imgClass, loading, fetchpriority } = Astro.props
+const width = Math.min(image.width, 2400)
+const full = await getImage({ src: image, width, format: "webp" })
+---
+
+<a href={full.src} data-zoom data-w={width} data-h={Math.round((width * image.height) / image.width)} class:list={["block min-w-0 cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071e3]", className]} style={style}>
+  <Image src={image} alt={alt} widths={widths} sizes={sizes} loading={loading} fetchpriority={fetchpriority} class:list={["block h-auto w-full", imgClass]} />
+</a>
+
+<script>
+  let dialog: HTMLDialogElement | undefined
+  let view: HTMLImageElement
+  let caption: HTMLElement
+  let count: HTMLElement
+  let index = 0
+  const links = () => [...document.querySelectorAll<HTMLAnchorElement>("a[data-zoom]")]
+
+  const show = (i: number) => {
+    const all = links()
+    index = (i + all.length) % all.length
+    const link = all[index]
+    const thumb = link.querySelector("img")!
+    // Show the already-loaded thumbnail at once, then swap in the full image when it has decoded.
+    view.src = thumb.currentSrc || thumb.src
+    view.width = Number(link.dataset.w)
+    view.height = Number(link.dataset.h)
+    view.alt = thumb.alt
+    caption.textContent = thumb.alt
+    count.textContent = `${index + 1} / ${all.length}`
+    const full = new Image()
+    full.src = link.href
+    const shown = index
+    full.decode().then(() => {
+      if (shown === index) view.src = link.href
+    }).catch(() => {})
+    for (const n of [index - 1, index + 1]) new Image().src = all[(n + all.length) % all.length].href
+  }
+
+  const build = () => {
+    dialog = document.createElement("dialog")
+    dialog.className = "zoom"
+    dialog.setAttribute("aria-label", "查看照片")
+    dialog.innerHTML = "<figure><img decoding=\"async\"><figcaption><span data-count></span><span data-caption></span></figcaption></figure><button type=\"button\" data-close aria-label=\"关闭\">✕</button><button type=\"button\" data-step=\"-1\" aria-label=\"上一张\">‹</button><button type=\"button\" data-step=\"1\" aria-label=\"下一张\">›</button>"
+    view = dialog.querySelector("img")!
+    caption = dialog.querySelector("[data-caption]")!
+    count = dialog.querySelector("[data-count]")!
+    let swiped = false
+    dialog.addEventListener("click", (e) => {
+      if (swiped) return
+      const target = e.target as HTMLElement
+      const step = target.closest<HTMLElement>("[data-step]")?.dataset.step
+      if (step) show(index + Number(step))
+      else if (target.closest("[data-close]") || target === dialog || target.tagName === "FIGURE") dialog!.close()
+    })
+    dialog.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") show(index - 1)
+      else if (e.key === "ArrowRight") show(index + 1)
+    })
+    let startX = 0
+    dialog.addEventListener("pointerdown", (e) => {
+      startX = e.clientX
+      swiped = false
+    })
+    // A swipe also fires click on the backdrop afterwards; the flag keeps that click from closing the dialog.
+    dialog.addEventListener("pointerup", (e) => {
+      const dx = e.clientX - startX
+      swiped = Math.abs(dx) > 50
+      if (swiped) show(index + (dx < 0 ? 1 : -1))
+    })
+    document.body.append(dialog)
+  }
+
+  document.addEventListener("click", (e) => {
+    const link = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[data-zoom]")
+    if (!link || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    e.preventDefault()
+    if (!dialog) build()
+    show(links().indexOf(link))
+    dialog!.showModal()
+  })
+</script>
+
+<style is:global>
+  html:has(dialog.zoom[open]) {
+    overflow: hidden;
+  }
+
+  dialog.zoom {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(0 0 0 / 0.94);
+    color: #f5f5f7;
+    opacity: 0;
+    transition: opacity 0.25s, display 0.25s allow-discrete, overlay 0.25s allow-discrete;
+  }
+
+  dialog.zoom[open] {
+    opacity: 1;
+  }
+
+  @starting-style {
+    dialog.zoom[open] {
+      opacity: 0;
+    }
+  }
+
+  dialog.zoom::backdrop {
+    background: transparent;
+  }
+
+  dialog.zoom figure {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 56px 80px 28px;
+  }
+
+  dialog.zoom img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100dvh - 150px);
+    border-radius: 6px;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  dialog.zoom figcaption {
+    display: flex;
+    gap: 12px;
+    max-width: 760px;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgb(255 255 255 / 0.7);
+    text-align: center;
+  }
+
+  dialog.zoom [data-count] {
+    flex: none;
+    font-variant-numeric: tabular-nums;
+    color: rgb(255 255 255 / 0.45);
+  }
+
+  dialog.zoom button {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.12);
+    color: #f5f5f7;
+    font-size: 28px;
+    line-height: 1;
+    transition: background-color 0.2s;
+  }
+
+  dialog.zoom button:hover {
+    background: rgb(255 255 255 / 0.22);
+  }
+
+  dialog.zoom [data-close] {
+    top: 16px;
+    right: 16px;
+    font-size: 16px;
+  }
+
+  dialog.zoom [data-step] {
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  dialog.zoom [data-step="-1"] {
+    left: 20px;
+  }
+
+  dialog.zoom [data-step="1"] {
+    right: 20px;
+  }
+
+  @media (max-width: 734px) {
+    dialog.zoom figure {
+      padding: 64px 12px 24px;
+    }
+
+    dialog.zoom [data-step] {
+      display: none;
+    }
+  }
+</style>

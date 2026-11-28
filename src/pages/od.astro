@@ -1,0 +1,235 @@
+---
+import type { ImageMetadata } from "astro"
+import BaseLayout from "../layouts/BaseLayout.astro"
+import OdTribute from "../components/OdTribute.astro"
+import PhotoRow from "../components/PhotoRow.astro"
+import { od } from "../od"
+
+const photos = import.meta.glob<{ default: ImageMetadata }>("./_assets/od/*.webp", { eager: true })
+const photo = (name: string) => photos[`./_assets/od/${name}.webp`].default
+
+type Shot = { image: ImageMetadata, alt: string }
+const shot = (name: string, alt: string): Shot => ({ image: photo(name), alt })
+
+// Dates come from EXIF, cross-checked against photo.nbtca.space and docs.nbtca.space.
+const chapters: { date: string, title: string, text: string, rows: Shot[][] }[] = [
+  {
+    date: "2023 年 10 月 21 日",
+    title: "全体大会。",
+    text: "他来协会的第一个学期，几十个人站上台阶拍了这张合影，又围坐在沙发上开会。",
+    rows: [[shot("all-stage", "全体大会后，几十名社员站在台阶上合影"), shot("all-sofa", "几十名社员围坐在沙发上开会")]],
+  },
+  {
+    date: "2023 年 12 月 9 日",
+    title: "CA102，站上讲台。",
+    text: "讲安卓系统怎么调。",
+    rows: [
+      [shot("talk-android", "陈正浩戴着眼镜、拿着话筒讲课，身后的投影写着安卓系统优化指南"), shot("talk-hall", "大教室的投影上写着“全球各大安卓操作系统厂商”，陈正浩站在讲台后")],
+      [shot("talk-laptop", "讲座结束后，陈正浩在讲台的笔记本前摊开手，给旁边的社员讲解")],
+    ],
+  },
+  {
+    date: "2024 年 9 月 21 日",
+    title: "CA101 招新讲座。",
+    text: "他负责内容科普。阶梯教室坐得满满当当，协会第一次在 B 站直播。",
+    rows: [[shot("2024-09-ca101", "阶梯教室里坐满了新生，讲台前站着主讲人")]],
+  },
+  {
+    date: "2024 年 10 月 13 日",
+    title: "迎新会。",
+    text: "讲台边摆着蛋糕，白板上画了只小马。讲完，大家举着协会旗合影。",
+    rows: [[shot("2024-10-lecture", "陈正浩站在讲台后讲课，身后的白板上画着动漫人物和一只小马，讲台前摆着蛋糕"), shot("2024-10-group", "几十名社员举着协会旗，在教室前排成两排合影")]],
+  },
+  {
+    date: "2024 年 10 月 19 日",
+    title: "维修日。",
+    text: "",
+    rows: [[shot("2024-10-podium", "阶梯教室里，一名社员站在讲台边比划，前排有人低头看平板"), shot("2024-10-pair", "两名社员站在投影幕前，低头看着讲台")]],
+  },
+  {
+    date: "2024 年 12 月 28 日",
+    title: "拆机。",
+    text: "这学期的最后一次维修日。他低着头拧螺丝，头发挡住了眼睛。",
+    rows: [
+      [shot("2024-12-close", "陈正浩侧脸的特写，头发垂下来挡住了眼睛"), shot("2024-12-repair", "陈正浩低着头，拿螺丝刀拆一台笔记本的底壳")],
+      [shot("2024-12-screw", "陈正浩和旁边的社员一起，用螺丝刀拆笔记本"), shot("2024-12-bend", "陈正浩俯身贴近桌面，专心拧螺丝")],
+    ],
+  },
+  {
+    date: "2025 年 3 月 22 日",
+    title: "学雷锋，理工维修三月特别活动。",
+    text: "新学期的第一次维修日，在 NB122 从早上九点修到下午五点半。",
+    rows: [[shot("2025-03-tables", "几名社员围坐在圆桌前，各自对着一台笔记本"), shot("2025-03-standing", "一名社员站在圆桌边，看着大家修电脑")]],
+  },
+  {
+    date: "2025 年 10 月 18 日",
+    title: "全天维修日，下午迎新。",
+    text: "他讲浏览器插件和路由器，然后切蛋糕，分给每一个人。",
+    rows: [
+      [shot("2025-10-stage", "讲台上的投影写着“计算机协会是什么”，台前挂着协会旗"), shot("2025-10-cake", "几名社员围着蛋糕，正在切分"), shot("2025-10-slice", "陈正浩托着一盘切好的蛋糕")],
+      [shot("2025-10-group", "迎新会后，社员们举着协会旗在教室里合影")],
+    ],
+  },
+  {
+    date: "2025 年冬",
+    title: "又一个维修日。",
+    text: "11 月 29 日拆开一台笔记本，12 月 27 日大家挤在圆桌前看同一块屏幕。",
+    rows: [[shot("2025-11-repair", "一名社员俯身拆开笔记本，桌上放着刷子和一个橘子"), shot("2025-12-round", "社员们挤在圆桌前，一起看同一台笔记本")]],
+  },
+  {
+    date: "2026 年 4 月 25 日",
+    title: "NWDC 第一次线下。",
+    text: "技术分享结束，大家坐到同一张圆桌边吃饭。",
+    rows: [[shot("all-dinner", "十几名社员围坐在圆桌边吃饭，对着镜头")]],
+  },
+  {
+    date: "2026 年 6 月 16 日",
+    title: "送走毕业的学长。",
+    text: "",
+    rows: [[shot("2026-06-graduation", "毕业季，社员们在协会易拉宝旁合影，有人穿着学位服")]],
+  },
+  {
+    date: "2026 年 7 月 17 日",
+    title: "团建。",
+    text: "有人给他戴上一顶金色小帽，叫他巴依老爷。",
+    rows: [[shot("him-hat", "陈正浩戴着一顶金色小帽，坐在暖光里笑")]],
+  },
+  {
+    date: "2026 年 9 月 20 日",
+    title: "百团大战。",
+    text: "八点前到场搭帐篷、摆展板。下午他给贴着协会贴纸的气球打气，凑到旁边看别人的取景框，又低头看社员的手机。",
+    rows: [
+      [shot("fair-portrait", "百团大战的帐篷前，陈正浩穿着横条纹 T 恤，望向远处"), shot("fair-balloon", "陈正浩举着打气筒，给一个印着协会标志的气球打气")],
+      [shot("fair-camera", "帐篷下，一名社员端着相机，陈正浩凑在镜头旁边笑"), shot("fair-phone", "一名社员低头看手机，陈正浩站在旁边看着")],
+    ],
+  },
+  {
+    date: "2026 年 10 月",
+    title: "新人大会。",
+    text: "11 日在浙理拾光试讲，18 日正式开场。",
+    rows: [
+      [shot("all-room", "试讲时，一名社员站在屏幕前讲话，其他人抱着手臂站成一排听"), shot("talk-departments", "一名社员拿着话筒，介绍宣传部、维修部和开发部")],
+      [shot("all-flag", "新人大会后，社员们举着协会旗，站在黄色地面的大厅里合影"), shot("all-watch", "陈正浩和两名社员靠墙站着，看向同一个方向")],
+    ],
+  },
+  {
+    date: "2026 年 10 月 31 日",
+    title: "去杭州，NWDC。",
+    text: "人来得最齐的一次，从 18 届到 25 届，八代人都在。下午在街边等人，有人用一台黑莓拍下了他的笑。",
+    rows: [
+      [shot("him-trio-2", "陈正浩和两名社员并肩站着，对着镜头笑"), shot("him-trio-1", "陈正浩和两名社员站在“行动成就未来”的标语前合影")],
+      [shot("him-shelf", "陈正浩和两名社员在书架前低头看手里的东西"), shot("him-laptop", "陈正浩坐在笔记本后面笑，身后的社员弯腰看他的屏幕"), shot("all-street", "一群社员站在街边店门口，一个人往他们走去")],
+    ],
+  },
+]
+
+const messages = [
+  { from: "小明", text: "非常感谢你这些年对计算机协会的贡献。想来第一次见面的时候你还那么青涩，现在已经过去三年了。" },
+  { from: "小马", text: "上次您对我整整一下午的教导，让我感受到了你对计协是多么的用心。当一个快乐的计协皇帝。" },
+  { from: "ryx", text: "感谢橘狗在我进入计协期间一直给我的各种照顾，比如说网络基础设施，还有带我去吃的各种哈基米的小脚丫。" },
+  { from: "蓝城", text: "OD，祝你生日快乐，永远不死，老大！" },
+  { from: "用户", text: "在每一次的线下维修都能见到你的身影，热心到位地帮我们解决了许多非技术与技术上的问题。" },
+  { from: "🥚", text: "陈正浩，Orange Dog，祝你生日快乐。" },
+  { from: "grs", text: "希望 OD 毕业设计顺顺利利完成，也希望计协永远都越办越好。" },
+  { from: "xy 老师", text: "感觉是一个非常认真负责，有时候又有点可爱的会长大人呀。" },
+  { from: "比企谷君", text: "我们计协的大家，会永远记住这么一个独一无二的橘子狗。" },
+]
+
+const sectionHead = "text-[32px] leading-[40px] sm:text-[48px] sm:leading-[56px] font-semibold"
+---
+
+<BaseLayout primaryTitle={od.name}>
+  <OdTribute />
+
+  <section class="bg-white text-[#1d1d1f]">
+    <div class="mx-auto max-w-[680px] px-6 pb-[100px] sm:pb-[140px] text-[19px] sm:text-[21px] leading-[1.6] text-[#424245]">
+      <p>三年里，正浩把计算机协会当成自己的事来做。百团大战前一晚，他去领帐篷和展板；社里的路由器，是他带回家接好光猫、调通 IPv6 的；刚来的新人，他会花一整个下午手把手地教。</p>
+      <p class="mt-6">今天是他的 22 岁生日。九位社员录下了留言，放进一台答录机里。</p>
+    </div>
+  </section>
+
+  <section id="machine" tabindex="-1" class="relative isolate h-[100svh] min-h-[560px] overflow-hidden bg-[#0c0907] text-[#f5f5f7] outline-none" data-state="idle">
+    <canvas class="absolute inset-0 size-full touch-none" aria-label="一台木纹外壳的磁带答录机"></canvas>
+    <audio preload="auto" crossorigin="anonymous">
+      <source src="/od/messages.m4a" type="audio/mp4" />
+      <track kind="captions" srclang="zh" label="中文" src="/od/messages.vtt" default />
+    </audio>
+
+    <div class="pointer-events-none absolute inset-x-0 top-0 flex justify-center pt-[9vh] sm:pt-[11vh] transition-opacity duration-1000 [[data-state=intro]_&]:opacity-0 [[data-state=playing]_&]:opacity-0 [[data-state=ended]_&]:opacity-0">
+      <div class="text-center">
+        <p class="text-[14px] sm:text-[17px] font-semibold tracking-[0.2em] text-[#ffb02e]">ANSWERING MACHINE</p>
+        <h2 class="mt-3 text-[#f5f5f7] text-[36px] leading-[1.1] sm:text-[56px] font-semibold">您有九条新留言。</h2>
+      </div>
+    </div>
+
+    <button data-start type="button" class="absolute bottom-[12vh] left-1/2 -translate-x-1/2 rounded-full bg-[#f5f5f7] px-[28px] py-[14px] text-[17px] sm:text-[19px] text-black transition-[opacity,background-color] duration-700 hover:bg-white opacity-0 [[data-ready]_&]:opacity-100 [[data-state=intro]_&]:pointer-events-none [[data-state=intro]_&]:opacity-0 [[data-state=playing]_&]:hidden [[data-state=ended]_&]:hidden">
+      放入磁带
+    </button>
+
+    <p data-caption aria-live="polite" class="pointer-events-none absolute inset-x-0 bottom-[7vh] mx-auto max-w-[min(92vw,1100px)] px-6 text-center text-balance text-[22px] leading-[1.45] sm:text-[30px] md:text-[36px] font-medium text-white opacity-0 transition-opacity duration-300 [text-shadow:0_2px_18px_rgba(0,0,0,.9)] data-[on]:opacity-100"></p>
+
+    <div data-finale hidden class="absolute inset-0 [&[hidden]]:hidden flex flex-col items-center justify-center bg-black/55 px-6 text-center backdrop-blur-sm">
+      <p class="text-[#f5f5f7] text-[40px] leading-[1.1] sm:text-[72px] font-semibold">生日快乐，橘狗。</p>
+      <p class="mt-4 text-[19px] sm:text-[24px] text-white/70">计算机协会的大家</p>
+      <button data-replay type="button" class="mt-10 text-[17px] sm:text-[19px] text-[#ffb02e] hover:underline">再听一遍 ›</button>
+    </div>
+
+    <p class="pointer-events-none absolute bottom-3 right-4 hidden text-[12px] text-white/35 sm:block [[data-kiosk]_&]:!hidden">点击机身上的按键也能操作 · 空格暂停 · ← → 切换留言</p>
+  </section>
+
+  <section class="bg-white text-[#1d1d1f]">
+    <div class="section-content py-[100px] sm:py-[140px]">
+      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>他们说。</h2>
+      <ul class="mt-14 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+        {
+          messages.map((m, i) => (
+            <li class="flex flex-col rounded-[18px] bg-[#f5f5f7] p-7 sm:p-8">
+              <p class="text-[17px] leading-[1.6] text-[#1d1d1f]">“{m.text}”</p>
+              <p class="mt-auto pt-6 text-[14px] text-[#6e6e73]"><span class="tabular-nums text-[#ffb02e] font-semibold">{String(i + 1).padStart(2, "0")}</span> · {m.from}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-[#f5f5f7] text-[#1d1d1f]">
+    <div class="section-content py-[100px] sm:py-[140px]">
+      <h2 class:list={["text-[#1d1d1f]", sectionHead]}>这三年。</h2>
+      <ol class="mt-16 sm:mt-20 flex flex-col gap-[88px] sm:gap-[120px]">
+        {
+          chapters.map(c => (
+            <li>
+              <p class="text-[17px] sm:text-[19px] font-semibold tabular-nums text-[#86868b]">{c.date}</p>
+              <h3 class="mt-1 text-[#1d1d1f] text-[28px] leading-[34px] sm:text-[40px] sm:leading-[48px] font-semibold">{c.title}</h3>
+              {c.text && <p class="mt-3 max-w-[640px] text-[17px] sm:text-[21px] leading-[1.5] text-[#6e6e73]">{c.text}</p>}
+              <div class="mt-8 sm:mt-10 flex flex-col gap-3 sm:gap-4">
+                {c.rows.map(row => <PhotoRow photos={row} />)}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="mt-[88px] sm:mt-[120px]">
+        <PhotoRow photos={[shot("all-trees", "树荫下，社员们站成两排合影")]} />
+      </div>
+      <p class="mt-8 text-[17px] sm:text-[21px] text-[#6e6e73]">这些照片也洗了出来，装成一本相册，今天交给他。</p>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script>
+  const root = document.getElementById("machine")!
+  let mounted = false
+  new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting || mounted) return
+    mounted = true
+    void import("../answering-machine").then(m => m.mountMachine(root))
+  }, { rootMargin: "100% 0px" }).observe(root)
+  if (location.hash === "#machine") root.focus()
+  if (new URLSearchParams(location.search).has("kiosk")) {
+    root.dataset.kiosk = ""
+    root.scrollIntoView()
+  }
+</script>

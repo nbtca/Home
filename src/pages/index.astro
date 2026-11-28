@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro"
 import Tile from "../layouts/Tile.astro"
 import MoreTile from "../layouts/MoreTile.astro"
 import RepairDayBanner from "../components/RepairDayBanner.astro"
+import OdTribute from "../components/OdTribute.astro"
 const allPosts = Object.values(import.meta.glob("../pages/posts/*.md", { eager: true }))
 const Blogs = Object.values(import.meta.glob("../pages/posts/blogs/**/*.md", { eager: true }))
 allPosts.sort((a, b) => {
@@ -22,6 +23,7 @@ Blogs.sort(
 ---
 
   <BaseLayout>
+    <OdTribute href="/od#machine" />
     <RepairDayBanner />
     <section class="every-day-feed">
       <div class="section-content pt-12">
