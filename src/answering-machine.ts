@@ -488,7 +488,7 @@ export function mountMachine(root: HTMLElement) {
   addEventListener("keydown", (e) => {
     const map: Record<string, Key> = { " ": "PAUSE", "ArrowRight": "FF", "ArrowLeft": "REW", "Enter": "PLAY" }
     const k = map[e.key]
-    if (!k || !visible || !ready || (e.target as HTMLElement).closest("button, a")) return
+    if (!k || !visible || !ready || document.querySelector("dialog[open]") || (e.target as HTMLElement).closest("button, a")) return
     e.preventDefault()
     onKey(k)
   })

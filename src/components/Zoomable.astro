@@ -60,7 +60,9 @@ const full = await getImage({ src: image, width, format: "webp" })
     view = dialog.querySelector("img")!
     caption = dialog.querySelector("[data-caption]")!
     count = dialog.querySelector("[data-count]")!
+    let swiped = false
     dialog.addEventListener("click", (e) => {
+      if (swiped) return
       const target = e.target as HTMLElement
       const step = target.closest<HTMLElement>("[data-step]")?.dataset.step
       if (step) show(index + Number(step))
@@ -71,10 +73,15 @@ const full = await getImage({ src: image, width, format: "webp" })
       else if (e.key === "ArrowRight") show(index + 1)
     })
     let startX = 0
-    dialog.addEventListener("pointerdown", e => (startX = e.clientX))
+    dialog.addEventListener("pointerdown", (e) => {
+      startX = e.clientX
+      swiped = false
+    })
+    // A swipe also fires click on the backdrop afterwards; the flag keeps that click from closing the dialog.
     dialog.addEventListener("pointerup", (e) => {
       const dx = e.clientX - startX
-      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1))
+      swiped = Math.abs(dx) > 50
+      if (swiped) show(index + (dx < 0 ? 1 : -1))
     })
     document.body.append(dialog)
   }
